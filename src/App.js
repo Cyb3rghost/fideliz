@@ -4,7 +4,8 @@ import Coentreprise from './component/coentreprise';
 import Coclient from './component/coclient';
 import Inscription from './component/inscription';
 import Dashboard from './component/dashboard';
-import Profil from './component/profil'
+import Profil from './component/profil';
+import Client from './component/client';
 
 
 class App extends Component {
@@ -28,7 +29,9 @@ class App extends Component {
         case '/profil':
           return <Profil />
           break;
-
+        case '/client':
+          return <Client />
+          break;
         default:
           break;
       }

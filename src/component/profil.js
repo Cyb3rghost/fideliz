@@ -5,6 +5,7 @@ import Menu from './menu'
 import backgroundcarte from '../images/backgroundCarte.jpg';
 import logocarte from '../images/logocarte.png';
 import profil from '../images/profil.png';
+import carnet from '../images/carnet.png';
 
 class Profil extends Component {
 
@@ -17,7 +18,10 @@ class Profil extends Component {
                 break;
             case '/profil':
                 return <h2><img src={profil} width="70" height="70" alt="Responsive image"/> PROFIL</h2>
-                break;       
+                break; 
+            case '/client':
+                return <h2><img src={carnet} width="70" height="70" alt="Responsive image"/> CARNET CLIENT</h2>
+                break;      
             default:
                 break;
         }
