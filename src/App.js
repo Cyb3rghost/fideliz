@@ -1,25 +1,45 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Coentreprise from './component/coentreprise';
+import Coclient from './component/coclient';
+import Inscription from './component/inscription';
+import Dashboard from './component/dashboard';
+import Profil from './component/profil'
+
 
 class App extends Component {
+
+  renderRoute()
+  {
+
+      switch (window.location.pathname) {
+        case '/':
+          return <Coentreprise />
+          break;
+        case '/connexionclient':
+          return <Coclient />
+          break;
+        case '/inscription':
+          return <Inscription />
+          break;
+        case '/dashboard':
+          return <Dashboard />
+          break;
+        case '/profil':
+          return <Profil />
+          break;
+
+        default:
+          break;
+      }
+
+  }
+
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        {this.renderRoute()}
       </div>
     );
   }
