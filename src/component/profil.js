@@ -14,8 +14,16 @@ import backgroundcarte from '../images/backgroundCarte.jpg';
 import logocarte from '../images/logocarte.png';
 import profil from '../images/profil.png';
 import carnet from '../images/carnet.png';
+<<<<<<< HEAD
 import userClient from '../images/adduser.png';
 
+=======
+<<<<<<< HEAD
+import userClient from '../images/adduser.png';
+
+=======
+>>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
+>>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
 
 class Profil extends Component {
 
@@ -31,6 +39,10 @@ class Profil extends Component {
                 break; 
             case '/client':
                 return <h2><img src={carnet} width="70" height="70" alt="Responsive image"/> CARNET CLIENT</h2>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
                 break;   
             case '/voirclient':
                 return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> FICHE CLIENT</h2>
@@ -41,6 +53,14 @@ class Profil extends Component {
             case '/modifclient':
                 return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> MODIFICATION CLIENT</h2>
                 break; 
+<<<<<<< HEAD
+=======
+=======
+                break;      
+            default:
+                break;
+>>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
+>>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
         }
 
     }

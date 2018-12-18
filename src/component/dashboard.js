@@ -12,7 +12,14 @@ import deconnexionwhite from '../images/deconnexion-white.png'
 import dashboard from '../images/dashboard.png'
 import profil from '../images/profil.png';
 import carnet from '../images/carnet.png';
+<<<<<<< HEAD
 import userClient from '../images/adduser.png';
+=======
+<<<<<<< HEAD
+import userClient from '../images/adduser.png';
+=======
+>>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
+>>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
 
 class Dashboard extends Component {
 
@@ -28,6 +35,10 @@ class Dashboard extends Component {
                 break; 
             case '/client':
                 return <h2><img src={carnet} width="70" height="70" alt="Responsive image"/> CARNET CLIENT</h2>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
                 break;   
             case '/voirclient':
                 return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> FICHE CLIENT</h2>
@@ -35,6 +46,12 @@ class Dashboard extends Component {
             case '/nouveauclient':
                 return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> NOUVEAU CLIENT</h2>
                 break;                
+<<<<<<< HEAD
+=======
+=======
+                break;      
+>>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
+>>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
             default:
                 break;
         }
@@ -94,6 +111,7 @@ class Dashboard extends Component {
         
         </div>         
 
+<<<<<<< HEAD
         <br/>
 
         <div className="container-perso">
@@ -126,12 +144,95 @@ class Dashboard extends Component {
                 </div>
 
                 <div className="col-md-4">
+=======
+
+<<<<<<< HEAD
+=======
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">VOS POINTAGES</div>
+                                    <div class="panel-body"><h2> 350</h2></div>
+                                </div>
+                               
+                            
+                            </div>
+                            <div className="col-md-4">
+                            
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">POINTAGES CLIENTS</div>
+                                    <div class="panel-body"><h2> 350</h2></div>
+                                </div>                            
+                            
+                            </div>                        
+                        
+                            <div className="col-md-4">
+                            
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">TYPE DE COMPTE</div>
+                                    <div class="panel-body"><h2> Standard</h2></div>
+                                </div>
+                            
+                            
+                            </div>
+                            <div className="col-md-4">
+                            
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">LIMITE DE CLIENT</div>
+                                    <div class="panel-body"><h2> 5 / 10</h2></div>
+                                </div>
+                               
+                            
+                            </div>
+                            <div className="col-md-4">
+                            
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">LIMITE DE POINTAGE</div>
+                                    <div class="panel-body"><h2> 10 / 40</h2></div>
+                                </div>                            
+                            
+                            </div>   
+
+                            <div className="col-md-4">
+                            
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">CARTE TOTAL DE FIDELITE</div>
+                                    <div class="panel-body"><h2> 150</h2></div>
+                                </div>
+                            
+                            
+                            </div>
+                            <div className="col-md-4">
+                            
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">CARTE TOTAL DE REDUCTION</div>
+                                    <div class="panel-body"><h2> 55</h2></div>
+                                </div>
+                               
+                            
+                            </div>
+                            <div className="col-md-4">
+                            
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"></div>
+                                    <div class="panel-body"><h2></h2></div>
+                                </div>                            
+                            
+                            </div>
+
+
+                        </div>
+>>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
+>>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
 
                     <div class="panel panel-default">
                         <div class="panel-heading">TYPE DE COMPTE</div>
                         <div class="panel-body"><h1>PREMIUM</h1></div>
                     </div>
 
+<<<<<<< HEAD
                 </div>
                 <div className="col-md-4">
                 
@@ -156,6 +257,8 @@ class Dashboard extends Component {
         </div>
 
 
+=======
+>>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
           
         </div>
       );
