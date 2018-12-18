@@ -6815,4 +6815,61 @@ button.close {
   z-index: 3;
 }
 
+<<<<<<< HEAD
 /* 18/12/2018 - CSS */
+=======
+.wellClient {
+  min-height: 20px;
+  padding-top: 19px;
+  padding-right: 19px;
+  padding-left: 19px;
+  margin-bottom: 20px;
+  background-color: white;
+  border: 1px solid #e3e3e3;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.wellListeClient {
+  min-height: 20px;
+  padding-top: 19px;
+  padding-right: 19px;
+  padding-left: 19px;
+  margin-bottom: 20px;
+  background-color: white;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.wellListeClient:hover {
+  min-height: 20px;
+  padding-top: 19px;
+  padding-right: 19px;
+  padding-left: 19px;
+  margin-bottom: 20px;
+  background-color: white;
+  border: 2px solid black;
+  font-size: 1em;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.resizeNbClient
+{
+
+  font-size: 4em;
+
+}
+
+.resizeNbListeClient
+{
+
+  font-size: 2em;
+
+}
+
+/* 17/12/2018 - FIN DESIGN PERSONNALIZE */
+>>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
