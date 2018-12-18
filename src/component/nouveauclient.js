@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logodashboard from '../images/logodashboard.png'
+import dashboard from '../images/dashboard.png'
 import Menu from './menu'
 
 import dashboardwhite from '../images/dashboard-white.png'
@@ -9,12 +10,12 @@ import clientwhite from '../images/client-user.png'
 import logwhite from '../images/log-white.png'
 import deconnexionwhite from '../images/deconnexion-white.png'
 
-import dashboard from '../images/dashboard.png'
+
 import profil from '../images/profil.png';
 import carnet from '../images/carnet.png';
 import userClient from '../images/adduser.png';
 
-class Dashboard extends Component {
+class Nouveauclient extends Component {
 
     renderPanelTitle()
     {
@@ -34,7 +35,10 @@ class Dashboard extends Component {
                 break;     
             case '/nouveauclient':
                 return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> NOUVEAU CLIENT</h2>
-                break;                
+                break;  
+            case '/modifclient':
+                return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> MODIFICATION CLIENT</h2>
+                break;               
             default:
                 break;
         }
@@ -47,9 +51,9 @@ class Dashboard extends Component {
           
         <div id="sidebar-wrapper">
             <ul className="sidebar-nav">
-                <li className="sidebar-brandz">
+                <li className="sidebar-brand">
                     <a href="#">
-                        FideliZ
+                        FIDELIZ
                     </a>
                 </li>
                 <li>
@@ -94,13 +98,69 @@ class Dashboard extends Component {
         
         </div>         
 
+        
+        <div className="page-header">
+            <div className="container-perso">
+                    <h1>Nouveau client <br/></h1>
+                    <p className="text-justify">Un client sera automatiquement reliée à votre compte. Il disposera d'un accès à son compte client afin de pouvoir gêrer 
+                    et effectuer ses pointages à chaque prestation. Il pourra également suivre l'évolution de son compte.</p>
+            </div>
+        </div>
+        <div className="wellClient">
+                        
+                        
+            <form className="form-horizontal">
+                <div className="form-group">
+                    <label className="col-sm-2 control-label">Nom</label>
+                    <div className="col-sm-10">
+                    <input type="text" className="form-control" placeholder="Nom"/>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="col-sm-2 control-label">Prénom</label>
+                    <div className="col-sm-10">
+                    <input type="text" className="form-control" placeholder="Prénom"/>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="col-sm-2 control-label">Adresse</label>
+                    <div className="col-sm-10">
+                    <input type="text" className="form-control" placeholder="Adresse"/>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="col-sm-2 control-label">N° Téléphone</label>
+                    <div className="col-sm-10">
+                    <input type="text" className="form-control" placeholder="Numéro de téléphone"/>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="col-sm-2 control-label">Email</label>
+                    <div className="col-sm-10">
+                    <input type="email" className="form-control" placeholder="Email"/>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="col-sm-2 control-label">Mot de passe</label>
+                    <div className="col-sm-10">
+                    <input type="password" className="form-control" placeholder="Mot de passe"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-loginConnexion btn-block">Ajouter</button>
+                    </div>
+                </div>
+            </form>                            
+            
+        </div>
 
 
-
+        
           
         </div>
       );
     }
   }
 
-export default Dashboard;
+export default Nouveauclient;

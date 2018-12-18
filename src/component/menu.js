@@ -39,7 +39,7 @@ class Menu extends Component {
 
                 </div></a>
 
-                <div className="wellMenu">
+                <a href="/client"><div className="wellMenu">
                 
                     <div className="row">
                             <div className="col-xs-3">
@@ -50,7 +50,7 @@ class Menu extends Component {
                             </div>
                     </div>
 
-                </div>
+                </div></a>
 
                 <div className="wellMenu">
                 

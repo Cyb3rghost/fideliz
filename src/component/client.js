@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import logodashboard from '../images/logodashboard.png'
+
 import Menu from './menu'
+import logodashboard from '../images/logodashboard.png'
 
 import dashboardwhite from '../images/dashboard-white.png'
 import gestioncomptewhite from '../images/gestionCompte-white.png'
@@ -12,9 +13,11 @@ import deconnexionwhite from '../images/deconnexion-white.png'
 import dashboard from '../images/dashboard.png'
 import profil from '../images/profil.png';
 import carnet from '../images/carnet.png';
+import ajout from '../images/ajout.png';
+import clientavatar from '../images/adduser.png';
 import userClient from '../images/adduser.png';
 
-class Dashboard extends Component {
+class Client extends Component {
 
     renderPanelTitle()
     {
@@ -47,9 +50,9 @@ class Dashboard extends Component {
           
         <div id="sidebar-wrapper">
             <ul className="sidebar-nav">
-                <li className="sidebar-brandz">
+                <li className="sidebar-brand">
                     <a href="#">
-                        FideliZ
+                        FIDELIZ
                     </a>
                 </li>
                 <li>
@@ -95,7 +98,60 @@ class Dashboard extends Component {
         </div>         
 
 
+                    <div className="wellClient">
+                        <div className="row">
 
+                            
+                            <div className="col-xs-10">
+                            
+                                
+                                Nombre de client : <p className="resizeNbClient">350</p><br/>
+                                
+                            
+                            </div>
+                            <div className="col-xs-2">
+                            
+                                <a href="nouveauclient"><img src={ajout} class="img-circle" width="80" height="80" alt="" /></a><br/>
+                                <br/>                        
+                            
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>LEVENEUR</td>
+                            <td>Ludovic</td>
+                            <td>56 Bis Chemin du ruisseau 97421 La rivière saint-louis</td>
+                            <td>0692729322</td>
+                            <td>ludovic.lvnr@gmail.com</td>
+                            <td><a href="/voirclient">Voir</a> - Editez</td>
+                        </tr>
+                        <tr>
+                            <td>LEVENEUR</td>
+                            <td>Ludovic</td>
+                            <td>56 Bis Chemin du ruisseau 97421 La rivière saint-louis</td>
+                            <td>0692729322</td>
+                            <td>ludovic.lvnr@gmail.com</td>
+                            <td><a href="/voirclient">Voir</a> - Editez</td>
+                        </tr>
+                        <tr>
+                            <td>LEVENEUR</td>
+                            <td>Ludovic</td>
+                            <td>56 Bis Chemin du ruisseau 97421 La rivière saint-louis</td>
+                            <td>0692729322</td>
+                            <td>ludovic.lvnr@gmail.com</td>
+                            <td><a href="/voirclient">Voir</a> - Editez</td>
+                        </tr>
+                        </tbody>
+                    </table>
 
           
         </div>
@@ -103,4 +159,4 @@ class Dashboard extends Component {
     }
   }
 
-export default Dashboard;
+export default Client;
