@@ -6,7 +6,9 @@ import Inscription from './component/inscription';
 import Dashboard from './component/dashboard';
 import Profil from './component/profil';
 import Client from './component/client';
-
+import Ficheclient from './component/ficheclient';
+import Nouveauclient from './component/nouveauclient';
+import Modifclient from './component/modifclient';
 
 class App extends Component {
 
@@ -31,6 +33,15 @@ class App extends Component {
           break;
         case '/client':
           return <Client />
+          break;
+        case '/voirclient':
+          return <Ficheclient />
+          break;
+        case '/nouveauclient':
+          return <Nouveauclient />
+          break;
+        case '/modifclient':
+          return <Modifclient />
           break;
         default:
           break;

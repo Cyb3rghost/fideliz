@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-
-import Menu from './menu'
 import logodashboard from '../images/logodashboard.png'
+import dashboard from '../images/dashboard.png'
+import Menu from './menu'
 
 import dashboardwhite from '../images/dashboard-white.png'
 import gestioncomptewhite from '../images/gestionCompte-white.png'
@@ -10,14 +10,11 @@ import clientwhite from '../images/client-user.png'
 import logwhite from '../images/log-white.png'
 import deconnexionwhite from '../images/deconnexion-white.png'
 
-import dashboard from '../images/dashboard.png'
 import profil from '../images/profil.png';
 import carnet from '../images/carnet.png';
-import ajout from '../images/ajout.png';
-import clientavatar from '../images/adduser.png';
 import userClient from '../images/adduser.png';
 
-class Client extends Component {
+class Ficheclient extends Component {
 
     renderPanelTitle()
     {
@@ -37,9 +34,10 @@ class Client extends Component {
                 break;     
             case '/nouveauclient':
                 return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> NOUVEAU CLIENT</h2>
-                break;                
-            default:
-                break;
+                break;  
+            case '/modifclient':
+                return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> MODIFICATION CLIENT</h2>
+                break; 
         }
 
     }
@@ -97,66 +95,53 @@ class Client extends Component {
         
         </div>         
 
-
-                    <div className="wellClient">
-                        <div className="row">
-
-                            
-                            <div className="col-xs-10">
-                            
-                                
-                                Nombre de client : <p className="resizeNbClient">350</p><br/>
-                                
-                            
-                            </div>
-                            <div className="col-xs-2">
-                            
-                                <a href="nouveauclient"><img src={ajout} class="img-circle" width="80" height="80" alt="" /></a><br/>
-                                <br/>                        
-                            
-                            </div>
-
-
-                        </div>
-                    </div>
-
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>LEVENEUR</td>
-                            <td>Ludovic</td>
-                            <td>56 Bis Chemin du ruisseau 97421 La rivière saint-louis</td>
-                            <td>0692729322</td>
-                            <td>ludovic.lvnr@gmail.com</td>
-                            <td><a href="/voirclient">Voir</a> - Editez</td>
-                        </tr>
-                        <tr>
-                            <td>LEVENEUR</td>
-                            <td>Ludovic</td>
-                            <td>56 Bis Chemin du ruisseau 97421 La rivière saint-louis</td>
-                            <td>0692729322</td>
-                            <td>ludovic.lvnr@gmail.com</td>
-                            <td><a href="/voirclient">Voir</a> - Editez</td>
-                        </tr>
-                        <tr>
-                            <td>LEVENEUR</td>
-                            <td>Ludovic</td>
-                            <td>56 Bis Chemin du ruisseau 97421 La rivière saint-louis</td>
-                            <td>0692729322</td>
-                            <td>ludovic.lvnr@gmail.com</td>
-                            <td><a href="/voirclient">Voir</a> - Editez</td>
-                        </tr>
-                        </tbody>
-                    </table>
-
+        
+        <div className="page-header">
+            <div className="container-perso">
+            <h1>Informations sur le client <br/></h1>
+                <p className="text-justify">Un client sera automatiquement reliée à votre compte. Il disposera d'un accès à son compte client afin de pouvoir gêrer 
+                et effectuer ses pointages à chaque prestation. Il pourra également suivre l'évolution de son compte.</p>
+            </div>
+        </div>
+        
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Date inscription : </td>
+                <td align="center">18/12/2018</td>
+            </tr>
+            <tr>
+                <td>Nom : </td>
+                <td align="center">LEVENEUR</td>
+            </tr>
+            <tr>
+                <td>Prénom : </td>
+                <td align="center">Ludovic</td>
+            </tr>
+            <tr>
+                <td>Adresse : </td>
+                <td align="center">56 Bis Chemin du ruisseau 97421 La rivière</td>
+            </tr>
+            <tr>
+                <td>Email : </td>
+                <td align="center">ludovic.lvnr@gmail.com</td>
+            </tr>
+            <tr>
+                <td>N° Téléphone : </td>
+                <td align="center">0692 72 93 22</td>
+            </tr>
+            </tbody>
+        </table>                
+        
           
         </div>
       );
     }
   }
 
-export default Client;
+export default Ficheclient;

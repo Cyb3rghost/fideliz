@@ -9,6 +9,9 @@ html {
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
+body {
+  margin: 0;
+}
 article,
 aside,
 details,
@@ -1083,7 +1086,7 @@ body {
   font-size: 14px;
   line-height: 1.42857143;
   color: #333;
-  background-color: #F7FAFF;
+  background-color: #fff;
 }
 input,
 button,
@@ -4580,33 +4583,34 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #ccc;
 }
 .navbar-inverse {
-  background-color: #377DFF;
-  border-color: #377DFF;
+  background-color: #006A8E;
+  border-color: #006A8E;
+  border-left: 2px solid #006A8E;
 }
 .navbar-inverse .navbar-brand {
-  color: white;
+  color: #9d9d9d;
 }
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
-  color: white;
+  color: #fff;
   background-color: transparent;
 }
 .navbar-inverse .navbar-text {
-  color: white;
+  color: #9d9d9d;
 }
 .navbar-inverse .navbar-nav > li > a {
-  color: white;
+  color: #9d9d9d;
 }
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
-  color: white;
+  color: #fff;
   background-color: transparent;
 }
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
   color: #fff;
-  background-color: #387DFF;
+  background-color: #080808;
 }
 .navbar-inverse .navbar-nav > .disabled > a,
 .navbar-inverse .navbar-nav > .disabled > a:hover,
@@ -5442,6 +5446,7 @@ button.list-group-item-danger.active:focus {
   margin-bottom: 20px;
   background-color: #fff;
   border: 1px solid transparent;
+  border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
           box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
@@ -5451,6 +5456,8 @@ button.list-group-item-danger.active:focus {
 .panel-heading {
   padding: 10px 15px;
   border-bottom: 1px solid transparent;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 .panel-heading > .dropdown .dropdown-toggle {
   color: inherit;
@@ -5674,9 +5681,9 @@ button.list-group-item-danger.active:focus {
   border-color: #ddd;
 }
 .panel-default > .panel-heading {
-  color: white;
-  background-color: #377DFF;
-  border-color: #377DFF;
+  color: #333;
+  background-color: #f5f5f5;
+  border-color: #ddd;
 }
 .panel-default > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: #ddd;
@@ -6745,72 +6752,52 @@ button.close {
 /*# sourceMappingURL=bootstrap.css.map */
 
 
-/* 17/12/2018 - DEBUT DESIGN PERSONNALIZE */
+/* 18/12/2018 - CSS */
 
-
-.wellLoginEntreprise {
-  min-height: 20px;
-  padding: 19px;
-  margin-bottom: 20px;
-  background-color: white;
-  border: 1px solid #e3e3e3;
-  border-bottom: 3px solid #377DFF;
-  margin-top: 120px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-}
-
-.btn-loginConnexion {
-  color: white;
-  background-color: #377DFF;
-  border-color: #377DFF;
-}
 
 .panelInfo
 {
 
-  min-height: 100px;
-  background-color: white;
-  border-bottom: 3px solid #377DFF;
-  padding: 25px;
+    min-height: 100px;
+    padding: 20px;
+    background-color: #c1d1d8;
+
+}
+
+.wellClient
+{
+
+    min-height: 40px;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-bottom: 2px solid #377DFF;
+    margin-bottom: 10px;
+
+}
+
+.resizeNbClient
+{
+
+  font-size: 40px;
 
 }
 
 .container-perso
 {
 
-  margin-left: 15px;
-  margin-right: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
 
 }
 
-.wellMenu {
-  min-height: 20px;
-  padding: 19px;
-  margin-bottom: 20px;
-  background-color: white;
-  border: 1px solid #e3e3e3;
-  border-left: 3px solid #377DFF;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-}
-
-.wellMenu h2
+.wellDashboardProfil
 {
 
-  padding: 25px;
+  min-height: 30px;
+  border-bottom: 2px solid #F2F2F2;
+  padding: 10px;
+  margin-bottom: 10px;
 
-}
-
-.wellDashboardProfil {
-  min-height: 20px;
-  padding: 19px;
-  margin-bottom: 20px;
-  background-color: white;
-  border: 1px solid #e3e3e3;
-  border-right: 3px solid #377DFF;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
 }
 
 .panelCarte {
@@ -6828,6 +6815,9 @@ button.close {
   z-index: 3;
 }
 
+<<<<<<< HEAD
+/* 18/12/2018 - CSS */
+=======
 .wellClient {
   min-height: 20px;
   padding-top: 19px;
@@ -6882,3 +6872,4 @@ button.close {
 }
 
 /* 17/12/2018 - FIN DESIGN PERSONNALIZE */
+>>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
