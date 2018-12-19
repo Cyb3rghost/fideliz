@@ -11,7 +11,19 @@ import Insertcrud from './crud/insert.js';
 import Ficheclient from './component/ficheclient';
 import Nouveauclient from './component/nouveauclient';
 import Modifclient from './component/modifclient';
+<<<<<<< HEAD
 import Log from './component/log';
+=======
+=======
+<<<<<<< HEAD
+import Ficheclient from './component/ficheclient';
+import Nouveauclient from './component/nouveauclient';
+import Modifclient from './component/modifclient';
+=======
+
+>>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
+>>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
+>>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
 
 class App extends Component {
 
@@ -37,6 +49,13 @@ class App extends Component {
         case '/client':
           return <Client />
           break;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
+>>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
         case '/voirclient':
           return <Ficheclient />
           break;
@@ -46,12 +65,20 @@ class App extends Component {
         case '/modifclient':
           return <Modifclient />
           break;
+<<<<<<< HEAD
         case '/log':
           return <Log />
           break;
         case '/insert':
           return <Insertcrud />
           break;
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
+>>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
+>>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
         default:
           break;
       }
