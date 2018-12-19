@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import profil from '../images/profil.png'
-import carnet from '../images/carnet.png'
-import gestionCompte from '../images/gestionCompte.png'
-import log from '../images/log.png'
-import dashboard from '../images/dashboard.png'
+
+import dashboardwhite from '../images/dashboard-white.png'
+import gestioncomptewhite from '../images/gestionCompte-white.png'
+import userwhite from '../images/userwhite.png'
+import clientwhite from '../images/client-user.png'
+import logwhite from '../images/log-white.png'
+import deconnexionwhite from '../images/deconnexion-white.png'
 
 
 class Menu extends Component {
@@ -13,70 +15,33 @@ class Menu extends Component {
       return (
         <div>
 
-                <a href="/dashboard"><div className="wellMenu">
-                    
-                    <div className="row">
-                            <div className="col-xs-3">
-                                <img src={dashboard} width="100" height="100" alt="" />
-                            </div>
-                            <div className="col-xs-9">
-                                <h3>DASHBOARD<br/></h3>
-                            </div>
-                    </div>
-
-                </div></a>
-
-                <a href="/profil"><div className="wellMenu">
-                    
-                    <div className="row">
-                            <div className="col-xs-3">
-                                <img src={profil} width="100" height="100" alt="" />
-                            </div>
-                            <div className="col-xs-9">
-                                <h3>Votre profil<br/></h3>Limite client : Illimité
-                            </div>
-                    </div>
-
-                </div></a>
-
-                <a href="/client"><div className="wellMenu">
-                
-                    <div className="row">
-                            <div className="col-xs-3">
-                                <img src={carnet} width="100" height="100" alt="" />
-                            </div>
-                            <div className="col-xs-9">
-                                <h3>Client : 350 <br/></h3>Ajouter un nouveau client
-                            </div>
-                    </div>
-
-                </div></a>
-
-                <div className="wellMenu">
-                
-                    <div className="row">
-                            <div className="col-xs-3">
-                                <img src={gestionCompte} width="100" height="100" alt="" />
-                            </div>
-                            <div className="col-xs-9">
-                                <h3>Gestion de compte <br/></h3> Etat du compte : Premium
-                            </div>
-                    </div>
-
-                </div>
-
-                <div className="wellMenu">
-                
-                    <div className="row">
-                            <div className="col-xs-3">
-                                <img src={log} width="100" height="100" alt="" />
-                            </div>
-                            <div className="col-xs-9">
-                                <h3>Nombre de log : 300<br/></h3> Dernier log : 17/12/2018 - 15H00 - Ludovic LEVENEUR
-                            </div>
-                    </div>
-
-                </div>            
+            <div id="sidebar-wrapper">
+                <ul className="sidebar-nav">
+                    <li className="sidebar-brand">
+                        <a href="#">
+                            FIDELIZ
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dashboard"><img src={dashboardwhite} width="40" height="40" alt="Responsive image"/> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="/profil"><img src={userwhite} width="40" height="40" alt="Responsive image"/> Profil</a>
+                    </li>
+                    <li>
+                        <a href="/client"><img src={clientwhite} width="40" height="40" alt="Responsive image"/> Clients</a>
+                    </li>
+                    <li>
+                        <a href="/gestionCompte"><img src={gestioncomptewhite} width="40" height="40" alt="Responsive image"/> Gestion de compte</a>
+                    </li>
+                    <li>
+                        <a href="/log"><img src={logwhite} width="40" height="40" alt="Responsive image"/> Gestion de log</a>
+                    </li>
+                    <li>
+                        <a href="/deconnexion"><img src={deconnexionwhite} width="40" height="40" alt="Responsive image"/> Déconnexion</a>
+                    </li>
+                </ul>
+            </div>          
   
           
         </div>
