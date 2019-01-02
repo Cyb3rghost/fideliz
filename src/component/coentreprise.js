@@ -6,7 +6,7 @@ class Coentreprise extends Component {
 
     render() {
       return (
-        <div className="App">
+        <div>
           
               <div className="col-md-4">
               

@@ -2,12 +2,10 @@
 
 include 'connections.php';
 
-<<<<<<< HEAD
-=======
 header('Access-Control-Allow-Origin: *');
+$id = $_GET['id'];
 
->>>>>>> Creation api / fonctionnement inscription et connexion
-$result = mysqli_query($connect, "SELECT * FROM `users`");
+$result = mysqli_query($connect, "SELECT * FROM `users` WHERE `id` = $id");
 if(mysqli_num_rows($result)){
 
     while($row[] = mysqli_fetch_assoc($result))
@@ -26,4 +24,5 @@ if(mysqli_num_rows($result)){
 echo $json;
 
 mysqli_close($connect);
+
 ?>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Menu from './menu'
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import logodashboard from '../images/logodashboard.png'
 <<<<<<< HEAD
@@ -25,20 +26,16 @@ class Client extends Component {
 >>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
 import dashboard from '../images/dashboard.png'
 import profil from '../images/profil.png';
+=======
+
+
+>>>>>>> Creation api / fonctionnement inscription et connexion
 import carnet from '../images/carnet.png';
 import ajout from '../images/ajout.png';
-import clientavatar from '../images/adduser.png';
-<<<<<<< HEAD
-import userClient from '../images/adduser.png';
-=======
-<<<<<<< HEAD
-import userClient from '../images/adduser.png';
-=======
->>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
 
 class Client extends Component {
 
+<<<<<<< HEAD
     renderPanelTitle()
     {
 
@@ -83,8 +80,16 @@ class Client extends Component {
         <div id="wrapper">
           
         <Menu />
+=======
 
-        <nav className="navbar navbar-inverse">
+    render() {
+        return (
+            <div id="wrapper">
+          
+            <Menu />
+>>>>>>> Creation api / fonctionnement inscription et connexion
+
+            <nav className="navbar navbar-inverse">
                 <div className="container-fluid">
                     <div className="navbar-header">
                     <a className="navbar-brand" href="#"></a>
@@ -92,6 +97,7 @@ class Client extends Component {
                     <ul className="nav navbar-nav navbar-right">
                     <li className="active"><a href="#">Home</a></li>
                     <li><a href="#">Page 1</a></li>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -148,10 +154,13 @@ class Client extends Component {
 >>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
 >>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
 >>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
+=======
+>>>>>>> Creation api / fonctionnement inscription et connexion
                     <li><a href="#">Page 2</a></li>
                     <li><a href="#">Page 3</a></li>
                     </ul>
                 </div>
+<<<<<<< HEAD
         </nav>
         <div className="panelInfo">
 =======
@@ -169,18 +178,17 @@ class Client extends Component {
         </div>         
 =======
             </nav> 
+=======
+            </nav>      
+
+>>>>>>> Creation api / fonctionnement inscription et connexion
             <div className="panelInfo">
             
                 <div className="container-perso">
-                    {this.renderPanelTitle()}
+                    <h2><img src={carnet} width="70" height="70" alt="Responsive image"/> CARNET CLIENT</h2>
                 </div>
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
-            
-            <div className="container-perso">
-<<<<<<< HEAD
-                {this.renderPanelTitle()}
-            </div>
         
+<<<<<<< HEAD
         </div>         
 =======
             
@@ -194,11 +202,14 @@ class Client extends Component {
 >>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
 >>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
 >>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
+=======
+            </div>   
+>>>>>>> Creation api / fonctionnement inscription et connexion
 
-
-                    <div className="wellClient">
+            <div className="wellClient">
                         <div className="row">
 
+<<<<<<< HEAD
                             <div className="col-xs-10">
 <<<<<<< HEAD
 =======
@@ -212,10 +223,15 @@ class Client extends Component {
 >>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
                             
                                 
+=======
+                            <div className="col-md-10">                     
+                         
+>>>>>>> Creation api / fonctionnement inscription et connexion
                                 Nombre de client : <p className="resizeNbClient">350</p><br/>
                                 
                             
                             </div>
+<<<<<<< HEAD
                             <div className="col-xs-2">
                             
                                 <a href="nouveauclient"><img src={ajout} class="img-circle" width="80" height="80" alt="" /></a><br/>
@@ -233,12 +249,20 @@ class Client extends Component {
 >>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
 >>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
 >>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
+=======
+
+                            <div className="col-md-2">
+                            
+                                <img src={ajout} class="img-circle" width="100" height="100" alt="" /><br/>
+
+>>>>>>> Creation api / fonctionnement inscription et connexion
                                 <br/>                        
                             
                             </div>
 
 
                         </div>
+<<<<<<< HEAD
                     </div>
 <<<<<<< HEAD
 =======
@@ -249,6 +273,11 @@ class Client extends Component {
 >>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
 >>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
                     <table class="table table-striped">
+=======
+            </div>
+
+            <table class="table table-striped">
+>>>>>>> Creation api / fonctionnement inscription et connexion
                         <thead>
                         <tr>
                         </tr>
@@ -279,6 +308,7 @@ class Client extends Component {
                             <td><a href="/voirclient">Voir</a> - Editez</td>
                         </tr>
                         </tbody>
+<<<<<<< HEAD
                     </table>
 <<<<<<< HEAD
 =======
@@ -326,98 +356,23 @@ class Client extends Component {
                             <small>Date inscription : 17/12/2018 </small>
 
                             </div>
+=======
+                </table>            
+>>>>>>> Creation api / fonctionnement inscription et connexion
 
-
-                        </div>                        
-                    
-                    </div>
-                    <div className="wellListeClient">
-                    
-                        <div className="row">
-            
-                            <div className="col-md-2">
-
-                                
-                                <img src={clientavatar} width="100" height="100" alt="" />
-                                
-
-                            </div>
-                            <div className="col-md-10">
-
-                            <p className="resizeNbListeClient">LEVENEUR Ludovic <br/></p>
-                            <small>Date inscription : 17/12/2018 </small>
-
-                            </div>
-
-
-                        </div>                        
-                    
-                    </div>
-                    <div className="wellListeClient">
-                    
-                        <div className="row">
-            
-                            <div className="col-md-2">
-
-                                
-                                <img src={clientavatar} width="100" height="100" alt="" />
-                                
-
-                            </div>
-                            <div className="col-md-10">
-
-                            <p className="resizeNbListeClient">LEVENEUR Ludovic <br/></p>
-                            <small>Date inscription : 17/12/2018 </small>
-
-                            </div>
-
-
-                        </div>                        
-                    
-                    </div>
-                    <div className="wellListeClient">
-                    
-                        <div className="row">
-            
-                            <div className="col-md-2">
-
-                                
-                                <img src={clientavatar} width="100" height="100" alt="" />
-                                
-
-                            </div>
-                            <div className="col-md-10">
-
-                            <p className="resizeNbListeClient">LEVENEUR Ludovic <br/></p>
-                            <small>Date inscription : 17/12/2018 </small>
-
-                            </div>
-
-
-                        </div>                        
-                    
-                    </div>
-
-
-
-
-
-
-
-
-
-
-
-                </div>
-            
             </div>
+<<<<<<< HEAD
 >>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
 >>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
           
 >>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
         </div>
       );
+=======
+        );
+>>>>>>> Creation api / fonctionnement inscription et connexion
     }
-  }
+
+}
 
 export default Client;

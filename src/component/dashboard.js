@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Menu from './menu'
 
+<<<<<<< HEAD
 
 import dashboard from '../images/dashboard.png'
 <<<<<<< HEAD
@@ -16,8 +17,12 @@ import userClient from '../images/adduser.png';
 >>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
 >>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
 >>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
+=======
+import dashboard from '../images/dashboard.png'
+>>>>>>> Creation api / fonctionnement inscription et connexion
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
     renderPanelTitle()
@@ -56,11 +61,18 @@ import userClient from '../images/adduser.png';
 
 class Dashboard extends Component {
 
+=======
+>>>>>>> Creation api / fonctionnement inscription et connexion
 
     render() {
       return (
+
         <div id="wrapper">
+<<<<<<< HEAD
           
+=======
+        {alert(this.props.loggedIn)}
+>>>>>>> Creation api / fonctionnement inscription et connexion
         <Menu />
 
         <nav className="navbar navbar-inverse">
@@ -83,6 +95,7 @@ class Dashboard extends Component {
             </div>
         
         </div>         
+<<<<<<< HEAD
         <br/>
 
         <div className="container-perso">
@@ -122,6 +135,8 @@ class Dashboard extends Component {
                         <div class="panel-body"><h1>PREMIUM</h1></div>
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> Creation api / fonctionnement inscription et connexion
         <br/>
 
         <div className="container-perso">
@@ -151,7 +166,6 @@ class Dashboard extends Component {
                 
                 </div>
                 <div className="col-md-4">
-
                         <div class="panel panel-default">
 <<<<<<< HEAD
                             <div class="panel-heading">FIN ABONNEMENT</div>
@@ -170,96 +184,21 @@ class Dashboard extends Component {
                 
                 </div>
 
+        <br/>
+
+        </div>
+        </div>
+
+        <div className="container-perso">
+            <div className="row">
+            
                 <div className="col-md-4">
-=======
-
-<<<<<<< HEAD
-=======
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">VOS POINTAGES</div>
-                                    <div class="panel-body"><h2> 350</h2></div>
-                                </div>
-                               
-                            
-                            </div>
-                            <div className="col-md-4">
-                            
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">POINTAGES CLIENTS</div>
-                                    <div class="panel-body"><h2> 350</h2></div>
-                                </div>                            
-                            
-                            </div>                        
-                        
-                            <div className="col-md-4">
-                            
-
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">TYPE DE COMPTE</div>
-                                    <div class="panel-body"><h2> Standard</h2></div>
-                                </div>
-                            
-                            
-                            </div>
-                            <div className="col-md-4">
-                            
-
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">LIMITE DE CLIENT</div>
-                                    <div class="panel-body"><h2> 5 / 10</h2></div>
-                                </div>
-                               
-                            
-                            </div>
-                            <div className="col-md-4">
-                            
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">LIMITE DE POINTAGE</div>
-                                    <div class="panel-body"><h2> 10 / 40</h2></div>
-                                </div>                            
-                            
-                            </div>   
-
-                            <div className="col-md-4">
-                            
-
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">CARTE TOTAL DE FIDELITE</div>
-                                    <div class="panel-body"><h2> 150</h2></div>
-                                </div>
-                            
-                            
-                            </div>
-                            <div className="col-md-4">
-                            
-
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">CARTE TOTAL DE REDUCTION</div>
-                                    <div class="panel-body"><h2> 55</h2></div>
-                                </div>
-                               
-                            
-                            </div>
-                            <div className="col-md-4">
-                            
-                                <div class="panel panel-default">
-                                    <div class="panel-heading"></div>
-                                    <div class="panel-body"><h2></h2></div>
-                                </div>                            
-                            
-                            </div>
-
-
-                        </div>
->>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
 
                     <div class="panel panel-default">
-                        <div class="panel-heading">TYPE DE COMPTE</div>
-                        <div class="panel-body"><h1>PREMIUM</h1></div>
+                        <div class="panel-heading">CLIENTS</div>
+                        <div class="panel-body"><h1>350</h1></div>
                     </div>
 
-<<<<<<< HEAD
                 </div>
                 <div className="col-md-4">
                 
@@ -285,12 +224,45 @@ class Dashboard extends Component {
         </div>
 
 
-=======
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
-          
+        <div className="container-perso">
+            <div className="row">
+            
+            <div className="col-md-4">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">TYPE DE COMPTE</div>
+                    <div class="panel-body"><h1>PREMIUM</h1></div>
+                </div>
+
+                </div>
+                <div className="col-md-4">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">DEBUT ABONNEMENT</div>
+                    <div class="panel-body"><h1>18/12/2018 </h1></div>
+                </div>                
+
+
+                </div>
+                <div className="col-md-4">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">FIN ABONNEMENT</div>
+                        <div class="panel-body"><h1>20/12/2018 </h1></div>
+                    </div>                
+
+                </div>
+
+
+            </div>
         </div>
+
+
+        </div>
+
+
       );
     }
-  }
+}
 
 export default Dashboard;

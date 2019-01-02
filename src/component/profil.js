@@ -6,6 +6,7 @@ import backgroundcarte from '../images/backgroundCarte.jpg';
 import logocarte from '../images/logocarte.png';
 import profil from '../images/profil.png';
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 class Profil extends Component {
 
@@ -13,17 +14,13 @@ class Profil extends Component {
 import carnet from '../images/carnet.png';
 <<<<<<< HEAD
 import userClient from '../images/adduser.png';
-
 =======
-<<<<<<< HEAD
-import userClient from '../images/adduser.png';
+>>>>>>> Creation api / fonctionnement inscription et connexion
 
-=======
->>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
 
 class Profil extends Component {
 
+<<<<<<< HEAD
     renderPanelTitle()
     {
 
@@ -62,14 +59,23 @@ class Profil extends Component {
 
     }
 >>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
+=======
+>>>>>>> Creation api / fonctionnement inscription et connexion
 
     render() {
-      return (
-        <div id="wrapper">
+        return (
+
+            <div id="wrapper">
           
+<<<<<<< HEAD
         <Menu />
 
         <nav className="navbar navbar-inverse">
+=======
+            <Menu />
+
+            <nav className="navbar navbar-inverse">
+>>>>>>> Creation api / fonctionnement inscription et connexion
                 <div className="container-fluid">
                     <div className="navbar-header">
                     <a className="navbar-brand" href="#"></a>
@@ -81,27 +87,37 @@ class Profil extends Component {
                     <li><a href="#">Page 3</a></li>
                     </ul>
                 </div>
-        </nav>
-        <div className="panelInfo">
+            </nav>
+            <div className="panelInfo">
+                
+                <div className="container-perso">
+                    <h2><img src={profil} width="70" height="70" alt="Responsive image"/> PROFIL</h2>
+                </div>
             
+<<<<<<< HEAD
             <div className="container-perso">
                 <h2><img src={profil} width="70" height="70" alt="Responsive image"/> PROFIL</h2>
             </div>
         
         </div>         
+=======
+            </div>   
+>>>>>>> Creation api / fonctionnement inscription et connexion
 
 
-                <div className="wellDashboardProfil">
+            <div className="wellDashboardProfil">
                     
                     <h2>LEVENEUR</h2>
                     Ludovic
                 
                 
-                </div>
-                
-                <div className="container-perso">
+            </div>
+
+
+            <div className="container-perso">
                     <div className="panel panel-default">
-                        <div className="panel-heading">INFORMATIONS SUR VOTRE PROFIL</div>
+
+                    <div className="panel-heading">INFORMATIONS SUR VOTRE PROFIL</div>
                         <div className="">
                         
                         <table className="table table-striped">
@@ -131,10 +147,15 @@ class Profil extends Component {
                         
                         
                         </div>
-                    </div>
 
+
+                    </div>
+            </div>
+
+            <div className="container-perso">
                     <div className="panel panel-default">
-                        <div className="panel-heading">INFORMATIONS SUR VOTRE COMPTE</div>
+
+                    <div className="panel-heading">INFORMATIONS SUR VOTRE COMPTE</div>
                         <div className="">
                         
                         <table className="table table-striped">
@@ -169,7 +190,7 @@ class Profil extends Component {
 
                             </tbody>
                         </table>
-                        
+
                         <div className="container-perso">
                             <div class="row">
                                 <div class="col-xs-6">
@@ -225,12 +246,15 @@ class Profil extends Component {
                                     </div>
                                     </div>
                                 </div>
-                            
-                            </div>
+                        
+                        
                         </div>
+
+
                     </div>
-            
-                    <div className="panel panel-default">
+            </div>
+
+            <div className="panel panel-default">
                 <div className="panel-heading">INFORMATIONS SUR LA CARTE</div>
                 <div className="panel-body">
 
@@ -276,12 +300,14 @@ class Profil extends Component {
                 </div>
                 </div> 
             </div>
-        
-          
-        </div>
 
-      );
+
+
+            </div>
+
+
+        );
     }
-  }
+}
 
 export default Profil;
