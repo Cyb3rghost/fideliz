@@ -41,7 +41,7 @@ if(isset($_GET['action']))
             else
             {
 
-                $sqlinscription = "INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `limitclient`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`) VALUES (NULL, '".$emailEnt."', '".$protectmdp."', '1', '', '', '', '".$nomEntreprise."', '', '2', '10', '15', '0000-00-00', '0000-00-00', '0', 'null', 'null', '".$apikey."')";
+                $sqlinscription = "INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`) VALUES (NULL, '".$emailEnt."', '".$protectmdp."', '1', '', '', '', '".$nomEntreprise."', '', '2', '0', '10', '0', '15', '0000-00-00', '0000-00-00', '0', 'null', 'null', '".$apikey."')";
                 if(mysqli_query($connect, $sqlinscription))
                 {
 
@@ -67,33 +67,120 @@ if(isset($_GET['action']))
 
             $sql = "SELECT * FROM `accsociete` WHERE `email` = '".$connexionEmail."' AND `password` = '".$protectcomdp."' AND `confirmation` = '1'";
             $result = mysqli_query($connect, $sql);
-            if($row = mysqli_num_rows($result))
-            {
+            if(mysqli_num_rows($result)){
 
-                $json = json_decode($row);
-
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+            
+                    $json = json_encode($row);
+            
+                }
+            
+            }else{
+            
+                $json = json_encode('#CO#ECHEC');
+            
             }
-            else
-            {
-                $json = json_decode($row);
-            }
-
-            if($json === 1)
-            {
-
-                echo json_encode("#CO#SUCCESS");
-
-            }
-            else
-            {
-
-                echo json_encode("#CO#ECHEC");
-
-            }
+            
+            echo $json;
 
             mysqli_close($connect);
 
 
+            break;
+        case 'datadashboard':
+            $id = $_GET['id'];
+
+            $sql = "SELECT * FROM `accsociete` WHERE `id` = '".$id."'";
+            $result = mysqli_query($connect, $sql);
+            if(mysqli_num_rows($result)){
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+            
+                    $json = json_encode($row);
+            
+                }
+            
+            }else{
+            
+                $json = json_encode('#DATARECUPDASH#ECHEC');
+            
+            }
+            
+            echo $json;
+
+            mysqli_close($connect);
+            break;
+        case 'compteNombreClient':
+            $id = $_GET['id'];
+
+            $sql = "SELECT COUNT(*) FROM `acctclient` WHERE `identreprise` = '".$id."'";
+            $result = mysqli_query($connect, $sql);
+            if($row = mysqli_fetch_row($result))
+            {
+
+                $json = json_encode($row);
+
+            }
+            else
+            {
+
+                $json = json_encode($row);
+
+            }
+            
+            echo $json;
+
+            mysqli_close($connect);
+            break;
+        case 'listeClient':
+            $id = $_GET['id'];
+
+            $sql = "SELECT * FROM `acctclient` WHERE `identreprise` = '".$id."'";
+            $result = mysqli_query($connect, $sql);
+            if(mysqli_num_rows($result)){
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+            
+                    $json = json_encode($row);
+            
+                }
+            
+            }else{
+            
+                $json = json_encode('#LISTECLIENT#ECHEC');
+            
+            }
+            
+            echo $json;
+
+            mysqli_close($connect);
+            break;
+        case 'voirClient':
+            $id = $_GET['id'];
+
+            $sql = "SELECT * FROM `acctclient` WHERE `id` = '".$id."'";
+            $result = mysqli_query($connect, $sql);
+            if(mysqli_num_rows($result)){
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+            
+                    $json = json_encode($row);
+            
+                }
+            
+            }else{
+            
+                $json = json_encode('#FICHECLIENT#ECHEC');
+            
+            }
+            
+            echo $json;
+
+            mysqli_close($connect);
             break;
         default:
             # code...

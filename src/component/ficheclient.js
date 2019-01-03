@@ -5,6 +5,51 @@ import userClient from '../images/adduser.png';
 
 class Ficheclient extends Component {
 
+    constructor(props)
+    {
+
+        super(props)
+        this.state = {
+            dataInscription: '',
+            nomClient: '',
+            prenomClient: '',
+            adresseClient: '',
+            emailClient: '',
+            telephoneClient: '',
+            carteTotal: '',
+            pointageTotal: ''
+        }
+
+    }
+
+    componentDidMount()
+    {
+
+        var idClient = window.location.search.substring(4);
+        fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient)
+        .then((response) => response.json())
+        .then((response) => {
+
+            {response.map((value, index) => 
+                (
+                    this.setState({
+                        dataInscription: value.dinscription,
+                        nomClient: value.nom,
+                        prenomClient: value.prenom,
+                        adresseClient: value.adresse,
+                        emailClient: value.email,
+                        telephoneClient: value.telephone,
+                        carteTotal: value.nbcartetotal,
+                        pointageTotal: value.nbpointagetotal                     
+                    })
+                )
+              )}
+    
+
+        })
+        .catch(err => console.error(err))
+
+    }
 
     render() {
       return (
@@ -51,27 +96,35 @@ class Ficheclient extends Component {
             <tbody>
             <tr>
                 <td>Date inscription : </td>
-                <td align="center">18/12/2018</td>
+                <td>{this.state.dataInscription}</td>
             </tr>
             <tr>
                 <td>Nom : </td>
-                <td align="center">LEVENEUR</td>
+                <td>{this.state.nomClient}</td>
             </tr>
             <tr>
                 <td>Prénom : </td>
-                <td align="center">Ludovic</td>
+                <td>{this.state.prenomClient}</td>
             </tr>
             <tr>
                 <td>Adresse : </td>
-                <td align="center">56 Bis Chemin du ruisseau 97421 La rivière</td>
+                <td>{this.state.adresseClient}</td>
             </tr>
             <tr>
                 <td>Email : </td>
-                <td align="center">ludovic.lvnr@gmail.com</td>
+                <td>{this.state.emailClient}</td>
             </tr>
             <tr>
                 <td>N° Téléphone : </td>
-                <td align="center">0692 72 93 22</td>
+                <td>{this.state.telephoneClient}</td>
+            </tr>
+            <tr>
+                <td>Carte total : </td>
+                <td>{this.state.carteTotal}</td>
+            </tr>
+            <tr>
+                <td>Pointage total : </td>
+                <td>{this.state.pointageTotal}</td>
             </tr>
             </tbody>
         </table>                

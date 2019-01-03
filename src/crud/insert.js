@@ -6,9 +6,6 @@ class Insertcrud extends Component {
         super(props)
         this.state = {
             TextInputName: '',
-<<<<<<< HEAD
-            TextInputEmail: ''
-=======
             TextInputEmail: '',
             MDFTextInputName: '',
             MDFTextInputEmail: '',
@@ -16,7 +13,6 @@ class Insertcrud extends Component {
             Vrflogin: false,
             products: [],
             oneuser: []
->>>>>>> Creation api / fonctionnement inscription et connexion
         }
 
     }
@@ -52,15 +48,6 @@ class Insertcrud extends Component {
 
     }
 
-<<<<<<< HEAD
-    Viewuser()
-    {
-
-        return fetch('http://127.0.0.1/crud/viewuser.php')
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    
-=======
     ModifUsers()
     {
 
@@ -87,15 +74,11 @@ class Insertcrud extends Component {
                         products: responseJson
                     });
 
->>>>>>> Creation api / fonctionnement inscription et connexion
                 })
                 .catch(err => console.error(err))
 
     }
 
-<<<<<<< HEAD
-    render() {
-=======
     getOneUser()
     {
 
@@ -171,16 +154,11 @@ class Insertcrud extends Component {
 
     render() {
       const { products, oneuser } = this.state;
->>>>>>> Creation api / fonctionnement inscription et connexion
       return (
         <div>
           <div className="container">
           <center>
-<<<<<<< HEAD
-          <h1>Hello</h1>
-=======
           <h1>Méthode insertion</h1>
->>>>>>> Creation api / fonctionnement inscription et connexion
             <input type="text" value={this.state.TextInputName} onChange={e => this.setState({ TextInputName: e.target.value})} className="form-control" />
             <br/>
             <input type="email" value={this.state.TextInputEmail} onChange={e => this.setState({ TextInputEmail: e.target.value})} className="form-control" />
@@ -188,10 +166,6 @@ class Insertcrud extends Component {
             <input type="submit" onClick={this.InsertUsers.bind(this)} className="btn btn-default btn-block" value="Envoyer" />
           </center>
           <br/>
-<<<<<<< HEAD
-          {this.Viewuser.bind(this)}
-          </div>
-=======
           <div id="test">
           <h1>Méthode lecture et comptage & Suppresion</h1>
             Size  : {this.state.products.length}
@@ -212,14 +186,11 @@ class Insertcrud extends Component {
             <h1>Vérif login</h1>
             <Login login={this.state.Vrflogin} />
             </div>
->>>>>>> Creation api / fonctionnement inscription et connexion
         </div>
       );
     }
   }
 
-<<<<<<< HEAD
-=======
   class Login extends Component {
 
 
@@ -246,5 +217,4 @@ class Insertcrud extends Component {
 
   }
 
->>>>>>> Creation api / fonctionnement inscription et connexion
 export default Insertcrud;

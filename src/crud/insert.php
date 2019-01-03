@@ -2,11 +2,8 @@
 
     include 'connections.php';
 
-<<<<<<< HEAD
-=======
     header('Access-Control-Allow-Origin: *');
 
->>>>>>> Creation api / fonctionnement inscription et connexion
     $named = $_GET['name'];
     $emailed = $_GET['email'];
     $sql = "INSERT INTO `users` (`id`, `nom`, `email`) VALUES (NULL, '$named', '$emailed')";

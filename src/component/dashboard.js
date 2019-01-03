@@ -1,78 +1,76 @@
 import React, { Component } from 'react';
 import Menu from './menu'
 
-<<<<<<< HEAD
-
 import dashboard from '../images/dashboard.png'
-<<<<<<< HEAD
-=======
-import profil from '../images/profil.png';
-import carnet from '../images/carnet.png';
-<<<<<<< HEAD
-import userClient from '../images/adduser.png';
-=======
-<<<<<<< HEAD
-import userClient from '../images/adduser.png';
-=======
->>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
->>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
-=======
-import dashboard from '../images/dashboard.png'
->>>>>>> Creation api / fonctionnement inscription et connexion
-
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    renderPanelTitle()
-    {
-
-        switch (window.location.pathname) {
-            case '/dashboard':
-                return <h2><img src={dashboard} width="70" height="70" alt="Responsive image"/> DASHBOARD</h2>
-                break;
-            case '/profil':
-                return <h2><img src={profil} width="70" height="70" alt="Responsive image"/> PROFIL</h2>
-                break; 
-            case '/client':
-                return <h2><img src={carnet} width="70" height="70" alt="Responsive image"/> CARNET CLIENT</h2>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
-                break;   
-            case '/voirclient':
-                return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> FICHE CLIENT</h2>
-                break;     
-            case '/nouveauclient':
-                return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> NOUVEAU CLIENT</h2>
-                break;                
-<<<<<<< HEAD
-=======
-=======
-                break;      
->>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
-            default:
-                break;
-        }
->>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
 
 class Dashboard extends Component {
 
-=======
->>>>>>> Creation api / fonctionnement inscription et connexion
+    constructor(props)
+    {
+
+        super(props)
+        this.state = {
+            totalClient: '',
+            nbClient: '',
+            limitClient: '',
+            nbPointage: '',
+            limitPointage: '',
+            typeCompte: '',
+            debutAbo: '',
+            finAbo: '', 
+            jRestants: '',
+            apikey: ''
+        }
+
+    }
+
+    componentDidMount()
+    {
+
+        alert('Secure : ' + this.props.loggedIn + '\nId : ' + this.props.idUserRecup)
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup)
+        .then((response) => response.json())
+        .then((response) => {
+
+            {response.map((value, index) => 
+                (
+                    this.setState({
+                        nbClient: value.nbclient,
+                        limitClient: value.limitclient,
+                        nbPointage: value.nbpointage,
+                        limitPointage: value.limitpointage,
+                        typeCompte: value.typecompte,
+                        debutAbo: value.debutabo,
+                        finAbo: value.finabo, 
+                        jRestants: value.jrestant,
+                        apikey: value.apikey                        
+                    })
+                )
+              )}
+    
+
+        })
+        .catch(err => console.error(err))
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup)
+        .then((response) => response.json())
+        .then((response) => {
+
+            this.setState({
+                totalClient: response                    
+            })
+
+        })
+        .catch(err => console.error(err))
+
+
+    }
 
     render() {
       return (
 
         <div id="wrapper">
-<<<<<<< HEAD
-          
-=======
-        {alert(this.props.loggedIn)}
->>>>>>> Creation api / fonctionnement inscription et connexion
         <Menu />
 
         <nav className="navbar navbar-inverse">
@@ -95,7 +93,6 @@ class Dashboard extends Component {
             </div>
         
         </div>         
-<<<<<<< HEAD
         <br/>
 
         <div className="container-perso">
@@ -105,7 +102,7 @@ class Dashboard extends Component {
 
                     <div class="panel panel-default">
                         <div class="panel-heading">CLIENTS</div>
-                        <div class="panel-body"><h1>350</h1></div>
+                        <div class="panel-body"><h1>{this.state.totalClient}</h1></div>
                     </div>
 
                 </div>
@@ -113,90 +110,35 @@ class Dashboard extends Component {
                 
                     <div class="panel panel-default">
                         <div class="panel-heading">LIMITE DE CLIENTS</div>
-                        <div class="panel-body"><h1>5 / 10 </h1></div>
+                        <div class="panel-body"><h1>{this.state.nbClient} / {this.state.limitClient} </h1></div>
                     </div>                
                 
                 
                 </div>
                 <div className="col-md-4">
-
-<<<<<<< HEAD
                         <div class="panel panel-default">
                             <div class="panel-heading">LIMITE DE POINTAGES</div>
-                            <div class="panel-body"><h1>10 / 15 </h1></div>
+                            <div class="panel-body"><h1>{this.state.nbPointage} / {this.state.limitPointage} </h1></div>
                         </div>                
                 
                 </div>
 
+        <br/>
+
+        </div>
+        </div>
+
+        <div className="container-perso">
+            <div className="row">
+            
                 <div className="col-md-4">
 
                     <div class="panel panel-default">
                         <div class="panel-heading">TYPE DE COMPTE</div>
-                        <div class="panel-body"><h1>PREMIUM</h1></div>
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Creation api / fonctionnement inscription et connexion
-        <br/>
-
-        <div className="container-perso">
-            <div className="row">
-            
-                <div className="col-md-4">
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">CLIENTS</div>
-                        <div class="panel-body"><h1>350</h1></div>
->>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
-                    </div>
-
-                </div>
-                <div className="col-md-4">
-                
-                    <div class="panel panel-default">
-<<<<<<< HEAD
-                        <div class="panel-heading">DEBUT ABONNEMENT</div>
-                        <div class="panel-body"><h1>18/12/2018 </h1></div>
-=======
-                        <div class="panel-heading">LIMITE DE CLIENTS</div>
-                        <div class="panel-body"><h1>5 / 10 </h1></div>
->>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
-                    </div>                
-                
-                
-                </div>
-                <div className="col-md-4">
-                        <div class="panel panel-default">
-<<<<<<< HEAD
-                            <div class="panel-heading">FIN ABONNEMENT</div>
-                            <div class="panel-body"><h1>20/12/2018 </h1></div>
-                        </div>                
-                
-                </div>
-
-
-            </div>
-        </div>
-=======
-                            <div class="panel-heading">LIMITE DE POINTAGES</div>
-                            <div class="panel-body"><h1>10 / 15 </h1></div>
-                        </div>                
-                
-                </div>
-
-        <br/>
-
-        </div>
-        </div>
-
-        <div className="container-perso">
-            <div className="row">
-            
-                <div className="col-md-4">
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">CLIENTS</div>
-                        <div class="panel-body"><h1>350</h1></div>
+                        <div class="panel-body">
+                        {this.state.typeCompte === '0' && <h1>Normal</h1>}
+                        {this.state.typeCompte === '1' && <h1>Premium</h1>}
+                        </div>
                     </div>
 
                 </div>
@@ -204,7 +146,7 @@ class Dashboard extends Component {
                 
                     <div class="panel panel-default">
                         <div class="panel-heading">DEBUT ABONNEMENT</div>
-                        <div class="panel-body"><h1>18/12/2018 </h1></div>
+                        <div class="panel-body"><h1>{this.state.debutAbo} </h1></div>
                     </div>                
                 
                 
@@ -213,12 +155,11 @@ class Dashboard extends Component {
 
                         <div class="panel panel-default">
                             <div class="panel-heading">FIN ABONNEMENT</div>
-                            <div class="panel-body"><h1>20/12/2018 </h1></div>
+                            <div class="panel-body"><h1>{this.state.finAbo}</h1></div>
                         </div>                
                 
                 </div>
 
->>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
 
             </div>
         </div>
@@ -230,16 +171,16 @@ class Dashboard extends Component {
             <div className="col-md-4">
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">TYPE DE COMPTE</div>
-                    <div class="panel-body"><h1>PREMIUM</h1></div>
+                    <div class="panel-heading">JOURS RESTANT</div>
+                    <div class="panel-body"><h1>{this.state.jRestants}</h1></div>
                 </div>
 
                 </div>
                 <div className="col-md-4">
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">DEBUT ABONNEMENT</div>
-                    <div class="panel-body"><h1>18/12/2018 </h1></div>
+                    <div class="panel-heading">APIKEY</div>
+                    <div class="panel-body"><h4>{this.state.apikey}</h4></div>
                 </div>                
 
 
@@ -247,8 +188,8 @@ class Dashboard extends Component {
                 <div className="col-md-4">
 
                     <div class="panel panel-default">
-                        <div class="panel-heading">FIN ABONNEMENT</div>
-                        <div class="panel-body"><h1>20/12/2018 </h1></div>
+                        <div class="panel-heading"></div>
+                        <div class="panel-body"></div>
                     </div>                
 
                 </div>

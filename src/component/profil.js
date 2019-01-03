@@ -5,77 +5,82 @@ import Menu from './menu'
 import backgroundcarte from '../images/backgroundCarte.jpg';
 import logocarte from '../images/logocarte.png';
 import profil from '../images/profil.png';
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-class Profil extends Component {
-
-=======
-import carnet from '../images/carnet.png';
-<<<<<<< HEAD
-import userClient from '../images/adduser.png';
-=======
->>>>>>> Creation api / fonctionnement inscription et connexion
 
 
 class Profil extends Component {
 
-<<<<<<< HEAD
-    renderPanelTitle()
+    constructor(props)
     {
 
-        switch (window.location.pathname) {
-            case '/dashboard':
-                return <h2><img src={dashboard} width="70" height="70" alt="Responsive image"/> DASHBOARD</h2>
-                break;
-            case '/profil':
-                return <h2><img src={profil} width="70" height="70" alt="Responsive image"/> PROFIL</h2>
-                break; 
-            case '/client':
-                return <h2><img src={carnet} width="70" height="70" alt="Responsive image"/> CARNET CLIENT</h2>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
-                break;   
-            case '/voirclient':
-                return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> FICHE CLIENT</h2>
-                break;     
-            case '/nouveauclient':
-                return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> NOUVEAU CLIENT</h2>
-                break;  
-            case '/modifclient':
-                return <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> MODIFICATION CLIENT</h2>
-                break; 
-<<<<<<< HEAD
-=======
-=======
-                break;      
-            default:
-                break;
->>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
+        super(props)
+        this.state = {
+            nom: '',
+            prenom: '',
+            email: '',
+            adresse: '',
+            nomSociete: '',
+            telephone: '',
+            nbClient: '',
+            limitClient: '',
+            nbPointage: '',
+            limitPointage: '',
+            typeCompte: '',
+            debutAbo: '',
+            finAbo: '', 
+            jRestants: '',
+            imgFondCarte: '',
+            imgIconCarte: ''
         }
 
     }
->>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
-=======
->>>>>>> Creation api / fonctionnement inscription et connexion
+
+    componentDidMount()
+    {
+
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup)
+        .then((response) => response.json())
+        .then((response) => {
+
+            {response.map((value, index) => 
+                (
+                    this.setState({
+                        nom: value.nom,
+                        prenom: value.prenom,
+                        email: value.email,
+                        adresse: value.adresse,
+                        nomSociete: value.nomsociete,
+                        telephone: value.telephone,
+                        nbClient: value.nbclient,
+                        limitClient: value.limitclient,
+                        nbPointage: value.nbpointage,
+                        limitPointage: value.limitpointage,
+                        typeCompte: value.typecompte,
+                        debutAbo: value.debutabo,
+                        finAbo: value.finabo, 
+                        jRestants: value.jrestant,
+                        apikey: value.apikey,   
+                        imgFondCarte: value.imgfond,
+                        imgIconCarte: value.imgicon                     
+                    })
+                )
+              )}
+    
+
+        })
+        .catch(err => console.error(err))
+
+
+    }
 
     render() {
         return (
 
             <div id="wrapper">
-          
-<<<<<<< HEAD
-        <Menu />
 
-        <nav className="navbar navbar-inverse">
-=======
             <Menu />
 
             <nav className="navbar navbar-inverse">
->>>>>>> Creation api / fonctionnement inscription et connexion
                 <div className="container-fluid">
                     <div className="navbar-header">
                     <a className="navbar-brand" href="#"></a>
@@ -94,21 +99,13 @@ class Profil extends Component {
                     <h2><img src={profil} width="70" height="70" alt="Responsive image"/> PROFIL</h2>
                 </div>
             
-<<<<<<< HEAD
-            <div className="container-perso">
-                <h2><img src={profil} width="70" height="70" alt="Responsive image"/> PROFIL</h2>
-            </div>
-        
-        </div>         
-=======
             </div>   
->>>>>>> Creation api / fonctionnement inscription et connexion
 
 
             <div className="wellDashboardProfil">
                     
-                    <h2>LEVENEUR</h2>
-                    Ludovic
+                    <h2>{this.state.nom}</h2>
+                    {this.state.prenom}
                 
                 
             </div>
@@ -127,19 +124,19 @@ class Profil extends Component {
                             <tbody>
                             <tr>
                                 <td>Email</td>
-                                <td align="center">ludovic.lvnr@gmail.com</td>
+                                <td align="center">{this.state.email}</td>
                             </tr>
                             <tr>
                                 <td>Adresse</td>
-                                <td  align="center">56 Bis Chemin du ruisseau 97421 La rivière</td>
+                                <td  align="center">{this.state.adresse}</td>
                             </tr>
                             <tr>
                                 <td>Nom de la société</td>
-                                <td  align="center">FIDELIZ</td>
+                                <td  align="center">{this.state.nomSociete}</td>
                             </tr>
                             <tr>
                                 <td>Numéro de téléphone</td>
-                                <td  align="center">0692.72.93.22</td>
+                                <td  align="center">{this.state.telephone}</td>
                             </tr>
 
                             </tbody>
@@ -165,27 +162,27 @@ class Profil extends Component {
                             <tbody>
                             <tr>
                                 <td>Type de compte</td>
-                                <td align="center">Standard (ou premium)</td>
+                                <td align="center">{this.state.typeCompte}</td>
                             </tr>
                             <tr>
                                 <td>Limite de client</td>
-                                <td  align="center">5 / 10</td>
+                                <td  align="center">{this.state.nbClient} / {this.state.limitClient}</td>
                             </tr>
                             <tr>
                                 <td>Limite de pointage</td>
-                                <td  align="center">21 / 40</td>
+                                <td  align="center">{this.state.nbPointage} / {this.state.limitPointage}</td>
                             </tr>
                             <tr>
                                 <td>Début abonnement</td>
-                                <td  align="center">03/12/2018</td>
+                                <td  align="center">{this.state.debutAbo}</td>
                             </tr>
                             <tr>
                                 <td>Fin abonnement</td>
-                                <td  align="center">05/12/2018</td>
+                                <td  align="center">{this.state.finAbo}</td>
                             </tr>
                             <tr>
                                 <td>Jours restant</td>
-                                <td  align="center">2</td>
+                                <td  align="center">{this.state.jRestants}</td>
                             </tr>
 
                             </tbody>
@@ -264,8 +261,8 @@ class Profil extends Component {
                             
                                 <div className="panelCarte">
                                     <div id="personalizecarte">  
-                                    <img src={backgroundcarte} className="img-responsive" id="img1" alt="" />
-                                    <img src={logocarte} width="100" height="100" id="img2" className="img-rounded" alt="" />
+                                    <img src={'http://localhost:3000/images/' + this.state.imgFondCarte} className="img-responsive" id="img1" alt="" />
+                                    <img src={'http://localhost:3000/images/' + this.state.imgIconCarte}  width="100" height="100" id="img2" className="img-rounded" alt="" />
                                     
                                     </div> 
                                 </div>                                                                 
@@ -281,11 +278,11 @@ class Profil extends Component {
                                     <tbody>
                                     <tr>
                                         <td><b>Image de fond ( 600 x 300 )</b></td>
-                                        <td align="center"><input type="file" id="exampleInputFile" /></td>
+                                        <td align="center">{this.state.imgFondCarte}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Logo ( 100x100 )</b></td>
-                                        <td align="center"><input type="file" id="exampleInputFile" /></td>
+                                        <td align="center">{this.state.imgIconCarte}</td>
                                     </tr>
                                     </tbody>
                                 </table>                            

@@ -10,29 +10,12 @@ import Profil from './component/profil';
 import Client from './component/client';
 import Insertcrud from './crud/insert.js';
 
-<<<<<<< HEAD
-import Ficheclient from './component/ficheclient';
-import Nouveauclient from './component/nouveauclient';
-import Modifclient from './component/modifclient';
-<<<<<<< HEAD
-import Log from './component/log';
-=======
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Creation api / fonctionnement inscription et connexion
 import Ficheclient from './component/ficheclient';
 import Nouveauclient from './component/nouveauclient';
 import Modifclient from './component/modifclient';
 
-<<<<<<< HEAD
->>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
->>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
-=======
 import Log from './component/log';
 import logo from './images/logo.png'
->>>>>>> Creation api / fonctionnement inscription et connexion
 
 class App extends Component {
 
@@ -43,7 +26,9 @@ class App extends Component {
       connexionEmail: '',
       connexionPassword: '',
       isLogged: false,
-      vrfLogged: cookie.load('#FID#CO#SUCCESS')
+      idUser: '',
+      vrfLogged: cookie.load('#FID#CO#SUCCESS'),
+      vrfIdUser: cookie.load('#FID#CO#IDUSER')
     }
 
   }
@@ -51,37 +36,40 @@ class App extends Component {
   Connexion()
   {
 
-    const {connexionEmail, connexionPassword, isLogged } = this.state;
+    const {connexionEmail, connexionPassword, isLogged, idUser } = this.state;
 
     fetch('http://127.0.0.1/fidapi/main.php?action=connexion&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
     .then((response) => response.json())
     .then((response) => {
         console.log(response)
-        this.setState({ isLogged })
-        if(response === "#CO#SUCCESS")
+        this.setState({ isLogged, idUser })
+        if(response === "#CO#ECHEC")
         {
-
+          
           this.setState({
             connexionEmail: '',
-            connexionPassword: '',
-            isLogged: cookie.save('#FID#CO#SUCCESS', true, { path: '/' })
+            connexionPassword: ''
           })
+
+        }
+        else {
+
+          {response.map((value, index) => 
+            (
+                this.setState({
+                  connexionEmail: '',
+                  connexionPassword: '',
+                  isLogged: cookie.save('#FID#CO#SUCCESS', true, { path: '/' }),
+                  idUser: cookie.save('#FID#CO#IDUSER', value.id, { path: '/' })
+                })
+            )
+          )}
 
           //alert(this.state.isLogged)
           //window.location.href = '/dashboard';
           //return <Dashboard loggedIn={this.state.isLogged} />
           //window.history.pushState(null, null, '/dashboard');
           window.location.pathname = '/dashboard'
-
-        }
-        else if (response === "#CO#ECHEC") {
-
-          this.setState({
-            connexionEmail: '',
-            connexionPassword: ''
-          })
-
-          //alert(this.state.isLogged)
 
         }
 
@@ -154,7 +142,7 @@ class App extends Component {
           break;
         case '/dashboard':
           if( vrfLogged ) {
-            return <Dashboard loggedIn={this.state.vrfLogged} />
+            return <Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} />
           }
           else{
             window.location.href = "/"
@@ -162,7 +150,7 @@ class App extends Component {
           break;
         case '/profil':
           if( vrfLogged ) {
-            return <Profil loggedIn={this.state.vrfLogged} />
+            return <Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} />
           }
           else{
             window.location.href = "/"
@@ -170,22 +158,12 @@ class App extends Component {
           break;
         case '/client':
           if( vrfLogged ) {
-            return <Client loggedIn={this.state.vrfLogged} />
+            return <Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} />
           }
           else{
             window.location.href = "/"
           }  
           break;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
->>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
-=======
->>>>>>> Creation api / fonctionnement inscription et connexion
         case '/voirclient':
           if( vrfLogged ) {
             return <Ficheclient loggedIn={this.state.vrfLogged} />
@@ -221,23 +199,6 @@ class App extends Component {
         case '/insert':
           return <Insertcrud />
           break;
-<<<<<<< HEAD
-<<<<<<< HEAD
-        case '/log':
-          return <Log />
-          break;
-        case '/insert':
-          return <Insertcrud />
-          break;
-=======
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 076d363ab8c0355033b4d94e010d1061230b4e87
->>>>>>> d39c98daaa5dc7991b671a1eb014003e74515d5e
->>>>>>> 0bb363c86623f1d0824b5abfa5c3ccf8bd82450e
-=======
->>>>>>> Creation api / fonctionnement inscription et connexion
         default:
           break;
       }
