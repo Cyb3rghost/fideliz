@@ -182,14 +182,57 @@ if(isset($_GET['action']))
 
             mysqli_close($connect);
             break;
+        case 'ajoutClient':
+            $idEntreprise = $_GET['id'];
+            $dateInscription = date("Y-m-d");
+            $nomClient = $_GET['nomClient'];
+            $prenomClient = $_GET['prenomClient'];
+            $adresseClient = $_GET['adresseClient'];
+            $telephoneClient = $_GET['telephoneClient'];
+            $emailClient = $_GET['emailClient'];
+            $passwordClient = $_GET['passwordClient'];
+            $passwordCryptClient = md5("secureClient".$passwordClient."Clientsecure");
+
+            $sql = "SELECT * FROM `acctclient` WHERE `email` = '".$emailClient."'";
+            $result = mysqli_query($connect, $sql);
+            if(mysqli_num_rows($result))
+            {
+
+                $json = json_encode("#AJTCLIENT#EXISTE");
+
+                echo $json;
+
+            }
+            else
+            {
+
+
+                $sqldeux = "INSERT INTO `acctclient` (`id`, `identreprise`, `dinscription`, `nom`, `prenom`, `adresse`, `telephone`, `email`, `password`, `nbcartetotal`, `nbcarteterminer`, `nbpointagetotal`) VALUES (NULL, '".$idEntreprise."', '".$dateInscription."', '".$nomClient."', '".$prenomClient."', '".$adresseClient."', '".$telephoneClient."', '".$emailClient."', '".$passwordCryptClient."', '0', '0', '0')";
+                if(mysqli_query($connect, $sqldeux))
+                {
+    
+                    $json = json_encode("#AJTCLIENT#SUCCESS");
+    
+                }
+                else
+                {
+    
+                    $json = json_encode("#AJTCLIENT#ERROR");
+    
+                }
+                
+                echo $json;
+
+
+            }
+
+
+            mysqli_close($connect);
+            break;
         default:
             # code...
             break;
     }
-
-
-
-
 
 
 }

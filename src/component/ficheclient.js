@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Menu from './menu'
 
 import userClient from '../images/adduser.png';
+import addCarte from '../images/addcarte.png';
 
 class Ficheclient extends Component {
 
@@ -52,6 +53,7 @@ class Ficheclient extends Component {
     }
 
     render() {
+      var idClient = window.location.search.substring(4);
       return (
         <div id="wrapper">
           
@@ -81,9 +83,22 @@ class Ficheclient extends Component {
         
         <div className="page-header">
             <div className="container-perso">
-            <h1>Informations sur le client <br/></h1>
-                <p className="text-justify">Un client sera automatiquement reliée à votre compte. Il disposera d'un accès à son compte client afin de pouvoir gêrer 
-                et effectuer ses pointages à chaque prestation. Il pourra également suivre l'évolution de son compte.</p>
+                <div className="row">
+                
+                    <div className="col-xs-8">
+                    
+                        <h1>Informations sur le client <br/></h1>
+                        <p className="text-justify">Un client sera automatiquement reliée à votre compte. Il disposera d'un accès à son compte client afin de pouvoir gêrer 
+                        et effectuer ses pointages à chaque prestation. Il pourra également suivre l'évolution de son compte.</p>
+                    
+                    </div>
+                    <div className="col-xs-4 cadreAddCarte">
+                    
+                        <a href={'/listetypecarte?id=' + idClient}><img src={addCarte} width="100" height="100" title="Ajouter une carte de fidélité" alt="Responsive image"/></a>
+
+                    </div>
+                
+                </div>
             </div>
         </div>
         

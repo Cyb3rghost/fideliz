@@ -16,6 +16,8 @@ import Modifclient from './component/modifclient';
 
 import Log from './component/log';
 import logo from './images/logo.png'
+import ListeTypeCarte from './component/listetypecarte';
+import Ajoutcarte from './component/ajoutcarte';
 
 class App extends Component {
 
@@ -174,7 +176,7 @@ class App extends Component {
           break;
         case '/nouveauclient':
           if( vrfLogged ) {
-            return <Nouveauclient loggedIn={this.state.vrfLogged} />
+            return <Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} />
           }
           else{
             window.location.href = "/"
@@ -196,6 +198,23 @@ class App extends Component {
             window.location.href = "/"
           } 
           break;
+        case '/listetypecarte':
+          if( vrfLogged ) {
+            return <ListeTypeCarte loggedIn={this.state.vrfLogged} />
+          }
+          else{
+            window.location.href = "/"
+          } 
+          break;
+        case '/ajoutcarte':
+          if( vrfLogged ) {
+            return <Ajoutcarte loggedIn={this.state.vrfLogged} />
+          }
+          else{
+            window.location.href = "/"
+          } 
+          break;
+
         case '/insert':
           return <Insertcrud />
           break;
