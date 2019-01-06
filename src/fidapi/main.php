@@ -229,6 +229,61 @@ if(isset($_GET['action']))
 
             mysqli_close($connect);
             break;
+        case 'creationCarte':
+            $id = $_GET['id'];
+            $date = date("Y-m-d");
+            $imgfond = $_GET['imgfondcarte'];
+            $imgicon = $_GET['imgiconcarte'];
+            $limitpointage = $_GET['pointage'];
+            $cadeaux = $_GET['cadeaux'];
+
+            $sql = "SELECT * FROM `acctclient` WHERE `id` = '$id'";
+            $result = mysqli_query($connect, $sql);
+            while($row = mysqli_fetch_assoc($result))
+            {
+
+                $nom = $row['nom'];
+                $prenom = $row['prenom'];
+
+
+            }
+
+            $sqldeux = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id";
+            $resultdeux= mysqli_query($connect, $sqldeux);
+            if(mysqli_num_rows($resultdeux))
+            {
+
+                $json = json_encode("#AJTCARTE#EXISTE");
+
+            }
+            else
+            {
+
+                $sqltrois = "INSERT INTO `cartefidelite` (`id`, `idclient`, `datecreation`, `nom`, `prenom`, `nbpointage`, `limitpointage`, `statut`, `cadeaux`, `imgbackground`, `imgicon`, `qrcode`) VALUES (NULL, '".$id."', '".$date."', '".$nom."', '".$prenom."', '0', '".$limitpointage."', '1', '".$cadeaux."', '".$imgfond."', '".$imgicon."', '')";
+                $resultrois = mysqli_query($connect, $sqltrois);
+                if($resultrois)
+                {
+    
+                    $json = json_encode("#AJTCARTE#SUCCESS");
+    
+                }
+                else
+                {
+    
+                    $json = json_encode("#AJTCARTE#ERROR");
+    
+                }
+                
+
+            }
+
+
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
         default:
             # code...
             break;

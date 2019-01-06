@@ -29,8 +29,12 @@ class App extends Component {
       connexionPassword: '',
       isLogged: false,
       idUser: '',
+      infCarteBackground: '',
+      infCarteIcon: '',
       vrfLogged: cookie.load('#FID#CO#SUCCESS'),
-      vrfIdUser: cookie.load('#FID#CO#IDUSER')
+      vrfIdUser: cookie.load('#FID#CO#IDUSER'),
+      vrfInfosCarteBg: cookie.load('#FID#CO#CARTEBG'),
+      vrfInfosCarteIcon: cookie.load('#FID#CO#CARTEICON')
     }
 
   }
@@ -62,7 +66,9 @@ class App extends Component {
                   connexionEmail: '',
                   connexionPassword: '',
                   isLogged: cookie.save('#FID#CO#SUCCESS', true, { path: '/' }),
-                  idUser: cookie.save('#FID#CO#IDUSER', value.id, { path: '/' })
+                  idUser: cookie.save('#FID#CO#IDUSER', value.id, { path: '/' }),
+                  infCarteBackground: cookie.save('#FID#CO#CARTEBG', value.imgfond, { path: '/' }),
+                  infCarteIcon: cookie.save('#FID#CO#CARTEICON', value.imgicon, { path: '/' })
                 })
             )
           )}
@@ -208,7 +214,7 @@ class App extends Component {
           break;
         case '/ajoutcarte':
           if( vrfLogged ) {
-            return <Ajoutcarte loggedIn={this.state.vrfLogged} />
+            return <Ajoutcarte loggedIn={this.state.vrfLogged} infosCarte={this.state.vrfInfosCarteBg} infosCarteIcon={this.state.vrfInfosCarteIcon}  />
           }
           else{
             window.location.href = "/"

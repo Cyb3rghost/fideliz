@@ -17,6 +17,8 @@ class Menu extends Component {
 
         cookie.remove("#FID#CO#SUCCESS")
         cookie.remove('#FID#CO#IDUSER')
+        cookie.remove('#FID#CO#CARTEBG')
+        cookie.remove('#FID#CO#CARTEICON')
         window.location.href = "/"
 
     }

@@ -6802,6 +6802,7 @@ button.close {
 .panelCarte {
   position: relative;
   height: 300px;
+  margin-left: 22%;
 }
 
 #img1 {
@@ -6815,11 +6816,10 @@ button.close {
 }
 
 #img3 {
-  position: relative;
+  position: absolute;
   z-index: 4;
-  bottom: 0;
   margin-left: 15px;
-  margin-top: 30%;
+  margin-top: 28%;
 }
 
 /* 18/12/2018 - CSS */
