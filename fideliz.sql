@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  ven. 04 jan. 2019 à 11:37
+-- Généré le :  lun. 07 jan. 2019 à 12:32
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -119,7 +119,33 @@ CREATE TABLE `cartefidelite` (
 --
 
 INSERT INTO `cartefidelite` (`id`, `idclient`, `datecreation`, `nom`, `prenom`, `nbpointage`, `limitpointage`, `statut`, `cadeaux`, `imgbackground`, `imgicon`, `qrcode`) VALUES
-(1, 1, '2018-11-15', 'LEVENEUR', 'Ludovic', 0, 10, 1, '1 Coupe gratuite', 'backgroundCarte.jpg', 'logocarte.png', '648444373.png');
+(1, 1, '2019-01-07', 'LEVENEUR', 'Ludovic', 0, 15, 1, '1 shampooing', 'backgroundCarte.jpg', 'logocarte.png', '366251495');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pointage`
+--
+
+CREATE TABLE `pointage` (
+  `id` int(11) NOT NULL,
+  `identreprise` int(11) NOT NULL,
+  `idclient` int(11) NOT NULL,
+  `entreprise` varchar(255) NOT NULL,
+  `departpointage` datetime NOT NULL,
+  `client` varchar(255) NOT NULL,
+  `finpointage` datetime NOT NULL,
+  `statut` int(11) NOT NULL,
+  `code` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `pointage`
+--
+
+INSERT INTO `pointage` (`id`, `identreprise`, `idclient`, `entreprise`, `departpointage`, `client`, `finpointage`, `statut`, `code`) VALUES
+(1, 2, 1, 'Fideliz', '2019-01-07 12:05:09', 'LEVENEUR Ludovic', '0000-00-00 00:00:00', 1, '24584523'),
+(2, 2, 1, 'Fideliz', '2019-01-07 12:28:54', 'LEVENEUR Ludovic', '0000-00-00 00:00:00', 1, '366251495');
 
 --
 -- Index pour les tables déchargées
@@ -144,6 +170,12 @@ ALTER TABLE `cartefidelite`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `pointage`
+--
+ALTER TABLE `pointage`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT pour les tables déchargées
 --
 
@@ -161,7 +193,12 @@ ALTER TABLE `acctclient`
 -- AUTO_INCREMENT pour la table `cartefidelite`
 --
 ALTER TABLE `cartefidelite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT pour la table `pointage`
+--
+ALTER TABLE `pointage`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

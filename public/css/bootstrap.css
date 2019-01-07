@@ -6819,7 +6819,20 @@ button.close {
   position: absolute;
   z-index: 4;
   margin-left: 15px;
-  margin-top: 28%;
+  margin-top: 22%;
+}
+
+#positionDonnee {
+  position: absolute;
+  padding-left: 12%;
+  z-index: 3;
+}
+
+#positionDonnee small 
+{
+
+  color: black;
+
 }
 
 /* 18/12/2018 - CSS */

@@ -284,6 +284,128 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
+        case 'voirCarteClient':
+            $id = $_GET['id'];
+
+            $sql = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id";
+            $result = mysqli_query($connect, $sql);
+            if(mysqli_num_rows($result))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+            
+                    $json = json_encode($row);
+            
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#VOIRCARTE#NOEXIST");
+
+            }
+
+            echo $json;
+            break;
+        case 'pointage':
+            $idEntreprise = $_GET['identreprise'];
+            $idClient = $_GET['idclient'];
+            $debutpointage = date("Y-m-d H:i:s"); 
+            $code = rand(1, 99).rand(2, 999).rand(3, 9999);
+
+            $sql = "SELECT * FROM `accsociete` WHERE `id` = $idEntreprise";
+            $result = mysqli_query($connect, $sql);
+            if(mysqli_num_rows($result))
+            {
+
+                while($row = mysqli_fetch_assoc($result))
+                {
+    
+                    $nomDeLaSociete = $row['nomsociete'];
+    
+                } 
+
+                $sqldeux = "SELECT * FROM `acctclient` WHERE `id` = $idClient";
+                $resultdeux = mysqli_query($connect, $sqldeux);
+                if(mysqli_num_rows($resultdeux))
+                {
+
+
+                    while($raw = mysqli_fetch_assoc($resultdeux))
+                    {
+
+                        $nom = $raw['nom'];
+                        $prenom = $raw['prenom'];
+                        $client = $nom." ".$prenom;
+
+                    }
+
+                    $sqltrois = "SELECT * FROM `pointage` WHERE `idclient` = $idClient AND `statut` = '1'";
+                    $resultquatre = mysqli_query($connect, $sqltrois);
+                    if(mysqli_num_rows($resultquatre))
+                    {
+
+                        $json = json_encode("#CHECKPOINTAGE#EXISTE");
+
+                    }
+                    else
+                    {
+
+                        $sqlquatre = "INSERT INTO `pointage` (`id`, `identreprise`, `idclient`, `entreprise`, `departpointage`, `client`, `finpointage`, `statut`, `code`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nomDeLaSociete."', '".$debutpointage."', '".$client."', '0000-00-00 00:00:00', '1', '".$code."')";
+                        if(mysqli_query($connect, $sqlquatre))
+                        {
+        
+                            $sqlcinq = "UPDATE `cartefidelite` SET `qrcode` = '".$code."' WHERE `idclient` = $idClient;";
+                            if(mysqli_query($connect, $sqlcinq))
+                            {
+        
+                                $json = json_encode("#CARTEUPTCODE#SUCCESS");
+        
+                            }
+                            else
+                            {
+        
+                                $json = json_encode("#CARTEUPTCODE#ECHEC");
+        
+                            }
+        
+                        }
+                        else
+                        {
+        
+                            $json = json_encode("#ADDPOINTAGE#ECHEC");
+        
+                        }
+
+                    }
+
+
+
+
+                }
+                else
+                {
+
+                    $json = json_encode("#DATACLT#ECHEC");
+
+                }
+                
+
+            }
+            else
+            {
+
+                $json = json_encode("#DATAENT#ECHEC");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
         default:
             # code...
             break;

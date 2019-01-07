@@ -174,7 +174,7 @@ class App extends Component {
           break;
         case '/voirclient':
           if( vrfLogged ) {
-            return <Ficheclient loggedIn={this.state.vrfLogged} />
+            return <Ficheclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} />
           }
           else{
             window.location.href = "/"
@@ -214,7 +214,7 @@ class App extends Component {
           break;
         case '/ajoutcarte':
           if( vrfLogged ) {
-            return <Ajoutcarte loggedIn={this.state.vrfLogged} infosCarte={this.state.vrfInfosCarteBg} infosCarteIcon={this.state.vrfInfosCarteIcon}  />
+            return <Ajoutcarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infosCarte={this.state.vrfInfosCarteBg} infosCarteIcon={this.state.vrfInfosCarteIcon}  />
           }
           else{
             window.location.href = "/"

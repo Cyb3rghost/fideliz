@@ -17,7 +17,8 @@ class Ajoutcarte extends Component {
 
             dateDuJour: '',
             limitPointage: '',
-            cadeaux: ''
+            cadeaux: '',
+            statutMsg: ''
 
         }
 
@@ -28,9 +29,6 @@ class Ajoutcarte extends Component {
     {
 
         var d = new Date();
-        var annee = d.getFullYear();
-        var day = d.getDay();
-        var mois = d.getMonth();
         var date = d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()
 
         this.setState({
@@ -42,9 +40,89 @@ class Ajoutcarte extends Component {
     addCarte()
     {
 
-        alert(this.state.limitPointage + '\n' + this.state.cadeaux)
+        const { limitPointage, cadeaux } = this.state;
+        const { idUserRecup, infosCarte, infosCarteIcon } = this.props;
+        var idClient = window.location.search.substring(4);
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=creationCarte&id=' + idClient
+        + '&imgfondcarte=' + infosCarte 
+        + '&imgiconcarte=' + infosCarteIcon
+        + '&pointage=' + limitPointage
+        + '&cadeaux=' + cadeaux)
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response)
+            if(response === "#AJTCARTE#SUCCESS")
+            {
+
+                this.setState({
+                    statutMsg: '1'
+                })
+
+                setTimeout(() => window.location.href = "/voirclient?id=" + idClient,2500)
+                //setTimeout(window.location.href = "/voirclient?id=" + idClient, 5000);
+
+            }
+            else if (response === "#AJTCARTE#ERROR") {
+
+                this.setState({
+                    statutMsg: '0'
+                })
+                
+            }
+            else if (response === "#AJTCARTE#EXISTE") {
+
+                this.setState({
+                    statutMsg: '2'
+                })
+                
+            }
+
+        })
+        .catch(err => console.error(err))
 
     }
+
+    vrfInsertion()
+    {
+
+        if(this.state.statutMsg === '1')
+        {
+
+            return <div className="msgSuccessPerso">
+        
+                La carte de fidélité a bien été créer ! Patientez...
+        
+            </div>
+
+
+        }
+        else if (this.state.statutMsg === '0') 
+        {
+            
+
+            return <div className="msgErrorPerso">
+        
+                La carte de fidélité n'a pas été créer !
+        
+            </div>
+
+        }
+        else if (this.state.statutMsg === '2') 
+        {
+            
+
+            return <div className="msgErrorPerso">
+        
+                Le client possède déjà une carte de fidélité. 
+        
+            </div>
+
+        }
+
+
+    }
+
 
     render() {
         return (
@@ -73,6 +151,7 @@ class Ajoutcarte extends Component {
           
           </div>         
   
+          {this.vrfInsertion()}
           
           <div className="page-header">
               <div className="container-perso">
