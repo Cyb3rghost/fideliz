@@ -353,7 +353,7 @@ if(isset($_GET['action']))
                     else
                     {
 
-                        $sqlquatre = "INSERT INTO `pointage` (`id`, `identreprise`, `idclient`, `entreprise`, `departpointage`, `client`, `finpointage`, `statut`, `code`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nomDeLaSociete."', '".$debutpointage."', '".$client."', '0000-00-00 00:00:00', '1', '".$code."')";
+                        $sqlquatre = "INSERT INTO `pointage` (`id`, `identreprise`, `idclient`, `entreprise`, `departpointage`, `client`, `finpointage`, `statut`, `code`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nomDeLaSociete."', '".$debutpointage."', '".$client."', '".$debutpointage."', '1', '".$code."')";
                         if(mysqli_query($connect, $sqlquatre))
                         {
         
@@ -398,6 +398,133 @@ if(isset($_GET['action']))
             {
 
                 $json = json_encode("#DATAENT#ECHEC");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'connexionClient':
+            
+            $connexionEmail = $_GET['cntemail'];
+            $connexionPassword = $_GET['cntpassword'];
+            $protectcomdp = md5("secureClient".$connexionPassword."Clientsecure");
+
+            $sql = "SELECT * FROM `acctclient` WHERE `email` = '".$connexionEmail."' AND `password` = '".$protectcomdp."'";
+            $result = mysqli_query($connect, $sql);
+            if(mysqli_num_rows($result)){
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+            
+                    $json = json_encode($row);
+            
+                }
+            
+            }else{
+            
+                $json = json_encode('#COCLIENT#ECHEC');
+            
+            }
+            
+            echo $json;
+
+            mysqli_close($connect);
+
+
+            break;
+        case 'checkPointage':
+            $id = $_GET['id'];
+
+            $sql = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id";
+            $result = mysqli_query($connect, $sql);
+            if(mysqli_num_rows($result))
+            {
+
+                $sqldeux = "SELECT * FROM `pointage` WHERE `idclient` = $id AND `statut` = '1'";
+                $resultdeux = mysqli_query($connect, $sqldeux);
+                if(mysqli_num_rows($resultdeux))
+                {
+
+                    $json = json_encode("#CHKPOINTAGE#SUCCESS");
+
+                }
+                else
+                {
+
+                    $json = json_encode("#CHKPOINTAGE#ECHEC");
+
+                }
+
+                
+
+            }
+            else
+            {
+
+                $json = json_encode("#CHKCARTEFID#ECHEC");
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'validationPointage':
+            $id = $_GET['id'];
+            $idEntreprise = $_GET['idEntreprise'];
+            $finpointage = date("Y-m-d H:i:s");
+
+            mysqli_query($connect, "UPDATE `pointage` SET `finpointage` = '".$finpointage."', `statut` = '2' WHERE `idclient` = $id;");
+        
+            //$json = json_encode("#CONFPOINTAGE#SUCCESS");
+            $sqldeux = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id";
+            $result = mysqli_query($connect, $sqldeux);
+                
+            while($row = mysqli_fetch_assoc($result))
+            {
+        
+                $nombrePointage = $row['nbpointage'];
+        
+            }
+
+            $update1 = mysqli_query($connect, "UPDATE `cartefidelite` SET `nbpointage` = $nombrePointage + 1 WHERE `idclient` = $id");
+
+            $sqltrois = "SELECT * FROM `acctclient` WHERE `idclient` = $id";
+            $resultdeux = mysqli_query($connect, $sqltrois);
+            
+            while($raw = mysqli_fetch_assoc($resultdeux))
+            {
+        
+                $nombrePointageTotal = $raw['nbpointagetotal'];
+        
+            }
+
+            mysqli_query($connect, "UPDATE `acctclient` SET `nbpointagetotal` = $nombrePointageTotal + 1 WHERE `id` = $id");
+
+            $resultrois = mysqli_query($connect, "SELECT * FROM `accsociete` WHERE `id` = $idEntreprise");
+            
+            while($rbw = mysqli_fetch_assoc($resultrois))
+            {
+        
+                $nombrePointageTotalEntreprise = $rbw['nbpointage'];
+        
+            }
+
+            if(mysqli_query($connect, "UPDATE `accsociete` SET `nbpointage` = $nombrePointageTotalEntreprise + 1 WHERE `id` = $idEntreprise"))
+            {
+
+                $json = json_encode("#UPTENTREPRISE#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#UPTENTREPRISE#ECHEC");
 
             }
 

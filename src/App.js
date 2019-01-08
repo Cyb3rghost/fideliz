@@ -10,6 +10,9 @@ import Profil from './component/profil';
 import Client from './component/client';
 import Insertcrud from './crud/insert.js';
 
+// GESTION COMPOSANT CLIENT
+import Fichecoclient from './component/componentclient/fichecoclient'
+
 import Ficheclient from './component/ficheclient';
 import Nouveauclient from './component/nouveauclient';
 import Modifclient from './component/modifclient';
@@ -25,6 +28,7 @@ class App extends Component {
 
     super(props)
     this.state = {
+      // GESTION CONNEXION ENTREPRISE
       connexionEmail: '',
       connexionPassword: '',
       isLogged: false,
@@ -34,7 +38,16 @@ class App extends Component {
       vrfLogged: cookie.load('#FID#CO#SUCCESS'),
       vrfIdUser: cookie.load('#FID#CO#IDUSER'),
       vrfInfosCarteBg: cookie.load('#FID#CO#CARTEBG'),
-      vrfInfosCarteIcon: cookie.load('#FID#CO#CARTEICON')
+      vrfInfosCarteIcon: cookie.load('#FID#CO#CARTEICON'),
+      // GESTION CONNEXION CLIENT
+      connexionEmailClient: '',
+      connexionPasswordClient: '',
+      isLoggedClient: false,
+      idUserClient: '',
+      vrfLoggedClient: cookie.load('#FID#COCLIENT#SUCCESS'),
+      vrfIdUserClient: cookie.load('#FID#COCLIENT#IDUSER'),
+      vrfIdEntrepriseClient: cookie.load('#FID#COCLIENT#IDENT'),
+      idTransitionRedirection: ''
     }
 
   }
@@ -86,9 +99,60 @@ class App extends Component {
 
   }
 
+  connexionClient()
+  {
+
+      const { connexionEmailClient, connexionPasswordClient, isLoggedClient, idUserClient } = this.state;
+
+      //alert('Email : ' + emailClient + '\n Password : ' + passwordClient)
+
+      fetch('http://127.0.0.1/fidapi/main.php?action=connexionClient&cntemail=' + connexionEmailClient + '&cntpassword=' + connexionPasswordClient)
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response)
+        this.setState({ isLoggedClient, idUserClient })
+        if(response === "#COCLIENT#ECHEC")
+        {
+          
+          this.setState({
+            connexionEmailClient: '',
+            connexionPasswordClient: ''
+          })
+
+        }
+        else {
+
+          {response.map((value, index) => 
+            (
+                this.setState({
+                  connexionEmailClient: '',
+                  connexionPasswordClient: '',
+                  isLoggedClient: cookie.save('#FID#COCLIENT#SUCCESS', true, { path: '/' }),
+                  idUserClient: cookie.save('#FID#COCLIENT#IDUSER', value.id, { path: '/' }),
+                  idEntrepriseClient: cookie.save('#FID#COCLIENT#IDENT', value.identreprise, { path: '/' }),
+                  idTransitionRedirection: value.id
+                })
+            )
+          )}
+
+          //alert(this.state.isLogged)
+          //window.location.href = '/dashboard';
+          //return <Dashboard loggedIn={this.state.isLogged} />
+          //window.history.pushState(null, null, '/dashboard');
+          window.location.href = '/fichecoclient?id=' + this.state.idTransitionRedirection
+
+        }
+
+    })
+    .catch(err => console.error(err))
+
+
+  }
+
+
   renderRoute()
   {
-      const { vrfLogged } = this.state
+      const { vrfLogged, vrfLoggedClient } = this.state
 
       switch (window.location.pathname) {
         case '/':
@@ -143,7 +207,57 @@ class App extends Component {
           </div>
           break;
         case '/connexionclient':
-          return <Coclient />
+          return <div>
+
+              <div className="App">
+                        
+                        <div className="col-md-4">
+                        
+                        
+                        
+                        </div>
+                        <div className="col-md-4">
+                        
+                              <div className="wellLoginEntreprise">
+                              
+
+                                  <img src={logo} class="img-responsive" alt="Logo - Fideliz" />
+                                  <div className="form-group">
+                                      <label>Adresse email</label>
+                                      <input 
+                                          value={this.state.connexionEmailClient}
+                                          onChange={e => this.setState({connexionEmailClient: e.target.value})}
+                                          type="email" 
+                                          className="form-control" 
+                                          placeholder="Email" 
+                                      />
+                                  </div>
+                                  <div className="form-group">
+                                      <label>Mot de passe</label>
+                                      <input 
+                                          value={this.state.connexionPasswordClient}
+                                          onChange={e => this.setState({connexionPasswordClient: e.target.value})}
+                                          type="password" 
+                                          className="form-control" 
+                                          placeholder="Password" 
+                                      />
+                                  </div>
+                                  <button type="submit" onClick={this.connexionClient.bind(this)} className="btn btn-loginConnexion btn-block">Connexion</button>
+                                  <a class="btn btn-loginConnexion btn-block" href="/" role="button">Accès compte entreprise</a>
+
+                              
+                              </div>
+                        
+                        </div>
+                        <div className="col-md-4">
+                        
+                        
+                        
+                        </div>            
+
+                    
+                  </div>
+          </div>
           break;
         case '/inscription':
           return <Inscription />
@@ -220,7 +334,15 @@ class App extends Component {
             window.location.href = "/"
           } 
           break;
-
+        case '/fichecoclient':
+        if( vrfLoggedClient ) {
+          return <Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
+        }
+        else{
+          window.location.href = "/"
+        } 
+        break;          
+          break;
         case '/insert':
           return <Insertcrud />
           break;
