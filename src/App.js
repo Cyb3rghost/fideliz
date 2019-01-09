@@ -12,6 +12,7 @@ import Insertcrud from './crud/insert.js';
 
 // GESTION COMPOSANT CLIENT
 import Fichecoclient from './component/componentclient/fichecoclient'
+import Mescadeaux from './component/componentclient/mescadeaux'
 
 import Ficheclient from './component/ficheclient';
 import Nouveauclient from './component/nouveauclient';
@@ -335,13 +336,20 @@ class App extends Component {
           } 
           break;
         case '/fichecoclient':
-        if( vrfLoggedClient ) {
-          return <Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
-        }
-        else{
-          window.location.href = "/"
-        } 
-        break;          
+          if( vrfLoggedClient ) {
+            return <Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
+          }
+          else{
+            window.location.href = "/"
+          } 
+          break;          
+        case '/mescadeaux':
+          if( vrfLoggedClient ) {
+            return <Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
+          }
+          else{
+            window.location.href = "/"
+          }           
           break;
         case '/insert':
           return <Insertcrud />

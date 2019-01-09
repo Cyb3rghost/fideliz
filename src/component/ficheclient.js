@@ -59,7 +59,7 @@ class Ficheclient extends Component {
                         adresseClient: value.adresse,
                         emailClient: value.email,
                         telephoneClient: value.telephone,
-                        carteTotal: value.nbcartetotal,
+                        carteTotal: value.nbcarteterminer,
                         pointageTotal: value.nbpointagetotal                     
                     })
                 )
@@ -174,55 +174,83 @@ class Ficheclient extends Component {
 
         var idClient = window.location.search.substring(4);
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=pointage&identreprise=' + this.state.idEntreprise + '&idclient=' + idClient)
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + idClient)
         .then((response) => response.json())
         .then((response) => {
 
             switch (response) {
-                case "#CARTEUPTCODE#SUCCESS":
+                case '#CLOTURATION#SUCCESS':
+                    console.log(response)
                     this.setState({
-                        cartePointageMsg: '1'
+                        cartePointageMsg: '4'
                     })
 
                     setTimeout(() => window.location.href = "/voirclient?id=" + idClient,2500)
-                    break;
-                case "#CARTEUPTCODE#ECHEC":
+                    break;   
+                case '#CLOTURATION#NONECESSAIRE':
                     console.log(response)
-                    this.setState({
-                        cartePointageMsg: '2'
+                    fetch('http://127.0.0.1/fidapi/main.php?action=pointage&identreprise=' + this.state.idEntreprise + '&idclient=' + idClient)
+                    .then((response) => response.json())
+                    .then((response) => {
+            
+                        switch (response) {
+                            case "#CARTEUPTCODE#SUCCESS":
+                                this.setState({
+                                    cartePointageMsg: '1'
+                                })
+            
+                                setTimeout(() => window.location.href = "/voirclient?id=" + idClient,2500)
+                                break;
+                            case "#CARTEUPTCODE#ECHEC":
+                                console.log(response)
+                                this.setState({
+                                    cartePointageMsg: '2'
+                                })
+                                break; 
+                            case "#ADDPOINTAGE#ECHEC":
+                                console.log(response)
+                                this.setState({
+                                    cartePointageMsg: '2'
+                                })
+                                break;     
+                            case "#DATACLT#ECHEC":
+                                console.log(response)
+                                this.setState({
+                                    cartePointageMsg: '2'
+                                })
+                                break; 
+                            case "#DATAENT#ECHEC":
+                                console.log(response)
+                                this.setState({
+                                    cartePointageMsg: '2'
+                                })
+                                break; 
+                            case "#CHECKPOINTAGE#EXISTE":
+                                console.log(response)
+                                this.setState({
+                                    cartePointageMsg: '3'
+                                })
+                                break; 
+                            default:
+                                break;
+                        }
+                
+            
                     })
-                    break; 
-                case "#ADDPOINTAGE#ECHEC":
-                    console.log(response)
-                    this.setState({
-                        cartePointageMsg: '2'
-                    })
-                    break;     
-                case "#DATACLT#ECHEC":
-                    console.log(response)
-                    this.setState({
-                        cartePointageMsg: '2'
-                    })
-                    break; 
-                case "#DATAENT#ECHEC":
-                    console.log(response)
-                    this.setState({
-                        cartePointageMsg: '2'
-                    })
-                    break; 
-                case "#CHECKPOINTAGE#EXISTE":
-                    console.log(response)
-                    this.setState({
-                        cartePointageMsg: '3'
-                    })
-                    break; 
+                    .catch(err => console.error(err))
+                    break;            
                 default:
                     break;
             }
+
+
     
 
         })
         .catch(err => console.error(err))
+
+
 
 
     }
@@ -281,7 +309,17 @@ class Ficheclient extends Component {
             </div>
 
         }
+        else if (this.state.cartePointageMsg === '4') 
+        {
+            
+
+            return <div className="msgErrorPerso">
         
+                Limitation pointage atteinte, la carte été cloturer. Veuillez recrée une nouvelle carte.
+        
+            </div>
+
+        }        
 
 
     }

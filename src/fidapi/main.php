@@ -248,7 +248,7 @@ if(isset($_GET['action']))
 
             }
 
-            $sqldeux = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id";
+            $sqldeux = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id  AND `statut` = '1'";
             $resultdeux= mysqli_query($connect, $sqldeux);
             if(mysqli_num_rows($resultdeux))
             {
@@ -287,7 +287,7 @@ if(isset($_GET['action']))
         case 'voirCarteClient':
             $id = $_GET['id'];
 
-            $sql = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id";
+            $sql = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id AND `statut` = '1'";
             $result = mysqli_query($connect, $sql);
             if(mysqli_num_rows($result))
             {
@@ -357,7 +357,7 @@ if(isset($_GET['action']))
                         if(mysqli_query($connect, $sqlquatre))
                         {
         
-                            $sqlcinq = "UPDATE `cartefidelite` SET `qrcode` = '".$code."' WHERE `idclient` = $idClient;";
+                            $sqlcinq = "UPDATE `cartefidelite` SET `qrcode` = '".$code."' WHERE `idclient` = $idClient  AND `statut` = '1';";
                             if(mysqli_query($connect, $sqlcinq))
                             {
         
@@ -438,7 +438,7 @@ if(isset($_GET['action']))
         case 'checkPointage':
             $id = $_GET['id'];
 
-            $sql = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id";
+            $sql = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id  AND `statut` = '1'";
             $result = mysqli_query($connect, $sql);
             if(mysqli_num_rows($result))
             {
@@ -474,15 +474,66 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
+            case 'checkCloturation':
+            $id = $_GET['id'];
+            $dateCreationCadeaux = date("Y-m-d H:i:s");
+            $code = rand(1, 99).rand(2, 999).rand(3, 9999);
+        
+            //$json = json_encode("#CONFPOINTAGE#SUCCESS");
+            $sqldeux = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id AND `statut` = '1'";
+            $result = mysqli_query($connect, $sqldeux);
+                
+            while($row = mysqli_fetch_assoc($result))
+            {
+        
+                $nombrePointage = $row['nbpointage'];
+                $limitationPointage = $row['limitpointage'];
+                $idCarteFidelite = $row['id'];
+                $cadeauxFidelite = $row['cadeaux'];
+        
+            }
+
+            if($nombrePointage === $limitationPointage)
+            {
+
+                $sqltrois = "SELECT * FROM `acctclient` WHERE `id` = $id";
+                $resultdeux = mysqli_query($connect, $sqltrois);
+
+                while($raw = mysqli_fetch_assoc($resultdeux))
+                {
+
+                    $nombreCarteTerminer = $raw['nbcarteterminer'];
+
+                }
+
+                mysqli_query($connect, "INSERT INTO `fidcadeaux` (`id`, `idclient`, `idcarte`, `date`, `cadeaux`, `statut`, `datereceptioncadeaux`, `code`) VALUES (NULL, '".$id."', '".$idCarteFidelite."', '".$dateCreationCadeaux."', '".$cadeauxFidelite."', '1', '".$dateCreationCadeaux."', '".$code."')");
+                mysqli_query($connect, "UPDATE `acctclient` SET `nbcarteterminer` = $nombreCarteTerminer + 1 WHERE `id` = $id");
+                mysqli_query($connect, "UPDATE `cartefidelite` SET `statut` = '2', `qrcode` = '".$code."' WHERE `idclient` = $id  AND `statut` = '1'");
+                $json = json_encode("#CLOTURATION#SUCCESS");
+
+                
+
+                
+
+            }
+            else
+            {
+
+                $json = json_encode("#CLOTURATION#NONECESSAIRE");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+            break;
         case 'validationPointage':
             $id = $_GET['id'];
             $idEntreprise = $_GET['idEntreprise'];
             $finpointage = date("Y-m-d H:i:s");
-
-            mysqli_query($connect, "UPDATE `pointage` SET `finpointage` = '".$finpointage."', `statut` = '2' WHERE `idclient` = $id;");
         
             //$json = json_encode("#CONFPOINTAGE#SUCCESS");
-            $sqldeux = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id";
+            $sqldeux = "SELECT * FROM `cartefidelite` WHERE `idclient` = $id  AND `statut` = '1'";
             $result = mysqli_query($connect, $sqldeux);
                 
             while($row = mysqli_fetch_assoc($result))
@@ -492,9 +543,9 @@ if(isset($_GET['action']))
         
             }
 
-            $update1 = mysqli_query($connect, "UPDATE `cartefidelite` SET `nbpointage` = $nombrePointage + 1 WHERE `idclient` = $id");
+            $update1 = mysqli_query($connect, "UPDATE `cartefidelite` SET `nbpointage` = $nombrePointage + 1 WHERE `idclient` = $id  AND `statut` = '1'");
 
-            $sqltrois = "SELECT * FROM `acctclient` WHERE `idclient` = $id";
+            $sqltrois = "SELECT * FROM `acctclient` WHERE `id` = $id";
             $resultdeux = mysqli_query($connect, $sqltrois);
             
             while($raw = mysqli_fetch_assoc($resultdeux))
@@ -518,6 +569,7 @@ if(isset($_GET['action']))
             if(mysqli_query($connect, "UPDATE `accsociete` SET `nbpointage` = $nombrePointageTotalEntreprise + 1 WHERE `id` = $idEntreprise"))
             {
 
+                mysqli_query($connect, "UPDATE `pointage` SET `finpointage` = '".$finpointage."', `statut` = '2' WHERE `idclient` = $id;");
                 $json = json_encode("#UPTENTREPRISE#SUCCESS");
 
             }
@@ -525,6 +577,36 @@ if(isset($_GET['action']))
             {
 
                 $json = json_encode("#UPTENTREPRISE#ECHEC");
+
+            }    
+
+            echo $json;        
+
+            mysqli_close($connect);
+
+            break;
+        case 'afficheCadeauxAttente':
+            $idClient = $_GET['id'];
+
+            $sql = "SELECT * FROM `fidcadeaux` WHERE `idclient` = $idClient AND `statut` = '1'";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+            
+                    $json = json_encode($row);
+            
+                }
+
+
+            }
+            else
+            {
+
+                $json = json_encode("#AFFCADEAUX#ECHEC");
 
             }
 
