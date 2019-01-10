@@ -588,7 +588,7 @@ if(isset($_GET['action']))
         case 'afficheCadeauxAttente':
             $idClient = $_GET['id'];
 
-            $sql = "SELECT * FROM `fidcadeaux` WHERE `idclient` = $idClient AND `statut` = '1'";
+            $sql = "SELECT * FROM `fidcadeaux` WHERE `idclient` = $idClient AND `statut` = '1' ORDER BY `date` DESC";
             $result = mysqli_query($connect, $sql);
 
             if(mysqli_num_rows($result))
@@ -607,6 +607,134 @@ if(isset($_GET['action']))
             {
 
                 $json = json_encode("#AFFCADEAUX#ECHEC");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'confirmationCadeaux':
+            $idCadeaux = $_GET['id'];
+            $dateReception = date("Y-m-d H:i:s");
+
+            $sql = "UPDATE `fidcadeaux` SET `statut` = '2', `datereceptioncadeaux` = '".$dateReception."' WHERE `id` = $idCadeaux AND `statut` = '1'";
+            
+            $result = mysqli_query($connect, $sql);
+
+            if($result)
+            {
+
+                $json = json_encode("#CONFIRMCADEAUX#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#CONFIRMCADEAUX#ECHEC");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+            
+            break;
+        case 'afficheCadeauxRecu':
+            $idClient = $_GET['id'];
+
+            $sql = "SELECT * FROM `fidcadeaux` WHERE `idclient` = $idClient AND `statut` = '2' ORDER BY `datereceptioncadeaux` DESC";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+            
+                    $json = json_encode($row);
+            
+                }
+
+
+            }
+            else
+            {
+
+                $json = json_encode("#AFFCADEAUXRECU#ECHEC");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'ajoutCadeaux':
+            $idEntreprise = $_GET['id'];
+            $prestation = $_GET['prestation'];
+            $prix = $_GET['prix'];
+
+            $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise AND `prestation` = '".$prestation."'";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                $json = json_encode("#AJTCADEAUX#EXISTE");
+
+            }
+            else
+            {
+
+                $sqldeux = "INSERT INTO `cadeaux` (`id`, `identreprise`, `prestation`, `prix`, `activation`) VALUES (NULL, '".$idEntreprise."', '".$prestation."', '".$prix."', '1');";
+                if(mysqli_query($connect, $sqldeux))
+                {
+
+                    $json = json_encode("#AJTCADEAUX#SUCCESS");
+
+                }
+                else
+                {
+
+                    $json = json_encode("#AJTCADEAUX#ECHEC");
+
+                }
+                
+
+
+            }
+            
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'afficheListeCadeaux':
+            $idEntreprise = $_GET['id'];
+            
+            $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+
+                    $json = json_encode($row);
+
+                }
+
+
+            }
+            else
+            {
+
+
+                $json = json_encode("#SLCTLISTECADEAUX#ECHEC");
+
 
             }
 

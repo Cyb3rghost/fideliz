@@ -6975,6 +6975,7 @@ button.close {
   min-height: 60px;
   height: auto;
   padding: 15px;
+  border-bottom: 1px solid #A0A0A0;
 
 }
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Mer 09 Janvier 2019 à 15:43
+-- Généré le :  Jeu 10 Janvier 2019 à 15:13
 -- Version du serveur :  5.7.24-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.10-0ubuntu0.18.04.1
 
@@ -95,6 +95,31 @@ INSERT INTO `acctclient` (`id`, `identreprise`, `dinscription`, `nom`, `prenom`,
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `cadeaux`
+--
+
+CREATE TABLE `cadeaux` (
+  `id` int(11) NOT NULL,
+  `identreprise` int(11) NOT NULL,
+  `prestation` varchar(255) NOT NULL,
+  `prix` float NOT NULL,
+  `activation` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `cadeaux`
+--
+
+INSERT INTO `cadeaux` (`id`, `identreprise`, `prestation`, `prix`, `activation`) VALUES
+(1, 2, 'Brushing', 50.55, 1),
+(2, 2, 'Shampooing', 10, 1),
+(3, 2, 'Coupe homme', 20, 1),
+(4, 2, 'Coupe femme', 35, 1),
+(5, 2, 'Couleur', 70, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `cartefidelite`
 --
 
@@ -145,8 +170,8 @@ CREATE TABLE `fidcadeaux` (
 --
 
 INSERT INTO `fidcadeaux` (`id`, `idclient`, `idcarte`, `date`, `cadeaux`, `statut`, `datereceptioncadeaux`, `code`) VALUES
-(1, 8, 4, '2019-01-09 14:21:07', '1 Brushing', 1, '2019-01-09 14:21:07', 945331638),
-(2, 8, 4, '2019-01-09 14:22:07', '1 Brushing', 1, '2019-01-09 14:21:07', 945331669);
+(1, 8, 4, '2019-01-09 14:21:07', '1 Brushing', 2, '2019-01-10 11:46:11', 945331638),
+(2, 8, 4, '2019-01-09 14:22:07', '1 Brushing', 2, '2019-01-10 11:46:18', 945331669);
 
 -- --------------------------------------------------------
 
@@ -204,6 +229,12 @@ ALTER TABLE `acctclient`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `cadeaux`
+--
+ALTER TABLE `cadeaux`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `cartefidelite`
 --
 ALTER TABLE `cartefidelite`
@@ -235,6 +266,11 @@ ALTER TABLE `accsociete`
 --
 ALTER TABLE `acctclient`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT pour la table `cadeaux`
+--
+ALTER TABLE `cadeaux`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `cartefidelite`
 --

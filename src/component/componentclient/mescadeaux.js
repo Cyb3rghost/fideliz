@@ -11,55 +11,155 @@ class Mescadeaux extends Component {
 
         super(props)
         this.state = {
-            cadeauxAttente: []
+            cadeauxAttente: [],
+            cadeauxRecu: [],
+            statutConfirmationCadeaux: '',
+            statutCadeauxAttente: '',
+            statutCadeauxRecu: '',
         }
 
     }
 
     componentDidMount()
     {
-
+        
         var idClient = window.location.search.substring(4);
 
         fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxAttente&id=' + idClient)
         .then((response) => response.json())
         .then((response) => {
 
+            console.log(response)
+
             if(response === "#AFFCADEAUX#ECHEC")
             {
 
-                console.log(response)
+                this.setState({
+                    statutCadeauxAttente: '2'
+                })
+
+
+
             }
             else
             {
 
-                
                 this.setState({
-                    cadeauxAttente: response
-                })
-    
-                console.log(this.state.cadeauxAttente)
-
+                    cadeauxAttente: response,
+                    statutCadeauxAttente: '1'
+                })                
 
             }
 
 
+        })
+        .catch(err => console.error(err))
 
+        fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxRecu&id=' + idClient)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+
+            if(response === "#AFFCADEAUXRECU#ECHEC")
+            {
+
+                this.setState({
+                    statutCadeauxRecu: '2'
+                })
+
+
+
+            }
+            else
+            {
+
+                this.setState({
+                    cadeauxRecu: response,
+                    statutCadeauxRecu: '1'
+                })                
+
+            }
+
+
+    
+
+        })
+        .catch(err => console.error(err))        
+
+    }
+
+    envoieConfirmation(idCadeaux)
+    {
+
+        var idClient = window.location.search.substring(4);
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=confirmationCadeaux&id=' + idCadeaux)
+        .then((response) => response.json())
+        .then((response) => {
+
+            switch (response) {
+                case '#CONFIRMCADEAUX#SUCCESS':
+                    this.setState({
+                        statutConfirmationCadeaux: '1'
+                    })
+
+                    setTimeout(() => window.location.href = "/mescadeaux?id=" + idClient,1000)
+                    break;
+                case '#CONFIRMCADEAUX#ECHEC':
+                    this.setState({
+                        statutConfirmationCadeaux: '2'
+                    })                    
+                    break;            
+                default:
+                    break;
+            }
+    
 
         })
         .catch(err => console.error(err))
 
     }
 
+    checkStatutConfirmation()
+    {
+
+        if(this.state.statutConfirmationCadeaux === '1')
+        {
+
+            return <div className="msgSuccessPerso">
+                
+                Vous venez de confirmer que la prestation a bien été effectuer. Patientez...
+    
+            </div>
+
+
+        }
+        else if (this.state.statutConfirmationCadeaux === '2') 
+        {
+            
+
+            return <div className="msgErrorPerso">
+                
+                Votre cadeau n'a pas pu être confirmer. Veuillez recommencer !
+        
+            </div>
+
+        }
+
+    }
+
     afficheCadeauxAttente()
     {
-        // SA BUG IL FAUT REVOIR
+
         var QRCode = require('qrcode.react');
 
-        {this.state.cadeauxAttente.map((value, index) => 
-            (
-                <div>
-                    <div key={index} className="wellCadeaux">
+        if(this.state.statutCadeauxAttente === '1')
+        {
+
+            return this.state.cadeauxAttente.map(value => {
+                return ( <div key={value.id}>
+                    <div  className="wellCadeaux">
                         <div className="container-perso"><div className="row">
                     
                         <div className="col-md-2">
@@ -78,7 +178,7 @@ class Mescadeaux extends Component {
                             <b>Cadeaux crée le :</b> {value.date} <br/>
                             <b>Cadeaux :</b> {value.cadeaux} <br/>
                             <b>Statut :</b> {value.statut} <br/>
-                            <center><a class="btn btn-loginConnexion" href="#" role="button">Réclamation</a></center>
+                            <center><button class="btn btn-loginConnexion" onClick={() => this.envoieConfirmation(value.id)} type="submit">Confirmation</button></center>
                         
                         </div>
                     
@@ -89,17 +189,92 @@ class Mescadeaux extends Component {
                 </div>
                 
                 </div>
-            )
-          )}
+                        )
+            })
+
+
+        }
+        else if (this.state.statutCadeauxAttente === '2') 
+        {
+            
+
+            return <div className="msgErrorPerso">
+                
+                Vous n'avez pas de cadeaux en attente !
+        
+            </div>
+
+        }
 
 
 
     }
 
 
+    afficheCadeauxRecu()
+    {
+
+        var QRCode = require('qrcode.react');
+
+        if(this.state.statutCadeauxRecu === '1')
+        {
+
+            return this.state.cadeauxRecu.map(value => {
+                return ( <div key={value.id}>
+                    <div  className="wellCadeaux">
+                        <div className="container-perso"><div className="row">
+                    
+                        <div className="col-md-2">
+                        
+
+                            <QRCode
+                                value={value.code}
+                                size={100}
+                            />  
+                        
+                        
+                        </div>
+                        <div className="col-md-10">
+                        
+                            <b>Identifiant carte :</b> {value.idcarte} <br/>
+                            <b>Cadeaux crée le :</b> {value.date} <br/>
+                            <b>Cadeaux reçu le :</b> {value.datereceptioncadeaux} <br/>
+                            <b>Cadeaux :</b> {value.cadeaux} <br/>
+                            <b>Statut :</b> {value.statut} <br/>
+                        
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    </div>
+                </div>
+                
+                </div>
+                        )
+            })
+
+
+        }
+        else if (this.state.statutCadeauxRecu === '2') 
+        {
+            
+
+            return <div className="msgErrorPerso">
+                
+                Vous n'avez reçu aucun cadeaux !
+        
+            </div>
+
+        }
+
+
+
+    }
 
     render() {
       var idClient = window.location.search.substring(4);
+      var QRCode = require('qrcode.react');
       return (
         <div id="wrapper">
 
@@ -126,14 +301,14 @@ class Mescadeaux extends Component {
 
             </div>         
 
-            
+            {this.checkStatutConfirmation()}
 
             <div className="page-header">
                 <div className="container-perso">
 
                     <h1>• En Attente... <br/></h1>
                     <p className="text-justify">Vous trouverez ici votre prestation en attente de réclamation, l'entreprise devras alors confirmer la validation
-                    de la prestation en cours avant de pouvoir recrée une carte de fidélité.</p>
+                    de la prestation en cours avant de pouvoir recrée une carte de fidélité. <b>Attention :</b> Confirmer votre cadeau uniquement quand la prestation à été réaliser !</p>
 
                 </div>
             </div>    
@@ -149,6 +324,7 @@ class Mescadeaux extends Component {
                 </div>
             </div>    
   
+            {this.afficheCadeauxRecu()}
           
         </div>
       );

@@ -9,6 +9,7 @@ import Dashboard from './component/dashboard';
 import Profil from './component/profil';
 import Client from './component/client';
 import Insertcrud from './crud/insert.js';
+import Gestioncompte from './component/gestioncompte';
 
 // GESTION COMPOSANT CLIENT
 import Fichecoclient from './component/componentclient/fichecoclient'
@@ -330,6 +331,14 @@ class App extends Component {
         case '/ajoutcarte':
           if( vrfLogged ) {
             return <Ajoutcarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infosCarte={this.state.vrfInfosCarteBg} infosCarteIcon={this.state.vrfInfosCarteIcon}  />
+          }
+          else{
+            window.location.href = "/"
+          } 
+          break;
+        case '/gestionCompte':
+          if( vrfLogged ) {
+            return <Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser}  />
           }
           else{
             window.location.href = "/"
