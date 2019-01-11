@@ -18,7 +18,8 @@ class Ajoutcarte extends Component {
             dateDuJour: '',
             limitPointage: '',
             cadeaux: '',
-            statutMsg: ''
+            statutMsg: '',
+            afflisteCadeaux: []
 
         }
 
@@ -30,10 +31,39 @@ class Ajoutcarte extends Component {
 
         var d = new Date();
         var date = d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()
+        var idClient = window.location.search.substring(4);
 
         this.setState({
             dateDuJour: date
         })
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+
+            if(response === "#SLCTLISTECADEAUX#ECHEC")
+            {
+
+                this.setState({
+                    statutListeMsg: '3'
+                })
+
+            }
+            else
+            {
+
+                this.setState({
+                    afflisteCadeaux: response
+                })
+
+            }
+            
+    
+
+        })
+        .catch(err => console.error(err)) 
 
     }
 
@@ -123,8 +153,37 @@ class Ajoutcarte extends Component {
 
     }
 
+    afficheListePrestation()
+    {
+
+
+        if(this.state.statutMsg === '3')
+        {
+
+            return <option>Aucun cadeaux à afficher !</option>
+
+
+        }
+        else
+        {
+            
+            return this.state.afflisteCadeaux.map(value => {
+                return (
+                            <option>{value.prestation} - {value.prix} €</option>
+                        )
+            })
+            
+
+        }
+
+
+
+        
+    }
+
 
     render() {
+        var QRCode = require('qrcode.react');
         return (
           <div id="wrapper">
             
@@ -170,7 +229,11 @@ class Ajoutcarte extends Component {
                     <div id="personalizecarte">  
                         <img src={backgroundCarte} className="img-responsive" id="img1" alt="" />
                         <img src={logoCarte}  width="100" height="100" id="img2" className="img-rounded" alt="" />
-                        <img src={qrCode}  width="60" height="60" id="img3" className="img-rounded" alt="" />
+                        <QRCode
+                            value=""
+                            size={100}
+                            id="img3"
+                        />  
                     
                     </div> 
                 </div>  
@@ -212,9 +275,7 @@ class Ajoutcarte extends Component {
                     value={this.state.cadeaux}
                     onChange={e => this.setState({cadeaux: e.target.value})}>>
                         <option value="" disabled selected>Select your option</option>
-                        <option>1 coupe gratuite</option>
-                        <option>1 shampooing</option>
-                        <option>1 Brushing</option>
+                        {this.afficheListePrestation()}
                     </select>
                 </div>
                 <button onClick={this.addCarte.bind(this)} className="btn btn-loginConnexion btn-block" type="submit">Création de la carte</button>

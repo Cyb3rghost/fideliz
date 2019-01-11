@@ -10,9 +10,13 @@ class Gestioncompte extends Component {
         super(props)
         this.state = {
             cadeaux: [],
+            cadeauxInactive: [],
             maprestation: '',
             prix: '',
-            statutListeCadeaux: ''
+            statutListeCadeaux: '',
+            statutListeCadeauxInactive: '',
+            activeClassTab: 'active',
+            activeClassTabDeux: ''
         }
 
     }
@@ -49,7 +53,39 @@ class Gestioncompte extends Component {
     
 
         })
-        .catch(err => console.error(err))             
+        .catch(err => console.error(err))   
+        
+        fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeauxInactive&id=' + this.props.idUserRecup)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+
+            if(response === "#SLCTLISTECADEAUXINACTIF#ECHEC")
+            {
+
+                this.setState({
+                    statutListeCadeauxInactive: '1'
+                })
+
+            }
+            else
+            {
+
+                this.setState({
+                    cadeauxInactive: response
+                })
+
+            }
+            
+
+
+    
+
+        })
+        .catch(err => console.error(err))  
+
+
 
     }
 
@@ -134,16 +170,180 @@ class Gestioncompte extends Component {
             </div>
 
         }
+        else if (this.state.statutAjtCadeaux === '4') 
+        {
+            
 
+            return <div className="msgSuccessPerso">
+                
+                 Votre prestation a bien été désactiver.
+        
+            </div>
+
+        }
+        else if (this.state.statutAjtCadeaux === '5') 
+        {
+            
+
+            return <div className="msgErrorPerso">
+                
+                 Votre prestation n'a pas été désactiver.
+        
+            </div>
+
+        }
+        else if (this.state.statutAjtCadeaux === '6') 
+        {
+            
+
+            return <div className="msgSuccessPerso">
+                
+                 Votre prestation a bien été activer.
+        
+            </div>
+
+        }
+        else if (this.state.statutAjtCadeaux === '7') 
+        {
+            
+
+            return <div className="msgErrorPerso">
+                
+                 Votre prestation n'a pas été activer.
+        
+            </div>
+
+        }
+        else if (this.state.statutAjtCadeaux === '8') 
+        {
+            
+
+            return <div className="msgSuccessPerso">
+                
+                 Votre prestation a bien été supprimer.
+        
+            </div>
+
+        }
+        else if (this.state.statutAjtCadeaux === '9') 
+        {
+            
+
+            return <div className="msgErrorPerso">
+                
+                 Votre prestation n'a pas été supprimer.
+        
+            </div>
+
+        }
+
+    }
+
+    activeCadeaux(idcadeaux)
+    {
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=activePrestation&id=' + idcadeaux)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+
+            if(response === "#ENABLEGIFT#SUCCESS")
+            {
+
+                this.setState({
+                    statutAjtCadeaux: '6'
+                })
+
+                setTimeout(() => window.location.href = "/gestionCompte",1000)
+
+            }
+            else if (response === "#ENABLEGIFT#ECHEC") {
+
+                this.setState({
+                    statutAjtCadeaux: '7'
+                })
+
+            }
+
+
+    
+
+        })
+        .catch(err => console.error(err)) 
 
     }
 
     desactiveCadeaux(idcadeaux)
     {
 
-        alert(idcadeaux)
+        fetch('http://127.0.0.1/fidapi/main.php?action=desactivePrestation&id=' + idcadeaux)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+
+            if(response === "#DISABLEGIFT#SUCCESS")
+            {
+
+                this.setState({
+                    statutAjtCadeaux: '4'
+                })
+
+                setTimeout(() => window.location.href = "/gestionCompte",1000)
+
+            }
+            else if (response === "#DISABLEGIFT#ECHEC") {
+
+                this.setState({
+                    statutAjtCadeaux: '5'
+                })
+
+            }
+
+
+    
+
+        })
+        .catch(err => console.error(err)) 
 
     }
+
+    suppressionCadeaux(idcadeaux)
+    {
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=suppressionPrestation&id=' + idcadeaux)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+
+            if(response === "#DELETEGIFT#SUCCESS")
+            {
+
+                this.setState({
+                    statutAjtCadeaux: '8'
+                })
+
+                setTimeout(() => window.location.href = "/gestionCompte",1000)
+
+            }
+            else if (response === "#DELETE#ECHEC") {
+
+                this.setState({
+                    statutAjtCadeaux: '9'
+                })
+
+            }
+
+
+    
+
+        })
+        .catch(err => console.error(err)) 
+
+    }
+    
 
     afficheListePrestation()
     {
@@ -168,7 +368,7 @@ class Gestioncompte extends Component {
                             <tr>
                                 <td>{value.prestation} </td>
                                 <td>{value.prix} €</td>
-                                <td><button class="btn btn-warning" onClick={() => this.desactiveCadeaux(value.id)} type="submit">Désactivation</button> - <button class="btn btn-danger" type="submit">Suppression</button></td>
+                                <td><button class="btn btn-warning" onClick={() => this.desactiveCadeaux(value.id)} type="submit">Désactivation</button></td>
                             </tr>
                         
                         )
@@ -180,6 +380,87 @@ class Gestioncompte extends Component {
 
 
         
+    }
+
+    afficheListePrestationInactive()
+    {
+
+
+        if(this.state.statutListeCadeauxInactive === '1')
+        {
+
+            return <div className="msgErrorPerso">
+                
+                Vous n'avez enregistrer aucun cadeaux.
+    
+            </div>
+
+
+        }
+        else
+        {
+            
+            return this.state.cadeauxInactive.map(value => {
+                return (
+                            <tr>
+                                <td>{value.prestation} </td>
+                                <td>{value.prix} €</td>
+                                <td><button class="btn btn-success" onClick={() => this.activeCadeaux(value.id)} type="submit">Activation</button> - <button onClick={() => this.suppressionCadeaux(value.id)} class="btn btn-danger" type="submit">Suppression</button></td>
+                            </tr>
+                        
+                        )
+            })
+            
+
+        }
+
+
+
+        
+    }
+
+
+    toggle()
+    {
+
+        if(this.state.activeClassTab === 'active')
+        {
+
+            this.setState({
+                activeClassTab: '',
+                activeClassTabDeux: 'active'
+            })
+
+        }
+        else if(this.state.activeClassTabDeux === '')
+        {
+
+            this.setState({
+                activeClassTab: 'active',
+                activeClassTabDeux: ''
+            })
+
+        }
+        else if(this.state.activeClassTabDeux === '')
+        {
+
+            this.setState({
+                activeClassTab: '',
+                activeClassTabDeux: 'active'
+            })
+
+        }
+        else if(this.state.activeClassTabDeux === 'active')
+        {
+
+            this.setState({
+                activeClassTab: 'active',
+                activeClassTabDeux: ''
+            })
+
+        }
+
+
     }
 
     render() {
@@ -248,17 +529,43 @@ class Gestioncompte extends Component {
         </div>
 
         <br/>
-        <table class="table table-striped">
-            <thead>
-            <tr>
+
+        <ul className="nav nav-tabs">
+            <li className={this.state.activeClassTab}><a id="cibleHome" onClick={this.toggle.bind(this)} href="#home">Prestations actives</a></li>
+            <li className={this.state.activeClassTabDeux}><a id="cibleMenu1" onClick={this.toggle.bind(this)} href="#menu1">Prestations inactives</a></li>
+        </ul>
+
+        <div className="tab-content">
+            <div id="home" className="tab-pane fade in active">
                 
-            </tr>
-            </thead>
-            <tbody>
-                {this.afficheListePrestation()}
-            </tbody>
-        </table>                
-        
+                <div className="container-perso">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {this.afficheListePrestation()}
+                        </tbody>
+                    </table>    
+                </div>
+            </div>
+            <div id="menu1" className="tab-pane">
+                <div className="container-perso">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {this.afficheListePrestationInactive()}
+                        </tbody>
+                    </table>  
+                </div>
+            </div>
+        </div>  
 
         </div>
       );

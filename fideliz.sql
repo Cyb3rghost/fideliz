@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Jeu 10 Janvier 2019 à 15:13
+-- Généré le :  Ven 11 Janvier 2019 à 14:46
 -- Version du serveur :  5.7.24-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.10-0ubuntu0.18.04.1
 
@@ -90,7 +90,7 @@ INSERT INTO `acctclient` (`id`, `identreprise`, `dinscription`, `nom`, `prenom`,
 (5, 2, '2019-01-04', 'RiviÃ¨re', 'Max', '56 Rue des encombrants 97421 La riviÃ¨re Saint-Louis', '0692741255', 'max@gmail.com', 'edff293d77fa6f0e2ccdfefe35ea2d84', 0, 0, 0),
 (6, 2, '2019-01-04', 'Toto', 'titi', '30 rue des titis', '0692112233', 'max@gmail.com', 'fac72322259f2d9ead77a4de15457582', 0, 0, 0),
 (7, 2, '2019-01-04', 'Titi', 'toto', '30 rue des titis', '0692101112', 'max@gmail.com', '503e3e3e9c7cfc2fff762adac089d2ea', 0, 0, 0),
-(8, 2, '2019-01-08', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101233', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 4, 12);
+(8, 2, '2019-01-08', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101233', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 9, 12);
 
 -- --------------------------------------------------------
 
@@ -113,9 +113,8 @@ CREATE TABLE `cadeaux` (
 INSERT INTO `cadeaux` (`id`, `identreprise`, `prestation`, `prix`, `activation`) VALUES
 (1, 2, 'Brushing', 50.55, 1),
 (2, 2, 'Shampooing', 10, 1),
-(3, 2, 'Coupe homme', 20, 1),
-(4, 2, 'Coupe femme', 35, 1),
-(5, 2, 'Couleur', 70, 1);
+(3, 2, 'Coupe homme', 20, 0),
+(8, 2, 'Margarita', 15, 1);
 
 -- --------------------------------------------------------
 
@@ -132,7 +131,7 @@ CREATE TABLE `cartefidelite` (
   `nbpointage` int(11) NOT NULL,
   `limitpointage` int(11) NOT NULL,
   `statut` int(11) NOT NULL,
-  `cadeaux` varchar(255) NOT NULL,
+  `cadeaux` text NOT NULL,
   `imgbackground` varchar(255) NOT NULL,
   `imgicon` varchar(255) NOT NULL,
   `qrcode` varchar(255) NOT NULL
@@ -146,7 +145,9 @@ INSERT INTO `cartefidelite` (`id`, `idclient`, `datecreation`, `nom`, `prenom`, 
 (1, 1, '2019-01-07', 'LEVENEUR', 'Ludovic', 0, 15, 1, '1 shampooing', 'backgroundCarte.jpg', 'logocarte.png', '366251495'),
 (2, 8, '2019-01-08', 'Riviere', 'JeanMarc', 15, 15, 2, '1 coupe gratuite', 'backgroundCarte.jpg', 'logocarte.png', '589602382'),
 (3, 8, '2019-01-09', 'Riviere', 'JeanMarc', 10, 10, 2, '1 shampooing', 'backgroundCarte.jpg', 'logocarte.png', '852587963'),
-(4, 8, '2019-01-09', 'Riviere', 'JeanMarc', 10, 10, 2, '1 Brushing', 'backgroundCarte.jpg', 'logocarte.png', '945331638');
+(4, 8, '2019-01-09', 'Riviere', 'JeanMarc', 10, 10, 2, '1 Brushing', 'backgroundCarte.jpg', 'logocarte.png', '945331638'),
+(5, 8, '2019-01-11', 'Riviere', 'JeanMarc', 10, 10, 2, '1 coupe gratuite', 'backgroundCarte.jpg', 'logocarte.png', '57868888'),
+(6, 8, '2019-01-11', 'Riviere', 'JeanMarc', 10, 10, 2, 'Brushing - 50.55 â‚¬', 'backgroundCarte.jpg', 'logocarte.png', '223241456');
 
 -- --------------------------------------------------------
 
@@ -162,16 +163,19 @@ CREATE TABLE `fidcadeaux` (
   `cadeaux` varchar(255) NOT NULL,
   `statut` int(11) NOT NULL,
   `datereceptioncadeaux` datetime NOT NULL,
-  `code` int(11) NOT NULL
+  `code` int(11) NOT NULL,
+  `prix` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `fidcadeaux`
 --
 
-INSERT INTO `fidcadeaux` (`id`, `idclient`, `idcarte`, `date`, `cadeaux`, `statut`, `datereceptioncadeaux`, `code`) VALUES
-(1, 8, 4, '2019-01-09 14:21:07', '1 Brushing', 2, '2019-01-10 11:46:11', 945331638),
-(2, 8, 4, '2019-01-09 14:22:07', '1 Brushing', 2, '2019-01-10 11:46:18', 945331669);
+INSERT INTO `fidcadeaux` (`id`, `idclient`, `idcarte`, `date`, `cadeaux`, `statut`, `datereceptioncadeaux`, `code`, `prix`) VALUES
+(1, 8, 4, '2019-01-09 14:21:07', '1 Brushing', 2, '2019-01-10 11:46:11', 945331638, 0),
+(2, 8, 4, '2019-01-09 14:22:07', '1 Brushing', 2, '2019-01-10 11:46:18', 945331669, 0),
+(3, 8, 5, '2019-01-11 09:02:02', '1 coupe gratuite', 2, '2019-01-11 09:02:23', 57868888, 0),
+(4, 8, 6, '2019-01-11 11:15:54', 'Brushing', 2, '2019-01-11 11:18:51', 223241456, 50.55);
 
 -- --------------------------------------------------------
 
@@ -270,17 +274,17 @@ ALTER TABLE `acctclient`
 -- AUTO_INCREMENT pour la table `cadeaux`
 --
 ALTER TABLE `cadeaux`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT pour la table `cartefidelite`
 --
 ALTER TABLE `cartefidelite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT pour la table `fidcadeaux`
 --
 ALTER TABLE `fidcadeaux`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `pointage`
 --

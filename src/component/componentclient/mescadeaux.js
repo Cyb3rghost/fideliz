@@ -177,6 +177,7 @@ class Mescadeaux extends Component {
                             <b>Identifiant carte :</b> {value.idcarte} <br/>
                             <b>Cadeaux crée le :</b> {value.date} <br/>
                             <b>Cadeaux :</b> {value.cadeaux} <br/>
+                            <b>Valeur : </b> {value.prix} €<br/>
                             <b>Statut :</b> {value.statut} <br/>
                             <center><button class="btn btn-loginConnexion" onClick={() => this.envoieConfirmation(value.id)} type="submit">Confirmation</button></center>
                         
@@ -240,6 +241,7 @@ class Mescadeaux extends Component {
                             <b>Cadeaux crée le :</b> {value.date} <br/>
                             <b>Cadeaux reçu le :</b> {value.datereceptioncadeaux} <br/>
                             <b>Cadeaux :</b> {value.cadeaux} <br/>
+                            <b>Valeur : </b> {value.prix} €<br/>
                             <b>Statut :</b> {value.statut} <br/>
                         
                         </div>

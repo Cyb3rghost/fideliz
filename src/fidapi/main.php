@@ -490,7 +490,8 @@ if(isset($_GET['action']))
                 $limitationPointage = $row['limitpointage'];
                 $idCarteFidelite = $row['id'];
                 $cadeauxFidelite = $row['cadeaux'];
-        
+                $recuperationPrixSurCadeaux = explode(" - ", $cadeauxFidelite);
+                $reelPrix = substr($recuperationPrixSurCadeaux[1], 0, -4);
             }
 
             if($nombrePointage === $limitationPointage)
@@ -506,7 +507,7 @@ if(isset($_GET['action']))
 
                 }
 
-                mysqli_query($connect, "INSERT INTO `fidcadeaux` (`id`, `idclient`, `idcarte`, `date`, `cadeaux`, `statut`, `datereceptioncadeaux`, `code`) VALUES (NULL, '".$id."', '".$idCarteFidelite."', '".$dateCreationCadeaux."', '".$cadeauxFidelite."', '1', '".$dateCreationCadeaux."', '".$code."')");
+                mysqli_query($connect, "INSERT INTO `fidcadeaux` (`id`, `idclient`, `idcarte`, `date`, `cadeaux`, `statut`, `datereceptioncadeaux`, `code`, `prix`) VALUES (NULL, '".$id."', '".$idCarteFidelite."', '".$dateCreationCadeaux."', '".$recuperationPrixSurCadeaux[0]."', '1', '".$dateCreationCadeaux."', '".$code."', '".$reelPrix."')");
                 mysqli_query($connect, "UPDATE `acctclient` SET `nbcarteterminer` = $nombreCarteTerminer + 1 WHERE `id` = $id");
                 mysqli_query($connect, "UPDATE `cartefidelite` SET `statut` = '2', `qrcode` = '".$code."' WHERE `idclient` = $id  AND `statut` = '1'");
                 $json = json_encode("#CLOTURATION#SUCCESS");
@@ -714,7 +715,7 @@ if(isset($_GET['action']))
         case 'afficheListeCadeaux':
             $idEntreprise = $_GET['id'];
             
-            $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise";
+            $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise AND `activation` = '1'";
             $result = mysqli_query($connect, $sql);
 
             if(mysqli_num_rows($result))
@@ -735,6 +736,139 @@ if(isset($_GET['action']))
 
                 $json = json_encode("#SLCTLISTECADEAUX#ECHEC");
 
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'afficheListeCadeaux':
+            $idEntreprise = $_GET['id'];
+            
+            $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise AND `activation` = '1'";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+
+                    $json = json_encode($row);
+
+                }
+
+
+            }
+            else
+            {
+
+
+                $json = json_encode("#SLCTLISTECADEAUX#ECHEC");
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'afficheListeCadeauxInactive':
+            $idEntreprise = $_GET['id'];
+            
+            $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise AND `activation` = '0'";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+
+                    $json = json_encode($row);
+
+                }
+
+
+            }
+            else
+            {
+
+
+                $json = json_encode("#SLCTLISTECADEAUXINACTIF#ECHEC");
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'activePrestation':
+            $id = $_GET['id'];
+
+            $sql = "UPDATE `cadeaux` SET `activation` = '1' WHERE `id` = $id";
+            if(mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#ENABLEGIFT#SUCCESS");
+
+
+            }
+            else
+            {
+
+                $json = json_encode("#ENABLEGIFT#ECHEC");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'desactivePrestation':
+            $id = $_GET['id'];
+
+            $sql = "UPDATE `cadeaux` SET `activation` = '0' WHERE `id` = $id";
+            if(mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#DISABLEGIFT#SUCCESS");
+
+
+            }
+            else
+            {
+
+                $json = json_encode("#DISABLEGIFT#ECHEC");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'suppressionPrestation':
+            $id = $_GET['id'];
+
+            $sql = "DELETE FROM `cadeaux` WHERE `id` = $id";
+            if(mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#DELETEGIFT#SUCCESS");
+
+
+            }
+            else
+            {
+
+                $json = json_encode("#DELETEGIFT#ECHEC");
 
             }
 

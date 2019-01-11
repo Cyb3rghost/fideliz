@@ -7,6 +7,7 @@ import addCarte from '../images/addcarte.png';
 import backgroundImage from '../images/backgroundCarte.jpg'
 import iconImg from '../images/logocarte.png'
 import pointage from '../images/pointage.png'
+import calendrier from '../images/calendar.png'
 
 class Ficheclient extends Component {
 
@@ -262,11 +263,13 @@ class Ficheclient extends Component {
 
         if(this.state.carteStatutMsg != '2')
         {
-            return <a href={'/listetypecarte?id=' + idClient}><img src={addCarte} width="100" height="100" title="Ajouter une carte de fidélité" alt="Responsive image"/></a>
+            return <div><a href={'/listetypecarte?id=' + idClient}><img src={addCarte} width="100" height="100" title="Ajouter une carte de fidélité" alt="Responsive image"/></a>
+            &nbsp;&nbsp;<a href={'/planning?id=' + idClient}><img src={calendrier} width="100" height="100" title="Gestion planning client" alt="Responsive image"/></a></div>
         }
         else if(this.state.carteStatutMsg === '2')
         {
-            return <img src={pointage} width="100" height="100" onClick={this.addPointage.bind(this)} title="Pointé la carte de fidélité" alt="Responsive image"/>
+            return <div><img src={pointage} width="100" height="100" onClick={this.addPointage.bind(this)} title="Pointé la carte de fidélité" alt="Responsive image"/>
+                   &nbsp;&nbsp;<a href={'/planning?id=' + idClient}><img src={calendrier} width="100" height="100" title="Gestion planning client" alt="Responsive image"/></a></div>
         }
 
 

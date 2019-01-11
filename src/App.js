@@ -10,6 +10,7 @@ import Profil from './component/profil';
 import Client from './component/client';
 import Insertcrud from './crud/insert.js';
 import Gestioncompte from './component/gestioncompte';
+import Planning from './component/planning';
 
 // GESTION COMPOSANT CLIENT
 import Fichecoclient from './component/componentclient/fichecoclient'
@@ -339,6 +340,14 @@ class App extends Component {
         case '/gestionCompte':
           if( vrfLogged ) {
             return <Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser}  />
+          }
+          else{
+            window.location.href = "/"
+          } 
+          break;
+        case '/planning':
+          if( vrfLogged ) {
+            return <Planning loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser}  />
           }
           else{
             window.location.href = "/"
