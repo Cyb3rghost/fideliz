@@ -11,6 +11,8 @@ html {
 }
 body {
   margin: 0;
+  background-color: #F2F2F2;
+
 }
 article,
 aside,
@@ -4582,33 +4584,32 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #ccc;
 }
 .navbar-inverse {
-  background-color: #006A8E;
-  border-color: #006A8E;
-  border-left: 2px solid #006A8E;
+  background-color: #6865BC;
+  border-color: #6865BC;
 }
 .navbar-inverse .navbar-brand {
-  color: #9d9d9d;
+  color: white;
 }
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
-  color: #fff;
-  background-color: transparent;
+  color: white;
+  background-color: #6865BC;
 }
 .navbar-inverse .navbar-text {
-  color: #9d9d9d;
+  color: white;
 }
 .navbar-inverse .navbar-nav > li > a {
-  color: #9d9d9d;
+  color: white;
 }
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
-  color: #fff;
+  color: white;
   background-color: transparent;
 }
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
-  color: #fff;
+  color: white;
   background-color: #080808;
 }
 .navbar-inverse .navbar-nav > .disabled > a,
@@ -5452,6 +5453,21 @@ button.list-group-item-danger.active:focus {
 .panel-body {
   padding: 15px;
 }
+
+.panel-body-perso-left {
+  padding-bottom: 15px;
+  background-color: white;
+  background-image: linear-gradient(30deg, #6865BC 15%, white 15%);
+
+}
+
+.panel-body-perso-right {
+  padding-bottom: 15px;
+  background-color: white;
+  background-image: linear-gradient(330deg, #6865BC 15%, white 15%);
+
+}
+
 .panel-heading {
   padding: 10px 15px;
   border-bottom: 1px solid transparent;
@@ -5681,8 +5697,8 @@ button.list-group-item-danger.active:focus {
 }
 .panel-default > .panel-heading {
   color: white;
-  background-color: #004F71;
-  border-color: #ddd;
+  background-color: #6865BC;
+  border-color: #6865BC;
 }
 .panel-default > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: #ddd;
@@ -6759,7 +6775,14 @@ button.close {
 
     min-height: 100px;
     padding: 20px;
-    background-color: #c1d1d8;
+    background-color: #8784D3;
+
+}
+
+.panelInfo h2 
+{
+
+  color: white;
 
 }
 
@@ -7038,3 +7061,33 @@ button.close {
 }
 
 /* 11/01/2019 */ 
+
+/* 15/01/2019 */
+
+footer 
+{
+
+  padding: 25px;
+  background-color: #6865BC;
+  color: white;
+  text-align: center;
+
+}
+
+.planningAttente
+{
+
+  padding: 15px;
+  color: black;
+  border-bottom: 2px solid #F2F2F2;
+
+}
+
+.cadreProposeDate
+{
+
+  padding-top: 2.8%;
+
+}
+
+/* 15/01/2019 */

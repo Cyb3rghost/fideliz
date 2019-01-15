@@ -23,25 +23,24 @@ class Menuclient extends Component {
       return (
         <div>
 
-            <div id="sidebar-wrapper">
-                <ul className="sidebar-nav">
-                    <li className="sidebar-brand">
-                        <a href="#">
-                            FIDELIZ
-                        </a>
-                    </li>
-                    <li>
-                        <a href={'/fichecoclient?id=' + idClient}><img src={userwhite} width="40" height="40" alt="Responsive image"/> Profil</a>
-                    </li>
-                    <li>
-                        <a href={'/mescadeaux?id=' + idClient}><img src={cadeaux} width="40" height="40" alt="Responsive image"/> Mes cadeaux fidélités</a>
-                    </li>
-                    <li>
-                        <a href="#" onClick={this.deconnexion.bind(this)}><img src={deconnexionwhite} width="40" height="40" alt="Responsive image"/> Déconnexion</a>
-                    </li>
-                </ul>
-            </div>          
-  
+            <nav className="navbar navbar-inverse">
+                    <div className="container-fluid">
+                        <div className="navbar-header">
+                        <a className="navbar-brand" href="#">FIDELIZ</a>
+                        </div>
+                        <ul className="nav navbar-nav navbar-right">
+                            <li>
+                                <a href={'/fichecoclient?id=' + idClient}><img src={userwhite} width="40" height="40" alt="Responsive image"/> Profil</a>
+                            </li>
+                            <li>
+                                <a href={'/mescadeaux?id=' + idClient}><img src={cadeaux} width="40" height="40" alt="Responsive image"/> Mes cadeaux fidélités</a>
+                            </li>
+                            <li>
+                                <a href="#" onClick={this.deconnexion.bind(this)}><img src={deconnexionwhite} width="40" height="40" alt="Responsive image"/> Déconnexion</a>
+                            </li>
+                        </ul>
+                    </div>
+            </nav>
           
         </div>
       );

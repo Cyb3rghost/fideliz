@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Menu from './menu'
 
 import dashboard from '../images/dashboard.png'
+import Footer from './footer'
 
 class Dashboard extends Component {
 
@@ -70,22 +71,10 @@ class Dashboard extends Component {
     render() {
       return (
 
-        <div id="wrapper">
+        <div>
+
         <Menu />
 
-        <nav className="navbar navbar-inverse">
-                <div className="container-fluid">
-                    <div className="navbar-header">
-                    <a className="navbar-brand" href="#"></a>
-                    </div>
-                    <ul className="nav navbar-nav navbar-right">
-                    <li className="active"><a href="#">Home</a></li>
-                    <li><a href="#">Page 1</a></li>
-                    <li><a href="#">Page 2</a></li>
-                    <li><a href="#">Page 3</a></li>
-                    </ul>
-                </div>
-        </nav>
         <div className="panelInfo">
             
             <div className="container-perso">
@@ -197,6 +186,8 @@ class Dashboard extends Component {
 
             </div>
         </div>
+
+        <Footer />
 
 
         </div>

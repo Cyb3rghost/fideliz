@@ -7,6 +7,8 @@ import backgroundCarte from '../images/backgroundCarte.jpg';
 import logoCarte from '../images/logocarte.png';
 import qrCode from '../images/qrcode.png';
 
+import Footer from './footer'
+
 class Ajoutcarte extends Component {
 
     constructor(props)
@@ -185,23 +187,10 @@ class Ajoutcarte extends Component {
     render() {
         var QRCode = require('qrcode.react');
         return (
-          <div id="wrapper">
+          <div>
             
           <Menu />
   
-          <nav className="navbar navbar-inverse">
-                  <div className="container-fluid">
-                      <div className="navbar-header">
-                      <a className="navbar-brand" href="#"></a>
-                      </div>
-                      <ul className="nav navbar-nav navbar-right">
-                      <li className="active"><a href="#">Home</a></li>
-                      <li><a href="#">Page 1</a></li>
-                      <li><a href="#">Page 2</a></li>
-                      <li><a href="#">Page 3</a></li>
-                      </ul>
-                  </div>
-          </nav>
           <div className="panelInfo">
               
               <div className="container-perso">
@@ -287,7 +276,7 @@ class Ajoutcarte extends Component {
 
           </div>  
                          
-          
+          <Footer />
             
           </div>
         );
