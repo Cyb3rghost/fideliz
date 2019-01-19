@@ -5,6 +5,7 @@ import cookie from 'react-cookies'
 import userwhite from '../../images/userwhite.png'
 import cadeaux from '../../images/cadeaux.png'
 import deconnexionwhite from '../../images/deconnexion-white.png'
+import calendrier from '../../images/calendar.png'
 
 
 class Menuclient extends Component {
@@ -34,6 +35,9 @@ class Menuclient extends Component {
                             </li>
                             <li>
                                 <a href={'/mescadeaux?id=' + idClient}><img src={cadeaux} width="40" height="40" alt="Responsive image"/> Mes cadeaux fidélités</a>
+                            </li>
+                            <li>
+                                <a href={'/planningclient?id=' + idClient}><img src={calendrier} width="40" height="40" alt="Responsive image"/> Mon Planning</a>
                             </li>
                             <li>
                                 <a href="#" onClick={this.deconnexion.bind(this)}><img src={deconnexionwhite} width="40" height="40" alt="Responsive image"/> Déconnexion</a>

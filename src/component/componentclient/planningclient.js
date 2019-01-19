@@ -3,16 +3,16 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-import Menu from './menu'
-import calendrier from '../images/calendar.png'
-import ajout from '../images/ajout.png'
-import attente from '../images/attente.png'
-import confirmation from '../images/confirme.png'
+import Menu from './menuclient'
+import calendrier from '../../images/calendar.png'
+import ajout from '../../images/ajout.png'
+import attente from '../../images/attente.png'
+import confirmation from '../../images/confirme.png'
 
-import Footer from './footer'
+import Footer from '../footer'
 
 
-class Planning extends Component {
+class Planningclient extends Component {
 
     constructor(props)
     {
@@ -41,7 +41,7 @@ class Planning extends Component {
 
         var idclient = window.location.search.substring(4)
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=planningAttente&identreprise=' + this.props.idUserRecup
+        fetch('http://127.0.0.1/fidapi/main.php?action=planningAttente&identreprise=' + this.props.idEntRecupClient
         + '&idclient=' + idclient)
         .then((response) => response.json())
         .then((response) => {
@@ -64,10 +64,12 @@ class Planning extends Component {
 
             }
 
+
+
         })
         .catch(err => console.error(err))
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=planningValider&identreprise=' + this.props.idUserRecup
+        fetch('http://127.0.0.1/fidapi/main.php?action=planningValider&identreprise=' + this.props.idEntRecupClient
         + '&idclient=' + idclient)
         .then((response) => response.json())
         .then((response) => {
@@ -77,7 +79,7 @@ class Planning extends Component {
             {
 
                 this.setState({
-                    statutMsgPlanning: '3'
+                    statutMsgPlanning: '4'
                 })
 
             }
@@ -95,7 +97,7 @@ class Planning extends Component {
         })
         .catch(err => console.error(err))
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=planningHistorique&identreprise=' + this.props.idUserRecup
+        fetch('http://127.0.0.1/fidapi/main.php?action=planningHistorique&identreprise=' + this.props.idEntRecupClient
         + '&idclient=' + idclient)
         .then((response) => response.json())
         .then((response) => {
@@ -130,9 +132,9 @@ class Planning extends Component {
     addPlanning(idclient)
     {
 
-        alert("http://127.0.0.1/fidapi/main.php?action=addPlanning&identreprise=" + this.props.idUserRecup + "&idclient=" + idclient + "&date=" + this.state.startDate.toLocaleDateString() + "&heures=" + this.state.heures)
+        alert("http://127.0.0.1/fidapi/main.php?action=addPlanning&identreprise=" + this.props.idEntRecupClient + "&idclient=" + idclient + "&date=" + this.state.startDate.toLocaleDateString() + "&heures=" + this.state.heures)
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=addPlanning&identreprise=' + this.props.idUserRecup
+        fetch('http://127.0.0.1/fidapi/main.php?action=addPlanning&identreprise=' + this.props.idEntRecupClient
         + '&idclient=' + idclient
         + '&date=' + this.state.startDate.toLocaleDateString()
         + '&heures=' + this.state.heures)
@@ -381,4 +383,4 @@ class Planning extends Component {
       }
     }
   
-  export default Planning;
+  export default Planningclient;

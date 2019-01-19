@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Ven 11 Janvier 2019 à 14:46
+-- Généré le :  Sam 19 Janvier 2019 à 23:51
 -- Version du serveur :  5.7.24-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.10-0ubuntu0.18.04.1
 
@@ -180,6 +180,31 @@ INSERT INTO `fidcadeaux` (`id`, `idclient`, `idcarte`, `date`, `cadeaux`, `statu
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `planning`
+--
+
+CREATE TABLE `planning` (
+  `id` int(11) NOT NULL,
+  `identreprise` int(11) NOT NULL,
+  `idclient` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `statut` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `planning`
+--
+
+INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `date`, `statut`) VALUES
+(1, 2, 8, '2019-01-16 00:00:00', 1),
+(2, 2, 8, '2019-01-16 00:00:00', 5),
+(3, 2, 8, '2019-01-16 01:30:00', 4),
+(4, 2, 8, '2019-01-24 15:30:00', 3),
+(5, 2, 8, '2019-01-25 15:30:00', 2);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `pointage`
 --
 
@@ -251,6 +276,12 @@ ALTER TABLE `fidcadeaux`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `planning`
+--
+ALTER TABLE `planning`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `pointage`
 --
 ALTER TABLE `pointage`
@@ -285,6 +316,11 @@ ALTER TABLE `cartefidelite`
 --
 ALTER TABLE `fidcadeaux`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT pour la table `planning`
+--
+ALTER TABLE `planning`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `pointage`
 --

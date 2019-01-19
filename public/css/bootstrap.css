@@ -4584,38 +4584,38 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #ccc;
 }
 .navbar-inverse {
-  background-color: #6865BC;
-  border-color: #6865BC;
+  background-color: #F1F4F3;
+  border-color: #F1F4F3;
 }
 .navbar-inverse .navbar-brand {
-  color: white;
+  color: #949C99;
 }
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
-  color: white;
-  background-color: #6865BC;
+  color: #1AD372;
+  background-color: transparent;
 }
 .navbar-inverse .navbar-text {
-  color: white;
+  color: #949C99;
 }
 .navbar-inverse .navbar-nav > li > a {
-  color: white;
+  color: #949C99;
 }
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
-  color: white;
+  color: #1AD372;
   background-color: transparent;
 }
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
-  color: white;
+  color: #949C99;
   background-color: #080808;
 }
 .navbar-inverse .navbar-nav > .disabled > a,
 .navbar-inverse .navbar-nav > .disabled > a:hover,
 .navbar-inverse .navbar-nav > .disabled > a:focus {
-  color: #444;
+  color: #949C99;
   background-color: transparent;
 }
 .navbar-inverse .navbar-toggle {
@@ -5457,14 +5457,14 @@ button.list-group-item-danger.active:focus {
 .panel-body-perso-left {
   padding-bottom: 15px;
   background-color: white;
-  background-image: linear-gradient(30deg, #6865BC 15%, white 15%);
+  background-image: linear-gradient(30deg, #949C99 15%, white 15%);
 
 }
 
 .panel-body-perso-right {
   padding-bottom: 15px;
   background-color: white;
-  background-image: linear-gradient(330deg, #6865BC 15%, white 15%);
+  background-image: linear-gradient(330deg, #949C99 15%, white 15%);
 
 }
 
@@ -5696,9 +5696,9 @@ button.list-group-item-danger.active:focus {
   border-color: #ddd;
 }
 .panel-default > .panel-heading {
-  color: white;
-  background-color: #6865BC;
-  border-color: #6865BC;
+  color: #525855;
+  background-color: #E6EBE9;
+  border-color: #E6EBE9;
 }
 .panel-default > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: #ddd;
@@ -6775,14 +6775,23 @@ button.close {
 
     min-height: 100px;
     padding: 20px;
-    background-color: #8784D3;
+    background-color: #FFFFFF;
+    color: #949C99;
+    border-bottom: 1px dashed black;
 
 }
 
 .panelInfo h2 
 {
 
-  color: white;
+  color: #58655F;
+
+}
+
+.panelInfo h2:hover
+{
+
+  color: #1AD372;
 
 }
 
@@ -6920,7 +6929,7 @@ button.close {
 .btn-loginConnexion
 {
 
-  background-color: #004F71;
+  background-color: #525855;
   color: white;
 
 }
@@ -7068,7 +7077,7 @@ footer
 {
 
   padding: 25px;
-  background-color: #6865BC;
+  background-color: #58655F;
   color: white;
   text-align: center;
 
@@ -7091,3 +7100,40 @@ footer
 }
 
 /* 15/01/2019 */
+
+/* 16/01/2019 */
+
+.btn-fidelizPerso {
+  background-color: #1AD372;
+  color: white;
+}
+
+.badgeAccepter {
+  display: inline-block;
+  min-width: 10px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: #1AD372;
+}
+
+.badgeRefuser {
+  display: inline-block;
+  min-width: 10px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: red;
+}
+
+/* 16/01/2019 */

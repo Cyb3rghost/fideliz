@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import cookie from 'react-cookies'
 
 
-import dashboardwhite from '../images/dashboard-white.png'
-import gestioncomptewhite from '../images/gestionCompte-white.png'
-import userwhite from '../images/userwhite.png'
-import clientwhite from '../images/client-user.png'
-import logwhite from '../images/log-white.png'
-import deconnexionwhite from '../images/deconnexion-white.png'
+import dashboardwhite from '../images/dashboard.png'
+import gestioncomptewhite from '../images/gestionCompte.png'
+import userwhite from '../images/profil.png'
+import clientwhite from '../images/adduser.png'
+import logwhite from '../images/log.png'
+import deconnexionwhite from '../images/deconnexion.png'
 
 
 class Menu extends Component {

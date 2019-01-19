@@ -15,6 +15,7 @@ import Planning from './component/planning';
 // GESTION COMPOSANT CLIENT
 import Fichecoclient from './component/componentclient/fichecoclient'
 import Mescadeaux from './component/componentclient/mescadeaux'
+import Planningclient from './component/componentclient/planningclient'
 
 import Ficheclient from './component/ficheclient';
 import Nouveauclient from './component/nouveauclient';
@@ -364,6 +365,14 @@ class App extends Component {
         case '/mescadeaux':
           if( vrfLoggedClient ) {
             return <Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
+          }
+          else{
+            window.location.href = "/"
+          }           
+          break;
+        case '/planningclient':
+          if( vrfLoggedClient ) {
+            return <Planningclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
           }
           else{
             window.location.href = "/"

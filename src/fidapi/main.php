@@ -877,6 +877,150 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
+        case 'addPlanning':
+            $idEntreprise = $_GET['identreprise'];
+            $idClient = $_GET['idclient'];
+            $date = $_GET['date'];
+            $recomposeDate = explode("/", $date);
+            $nouvelleDate = $recomposeDate[2]."-".$recomposeDate[1]."-".$recomposeDate[0];
+            $heures = $_GET['heures'];
+            $finalDate = $nouvelleDate." ".$heures;
+
+            $sql = "SELECT * FROM `planning` WHERE `identreprise` = '".$idEntreprise."' AND `idclient` = '".$idClient."' AND `date` = '".$finalDate."' AND `statut` = '1'";
+            $result = mysqli_query($connect, $sql);
+
+
+            if(mysqli_num_rows($result))
+            {
+
+                $json = json_encode("#ADDPLANNING#EXISTE");
+
+            }
+            else
+            {
+
+                $sqldeux = "INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `date`, `statut`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$finalDate."', '1')";
+                if(mysqli_query($connect, $sqldeux))
+                {
+
+                    $json = json_encode("#ADDPLANNING#SUCCESS");
+    
+    
+                }
+                else
+                {
+    
+                    $json = json_encode("#ADDPLANNING#ECHEC");
+    
+                }
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'planningAttente':
+            $idEntreprise = $_GET['identreprise'];
+            $idClient = $_GET['idclient'];
+
+            $sql = "SELECT * FROM `planning` WHERE `identreprise` = '".$idEntreprise."' AND `idclient` = '".$idClient."' AND `statut` = '1'";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+
+                    $json = json_encode($row);
+
+                }
+
+
+            }
+            else
+            {
+
+
+                $json = json_encode("#PLANNINGATT#VIDE");
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'planningValider':
+            $idEntreprise = $_GET['identreprise'];
+            $idClient = $_GET['idclient'];
+
+            $sql = "SELECT * FROM `planning` WHERE `identreprise` = '".$idEntreprise."' AND `idclient` = '".$idClient."' AND `statut` = '2'";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+
+                    $json = json_encode($row);
+
+                }
+
+
+            }
+            else
+            {
+
+
+                $json = json_encode("#PLANNINGVLD#VIDE");
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'planningHistorique':
+            $idEntreprise = $_GET['identreprise'];
+            $idClient = $_GET['idclient'];
+
+            $sql = "SELECT * FROM `planning` WHERE `identreprise` = '".$idEntreprise."' AND `idclient` = '".$idClient."' AND `statut` IN ('3', '4', '5')";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+
+                    $json = json_encode($row);
+
+                }
+
+
+            }
+            else
+            {
+
+
+                $json = json_encode("#PLANNINGHST#VIDE");
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
         default:
             # code...
             break;
