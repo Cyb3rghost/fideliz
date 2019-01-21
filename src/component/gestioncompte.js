@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Menu from './menu'
 
-import gestioncomptewhite from '../images/gestionCompte-white.png'
+import gestioncomptewhite from '../images/gestionCompte.png'
 import Footer from './footer'
 
 

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import cookie from 'react-cookies'
 
 
-import userwhite from '../../images/userwhite.png'
-import cadeaux from '../../images/cadeaux.png'
-import deconnexionwhite from '../../images/deconnexion-white.png'
+import userwhite from '../../images/adduser.png'
+import cadeaux from '../../images/mescadeaux.png'
+import deconnexionwhite from '../../images/deconnexion.png'
 import calendrier from '../../images/calendar.png'
 
 

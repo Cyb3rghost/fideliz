@@ -8,6 +8,8 @@ import calendrier from '../../images/calendar.png'
 import ajout from '../../images/ajout.png'
 import attente from '../../images/attente.png'
 import confirmation from '../../images/confirme.png'
+import check from '../../images/check.png'
+import refuse from '../../images/croix.png'
 
 import Footer from '../footer'
 
@@ -78,9 +80,7 @@ class Planningclient extends Component {
             if(response === "#PLANNINGVLD#VIDE")
             {
 
-                this.setState({
-                    statutMsgPlanning: '4'
-                })
+                console.log(response)
 
             }
             else
@@ -162,15 +162,6 @@ class Planningclient extends Component {
 
 
             }
-            else if(response === "#ADDPLANNING#EXISTE")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '3'
-                })
-
-
-            }
 
 
         })
@@ -202,7 +193,7 @@ class Planningclient extends Component {
             </div>
 
         }
-        else if(this.state.statutMsgPlanning === "3")
+        else if(this.state.statutMsgPlanning === "4")
         {
 
             return <div className="msgErrorPerso">
@@ -212,6 +203,121 @@ class Planningclient extends Component {
             </div>
 
         }
+        else if(this.state.statutMsgPlanning === "6")
+        {
+
+            return <div className="msgErrorPerso">
+        
+                Votre date n'a pas pu être confirmer.
+        
+            </div>
+
+        }
+        else if(this.state.statutMsgPlanning === "7")
+        {
+
+            return <div className="msgSuccessPerso">
+        
+                Votre date a bien été valider. Patientez...
+        
+            </div>
+
+        }
+        else if(this.state.statutMsgPlanning === "8")
+        {
+
+            return <div className="msgErrorPerso">
+        
+                Votre date n'a pas pû être refuser.
+        
+            </div>
+
+        }
+        else if(this.state.statutMsgPlanning === "9")
+        {
+
+            return <div className="msgSuccessPerso">
+        
+                Votre date a bien été refuser. Patientez...
+        
+            </div>
+
+        }
+
+
+
+
+    }
+
+    valideDate(idate)
+    {
+
+        var idClient = window.location.search.substr(4)
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=confirmationDate&idate=' + idate
+        + '&idclient=' + idClient
+        + '&idEntreprise=' + this.props.idEntRecupClient)
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response)
+
+            if(response === "#CONFIRMDATE#ECHEC")
+            {
+
+                this.setState({
+                    statutMsgPlanning: '6'
+                })
+
+            }
+            else if(response === "#CONFIRMDATE#SUCCESS")
+            {
+
+                this.setState({
+                    statutMsgPlanning: '7'
+                })
+
+                setTimeout(() => window.location.href = "/planningclient?id=" + idClient,2500)
+
+            }
+
+        })
+        .catch(err => console.error(err))
+
+    }
+
+    refuseDate(idate)
+    {
+
+        var idClient = window.location.search.substr(4)
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=refusDate&idate=' + idate
+        + '&idclient=' + idClient
+        + '&idEntreprise=' + this.props.idEntRecupClient)
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response)
+
+            if(response === "#REFUSDATE#ECHEC")
+            {
+
+                this.setState({
+                    statutMsgPlanning: '8'
+                })
+
+            }
+            else if(response === "#REFUSDATE#SUCCESS")
+            {
+
+                this.setState({
+                    statutMsgPlanning: '9'
+                })
+
+                setTimeout(() => window.location.href = "/planningclient?id=" + idClient,2500)
+
+            }
+
+        })
+        .catch(err => console.error(err))
 
 
     }
@@ -287,12 +393,12 @@ class Planningclient extends Component {
                                             
                                                 <div className="col-xs-2">
                                                 
-                                                    <img src={attente} width="30" height="30" alt="Planning en attente..."/>
+                                                    <img src={attente} width="15" height="15" alt="Planning en attente..."/>
                                                 
                                                 </div>
                                                 <div className="col-xs-10">
                                                 
-                                                    {value.date}
+                                                    {value.date} <img src={refuse} width="30" height="30" onClick={() => this.refuseDate(value.id)} align="right" title="Refuser la date" alt="Refuser la date"/> <img src={check} width="30" onClick={() => this.valideDate(value.id)} height="30" align="right" title="Validation de la date" alt="Validation de la date"/>
                                                 
                                                 </div>                                    
                                             
@@ -320,7 +426,7 @@ class Planningclient extends Component {
                                                 
                                                     <div className="col-xs-2">
                                                     
-                                                        <img src={confirmation} width="30" height="30" alt="Planning en attente..."/>
+                                                        <img src={confirmation} width="15" height="15" alt="Planning en attente..."/>
                                                     
                                                     </div>
                                                     <div className="col-xs-10">
@@ -358,8 +464,8 @@ class Planningclient extends Component {
                             (<tr key={index}>
 
                             <td>{value.date}</td>
-                            {value.statut === '5' && <td><span className="badgeAccepter">Terminer</span></td>}  
-                            {value.statut === '4' && <td><span className="badgeAccepter">Accepter</span></td>} 
+                            {value.statut === '4' && <td><span className="badgeAccepter">Terminer</span></td>} 
+                            {value.statut === '2' && <td><span className="badgeAccepter">Accepter</span></td>}  
                             {value.statut === '3' && <td><span className="badgeRefuser">Refuser</span></td>} 
                                  
                                 

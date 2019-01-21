@@ -1021,6 +1021,99 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
+        case 'confirmationDate':
+            $idDate = $_GET['idate'];
+            $idClient = $_GET['idclient'];
+            $idEntreprise = $_GET['idEntreprise'];
+
+            $sql = "UPDATE `planning` SET `statut` = '2' WHERE `id` = $idDate AND `identreprise` = $idEntreprise AND `idclient` = $idClient";
+            if(mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#CONFIRMDATE#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#CONFIRMDATE#ECHEC");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'refusDate':
+            $idDate = $_GET['idate'];
+            $idClient = $_GET['idclient'];
+            $idEntreprise = $_GET['idEntreprise'];
+
+            $sql = "UPDATE `planning` SET `statut` = '3' WHERE `id` = $idDate AND `identreprise` = $idEntreprise AND `idclient` = $idClient";
+            if(mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#REFUSDATE#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#REFUSDATE#ECHEC");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'checkDatePointage':
+            $date = date("Y-m-d");
+            $idClient = $_GET['idclient'];
+            $idEntreprise = $_GET['identreprise'];
+
+            $sql = "SELECT * FROM `planning` WHERE `date` LIKE '%".$date."%' AND `identreprise` = $idEntreprise AND `idclient` = $idClient AND `statut` = 2";
+            $result = mysqli_query($connect, $sql);
+            if(mysqli_num_rows($result))
+            {
+
+                while($row = mysqli_fetch_assoc($result))
+                {
+
+                    $idDatePlanning = $row['id'];
+
+                }
+                $sqldeux = "UPDATE `planning` SET `statut` = '4' WHERE `id` = $idDatePlanning AND `identreprise` = 2 AND `idclient` = 8";
+                if(mysqli_query($connect, $sqldeux))
+                {
+
+                    $json = json_encode("#CHKDATEPTGE#SUCCESS");
+
+                }
+                else
+                {
+
+                    $json = json_encode("#CHKDATEPTGE#ECHEC");
+
+                }
+                
+
+
+            } 
+            else
+            {
+
+                $json = json_encode("#CHKDATEPTGE#NOEXIST");
+
+            }
+            
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
         default:
             # code...
             break;

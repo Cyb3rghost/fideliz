@@ -195,35 +195,98 @@ class Fichecoclient extends Component {
 
         var idClient = window.location.search.substring(4);
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + idClient)
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=checkDatePointage&idclient=' + idClient
+        + '&identreprise=' + this.props.idEntRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
             switch (response) {
-                case '#CLOTURATION#SUCCESS':
+                case '#CHKDATEPTGE#SUCCESS':
                     console.log(response)
-                    break;   
-                case '#CLOTURATION#NONECESSAIRE':
-                    console.log(response)
-                    fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + idClient + '&idEntreprise=' + this.props.idEntRecupClient)
+                    fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + idClient)
                     .then((response) => response.json())
                     .then((response) => {
             
                         switch (response) {
-                            case '#UPTENTREPRISE#SUCCESS':
+                            case '#CLOTURATION#SUCCESS':
                                 console.log(response)
-                                setTimeout(() => window.location.href = "/fichecoclient?id=" + idClient,1000)
                                 break;   
-                            case '#UPTENTREPRISE#ECHEC':
+                            case '#CLOTURATION#NONECESSAIRE':
                                 console.log(response)
+                                fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + idClient + '&idEntreprise=' + this.props.idEntRecupClient)
+                                .then((response) => response.json())
+                                .then((response) => {
+                        
+                                    switch (response) {
+                                        case '#UPTENTREPRISE#SUCCESS':
+                                            console.log(response)
+                                            setTimeout(() => window.location.href = "/fichecoclient?id=" + idClient,1000)
+                                            break;   
+                                        case '#UPTENTREPRISE#ECHEC':
+                                            console.log(response)
+                                            break;            
+                                        default:
+                                            break;
+                                    }
+                        
+                                })
+                                .catch(err => console.error(err))
                                 break;            
                             default:
                                 break;
                         }
             
+            
+                
+            
                     })
-                    .catch(err => console.error(err))
-                    break;            
+                    .catch(err => console.error(err))  
+                    break;   
+                case '#CHKDATEPTGE#NOEXIST':
+                    console.log(response)
+                    fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + idClient)
+                    .then((response) => response.json())
+                    .then((response) => {
+            
+                        switch (response) {
+                            case '#CLOTURATION#SUCCESS':
+                                console.log(response)
+                                break;   
+                            case '#CLOTURATION#NONECESSAIRE':
+                                console.log(response)
+                                fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + idClient + '&idEntreprise=' + this.props.idEntRecupClient)
+                                .then((response) => response.json())
+                                .then((response) => {
+                        
+                                    switch (response) {
+                                        case '#UPTENTREPRISE#SUCCESS':
+                                            console.log(response)
+                                            setTimeout(() => window.location.href = "/fichecoclient?id=" + idClient,1000)
+                                            break;   
+                                        case '#UPTENTREPRISE#ECHEC':
+                                            console.log(response)
+                                            break;            
+                                        default:
+                                            break;
+                                    }
+                        
+                                })
+                                .catch(err => console.error(err))
+                                break;            
+                            default:
+                                break;
+                        }
+            
+            
+                
+            
+                    })
+                    .catch(err => console.error(err))                    
+                    break;   
+                case '#CHKDATEPTGE#ECHEC': 
+                    console.log(response)
+                    break;
                 default:
                     break;
             }
@@ -233,7 +296,6 @@ class Fichecoclient extends Component {
 
         })
         .catch(err => console.error(err))
-
 
 
     }

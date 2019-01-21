@@ -160,15 +160,6 @@ class Planning extends Component {
 
 
             }
-            else if(response === "#ADDPLANNING#EXISTE")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '3'
-                })
-
-
-            }
 
 
         })
@@ -200,7 +191,7 @@ class Planning extends Component {
             </div>
 
         }
-        else if(this.state.statutMsgPlanning === "3")
+        else if(this.state.statutMsgPlanning === "4")
         {
 
             return <div className="msgErrorPerso">
@@ -356,10 +347,9 @@ class Planning extends Component {
                             (<tr key={index}>
 
                             <td>{value.date}</td>
-                            {value.statut === '5' && <td><span className="badgeAccepter">Terminer</span></td>}  
-                            {value.statut === '4' && <td><span className="badgeAccepter">Accepter</span></td>} 
-                            {value.statut === '3' && <td><span className="badgeRefuser">Refuser</span></td>} 
-                                 
+                            {value.statut === '4' && <td><span className="badgeAccepter">Terminer</span></td>} 
+                            {value.statut === '2' && <td><span className="badgeAccepter">Accepter</span></td>}  
+                            {value.statut === '3' && <td><span className="badgeRefuser">Refuser</span></td>}  
                                 
                             </tr>)
                         )} 
