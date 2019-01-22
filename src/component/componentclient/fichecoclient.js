@@ -7,6 +7,7 @@ import addCarte from '../../images/addcarte.png';
 import backgroundImage from '../../images/backgroundCarte.jpg'
 import iconImg from '../../images/logocarte.png'
 import pointage from '../../images/pointage.png'
+import edition from '../../images/gestionCompteProfil.png'
 
 class Fichecoclient extends Component {
 
@@ -45,8 +46,7 @@ class Fichecoclient extends Component {
     componentDidMount()
     {
 
-        var idClient = window.location.search.substring(4);
-        fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient)
+        fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -69,7 +69,7 @@ class Fichecoclient extends Component {
         })
         .catch(err => console.error(err))
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + idClient)
+        fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -114,7 +114,7 @@ class Fichecoclient extends Component {
         })
         .catch(err => console.error(err))
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=checkPointage&id=' + idClient)
+        fetch('http://127.0.0.1/fidapi/main.php?action=checkPointage&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -196,7 +196,7 @@ class Fichecoclient extends Component {
         var idClient = window.location.search.substring(4);
 
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=checkDatePointage&idclient=' + idClient
+        fetch('http://127.0.0.1/fidapi/main.php?action=checkDatePointage&idclient=' + this.props.idUserRecupClient
         + '&identreprise=' + this.props.idEntRecupClient)
         .then((response) => response.json())
         .then((response) => {
@@ -204,7 +204,7 @@ class Fichecoclient extends Component {
             switch (response) {
                 case '#CHKDATEPTGE#SUCCESS':
                     console.log(response)
-                    fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + idClient)
+                    fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
                     .then((response) => response.json())
                     .then((response) => {
             
@@ -214,14 +214,14 @@ class Fichecoclient extends Component {
                                 break;   
                             case '#CLOTURATION#NONECESSAIRE':
                                 console.log(response)
-                                fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + idClient + '&idEntreprise=' + this.props.idEntRecupClient)
+                                fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
                                 .then((response) => response.json())
                                 .then((response) => {
                         
                                     switch (response) {
                                         case '#UPTENTREPRISE#SUCCESS':
                                             console.log(response)
-                                            setTimeout(() => window.location.href = "/fichecoclient?id=" + idClient,1000)
+                                            setTimeout(() => window.location.href = "/fichecoclient",1000)
                                             break;   
                                         case '#UPTENTREPRISE#ECHEC':
                                             console.log(response)
@@ -245,7 +245,7 @@ class Fichecoclient extends Component {
                     break;   
                 case '#CHKDATEPTGE#NOEXIST':
                     console.log(response)
-                    fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + idClient)
+                    fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
                     .then((response) => response.json())
                     .then((response) => {
             
@@ -255,14 +255,14 @@ class Fichecoclient extends Component {
                                 break;   
                             case '#CLOTURATION#NONECESSAIRE':
                                 console.log(response)
-                                fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + idClient + '&idEntreprise=' + this.props.idEntRecupClient)
+                                fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
                                 .then((response) => response.json())
                                 .then((response) => {
                         
                                     switch (response) {
                                         case '#UPTENTREPRISE#SUCCESS':
                                             console.log(response)
-                                            setTimeout(() => window.location.href = "/fichecoclient?id=" + idClient,1000)
+                                            setTimeout(() => window.location.href = "/fichecoclient",1000)
                                             break;   
                                         case '#UPTENTREPRISE#ECHEC':
                                             console.log(response)
@@ -332,7 +332,6 @@ class Fichecoclient extends Component {
     }
 
     render() {
-      
       return (
         <div>
           
@@ -340,35 +339,30 @@ class Fichecoclient extends Component {
 
         <div className="panelInfo">
             
-            <div className="container-perso">
-                <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> FICHE CLIENT</h2>
-            </div>
+
         
+            <div className="row">
+                
+                <div className="col-xs-8">
+                
+                    <div className="container-perso">
+                        <h2><img src={userClient} width="70" height="70" alt="Responsive image"/> FICHE CLIENT</h2>
+                    </div>
+
+                </div>
+                <div className="col-xs-4 cadreAddCarte">
+                
+                    <a href={'/editionclient'}><img src={edition} width="70" height="70" align="right" title="Editez votre profil" /></a>
+
+                </div>
+            
+            </div>
+
+
         </div>         
 
         {this.verifieEtatPointage()}
-        
-        <div className="page-header">
-            <div className="container-perso">
-                <div className="row">
-                
-                    <div className="col-xs-8">
-                    
-                        <h1>Informations sur le client <br/></h1>
-                        <p className="text-justify">Un client sera automatiquement reliée à votre compte. Il disposera d'un accès à son compte client afin de pouvoir gêrer 
-                        et effectuer ses pointages à chaque prestation. Il pourra également suivre l'évolution de son compte.</p>
-                    
-                    </div>
-                    <div className="col-xs-4 cadreAddCarte">
-                    
-                        
-
-                    </div>
-                
-                </div>
-            </div>
-        </div>
-
+        <br/>
         {this.afficheCarte()}
         <br/>
         <table class="table table-striped">

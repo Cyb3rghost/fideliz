@@ -162,7 +162,7 @@ class Mescadeaux extends Component {
                     <div  className="wellCadeaux">
                         <div className="container-perso"><div className="row">
                     
-                        <div className="col-md-2">
+                        <div className="col-xs-2">
                         
 
                             <QRCode
@@ -172,7 +172,7 @@ class Mescadeaux extends Component {
                         
                         
                         </div>
-                        <div className="col-md-10">
+                        <div className="col-xs-10">
                         
                             <b>Identifiant carte :</b> {value.idcarte} <br/>
                             <b>Cadeaux crée le :</b> {value.date} <br/>

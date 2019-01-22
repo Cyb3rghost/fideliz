@@ -16,6 +16,7 @@ import Planning from './component/planning';
 import Fichecoclient from './component/componentclient/fichecoclient'
 import Mescadeaux from './component/componentclient/mescadeaux'
 import Planningclient from './component/componentclient/planningclient'
+import Editionclient from './component/componentclient/editionclient'
 
 import Ficheclient from './component/ficheclient';
 import Nouveauclient from './component/nouveauclient';
@@ -373,6 +374,14 @@ class App extends Component {
         case '/planningclient':
           if( vrfLoggedClient ) {
             return <Planningclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
+          }
+          else{
+            window.location.href = "/"
+          }           
+          break;
+        case '/editionclient':
+          if( vrfLoggedClient ) {
+            return <Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
           }
           else{
             window.location.href = "/"

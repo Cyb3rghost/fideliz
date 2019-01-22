@@ -229,6 +229,73 @@ if(isset($_GET['action']))
 
             mysqli_close($connect);
             break;
+        case 'majClient':
+            $id = $_GET['idclient'];
+            $nom = $_GET['nom'];
+            $prenom = $_GET['prenom'];
+            $adresse = $_GET['adresse'];
+            $email = $_GET['email'];
+            $telephone = $_GET['telephone'];
+
+            $sql = "UPDATE `acctclient` SET `nom` = '".$nom."', `prenom` = '".$prenom."', `adresse` = '".$adresse."', `telephone` = '".$telephone."', `email` = '".$email."' WHERE `id` = $id";
+            if(mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#MAJCLIENT#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#MAJCLIENT#FAILED");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'changeMdp':
+            $id = $_GET['idclient'];
+            $ancienMDP = $_GET['oldmdp'];
+            $cryptPassword = md5("secureClient".$ancienMDP."Clientsecure");
+            $nouveauMDP = $_GET['nouveaumdp'];
+            $cryptNewMDP = md5("secureClient".$nouveauMDP."Clientsecure");
+
+            $sql = "SELECT * FROM `acctclient` WHERE `id` = $id AND `password` = '".$cryptPassword."'";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                $sqldeux = "UPDATE `acctclient` SET `password` = '".$cryptNewMDP."' WHERE `id` = $id";
+                if(mysqli_query($connect, $sqldeux))
+                {
+
+                    $json = json_encode("#MDFMDP#SUCCESS");
+
+                }
+                else
+                {
+
+                    $json = json_encode("#MDFMDP#FAILED");
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#MDFMDP#NOEXIST");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
         case 'creationCarte':
             $id = $_GET['id'];
             $date = date("Y-m-d");

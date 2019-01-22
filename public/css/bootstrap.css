@@ -7003,7 +7003,7 @@ button.close {
 .wellCadeaux
 {
 
-  background-color: #F2F2F2;
+  background-color: white;
   min-height: 60px;
   height: auto;
   padding: 15px;
@@ -7137,3 +7137,13 @@ footer
 }
 
 /* 16/01/2019 */
+
+/* 22/01/2019 */
+
+.btn-greenbutton {
+  color: white;
+  background-color: #1AD372;
+  border-color: #1AD372;
+}
+
+/* 22/01/2019 */
