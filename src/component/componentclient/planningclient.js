@@ -41,10 +41,8 @@ class Planningclient extends Component {
     componentDidMount()
     {
 
-        var idclient = window.location.search.substring(4)
-
         fetch('http://127.0.0.1/fidapi/main.php?action=planningAttente&identreprise=' + this.props.idEntRecupClient
-        + '&idclient=' + idclient)
+        + '&idclient=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
             console.log(response)
@@ -72,10 +70,9 @@ class Planningclient extends Component {
         .catch(err => console.error(err))
 
         fetch('http://127.0.0.1/fidapi/main.php?action=planningValider&identreprise=' + this.props.idEntRecupClient
-        + '&idclient=' + idclient)
+        + '&idclient=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
-            console.log(response)
 
             if(response === "#PLANNINGVLD#VIDE")
             {
@@ -98,7 +95,7 @@ class Planningclient extends Component {
         .catch(err => console.error(err))
 
         fetch('http://127.0.0.1/fidapi/main.php?action=planningHistorique&identreprise=' + this.props.idEntRecupClient
-        + '&idclient=' + idclient)
+        + '&idclient=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
             console.log(response)
@@ -135,7 +132,7 @@ class Planningclient extends Component {
         alert("http://127.0.0.1/fidapi/main.php?action=addPlanning&identreprise=" + this.props.idEntRecupClient + "&idclient=" + idclient + "&date=" + this.state.startDate.toLocaleDateString() + "&heures=" + this.state.heures)
 
         fetch('http://127.0.0.1/fidapi/main.php?action=addPlanning&identreprise=' + this.props.idEntRecupClient
-        + '&idclient=' + idclient
+        + '&idclient=' + this.props.idUserRecupClient
         + '&date=' + this.state.startDate.toLocaleDateString()
         + '&heures=' + this.state.heures)
         .then((response) => response.json())
@@ -252,10 +249,8 @@ class Planningclient extends Component {
     valideDate(idate)
     {
 
-        var idClient = window.location.search.substr(4)
-
         fetch('http://127.0.0.1/fidapi/main.php?action=confirmationDate&idate=' + idate
-        + '&idclient=' + idClient
+        + '&idclient=' + this.props.idUserRecupClient
         + '&idEntreprise=' + this.props.idEntRecupClient)
         .then((response) => response.json())
         .then((response) => {
@@ -276,7 +271,7 @@ class Planningclient extends Component {
                     statutMsgPlanning: '7'
                 })
 
-                setTimeout(() => window.location.href = "/planningclient?id=" + idClient,2500)
+                setTimeout(() => window.location.href = "/planningclient", 2500)
 
             }
 
@@ -288,10 +283,8 @@ class Planningclient extends Component {
     refuseDate(idate)
     {
 
-        var idClient = window.location.search.substr(4)
-
         fetch('http://127.0.0.1/fidapi/main.php?action=refusDate&idate=' + idate
-        + '&idclient=' + idClient
+        + '&idclient=' + this.props.idUserRecupClient
         + '&idEntreprise=' + this.props.idEntRecupClient)
         .then((response) => response.json())
         .then((response) => {
@@ -312,7 +305,7 @@ class Planningclient extends Component {
                     statutMsgPlanning: '9'
                 })
 
-                setTimeout(() => window.location.href = "/planningclient?id=" + idClient,2500)
+                setTimeout(() => window.location.href = "/planningclient", 2500)
 
             }
 
@@ -323,7 +316,7 @@ class Planningclient extends Component {
     }
 
     render() {
-        var idClient = window.location.search.substring(4);
+
         const { planningAtt, planningVld, planningHst } = this.state;
         return (
           <div>
@@ -364,7 +357,7 @@ class Planningclient extends Component {
                                     onChange={(e) => this.setState({heures: e.target.value})}
                                 /> 
                                 </div>
-                                <button type="submit" onClick={() => this.addPlanning(idClient)} className="btn btn-fidelizPerso">Proposer cette date</button>
+                                <button type="submit" onClick={() => this.addPlanning(this.props.idUserRecupClient)} className="btn btn-fidelizPerso">Proposer cette date</button>
                             </div>
                             </center>
 

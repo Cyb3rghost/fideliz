@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import axios from 'axios';
+
 import Menu from './menu'
 
 import Footer from './footer'
@@ -30,7 +33,9 @@ class Profil extends Component {
             finAbo: '', 
             jRestants: '',
             imgFondCarte: '',
-            imgIconCarte: ''
+            imgIconCarte: '',
+
+            selectedFile : null
         }
 
     }
@@ -73,6 +78,25 @@ class Profil extends Component {
 
 
     }
+
+    fileSelect = event => {
+        this.setState({selectedFile: event.target.files[0]})
+        console.log(event.target.files[0])
+    }
+
+    fileUpload = () => {
+
+        const fd = new FormData();
+        fd.append('image', this.state.selectedFile, this.state.selectedFile.name);
+        axios.post('http://127.0.0.1/fidapi/main.php?action=uploadfile&id=' + this.props.idUserRecup, fd
+        ).then(res=>
+        {
+        console.log(res);
+        }
+        );
+        
+    }
+
 
     render() {
         return (
@@ -201,7 +225,7 @@ class Profil extends Component {
                                                     </tr>
                                                 </tbody>
                                         </table>
-                                        <button class="btn btn-loginConnexion btn-block" type="submit">Je m'abonne</button>
+                                        <button class="btn btn-greenbutton btn-block" type="submit">Je m'abonne</button>
                                     </div>
                                     </div>
                                     </div>
@@ -226,7 +250,7 @@ class Profil extends Component {
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <button class="btn btn-loginConnexion btn-block" type="submit">Je m'abonne</button>
+                                        <button class="btn btn-greenbutton btn-block" type="submit">Je m'abonne</button>
                                     </div>
                                     </div>
                                     </div>
@@ -269,8 +293,16 @@ class Profil extends Component {
                                         <td align="center">{this.state.imgFondCarte}</td>
                                     </tr>
                                     <tr>
+                                        <td><input type="file" onChange = {this.fileSelect} /></td>
+                                        <td align="center"><button class="btn btn-greenbutton btn-block" onClick = {this.fileUpload} type="submit">J'upload</button></td>
+                                    </tr>
+                                    <tr>
                                         <td><b>Logo ( 100x100 )</b></td>
                                         <td align="center">{this.state.imgIconCarte}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="file" /></td>
+                                        <td align="center"><button class="btn btn-greenbutton btn-block" type="submit">J'upload</button></td>
                                     </tr>
                                     </tbody>
                                 </table>                            

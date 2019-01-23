@@ -1181,6 +1181,61 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
+        case 'uploadfile':
+            $ID = $_GET['id'];
+            $idUniqueImg = rand(1, 999999);
+            $date = date("d-m-Y");
+            $fileinfo = getimagesize($_FILES["image"]["tmp_name"]);
+            $width = $fileinfo[0];
+            $height = $fileinfo[1];
+
+            
+
+            if($width = "600" || $height = "300")
+            {
+
+                $extension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+
+                if(move_uploaded_file($_FILES["image"]["tmp_name"], "img/" . "BCGC".$idUniqueImg."D".$date.".".$extension))
+                {
+    
+                    $response = array(
+                        "type" => "success",
+                        "message" => "Image uploaded successfully."
+                    );
+
+                    $json = json_encode($response);
+    
+                }
+                else
+                {
+    
+                    $response = array(
+                        "type" => "error",
+                        "message" => "Problem in uploading image files."
+                    );
+
+                    $json = json_encode($response);
+    
+                } 
+
+            }
+            else
+            {
+
+                $response = array(
+                    "type" => "error",
+                    "message" => "Image dimension should be within 600X300"
+                );
+
+                $json = json_encode($response);
+
+            }
+
+
+
+            echo $json;
+            break;
         default:
             # code...
             break;

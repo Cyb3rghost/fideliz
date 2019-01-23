@@ -156,12 +156,6 @@ class Editionclient extends Component {
 
         }
 
-
-
-
-
-
-
     }
 
     afficheStatutMaj()

@@ -22,10 +22,8 @@ class Mescadeaux extends Component {
 
     componentDidMount()
     {
-        
-        var idClient = window.location.search.substring(4);
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxAttente&id=' + idClient)
+        fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxAttente&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -55,7 +53,7 @@ class Mescadeaux extends Component {
         })
         .catch(err => console.error(err))
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxRecu&id=' + idClient)
+        fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxRecu&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -92,8 +90,6 @@ class Mescadeaux extends Component {
     envoieConfirmation(idCadeaux)
     {
 
-        var idClient = window.location.search.substring(4);
-
         fetch('http://127.0.0.1/fidapi/main.php?action=confirmationCadeaux&id=' + idCadeaux)
         .then((response) => response.json())
         .then((response) => {
@@ -104,7 +100,7 @@ class Mescadeaux extends Component {
                         statutConfirmationCadeaux: '1'
                     })
 
-                    setTimeout(() => window.location.href = "/mescadeaux?id=" + idClient,1000)
+                    setTimeout(() => window.location.href = "/mescadeaux?id=" + this.props.idUserRecupClient,1000)
                     break;
                 case '#CONFIRMCADEAUX#ECHEC':
                     this.setState({

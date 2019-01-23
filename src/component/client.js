@@ -101,7 +101,7 @@ class Client extends Component {
                                     <td>{value.adresse}</td>
                                     <td>{value.telephone}</td>
                                     <td>{value.email}</td>
-                                    <td><a href={"/voirclient?id=" + value.id}>Voir</a> - Editez</td>
+                                    <td><a href={"/voirclient?id=" + value.id}>Voir</a> - <a href={"/modifclient?id=" + value.id}>Editez</a></td>
                                 </tr>
                             )
                         )}
