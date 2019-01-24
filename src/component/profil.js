@@ -35,7 +35,10 @@ class Profil extends Component {
             imgFondCarte: '',
             imgIconCarte: '',
 
-            selectedFile : null
+            selectedFileBKG : null,
+            selectedFileLogo : null,
+            statutUpload: ''
+
         }
 
     }
@@ -80,23 +83,203 @@ class Profil extends Component {
     }
 
     fileSelect = event => {
-        this.setState({selectedFile: event.target.files[0]})
+        this.setState({selectedFileBKG: event.target.files[0]})
         console.log(event.target.files[0])
     }
 
     fileUpload = () => {
 
         const fd = new FormData();
-        fd.append('image', this.state.selectedFile, this.state.selectedFile.name);
-        axios.post('http://127.0.0.1/fidapi/main.php?action=uploadfile&id=' + this.props.idUserRecup, fd
+        fd.append('image', this.state.selectedFileBKG, this.state.selectedFileBKG.name);
+        axios.post('http://127.0.0.1/fidapi/main.php?action=uploadBackgroundImg&id=' + this.props.idUserRecup, fd
         ).then(res=>
         {
-        console.log(res);
+            console.log(res);
+
+            if(res.data === "#MAJBKGCARTE#SUCCESS")
+            {
+
+                this.setState({
+                    statutUpload: '1'
+                })
+
+            }
+            else if (res.data === "#MAJBKGCARTE#FAILED") {
+
+                this.setState({
+                    statutUpload: '2'
+                })
+
+            }
+            else if (res.data === "#UPLOADCARTE#FAILED") {
+         
+                this.setState({
+                    statutUpload: '3'
+                })
+                
+            }
+            else if (res.data === "#UPLOADIMENSION#FAILED") {
+         
+                this.setState({
+                    statutUpload: '4'
+                })
+                
+            }   
+
+            setTimeout(() => window.location.href = "/profil", 2500)
+
         }
         );
         
     }
 
+    fileSelectLogo = event => {
+        this.setState({selectedFileLogo: event.target.files[0]})
+        console.log(event.target.files[0])
+    }
+
+    fileUploadLogo = () => {
+
+        const fd = new FormData();
+        fd.append('image', this.state.selectedFileLogo, this.state.selectedFileLogo.name);
+        axios.post('http://127.0.0.1/fidapi/main.php?action=uploadLogoImg&id=' + this.props.idUserRecup, fd
+        ).then(res=>
+        {
+            console.log(res);
+
+            if (res.data === "#EXTLOGOUPLOAD#FAILED") {
+         
+                this.setState({
+                    statutUpload: '5'
+                })
+                
+            }
+            else if (res.data === "#MAJLOGOCARTE#SUCCESS") {
+         
+                this.setState({
+                    statutUpload: '6'
+                })
+                
+            }
+            else if (res.data === "#MAJLOGOCARTE#FAILED") {
+         
+                this.setState({
+                    statutUpload: '7'
+                })
+                
+            }
+            else if (res.data === "#UPLOADLOGOCARTE#SUCCESS") {
+         
+                this.setState({
+                    statutUpload: '8'
+                })
+                
+            }
+            else if (res.data === "#UPLOADIMENSIONLOGO#FAILED") {
+         
+                this.setState({
+                    statutUpload: '9'
+                })
+                
+            }
+
+            setTimeout(() => window.location.href = "/profil", 2500)
+
+        }
+        );
+        
+    }
+
+    afficheStatutCarte()
+    {
+
+        if(this.state.statutUpload === "1")
+        {
+
+
+            return <div className="msgSuccessPerso">
+        
+            <center>Le design de votre carte a bien été changer. Patientez...</center>
+    
+            </div>
+
+
+        }
+        else if (this.state.statutUpload === "2") {
+            
+            return <div className="msgErrorPerso">
+        
+            <center>Le design de votre carte n'a pas été changer. Patientez...</center>
+    
+            </div>
+
+        }
+        else if (this.state.statutUpload === "3") {
+            
+            return <div className="msgErrorPerso">
+        
+            <center>Les dimensions de votre image ne sont pas bonne. (Dimensions requises : 600 x 300)</center>
+    
+            </div>
+
+        }
+        else if (this.state.statutUpload === "4") {
+            
+            return <div className="msgErrorPerso">
+        
+            <center>Les dimensions de votre image ne sont pas bonne. (Dimensions requises : 600 x 300)</center>
+    
+            </div>
+
+        }
+        else if (this.state.statutUpload === "5") {
+            
+            return <div className="msgErrorPerso">
+        
+            <center>L'extension du logo n'est pas correct. Extension autorisée : PNG.</center>
+    
+            </div>
+
+        }
+        else if (this.state.statutUpload === "6") {
+            
+            return <div className="msgSuccessPerso">
+        
+            <center>La mise à jour du logo a bien été effectuer.</center>
+    
+            </div>
+
+        }
+        else if (this.state.statutUpload === "7") {
+            
+            return <div className="msgSuccessPerso">
+        
+            <center>La mise à jour du logo n'a pas été effectuer.</center>
+    
+            </div>
+
+        }
+        else if (this.state.statutUpload === "8") {
+            
+            return <div className="msgSuccessPerso">
+        
+            <center>L'upload du logo a bien été effectuer.</center>
+    
+            </div>
+
+        }
+        else if (this.state.statutUpload === "9") {
+            
+            return <div className="msgErrorPerso">
+        
+            <center>Les dimensions du logo ne sont pas bonne. Dimensions autorisée : 100X100.</center>
+    
+            </div>
+
+        }
+
+
+    }
 
     render() {
         return (
@@ -266,15 +449,16 @@ class Profil extends Component {
             <div className="panel panel-default">
                 <div className="panel-heading">INFORMATIONS SUR LA CARTE</div>
                 <div className="panel-body">
-
+                    {this.afficheStatutCarte()}
+                    <br/>
                         <div className="row">
                         
                             <div className="col-xs-6">
                             
                                 <div className="panelCarte">
                                     <div id="personalizecarte">  
-                                    <img src={'http://localhost:3000/images/' + this.state.imgFondCarte} className="img-responsive" id="img1" alt="" />
-                                    <img src={'http://localhost:3000/images/' + this.state.imgIconCarte}  width="100" height="100" id="img2" className="img-rounded" alt="" />
+                                    <img src={'http://127.0.0.1/fidapi/img/' + this.state.imgFondCarte} className="img-responsive" id="img1" alt="" />
+                                    <img src={'http://127.0.0.1/fidapi/img/' + this.state.imgIconCarte}  className="img-responsive img-rounded" id="img2" alt="" />
                                     
                                     </div> 
                                 </div>                                                                 
@@ -301,8 +485,8 @@ class Profil extends Component {
                                         <td align="center">{this.state.imgIconCarte}</td>
                                     </tr>
                                     <tr>
-                                        <td><input type="file" /></td>
-                                        <td align="center"><button class="btn btn-greenbutton btn-block" type="submit">J'upload</button></td>
+                                        <td><input type="file" onChange = {this.fileSelectLogo} /></td>
+                                        <td align="center"><button class="btn btn-greenbutton btn-block" onClick = {this.fileUploadLogo} type="submit">J'upload</button></td>
                                     </tr>
                                     </tbody>
                                 </table>                            

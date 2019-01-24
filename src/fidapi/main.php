@@ -1181,7 +1181,7 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
-        case 'uploadfile':
+        case 'uploadBackgroundImg':
             $ID = $_GET['id'];
             $idUniqueImg = rand(1, 999999);
             $date = date("d-m-Y");
@@ -1198,24 +1198,39 @@ if(isset($_GET['action']))
 
                 if(move_uploaded_file($_FILES["image"]["tmp_name"], "img/" . "BCGC".$idUniqueImg."D".$date.".".$extension))
                 {
-    
-                    $response = array(
-                        "type" => "success",
-                        "message" => "Image uploaded successfully."
-                    );
 
-                    $json = json_encode($response);
+                    if(mysqli_query($connect, "UPDATE `accsociete` SET `imgfond` = 'BCGC".$idUniqueImg."D".$date.".".$extension."' WHERE `id` = $ID;"))
+                    {
+
+                        /*$response = array(
+                            "type" => "success",
+                            "message" => "Background uploaded successfully."
+                        );
+    
+                        $json = json_encode($response);*/
+
+                        $json = json_encode("#MAJBKGCARTE#SUCCESS");
+
+
+                    }
+                    else
+                    {
+
+                        $json = json_encode("#MAJBKGCARTE#FAILED");
+
+                    }
     
                 }
                 else
                 {
     
-                    $response = array(
+                    /*$response = array(
                         "type" => "error",
                         "message" => "Problem in uploading image files."
                     );
 
-                    $json = json_encode($response);
+                    $json = json_encode($response);*/
+                    $json = json_encode("#UPLOADCARTE#FAILED");
     
                 } 
 
@@ -1223,16 +1238,109 @@ if(isset($_GET['action']))
             else
             {
 
-                $response = array(
+                /*$response = array(
                     "type" => "error",
                     "message" => "Image dimension should be within 600X300"
                 );
 
-                $json = json_encode($response);
+                $json = json_encode($response);*/
+
+                $json = json_encode("#UPLOADIMENSION#FAILED");
 
             }
 
+            echo $json;
+            break;
+        case 'uploadLogoImg':
+            $ID = $_GET['id'];
+            $idUniqueImg = rand(1, 999999);
+            $date = date("d-m-Y");
+            $fileinfo = getimagesize($_FILES["image"]["tmp_name"]);
+            $width = $fileinfo[0];
+            $height = $fileinfo[1];
 
+            
+
+            if($width = "100" || $height = "100")
+            {
+
+                $extension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+
+                if($extension !== 'png')
+                {
+
+                    /*$response = array(
+                        "type" => "error",
+                        "message" => "Extension non autorisée. (Seulement PNG)"
+                    );
+
+                    $json = json_encode($response);*/
+
+                    $json = json_encode("#EXTLOGOUPLOAD#FAILED");
+
+                }
+                else
+                {
+
+
+                    if(move_uploaded_file($_FILES["image"]["tmp_name"], "img/" . "LOGO".$idUniqueImg."D".$date.".".$extension))
+                    {
+    
+                        if(mysqli_query($connect, "UPDATE `accsociete` SET `imgicon` = 'LOGO".$idUniqueImg."D".$date.".".$extension."' WHERE `id` = $ID;"))
+                        {
+    
+                            /*$response = array(
+                                "type" => "success",
+                                "message" => "Logo uploaded successfully."
+                            );
+        
+                            $json = json_encode($response);*/
+
+                            $json = json_encode("#MAJLOGOCARTE#SUCCESS");
+    
+    
+                        }
+                        else
+                        {
+    
+                            $json = json_encode("#MAJLOGOCARTE#FAILED");
+    
+                        }
+        
+                    }
+                    else
+                    {
+        
+                        /*$response = array(
+                            "type" => "error",
+                            "message" => "Problem in uploading image files."
+                        );
+    
+                        $json = json_encode($response);*/
+
+                        $json = json_encode("#UPLOADLOGOCARTE#SUCCESS");
+        
+                    } 
+
+
+                }
+
+
+
+            }
+            else
+            {
+
+                /*$response = array(
+                    "type" => "error",
+                    "message" => "Image dimension should be within 600X300"
+                );
+
+                $json = json_encode($response);*/
+
+                $json = json_encode("#UPLOADIMENSIONLOGO#FAILED");
+
+            }
 
             echo $json;
             break;

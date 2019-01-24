@@ -6834,7 +6834,7 @@ button.close {
 .panelCarte {
   position: relative;
   height: 300px;
-  margin-left: 22%;
+  color: white;
 }
 
 #img1 {
@@ -6845,13 +6845,14 @@ button.close {
 #img2 {
   position: absolute;
   z-index: 3;
+  margin: 10px;
 }
 
 #img3 {
   position: absolute;
   z-index: 4;
   margin-left: 15px;
-  margin-top: 22%;
+  margin-top: 13%;
 }
 
 #positionDonnee {
@@ -6863,7 +6864,7 @@ button.close {
 #positionDonnee small 
 {
 
-  color: black;
+  color: white;
 
 }
 
