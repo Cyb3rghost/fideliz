@@ -84,6 +84,16 @@ class Editionclient extends Component {
                 })
 
             }
+            else if(response === "#MAJCLIENT#NOSOUCHE")
+            {
+
+                console.log(response)
+                this.setState({
+                    statutMsgMaj: '6'
+                })
+
+            }
+
 
         })
         .catch(err => console.error(err))
@@ -126,7 +136,7 @@ class Editionclient extends Component {
                     })
     
                 }
-                else if(response === "#MDFMDP#NOEXIST")
+                else if(response === "#MDFMDP#NOSOUCHE")
                 {
     
                     console.log(response)
@@ -201,7 +211,7 @@ class Editionclient extends Component {
 
             return <div className="msgErrorPerso">
         
-                Votre mot de passe n'a pas été modifier.
+                Votre mot de passe n'a pas été modifier. (Ceci n'est pas votre compte principale.)
         
             </div>
 
@@ -217,6 +227,18 @@ class Editionclient extends Component {
             </div>
 
         }
+        else if (this.state.statutMsgMaj === '6') 
+        {
+            
+
+            return <div className="msgErrorPerso">
+        
+                Votre profil n'a pas été mis à jour. (Ceci n'est pas votre compte principale.)
+        
+            </div>
+
+        }
+
 
     }
 

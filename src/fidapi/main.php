@@ -237,17 +237,36 @@ if(isset($_GET['action']))
             $email = $_GET['email'];
             $telephone = $_GET['telephone'];
 
-            $sql = "UPDATE `acctclient` SET `nom` = '".$nom."', `prenom` = '".$prenom."', `adresse` = '".$adresse."', `telephone` = '".$telephone."', `email` = '".$email."' WHERE `id` = $id";
-            if(mysqli_query($connect, $sql))
+            $sql = "SELECT * FROM `acctclient` WHERE `id` = $id AND `idsouche` = '0'";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
             {
 
-                $json = json_encode("#MAJCLIENT#SUCCESS");
+
+                $sqldeux = "UPDATE `acctclient` SET `nom` = '".$nom."', `prenom` = '".$prenom."', `adresse` = '".$adresse."', `telephone` = '".$telephone."', `email` = '".$email."' WHERE `id` = $id OR `idsouche` = $id";
+                if(mysqli_query($connect, $sqldeux))
+                {
+    
+                    $json = json_encode("#MAJCLIENT#SUCCESS");
+    
+                }
+                else
+                {
+    
+                    $json = json_encode("#MAJCLIENT#FAILED");
+    
+                }
+
+
 
             }
             else
             {
 
-                $json = json_encode("#MAJCLIENT#FAILED");
+
+                $json = json_encode("#MAJCLIENT#NOSOUCHE");
+
 
             }
 
@@ -263,13 +282,13 @@ if(isset($_GET['action']))
             $nouveauMDP = $_GET['nouveaumdp'];
             $cryptNewMDP = md5("secureClient".$nouveauMDP."Clientsecure");
 
-            $sql = "SELECT * FROM `acctclient` WHERE `id` = $id AND `password` = '".$cryptPassword."'";
+            $sql = "SELECT * FROM `acctclient` WHERE `id` = $id AND `password` = '".$cryptPassword."' AND `idsouche` = '0'";
             $result = mysqli_query($connect, $sql);
 
             if(mysqli_num_rows($result))
             {
 
-                $sqldeux = "UPDATE `acctclient` SET `password` = '".$cryptNewMDP."' WHERE `id` = $id";
+                $sqldeux = "UPDATE `acctclient` SET `password` = '".$cryptNewMDP."' WHERE `id` = $id OR `idsouche` = $id";
                 if(mysqli_query($connect, $sqldeux))
                 {
 
@@ -287,7 +306,7 @@ if(isset($_GET['action']))
             else
             {
 
-                $json = json_encode("#MDFMDP#NOEXIST");
+                $json = json_encode("#MDFMDP#NOSOUCHE");
 
             }
 
