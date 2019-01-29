@@ -159,18 +159,20 @@ class Fichecoclient extends Component {
         {
 
             return <div>
-            <div className="panelCarte">
-                <div id="personalizecarte">  
-                    <img src={backgroundImage} className="img-responsive" id="img1" alt="" /> 
-                    <h2 id="positionDonnee">{this.state.carteNom} {this.state.cartePrenom} <br/><small>{this.state.carteDateCreation} - {this.state.carteNbPointage} / {this.state.carteLimitPointage} Pointages</small></h2>
-                    <img src={iconImg}  width="100" height="100" id="img2" className="img-rounded" alt="" />
-                    <QRCode
-                        value={this.state.carteQrCode}
-                        size={100}
-                        id="img3"
-                    />
-                </div> 
-            </div>  
+            <div className="container-perso">
+                <div className="panelCarte">
+                    <div id="personalizecarte">  
+                        <img src={'http://127.0.0.1/fidapi/img/' + this.state.carteImgBackground} className="img-responsive" id="img1" alt="" /> 
+                        <h2 id="positionDonnee">{this.state.carteNom} {this.state.cartePrenom} <br/><small>{this.state.carteDateCreation} - {this.state.carteNbPointage} / {this.state.carteLimitPointage} Pointages</small></h2>
+                        <img src={'http://127.0.0.1/fidapi/img/' + this.state.carteImgIcon}  width="100" height="100" id="img2" className="img-rounded" alt="" />
+                        <QRCode
+                            value={this.state.carteQrCode}
+                            size={100}
+                            id="img3"
+                        />
+                    </div> 
+                </div>  
+            </div>
             <br/>
             {/*this.state.carteDateCreation
             this.state.carteNom

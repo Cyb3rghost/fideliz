@@ -14,6 +14,8 @@ class Client extends Component {
         super(props)
         this.state = {
             nombreClient: '',
+            identifiantCompte: '',
+            statutMsg: '',
             dataClient: []
         }
 
@@ -39,9 +41,24 @@ class Client extends Component {
         .then((response) => response.json())
         .then((response) => {
 
-            this.setState({
-                dataClient: response
-            })
+            if(response === "#LISTECLIENT#ECHEC")
+            {
+
+                this.setState({
+                    statutMsg: '1'
+                })
+
+            }
+            else
+            {
+
+                this.setState({
+                    dataClient: response
+                })
+
+            }
+
+
 
 
         })
@@ -50,6 +67,109 @@ class Client extends Component {
 
     }
 
+    assocCompte()
+    {
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=assoccompte&idEnt=' + this.props.idUserRecup
+        + '&idusr=' + this.state.identifiantCompte)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+            if(response === "#ASSOC#SUCCESS")
+            {
+
+                this.setState({
+                    statutMsg: '2'
+                })
+
+                setTimeout(() => window.location.href = "/client", 2500)
+
+            }
+            else if(response === "#ASSOC#FAILED")
+            {
+
+                this.setState({
+                    statutMsg: '3'
+                })
+
+                setTimeout(() => window.location.href = "/client", 2500)
+
+            }
+            else if (response === "#ASSOC#EXIST") {
+
+                this.setState({
+                    statutMsg: '4'
+                })
+
+                setTimeout(() => window.location.href = "/client", 2500)
+
+            }
+            else if (response === "#ASSOC#NOEXIST") {
+                
+                this.setState({
+                    statutMsg: '5'
+                })
+
+                setTimeout(() => window.location.href = "/client", 2500)
+                
+            }
+
+
+
+        })
+        .catch(err => console.error(err))
+
+    }
+
+    afficheStatut()
+    {
+
+
+        if(this.state.statutMsg === '2')
+        {
+
+            return <div className="msgSuccessPerso">
+        
+            <center>Le compte avec cette identifiant a bien était associé à votre entreprise.</center>
+    
+            </div>
+
+
+        }
+        else if (this.state.statutMsg === '3') 
+        {
+           
+            return <div className="msgErrorPerso">
+        
+            <center>Le compte n'a pas pû être associer à cette entreprise.</center>
+    
+            </div>
+            
+        }
+        else if (this.state.statutMsg === '4') 
+        {
+           
+            return <div className="msgErrorPerso">
+        
+            <center>Ce client est déjà lié à cette entreprise.</center>
+    
+            </div>
+            
+        }
+        else if (this.state.statutMsg === '5') 
+        {
+           
+            return <div className="msgErrorPerso">
+        
+            <center>Cette identifiant n'est lié à aucun compte ou n'est pas un compte principal.</center>
+    
+            </div>
+            
+        }
+
+
+    }
 
     render() {
         const { dataClient } = this.state;
@@ -69,16 +189,28 @@ class Client extends Component {
             <div className="wellClient">
                         <div className="row">
 
-                            <div className="col-md-10">                     
+                            <div className="col-md-8">                     
                          
                                 Nombre de client : <p className="resizeNbClient">{this.state.nombreClient}</p><br/>
                                 
                             
                             </div>
 
-                            <div className="col-md-2 padCircle">
+                            <div className="col-md-4 padCircle">
                             
-                                <a href="/nouveauclient"><img src={ajout} class="img-circle " width="70" height="70" alt="" /></a><br/>
+                                <div className="input-group">
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        placeholder="Identifiant utilisateur..." 
+                                        value={this.state.identifiantCompte}
+                                        onChange={(e) => this.setState({identifiantCompte: e.target.value})}
+                                    />
+                                    <span className="input-group-btn">
+                                        <button className="btn btn-greenbutton" onClick={this.assocCompte.bind(this)} type="button">Associer un compte</button>
+                                    </span>
+                                </div><br/>
+                                <a href="/nouveauclient"><button className="btn btn-block btn-greenbutton" type="button">Nouveau client</button></a>
 
                                 <br/>                        
                             
@@ -87,6 +219,8 @@ class Client extends Component {
 
                         </div>
             </div>
+
+            {this.afficheStatut()}
 
             <table class="table table-striped">
                         <thead>

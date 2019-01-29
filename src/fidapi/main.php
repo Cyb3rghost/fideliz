@@ -475,11 +475,12 @@ if(isset($_GET['action']))
             break;
         case 'connexionClient':
             
+            $idEntreprise = $_GET['idEntreprise'];
             $connexionEmail = $_GET['cntemail'];
             $connexionPassword = $_GET['cntpassword'];
             $protectcomdp = md5("secureClient".$connexionPassword."Clientsecure");
 
-            $sql = "SELECT * FROM `acctclient` WHERE `email` = '".$connexionEmail."' AND `password` = '".$protectcomdp."'";
+            $sql = "SELECT * FROM `acctclient` WHERE `identreprise` = '".$idEntreprise."' AND `email` = '".$connexionEmail."' AND `password` = '".$protectcomdp."'";
             $result = mysqli_query($connect, $sql);
             if(mysqli_num_rows($result)){
 
@@ -1343,6 +1344,96 @@ if(isset($_GET['action']))
             }
 
             echo $json;
+            break;
+        case 'selectionSociete':
+
+            $sql = "SELECT * FROM `accsociete`";
+            $test = array();
+            if($result = mysqli_query($connect, $sql))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+
+                    $json=json_encode($row);
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#LISTENT#FAILED");
+                
+            }
+
+            echo $json;
+            mysqli_close($connect);
+
+            break;
+        case 'assoccompte':
+            $idEntreprise = $_GET['idEnt'];
+            $idUser = $_GET['idusr'];
+            $date = date("Y-m-d");
+
+            $sql = "SELECT * FROM `acctclient` WHERE `id` = '".$idUser."' AND `idsouche` = '0'";
+            $result = mysqli_query($connect, $sql);
+            if(mysqli_num_rows($result))
+            {
+
+                while($row = mysqli_fetch_assoc($result))
+                {
+
+                    $idSouche = $row['id'];
+                    $dateInscription = $row['dinscription'];
+                    $nom = $row['nom'];
+                    $prenom = $row['prenom'];
+                    $adresse = $row['adresse'];
+                    $telephone = $row['telephone'];
+                    $email = $row['email'];
+                    $password = $row['password'];  
+
+                }
+
+                $sqldeux = "SELECT * FROM `acctclient` WHERE `identreprise` = '".$idEntreprise."' AND `idsouche` = '".$idUser."'";
+
+                $resultdeux = mysqli_query($connect, $sqldeux);
+                if(mysqli_num_rows($resultdeux))
+                {
+
+                    $json = json_encode("#ASSOC#EXIST");
+
+                }
+                else
+                {
+
+                    $sqltrois = "INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `nom`, `prenom`, `adresse`, `telephone`, `email`, `password`, `nbcartetotal`, `nbcarteterminer`, `nbpointagetotal`) VALUES (NULL, '".$idEntreprise."', '".$idSouche."', '".$date."', '".$nom."', '".$prenom."', '".$adresse."', '".$telephone."', '".$email."', '".$password."', '0', '0', '0')";
+                    if($resultrois = mysqli_query($connect, $sqltrois))
+                    {
+    
+                        $json = json_encode("#ASSOC#SUCCESS");
+    
+                    }
+                    else
+                    {
+    
+                        $json = json_encode("#ASSOC#FAILED");
+    
+                    }
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#ASSOC#NOEXIST");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
             break;
         default:
             # code...

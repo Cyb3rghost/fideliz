@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import cookie from 'react-cookies'
+import Select from 'react-select';
 
 import './App.css';
 import Coentreprise from './component/coentreprise';
@@ -52,8 +53,27 @@ class App extends Component {
       vrfLoggedClient: cookie.load('#FID#COCLIENT#SUCCESS'),
       vrfIdUserClient: cookie.load('#FID#COCLIENT#IDUSER'),
       vrfIdEntrepriseClient: cookie.load('#FID#COCLIENT#IDENT'),
-      idTransitionRedirection: ''
+      idTransitionRedirection: '',
+
+      selectedOption: null,
+      options: []
+
     }
+
+  }
+
+  componentDidMount()
+  {
+
+      fetch('http://127.0.0.1/fidapi/main.php?action=selectionSociete')
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response)
+        this.setState({
+          options: response
+        })
+      })
+      .catch(err => console.error(err))
 
   }
 
@@ -107,11 +127,11 @@ class App extends Component {
   connexionClient()
   {
 
-      const { connexionEmailClient, connexionPasswordClient, isLoggedClient, idUserClient } = this.state;
+      const { connexionEmailClient, connexionPasswordClient, isLoggedClient, idUserClient, selectedOption } = this.state;
 
       //alert('Email : ' + emailClient + '\n Password : ' + passwordClient)
 
-      fetch('http://127.0.0.1/fidapi/main.php?action=connexionClient&cntemail=' + connexionEmailClient + '&cntpassword=' + connexionPasswordClient)
+      fetch('http://127.0.0.1/fidapi/main.php?action=connexionClient&idEntreprise=' + selectedOption.value + '&cntemail=' + connexionEmailClient + '&cntpassword=' + connexionPasswordClient)
       .then((response) => response.json())
       .then((response) => {
         console.log(response)
@@ -144,7 +164,7 @@ class App extends Component {
           //window.location.href = '/dashboard';
           //return <Dashboard loggedIn={this.state.isLogged} />
           //window.history.pushState(null, null, '/dashboard');
-          window.location.href = '/fichecoclient?id=' + this.state.idTransitionRedirection
+          window.location.href = '/fichecoclient'
 
         }
 
@@ -154,10 +174,20 @@ class App extends Component {
 
   }
 
+  handleChange = (selectedOption) => {
+    this.setState({ selectedOption });
+    console.log(`Option selected:`, selectedOption);
+  }
 
   renderRoute()
   {
       const { vrfLogged, vrfLoggedClient } = this.state
+      const { selectedOption } = this.state;
+
+      let options = this.state.options.map(function (valux) {
+              return { value: valux.id, label: valux.nomsociete }
+      })
+
 
       switch (window.location.pathname) {
         case '/':
@@ -228,6 +258,16 @@ class App extends Component {
 
                                   <img src={logo} class="img-responsive" alt="Logo - Fideliz" />
                                   <div className="form-group">
+                                  
+                                      <label>Entreprise</label>
+                                      <Select
+                                        value={selectedOption}
+                                        onChange={this.handleChange}
+                                        options={options}
+                                      />
+
+                                  </div>
+                                  <div className="form-group">
                                       <label>Adresse email</label>
                                       <input 
                                           value={this.state.connexionEmailClient}
@@ -249,7 +289,6 @@ class App extends Component {
                                   </div>
                                   <button type="submit" onClick={this.connexionClient.bind(this)} className="btn btn-loginConnexion btn-block">Connexion</button>
                                   <a class="btn btn-loginConnexion btn-block" href="/" role="button">Accès compte entreprise</a>
-
                               
                               </div>
                         

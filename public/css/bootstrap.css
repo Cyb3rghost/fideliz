@@ -6795,17 +6795,6 @@ button.close {
 
 }
 
-.wellClient
-{
-
-    min-height: 40px;
-    padding: 20px;
-    background-color: #f2f2f2;
-    border-bottom: 2px solid #377DFF;
-    margin-bottom: 10px;
-
-}
-
 .resizeNbClient
 {
 
@@ -6875,7 +6864,6 @@ button.close {
   padding-top: 19px;
   padding-right: 19px;
   padding-left: 19px;
-  margin-bottom: 20px;
   background-color: white;
   border: 1px solid #e3e3e3;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
