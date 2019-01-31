@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mar. 29 jan. 2019 à 19:06
+-- Généré le :  jeu. 31 jan. 2019 à 09:43
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -57,7 +57,9 @@ CREATE TABLE `accsociete` (
 
 INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`) VALUES
 (1, 'ludovic.lvnr@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'PAYET', 'Eddy', '56 chemin des fleurs 97400', 'EddyCoiffure', '0692101112', 1, 0, 0, 0, 0, '0000-00-00', '0000-00-00', 0, 'backgroundCarte.jpg', 'logocarte.png', 'e6c14066a83d3416238afbc40a9f437a'),
-(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 0, 0, 10, 18, 15, '0000-00-00', '0000-00-00', 0, 'BCGC902130D24-01-2019.png', 'LOGO443298D24-01-2019.png', 'b3470a6aba7953782f54486b8cc28d02');
+(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 0, 0, 10, 18, 15, '0000-00-00', '0000-00-00', 0, 'BCGC902130D24-01-2019.png', 'LOGO443298D24-01-2019.png', 'b3470a6aba7953782f54486b8cc28d02'),
+(3, 'blizzard@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'Blizzard', '', 2, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'null', 'null', 'fedd6393d9b9224fcba3c3ce0ba33b96'),
+(4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 0, 0, 10, 0, 15, '2019-01-31', '2019-03-02', 30, 'null', 'null', 'e3fe6a42aaf6a6f49760186c481afad6');
 
 -- --------------------------------------------------------
 
@@ -93,8 +95,9 @@ INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `nom
 (5, 2, 0, '2019-01-04', 'RiviÃ¨re', 'Max', '56 Rue des encombrants 97421 La riviÃ¨re Saint-Louis', '0692741255', 'max@gmail.com', 'edff293d77fa6f0e2ccdfefe35ea2d84', 0, 0, 0),
 (6, 2, 0, '2019-01-04', 'Toto', 'titi', '30 rue des titis', '0692112233', 'max@gmail.com', 'fac72322259f2d9ead77a4de15457582', 0, 0, 0),
 (7, 2, 0, '2019-01-04', 'Titi', 'toto', '30 rue des titis', '0692101112', 'max@gmail.com', '503e3e3e9c7cfc2fff762adac089d2ea', 0, 0, 0),
-(8, 2, 0, '2019-01-08', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101255', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 9, 15),
-(15, 1, 8, '2019-01-28', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101255', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0);
+(8, 2, 0, '2019-01-08', 'Rivieres', 'JeanMarcs', '56 Rue des oignons 97430 Tampons', '0692101255', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 9, 15),
+(15, 1, 8, '2019-01-28', 'Rivieres', 'JeanMarcs', '56 Rue des oignons 97430 Tampons', '0692101255', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0),
+(16, 3, 8, '2019-01-31', 'Rivieres', 'JeanMarcs', '56 Rue des oignons 97430 Tampons', '0692101255', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -209,7 +212,8 @@ INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `date`, `statut`) VALU
 (6, 2, 8, '2019-01-22 19:42:00', 4),
 (7, 2, 8, '2019-01-22 15:30:00', 3),
 (8, 2, 8, '2019-01-21 09:37:00', 4),
-(9, 2, 8, '2019-01-21 09:55:00', 4);
+(9, 2, 8, '2019-01-21 09:55:00', 4),
+(10, 2, 8, '2019-01-31 09:43:00', 2);
 
 -- --------------------------------------------------------
 
@@ -307,12 +311,12 @@ ALTER TABLE `pointage`
 -- AUTO_INCREMENT pour la table `accsociete`
 --
 ALTER TABLE `accsociete`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `acctclient`
 --
 ALTER TABLE `acctclient`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT pour la table `cadeaux`
 --
@@ -332,7 +336,7 @@ ALTER TABLE `fidcadeaux`
 -- AUTO_INCREMENT pour la table `planning`
 --
 ALTER TABLE `planning`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT pour la table `pointage`
 --

@@ -18,6 +18,21 @@ if(isset($_GET['action']))
             $password = $_GET['password'];
             $protectmdp = md5("secureINS".$password."INSecure");
             $apikey = md5("secureAPI".rand(0, 99999)."APISecure");
+            $debutAbonnement = date("Y-m-d");
+        
+            $date_expire    =   $debutAbonnement;
+            $nbre=30;
+            $tmp=explode('-', $date_expire);
+            $jour = $tmp[2]; // on récupère le jour
+            $mois = $tmp[1]; // puis le mois
+            $annee = $tmp[0]; // l'annee ...
+
+            $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
+            $finaldate_expiration = date("Y-m-d", $date_expiration);
+
+            $diffDebutAbonnement = strtotime($debutAbonnement);
+            $diffFinAbonnement = strtotime($finaldate_expiration);
+            $jourRestant = dateDiff($diffDebutAbonnement, $diffFinAbonnement);
 
             $sql = "SELECT * FROM `accsociete` WHERE `nomsociete` = '".$nomEntreprise."' OR `email` = '".$emailEnt."'";
             $result = mysqli_query($connect, $sql);
@@ -41,7 +56,7 @@ if(isset($_GET['action']))
             else
             {
 
-                $sqlinscription = "INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`) VALUES (NULL, '".$emailEnt."', '".$protectmdp."', '1', '', '', '', '".$nomEntreprise."', '', '2', '0', '10', '0', '15', '0000-00-00', '0000-00-00', '0', 'null', 'null', '".$apikey."')";
+                $sqlinscription = "INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`) VALUES (NULL, '".$emailEnt."', '".$protectmdp."', '1', '', '', '', '".$nomEntreprise."', '', '2', '0', '10', '0', '15', '".$debutAbonnement."', '".$finaldate_expiration."', '".$jourRestant."', 'null', 'null', '".$apikey."')";
                 if(mysqli_query($connect, $sqlinscription))
                 {
 
@@ -1454,6 +1469,31 @@ if(isset($_GET['action']))
 
             mysqli_close($connect);
             break;
+        case 'test':
+            /*$debutAbonnement = date("Y-m-d");
+        
+            $date_expire    =   $debutAbonnement;
+            $nbre=30;
+            $tmp=explode('-', $date_expire);
+            $jour = $tmp[2]; // on récupère le jour
+            $mois = $tmp[1]; // puis le mois
+            $annee = $tmp[0]; // l'annee ...
+
+            $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
+
+            echo '<br />'.date("Y-m-d", $date_expiration);*/
+
+            /*$datetime1 = date_create('2009-10-11');
+            $datetime2 = date_create('2009-10-13');
+            $interval = date_diff($datetime1, $datetime2);
+            echo $interval->format('%R%a');*/
+
+            $debutAbonnement = strtotime(date("Y-m-d"));
+            $finAbonnement = strtotime("2019-03-24");
+
+            echo dateDiff($debutAbonnement, $finAbonnement);
+
+            break;
         default:
             # code...
             break;
@@ -1462,5 +1502,23 @@ if(isset($_GET['action']))
 
 }
 
+function dateDiff($date1, $date2){
+    $diff = abs($date1 - $date2); // abs pour avoir la valeur absolute, ainsi éviter d'avoir une différence négative
+    $retour = array();
+ 
+    $tmp = $diff;
+    $retour['second'] = $tmp % 60;
+ 
+    $tmp = floor( ($tmp - $retour['second']) /60 );
+    $retour['minute'] = $tmp % 60;
+ 
+    $tmp = floor( ($tmp - $retour['minute'])/60 );
+    $retour['hour'] = $tmp % 24;
+ 
+    $tmp = floor( ($tmp - $retour['hour'])  /24 );
+    $retour['day'] = $tmp;
+ 
+    return $retour['day'];
+}
 
 ?>
