@@ -27,15 +27,15 @@ import Planningclient from './component/componentclient/planningclient'
 /* INTERFACE CLIENT */
 
 
-import Cards from './component/cards'
-import Buttons from './component/buttons'
+import Cards from './component/testcomposant/cards'
+import Buttons from './component/testcomposant/buttons'
 import Login from './component/login'
 import Register from './component/register'
-import Forgot from './component/forgot'
+import Forgot from './component/testcomposant/forgot'
 import Error from './component/404'
-import Blank from './component/blank'
-import Charts from './component/charts'
-import Table from './component/table'
+import Blank from './component/testcomposant/blank'
+import Charts from './component/testcomposant/charts'
+import Table from './component/testcomposant/table'
 
 class App extends Component {
 

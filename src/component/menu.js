@@ -36,36 +36,32 @@ class Menu extends Component {
             </li>
             <li className="nav-item">
                 <a className="nav-link" href="/profil">
-                <i className="fas fa-fw fa-tachometer-alt"></i>
+                <i className="fas fa-fw fa-user-tie"></i>
                 <span>Profil</span></a>
             </li>
             <li className="nav-item">
                 <a className="nav-link" href="/client">
-                <i className="fas fa-fw fa-tachometer-alt"></i>
+                <i className="fas fa-fw fa-users"></i>
                 <span>Client</span></a>
             </li>
             <li className="nav-item">
                 <a className="nav-link" href="/gestioncompte">
-                <i className="fas fa-fw fa-tachometer-alt"></i>
+                <i className="fas fa-fw fa-cog"></i>
                 <span>Gestion de compte</span></a>
             </li>
             <li className="nav-item">
                 <a className="nav-link" href="/log">
-                <i className="fas fa-fw fa-tachometer-alt"></i>
+                <i className="fas fa-fw fa-file-alt"></i>
                 <span>Gestion de log</span></a>
             </li>
             <li className="nav-item">
                 <a className="nav-link" href="#" onClick={this.deconnexion.bind(this)}>
-                <i className="fas fa-fw fa-tachometer-alt"></i>
+                <i className="fas fa-fw fa-sign-out-alt"></i>
                 <span>Déconnexion</span></a>
             </li>
 
             <hr className="sidebar-divider" />
-
-            <div className="text-center d-none d-md-inline">
-                <button className="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
+            
             </ul>
 
       </div>

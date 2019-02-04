@@ -6,10 +6,9 @@ class Menuclient extends Component {
     deconnexion()
     {
 
-        cookie.remove("#FID#CO#SUCCESS")
-        cookie.remove('#FID#CO#IDUSER')
-        cookie.remove('#FID#CO#CARTEBG')
-        cookie.remove('#FID#CO#CARTEICON')
+        cookie.remove("#FID#COCLIENT#SUCCESS")
+        cookie.remove('#FID#COCLIENT#IDUSER')
+        cookie.remove('#FID#COCLIENT#IDENT')
         window.location.href = "/"
 
     }
@@ -36,25 +35,21 @@ class Menuclient extends Component {
             </li>
             <li className="nav-item">
                 <a className="nav-link" href="/mescadeaux">
-                <i className="fas fa-fw fa-tachometer-alt"></i>
+                <i class="fas  fa-fw fa-gifts"></i>
                 <span>Mes cadeaux fidélités</span></a>
             </li>
             <li className="nav-item">
                 <a className="nav-link" href="/planningclient">
-                <i className="fas fa-fw fa-tachometer-alt"></i>
+                <i className="fas fa-fw fa-calendar-alt"></i>
                 <span>Mon planning</span></a>
             </li>
             <li className="nav-item">
                 <a className="nav-link" href="#" onClick={this.deconnexion.bind(this)}>
-                <i className="fas fa-fw fa-tachometer-alt"></i>
+                <i className="fas fa-fw fa-sign-out-alt"></i>
                 <span>Déconnexion</span></a>
             </li>
 
             <hr className="sidebar-divider" />
-
-            <div className="text-center d-none d-md-inline">
-                <button className="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
 
             </ul>
 
