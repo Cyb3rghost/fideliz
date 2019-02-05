@@ -18,12 +18,10 @@ import Ajoutcarte from './component/ajoutcarte'
 /* INTERFACE ENTREPRISE */
 
 /* INTERFACE CLIENT */
-
 import Fichecoclient from './component/componentclient/fichecoclient'
 import Editionclient from './component/componentclient/editionclient'
 import Mescadeaux from './component/componentclient/mescadeaux'
 import Planningclient from './component/componentclient/planningclient'
-
 /* INTERFACE CLIENT */
 
 
@@ -90,46 +88,59 @@ class App extends Component {
     {
   
       const {connexionEmail, connexionPassword, isLogged, idUser } = this.state;
-  
-      fetch('http://127.0.0.1/fidapi/main.php?action=connexion&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
+
+      fetch('http://127.0.0.1/fidapi/main.php?action=jourRestantMaj&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
       .then((response) => response.json())
       .then((response) => {
           console.log(response)
-          this.setState({ isLogged, idUser })
-          if(response === "#CO#ECHEC")
-          {
-            
-            this.setState({
-              connexionEmail: '',
-              connexionPassword: ''
-            })
-  
-          }
-          else {
-  
-            {response.map((value, index) => 
-              (
-                  this.setState({
-                    connexionEmail: '',
-                    connexionPassword: '',
-                    isLogged: cookie.save('#FID#CO#SUCCESS', true, { path: '/' }),
-                    idUser: cookie.save('#FID#CO#IDUSER', value.id, { path: '/' }),
-                    infCarteBackground: cookie.save('#FID#CO#CARTEBG', value.imgfond, { path: '/' }),
-                    infCarteIcon: cookie.save('#FID#CO#CARTEICON', value.imgicon, { path: '/' })
-                  })
-              )
-            )}
-  
-            //alert(this.state.isLogged)
-            //window.location.href = '/dashboard';
-            //return <Dashboard loggedIn={this.state.isLogged} />
-            //window.history.pushState(null, null, '/dashboard');
-            window.location.pathname = '/dashboard'
-  
-          }
+          
+          fetch('http://127.0.0.1/fidapi/main.php?action=connexion&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
+          .then((response) => response.json())
+          .then((response) => {
+              console.log(response)
+              this.setState({ isLogged, idUser })
+              if(response === "#CO#ECHEC")
+              {
+                
+                this.setState({
+                  connexionEmail: '',
+                  connexionPassword: ''
+                })
+      
+              }
+              else {
+      
+                {response.map((value, index) => 
+                  (
+                      this.setState({
+                        connexionEmail: '',
+                        connexionPassword: '',
+                        isLogged: cookie.save('#FID#CO#SUCCESS', true, { path: '/' }),
+                        idUser: cookie.save('#FID#CO#IDUSER', value.id, { path: '/' }),
+                        infCarteBackground: cookie.save('#FID#CO#CARTEBG', value.imgfond, { path: '/' }),
+                        infCarteIcon: cookie.save('#FID#CO#CARTEICON', value.imgicon, { path: '/' })
+                      })
+                  )
+                )}
+      
+                //alert(this.state.isLogged)
+                //window.location.href = '/dashboard';
+                //return <Dashboard loggedIn={this.state.isLogged} />
+                //window.history.pushState(null, null, '/dashboard');
+                window.location.pathname = '/dashboard'
+      
+              }
+      
+          })
+          .catch(err => console.error(err))
+
+
+
   
       })
       .catch(err => console.error(err))
+
+
   
     }
   
@@ -411,7 +422,7 @@ class App extends Component {
           return <Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
         }
         else{
-          window.location.href = "/"
+          window.location.href = "/connexionclient"
         } 
         break; 
     case '/editionclient':
@@ -419,7 +430,7 @@ class App extends Component {
           return <Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
         }
         else{
-          window.location.href = "/"
+          window.location.href = "/connexionclient"
         } 
         break; 
     case '/mescadeaux':
@@ -427,7 +438,7 @@ class App extends Component {
           return <Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
         }
         else{
-          window.location.href = "/"
+          window.location.href = "/connexionclient"
         } 
         break; 
     case '/planningclient':
@@ -435,7 +446,7 @@ class App extends Component {
           return <Planningclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
         }
         else{
-          window.location.href = "/"
+          window.location.href = "/connexionclient"
         } 
         break; 
     /* PARTIE CLIENT */    

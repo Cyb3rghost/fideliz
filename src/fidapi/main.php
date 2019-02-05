@@ -74,6 +74,59 @@ if(isset($_GET['action']))
             
             mysqli_close($connect);
             break;
+        case 'jourRestantMaj':
+            $connexionEmail = $_GET['cntemail'];
+            $connexionPassword = $_GET['cntpassword'];
+            $protectcomdp = md5("secureINS".$connexionPassword."INSecure");
+
+            $sql = "SELECT * FROM `accsociete` WHERE `email` = '".$connexionEmail."' AND `password` = '".$protectcomdp."' AND `confirmation` = '1'";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                while($raw = mysqli_fetch_assoc($result))
+                {
+
+                    $id = $raw['id'];
+                    $finAbonnement = $raw['finabo'];
+
+                }
+
+                $diffDebutAbonnement = strtotime(date('Y-m-d'));
+                $diffFinAbonnement = strtotime($finAbonnement);
+                $jourRestant = dateDiff($diffDebutAbonnement, $diffFinAbonnement);
+
+                $sqldeux = "UPDATE `accsociete` SET `jrestant` = '".$jourRestant."' WHERE `id` = $id";
+
+                if(mysqli_query($connect, $sqldeux))
+                {
+
+                        $json = json_encode('#UPTJRST#SUCCESS');
+
+                }
+                else
+                {
+
+                        $json = json_encode('#UPTJRST#ECHEC');
+
+                }
+
+
+            
+            }else{
+            
+                $json = json_encode('#ENT#NOEXIST');
+            
+                
+            }
+            
+            echo $json;
+
+            mysqli_close($connect);
+            
+
+            break;
         case 'connexion':
             
             $connexionEmail = $_GET['cntemail'];
@@ -82,7 +135,16 @@ if(isset($_GET['action']))
 
             $sql = "SELECT * FROM `accsociete` WHERE `email` = '".$connexionEmail."' AND `password` = '".$protectcomdp."' AND `confirmation` = '1'";
             $result = mysqli_query($connect, $sql);
-            if(mysqli_num_rows($result)){
+            if(mysqli_num_rows($result))
+            {
+
+                /*while($raw = mysqli_fetch_assoc($result))
+                {
+
+                    $id = $raw['id'];
+                    $finAbonnement = $raw['finabo'];
+
+                }*/
 
                 while($row[] = mysqli_fetch_assoc($result))
                 {
