@@ -89,30 +89,54 @@ if(isset($_GET['action']))
                 {
 
                     $id = $raw['id'];
+                    $jourRestantChk = $raw['jrestant'];
+                    $statutCompte = $raw['typecompte'];
                     $finAbonnement = $raw['finabo'];
 
                 }
+                
+                switch ($jourRestantChk) {
+                    case ($jourRestantChk <= '0'):
+                        # code...
+                        $sqldeux = "UPDATE `accsociete` SET `typecompte` = '0', `jrestant` = '0' WHERE `id` = $id";
+    
+                        if($statutCompte != "0" && mysqli_query($connect, $sqldeux))
+                        {
+        
+                                $json = json_encode('#UPTYPECPT#SUCCESS');
+        
+                        }
+                        else
+                        {
+        
+                                $json = json_encode('#UPTYPECPT#ECHEC');
+        
+                        }
 
-                $diffDebutAbonnement = strtotime(date('Y-m-d'));
-                $diffFinAbonnement = strtotime($finAbonnement);
-                $jourRestant = dateDiff($diffDebutAbonnement, $diffFinAbonnement);
+                        break;
+                    
+                    default:
+                        # code...
+                        $diffDebutAbonnement = strtotime(date('Y-m-d'));
+                        $diffFinAbonnement = strtotime($finAbonnement);
+                        $jourRestant = dateDiff($diffDebutAbonnement, $diffFinAbonnement);
 
-                $sqldeux = "UPDATE `accsociete` SET `jrestant` = '".$jourRestant."' WHERE `id` = $id";
-
-                if(mysqli_query($connect, $sqldeux))
-                {
-
-                        $json = json_encode('#UPTJRST#SUCCESS');
-
+                        $sqltrois = "UPDATE `accsociete` SET `jrestant` = '".$jourRestant."' WHERE `id` = $id";
+        
+                        if(mysqli_query($connect, $sqltrois))
+                        {
+        
+                                $json = json_encode('#UPTJRST#SUCCESS');
+        
+                        }
+                        else
+                        {
+        
+                                $json = json_encode('#UPTJRST#ECHEC');
+        
+                        }
+                        break;
                 }
-                else
-                {
-
-                        $json = json_encode('#UPTJRST#ECHEC');
-
-                }
-
-
             
             }else{
             
@@ -122,10 +146,8 @@ if(isset($_GET['action']))
             }
             
             echo $json;
-
-            mysqli_close($connect);
             
-
+            mysqli_close($connect);
             break;
         case 'connexion':
             
@@ -1565,22 +1587,16 @@ if(isset($_GET['action']))
 }
 
 function dateDiff($date1, $date2){
-    $diff = abs($date1 - $date2); // abs pour avoir la valeur absolute, ainsi éviter d'avoir une différence négative
-    $retour = array();
  
-    $tmp = $diff;
-    $retour['second'] = $tmp % 60;
- 
-    $tmp = floor( ($tmp - $retour['second']) /60 );
-    $retour['minute'] = $tmp % 60;
- 
-    $tmp = floor( ($tmp - $retour['minute'])/60 );
-    $retour['hour'] = $tmp % 24;
- 
-    $tmp = floor( ($tmp - $retour['hour'])  /24 );
-    $retour['day'] = $tmp;
- 
-    return $retour['day'];
+    // On récupère la différence de timestamp entre les 2 précédents
+    $nbJoursTimestamp = $date2 - $date1;
+    
+    // ** Pour convertir le timestamp (exprimé en secondes) en jours **
+    // On sait que 1 heure = 60 secondes * 60 minutes et que 1 jour = 24 heures donc :
+    $nbJours = $nbJoursTimestamp/86400; // 86 400 = 60*60*24
+
+    return $nbJours;
+
 }
 
 ?>

@@ -277,11 +277,11 @@ class Dashboard extends Component {
                             <div className="card-body">
                             <div className="row no-gutters align-items-center">
                                 <div className="col mr-2">
-                                <div className="text-xs font-weight-bold text-success text-uppercase mb-1">LIMITE DE CLIENTS</div>
-                                <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.nbClient} / {this.state.limitClient}</div>
+                                <div className="text-xs font-weight-bold text-success text-uppercase mb-1">DEBUT ABONNEMENT</div>
+                                <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.debutAbo}</div>
                                 </div>
                                 <div className="col-auto">
-                                <i className="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                <i className="fas fa-calendar fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                             </div>
@@ -293,20 +293,11 @@ class Dashboard extends Component {
                             <div className="card-body">
                             <div className="row no-gutters align-items-center">
                                 <div className="col mr-2">
-                                <div className="text-xs font-weight-bold text-info text-uppercase mb-1">LIMITE DE POINTAGE</div>
-                                <div className="row no-gutters align-items-center">
-                                    <div className="col-auto">
-                                    <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">{this.state.nbPointage} / {this.state.limitPointage}</div>
-                                    </div>
-                                    <div className="col">
-                                    <div className="progress progress-sm mr-2">
-                                        <div className="progress-bar bg-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    </div>
-                                </div>
+                                <div className="text-xs font-weight-bold text-info text-uppercase mb-1">FIN ABONNEMENT</div>
+                                <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.finAbo}</div>
                                 </div>
                                 <div className="col-auto">
-                                <i className="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                <i className="fas fa-dollar-sign fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                             </div>
@@ -340,8 +331,8 @@ class Dashboard extends Component {
                             <div className="card-body">
                             <div className="row no-gutters align-items-center">
                                 <div className="col mr-2">
-                                <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">DEBUT ABONNEMENT</div>
-                                <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.debutAbo}</div>
+                                <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">JOURS RESTANTS</div>
+                                <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">{this.state.jRestants}</div>
                                 </div>
                                 <div className="col-auto">
                                 <i className="fas fa-calendar fa-2x text-gray-300"></i>
@@ -351,57 +342,16 @@ class Dashboard extends Component {
                         </div>
                         </div>
 
-                        <div className="col-xl-3 col-md-6 mb-4">
+                        <div className="col-xl-9 mb-4">
                         <div className="card border-left-success shadow h-100 py-2">
                             <div className="card-body">
                             <div className="row no-gutters align-items-center">
                                 <div className="col mr-2">
-                                <div className="text-xs font-weight-bold text-success text-uppercase mb-1">FIN ABONNEMENT</div>
-                                <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.finAbo}</div>
+                                <div className="text-xs font-weight-bold text-success text-uppercase mb-1">API KEY</div>
+                                <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.apikey}</div>
                                 </div>
                                 <div className="col-auto">
                                 <i className="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-
-                        <div className="col-xl-3 col-md-6 mb-4">
-                        <div className="card border-left-info shadow h-100 py-2">
-                            <div className="card-body">
-                            <div className="row no-gutters align-items-center">
-                                <div className="col mr-2">
-                                <div className="text-xs font-weight-bold text-info text-uppercase mb-1">JOURS RESTANT</div>
-                                <div className="row no-gutters align-items-center">
-                                    <div className="col-auto">
-                                    <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">{this.state.jRestants}</div>
-                                    </div>
-                                    <div className="col">
-                                    <div className="progress progress-sm mr-2">
-                                        <div className="progress-bar bg-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                                <div className="col-auto">
-                                <i className="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-
-                        <div className="col-xl-3 col-md-6 mb-4">
-                        <div className="card border-left-warning shadow h-100 py-2">
-                            <div className="card-body">
-                            <div className="row no-gutters align-items-center">
-                                <div className="col mr-2">
-                                <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">APIKEY</div>
-                                <div className="h6 mb-0 font-weight-bold text-gray-600">{/*this.state.apikey*/}</div>
-                                </div>
-                                <div className="col-auto">
-                                <i className="fas fa-comments fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                             </div>

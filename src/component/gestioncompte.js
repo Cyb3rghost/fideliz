@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import Wallet from '../images/walletabo.png'
+import Prestations from '../images/prestations.png'
+
 import Menu from './menu'
 
 class Gestioncompte extends Component {
@@ -14,8 +17,7 @@ class Gestioncompte extends Component {
             prix: '',
             statutListeCadeaux: '',
             statutListeCadeauxInactive: '',
-            activeClassTab: 'active',
-            activeClassTabDeux: ''
+            gestionInterface: '1'
         }
 
     }
@@ -418,6 +420,8 @@ class Gestioncompte extends Component {
         
     }
 
+    
+
 
   render() {
     return (
@@ -600,103 +604,292 @@ class Gestioncompte extends Component {
                     </nav>
 
                     <div className="container-fluid">
-
-                    <div className="row">
                     
-                        <div className="col-6">
-                        
-                            <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                <h1 className="h3 mb-0 text-gray-800">Gestion du compte</h1>
+                    
+                        <div className="row">
+
+                            <div className="col-md-2">
+
+                                <div onClick={() => this.setState({gestionInterface: '1'})} class="card card-body bg-white text-center">
+                                    <h2>Prestations</h2>
+                                    <br/>
+                                    <center><img src={Prestations} width="150" height="150" alt="responsive-image" /></center>
+
+                                </div> 
+
+                                <br/>
+
+                                <div onClick={() => this.setState({gestionInterface: '2'})} class="card card-body bg-white text-center">
+                                    <h2>Abonnement</h2>
+                                    <br/>
+                                    <center><img src={Wallet} width="150" height="150" alt="responsive-image" /></center>
+                                </div>    
+
+                                <br/>
+
+                                <div class="card card-body bg-white">
+                                    <h2>Roboto</h2>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra codeply varius quam sit amet vulputate.
+                                </div> 
+
+                                <br/>    
+
                             </div>
-                        
-                        </div>
-                        <div className="col-6">
-                        
-                        <div className="form-row">
-                            <div className="col">
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                placeholder="Ma prestation" 
-                                value={this.state.maprestation}
-                                onChange={e => this.setState({maprestation: e.target.value})}
-                            
-                            />
-                            </div>
-                            <div className="col">
-                            <input 
-                                type="number" 
-                                className="form-control" 
-                                placeholder="Prix" 
-                                value={this.state.prix}
-                                onChange={e => this.setState({prix: e.target.value})}
-                            
-                            />
-                            </div>
-                            <div className="col">
-                            <button type="submit" onClick={this.ajoutPrestation.bind(this)} class="btn btn-primary">Ajouter</button>
-                            </div>
-                        </div>
-                        
-                        </div>
+                            <div className="col-md-10">
+     
+                                    {this.state.gestionInterface === "1" &&
+                                            <div>
+                                            
+                                            <div class="card card-body bg-white">
+                                            <div className="row">
+                                        
+                                            <div className="col-md-6">
+                                            
+                                                <div className="d-sm-flex align-items-center justify-content-between mb-4">
+                                                    <h1 className="h3 mb-0 text-gray-800">Gestion du compte</h1>
+                                                </div>
+                                                <br/>
+                                            
+                                            </div>
+                                            <div className="col-md-6">
+                                            
+                                            <div className="form-row">
+                                                <div className="col">
+                                                <input 
+                                                    type="text" 
+                                                    className="form-control" 
+                                                    placeholder="Ma prestation" 
+                                                    value={this.state.maprestation}
+                                                    onChange={e => this.setState({maprestation: e.target.value})}
+                                                
+                                                />
+                                                </div>
+                                                <div className="col">
+                                                <input 
+                                                    type="number" 
+                                                    className="form-control" 
+                                                    placeholder="Prix" 
+                                                    value={this.state.prix}
+                                                    onChange={e => this.setState({prix: e.target.value})}
+                                                
+                                                />
+                                                </div>
+                                                <div className="col">
+                                                <button type="submit" onClick={this.ajoutPrestation.bind(this)} class="btn btn-primary btn-block">Ajouter</button>
+                                                </div>
+                                            </div>
+                                            
+                                            </div>
+
+                                            {this.afficheStatutCadeaux()} 
+                                        
+                                        </div>
+
+                                        <hr/>
+
+                                        <ul className="nav nav-tabs" id="myTab" role="tablist">
+                                            <li className="nav-item">
+                                                <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Prestations actives</a>
+                                            </li>
+                                            <li className="nav-item">
+                                                <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Prestations inactives</a>
+                                            </li>
+                                            </ul>
+                                            <div className="tab-content" id="myTabContent">
+                                            <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                            
+                                            
+                                                <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                    
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {this.afficheListePrestation()}
+                                                </tbody>
+                                                </table>
+                                            
+                                            
+                                            </div>
+                                            <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                            
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                    
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {this.afficheListePrestationInactive()}
+                                                </tbody>
+                                                </table>
+                                            
+                                            
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                        </div>
+                                          
+
+                                    }
+
+                                    {this.state.gestionInterface === "2" &&
+
+                                        <div>
+                                            <div className="headerTitle">
+
+                                                FORMULE D'ABONNEMENT MENSUEL
+
+                                            </div>
+
+                                            <div class="card card-body bg-white">
+
+                                            <div className="mb-5 mt-5">
+                                                <div className="pricing card-deck flex-column flex-md-row mb-3">
+                                                    <div className="card card-pricing text-center px-3 mb-4">
+                                                        <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Starter Royalty <br/> <i class="fas fa-star"></i> Bronze <i class="fas fa-star"></i></span>
+                                                        <div className="bg-transparent card-header pt-4 border-0">
+                                                            <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="15">€<span className="price">9.99</span><span className="h6 text-muted ml-2">/ par mois</span></h1>
+                                                        </div>
+                                                        <div className="card-body pt-0">
+                                                            <ul className="list-unstyled mb-4">
+                                                                <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
+                                                                <li><i class="fas fa-check"></i> Gestion client</li>
+                                                                <li><i class="fas fa-check"></i> Gestion pointage</li>
+                                                                <li><i class="fas fa-check"></i> Gestion carte</li>
+                                                                <li><i class="fas fa-check"></i> Gestion planning</li>
+                                                            </ul>
+                                                            <button type="button" className="btn btn-outline-secondary mb-3">Order now</button>
+                                                        </div>
+                                                    </div>
+                                                    <div className="card card-pricing popular shadow text-center px-3 mb-4">
+                                                        <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Professional Royalty <br/> <i class="fas fa-star"></i> Argent <i class="fas fa-star"></i></span>
+                                                        <div className="bg-transparent card-header pt-4 border-0">
+                                                            <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="30">€<span className="price">19.99</span><span className="h6 text-muted ml-2">/ par mois</span></h1>
+                                                        </div>
+                                                        <div className="card-body pt-0">
+                                                            <ul className="list-unstyled mb-4">
+                                                                <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
+                                                                <li><i class="fas fa-check"></i> Accès carte de réduction</li>
+                                                                <li><i class="fas fa-check"></i> Gestion client</li>
+                                                                <li><i class="fas fa-check"></i> Gestion pointage</li>
+                                                                <li><i class="fas fa-check"></i> Gestion carte</li>
+                                                                <li><i class="fas fa-check"></i> Gestion planning</li>
+                                                                <li><i class="fas fa-check"></i> Support technique / client</li>
+                                                            </ul>
+                                                            <a href="https://www.totoprayogo.com" target="_blank" className="btn btn-primary mb-3">Order Now</a>
+                                                        </div>
+                                                    </div>
+                                                    <div className="card card-pricing text-center px-3 mb-4">
+                                                        <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Expert Royalty <br/> <i class="fas fa-star"></i> Or <i class="fas fa-star"></i></span>
+                                                        <div className="bg-transparent card-header pt-4 border-0">
+                                                            <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="45">€<span className="price">29.99</span><span className="h6 text-muted ml-2">/ par mois</span></h1>
+                                                        </div>
+                                                        <div className="card-body pt-0">
+                                                            <ul className="list-unstyled mb-4">
+                                                                <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
+                                                                <li><i class="fas fa-check"></i> Accès carte de réduction</li>
+                                                                <li><i class="fas fa-check"></i> Accès carte de cadeaux</li>
+                                                                <li><i class="fas fa-check"></i> Gestion client</li>
+                                                                <li><i class="fas fa-check"></i> Gestion pointage</li>
+                                                                <li><i class="fas fa-check"></i> Gestion carte</li>
+                                                                <li><i class="fas fa-check"></i> Gestion planning</li>
+                                                                <li><i class="fas fa-check"></i> Support technique / client</li>
+                                                            </ul>
+                                                            <button type="button" className="btn btn-outline-secondary mb-3">Order now</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div className="headerTitle">
+
+                                        FORMULE D'ABONNEMENT ANNUEL
+
+                                        </div>
+
+                                        <div class="card card-body bg-white">
+
+                                            <div className="mb-5 mt-5">
+                                                    <div className="pricing card-deck flex-column flex-md-row mb-3">
+                                                        <div className="card card-pricing text-center px-3 mb-4">
+                                                            <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Starter Royalty <br/> <i class="fas fa-star"></i> Bronze <i class="fas fa-star"></i></span>
+                                                            <div className="bg-transparent card-header pt-4 border-0">
+                                                                <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="15">€<span className="price">109.89</span><span className="h6 text-muted ml-2">/ par an</span></h1>
+                                                            </div>
+                                                            <div className="card-body pt-0">
+                                                                <ul className="list-unstyled mb-4">
+                                                                    <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
+                                                                    <li><i class="fas fa-check"></i> Gestion client</li>
+                                                                    <li><i class="fas fa-check"></i> Gestion pointage</li>
+                                                                    <li><i class="fas fa-check"></i> Gestion carte</li>
+                                                                    <li><i class="fas fa-check"></i> Gestion planning</li>
+                                                                </ul>
+                                                                <button type="button" className="btn btn-outline-secondary mb-3">Order now</button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="card card-pricing popular shadow text-center px-3 mb-4">
+                                                            <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Professional Royalty <br/> <i class="fas fa-star"></i> Argent <i class="fas fa-star"></i></span>
+                                                            <div className="bg-transparent card-header pt-4 border-0">
+                                                                <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="30">€<span className="price">219.89</span><span className="h6 text-muted ml-2">/ par an</span></h1>
+                                                            </div>
+                                                            <div className="card-body pt-0">
+                                                                <ul className="list-unstyled mb-4">
+                                                                    <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
+                                                                    <li><i class="fas fa-check"></i> Accès carte de réduction</li>
+                                                                    <li><i class="fas fa-check"></i> Gestion client</li>
+                                                                    <li><i class="fas fa-check"></i> Gestion pointage</li>
+                                                                    <li><i class="fas fa-check"></i> Gestion carte</li>
+                                                                    <li><i class="fas fa-check"></i> Gestion planning</li>
+                                                                    <li><i class="fas fa-check"></i> Support technique / client</li>
+                                                                </ul>
+                                                                <a href="https://www.totoprayogo.com" target="_blank" className="btn btn-primary mb-3">Order Now</a>
+                                                            </div>
+                                                        </div>
+                                                        <div className="card card-pricing text-center px-3 mb-4">
+                                                            <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Expert Royalty <br/> <i class="fas fa-star"></i> Or <i class="fas fa-star"></i></span>
+                                                            <div className="bg-transparent card-header pt-4 border-0">
+                                                                <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="45">€<span className="price">329.89</span><span className="h6 text-muted ml-2">/ par an</span></h1>
+                                                            </div>
+                                                            <div className="card-body pt-0">
+                                                                <ul className="list-unstyled mb-4">
+                                                                    <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
+                                                                    <li><i class="fas fa-check"></i> Accès carte de réduction</li>
+                                                                    <li><i class="fas fa-check"></i> Accès carte de cadeaux</li>
+                                                                    <li><i class="fas fa-check"></i> Gestion client</li>
+                                                                    <li><i class="fas fa-check"></i> Gestion pointage</li>
+                                                                    <li><i class="fas fa-check"></i> Gestion carte</li>
+                                                                    <li><i class="fas fa-check"></i> Gestion planning</li>
+                                                                    <li><i class="fas fa-check"></i> Support technique / client</li>
+                                                                </ul>
+                                                                <button type="button" className="btn btn-outline-secondary mb-3">Order now</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                        </div>
 
 
+                                        </div>
+
+
+
+                                    }   
+                            <br/>
+
+                            </div>
+
+
+                        </div>    
+                    
+                    
                     
                     </div>
 
-                    {this.afficheStatutCadeaux()}  
-
-                    <hr/>
-
-                    {/* DEBUT CODE */}
-
-                    <ul className="nav nav-tabs" id="myTab" role="tablist">
-                        <li className="nav-item">
-                            <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Prestations actives</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Prestations inactives</a>
-                        </li>
-                        </ul>
-                        <div className="tab-content" id="myTabContent">
-                        <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        
-                        
-                            <table class="table">
-                            <thead>
-                                <tr>
-                                
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.afficheListePrestation()}
-                            </tbody>
-                            </table>
-                        
-                        
-                        </div>
-                        <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.afficheListePrestationInactive()}
-                            </tbody>
-                            </table>
-                        
-                        
-                        </div>
-                    </div>
-
-
-                    {/* FIN CODE */}
-
-
-                    </div>
 
                 </div>
 
