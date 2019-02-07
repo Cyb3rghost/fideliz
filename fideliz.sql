@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mer. 06 fév. 2019 à 12:48
+-- Généré le :  jeu. 07 fév. 2019 à 12:29
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -59,7 +59,7 @@ INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `pre
 (1, 'ludovic.lvnr@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'PAYET', 'Eddy', '56 chemin des fleurs 97400', 'EddyCoiffure', '0692101112', 1, 0, 0, 0, 0, '0000-00-00', '0000-00-00', 0, 'backgroundCarte.jpg', 'logocarte.png', 'e6c14066a83d3416238afbc40a9f437a'),
 (2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 0, 0, 10, 18, 15, '0000-00-00', '0000-00-00', 0, 'BCGC902130D24-01-2019.png', 'LOGO443298D24-01-2019.png', 'b3470a6aba7953782f54486b8cc28d02'),
 (3, 'blizzard@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'Blizzard', '', 2, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'null', 'null', 'fedd6393d9b9224fcba3c3ce0ba33b96'),
-(4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 0, 0, 10, 0, 15, '2019-02-06', '2019-02-04', 0, 'null', 'null', 'e3fe6a42aaf6a6f49760186c481afad6');
+(4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 3, 0, 10, 0, 15, '2019-02-07', '2020-02-07', 365, 'null', 'null', 'e3fe6a42aaf6a6f49760186c481afad6');
 
 -- --------------------------------------------------------
 

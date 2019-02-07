@@ -95,47 +95,55 @@ if(isset($_GET['action']))
 
                 }
                 
-                switch ($jourRestantChk) {
-                    case ($jourRestantChk <= '0'):
-                        # code...
-                        $sqldeux = "UPDATE `accsociete` SET `typecompte` = '0', `jrestant` = '0' WHERE `id` = $id";
+                if($jourRestantChk <= '0')
+                {
+
+                    $sqldeux = "UPDATE `accsociete` SET `typecompte` = '0', `jrestant` = '0' WHERE `id` = $id";
     
-                        if($statutCompte != "0" && mysqli_query($connect, $sqldeux))
-                        {
-        
-                                $json = json_encode('#UPTYPECPT#SUCCESS');
-        
-                        }
-                        else
-                        {
-        
-                                $json = json_encode('#UPTYPECPT#ECHEC');
-        
-                        }
+                    if($statutCompte != "0" && mysqli_query($connect, $sqldeux))
+                    {
+    
+                            $json = json_encode('#UPTYPECPT#SUCCESS');
+    
+                    }
+                    else
+                    {
+    
+                            $json = json_encode('#UPTYPECPT#ECHEC');
+    
+                    }
 
-                        break;
-                    
-                    default:
-                        # code...
-                        $diffDebutAbonnement = strtotime(date('Y-m-d'));
-                        $diffFinAbonnement = strtotime($finAbonnement);
-                        $jourRestant = dateDiff($diffDebutAbonnement, $diffFinAbonnement);
+                }
 
-                        $sqltrois = "UPDATE `accsociete` SET `jrestant` = '".$jourRestant."' WHERE `id` = $id";
-        
-                        if(mysqli_query($connect, $sqltrois))
-                        {
-        
-                                $json = json_encode('#UPTJRST#SUCCESS');
-        
-                        }
-                        else
-                        {
-        
-                                $json = json_encode('#UPTJRST#ECHEC');
-        
-                        }
-                        break;
+                if($jourRestantChk != '0')
+                {
+
+                    $diffDebutAbonnement = strtotime(date('Y-m-d'));
+                    $diffFinAbonnement = strtotime($finAbonnement);
+                    $jourRestant = dateDiff($diffDebutAbonnement, $diffFinAbonnement);
+
+                    if($jourRestant < '0')
+                    {
+
+                        $jourRestant = '0';
+
+                    }
+
+                    $sqltrois = "UPDATE `accsociete` SET `jrestant` = '".$jourRestant."' WHERE `id` = $id";
+    
+                    if(mysqli_query($connect, $sqltrois))
+                    {
+    
+                            $json = json_encode('#UPTJRST#SUCCESS');
+    
+                    }
+                    else
+                    {
+    
+                            $json = json_encode('#UPTJRST#ECHEC');
+    
+                    }
+
                 }
             
             }else{
@@ -1546,6 +1554,282 @@ if(isset($_GET['action']))
             {
 
                 $json = json_encode("#ASSOC#NOEXIST");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+            break;
+        case 'commandebronzemensuel':
+            $id = $_GET['id'];
+            $debutAbonnement = date("Y-m-d");
+            $date_expire    =   $debutAbonnement;
+            $nbre=30;
+            $tmp=explode('-', $date_expire);
+            $jour = $tmp[2]; // on récupère le jour
+            $mois = $tmp[1]; // puis le mois
+            $annee = $tmp[0]; // l'annee ...
+
+            $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
+            $finaldate_expiration = date("Y-m-d", $date_expiration);
+
+            $diffDebutAbonnement = strtotime($debutAbonnement);
+            $diffFinAbonnement = strtotime($finaldate_expiration);
+            $jourRestant = dateDiff($diffDebutAbonnement, $diffFinAbonnement);
+
+            $sql = "SELECT * FROM `accsociete` WHERE `id` = $id";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+
+                $update = "UPDATE `accsociete` SET `debutabo` = '".$debutAbonnement."', `finabo` = '".$finaldate_expiration."', `jrestant` = '".$jourRestant."', `typecompte` = '1' WHERE `id` = $id";
+                if(mysqli_query($connect, $update))
+                {
+
+                        $json = json_encode("#ABOBRONZE#SUCCESS");
+
+                }
+                else
+                {
+
+                        $json = json_encode("#ABOBRONZE#FAILED");
+
+                }
+
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+            break;
+        case 'commandebronzeannuel':
+            $id = $_GET['id'];
+            $debutAbonnement = date("Y-m-d");
+            $date_expire    =   $debutAbonnement;
+            $nbre=365;
+            $tmp=explode('-', $date_expire);
+            $jour = $tmp[2]; // on récupère le jour
+            $mois = $tmp[1]; // puis le mois
+            $annee = $tmp[0]; // l'annee ...
+
+            $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
+            $finaldate_expiration = date("Y-m-d", $date_expiration);
+
+            $diffDebutAbonnement = strtotime($debutAbonnement);
+            $diffFinAbonnement = strtotime($finaldate_expiration);
+            $jourRestant = dateDiff($diffDebutAbonnement, $diffFinAbonnement);
+
+            $sql = "SELECT * FROM `accsociete` WHERE `id` = $id";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+
+                $update = "UPDATE `accsociete` SET `debutabo` = '".$debutAbonnement."', `finabo` = '".$finaldate_expiration."', `jrestant` = '".$jourRestant."', `typecompte` = '1' WHERE `id` = $id";
+                if(mysqli_query($connect, $update))
+                {
+
+                        $json = json_encode("#ABOBRONZEANN#SUCCESS");
+
+                }
+                else
+                {
+
+                        $json = json_encode("#ABOBRONZEANN#FAILED");
+
+                }
+
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+            break;
+        case 'commandeargentmensuel':
+            $id = $_GET['id'];
+            $debutAbonnement = date("Y-m-d");
+            $date_expire    =   $debutAbonnement;
+            $nbre=30;
+            $tmp=explode('-', $date_expire);
+            $jour = $tmp[2]; // on récupère le jour
+            $mois = $tmp[1]; // puis le mois
+            $annee = $tmp[0]; // l'annee ...
+
+            $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
+            $finaldate_expiration = date("Y-m-d", $date_expiration);
+
+            $diffDebutAbonnement = strtotime($debutAbonnement);
+            $diffFinAbonnement = strtotime($finaldate_expiration);
+            $jourRestant = dateDiff($diffDebutAbonnement, $diffFinAbonnement);
+
+            $sql = "SELECT * FROM `accsociete` WHERE `id` = $id";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+
+                $update = "UPDATE `accsociete` SET `debutabo` = '".$debutAbonnement."', `finabo` = '".$finaldate_expiration."', `jrestant` = '".$jourRestant."', `typecompte` = '2' WHERE `id` = $id";
+                if(mysqli_query($connect, $update))
+                {
+
+                        $json = json_encode("#ABOARGENT#SUCCESS");
+
+                }
+                else
+                {
+
+                        $json = json_encode("#ABOARGENT#FAILED");
+
+                }
+
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+            break;
+        case 'commandeargentannuel':
+            $id = $_GET['id'];
+            $debutAbonnement = date("Y-m-d");
+            $date_expire    =   $debutAbonnement;
+            $nbre=365;
+            $tmp=explode('-', $date_expire);
+            $jour = $tmp[2]; // on récupère le jour
+            $mois = $tmp[1]; // puis le mois
+            $annee = $tmp[0]; // l'annee ...
+
+            $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
+            $finaldate_expiration = date("Y-m-d", $date_expiration);
+
+            $diffDebutAbonnement = strtotime($debutAbonnement);
+            $diffFinAbonnement = strtotime($finaldate_expiration);
+            $jourRestant = dateDiff($diffDebutAbonnement, $diffFinAbonnement);
+
+            $sql = "SELECT * FROM `accsociete` WHERE `id` = $id";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+
+                $update = "UPDATE `accsociete` SET `debutabo` = '".$debutAbonnement."', `finabo` = '".$finaldate_expiration."', `jrestant` = '".$jourRestant."', `typecompte` = '2' WHERE `id` = $id";
+                if(mysqli_query($connect, $update))
+                {
+
+                        $json = json_encode("#ABOARGENTANN#SUCCESS");
+
+                }
+                else
+                {
+
+                        $json = json_encode("#ABOARGENTANN#FAILED");
+
+                }
+
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+            break;
+        case 'commandeormensuel':
+            $id = $_GET['id'];
+            $debutAbonnement = date("Y-m-d");
+            $date_expire    =   $debutAbonnement;
+            $nbre=30;
+            $tmp=explode('-', $date_expire);
+            $jour = $tmp[2]; // on récupère le jour
+            $mois = $tmp[1]; // puis le mois
+            $annee = $tmp[0]; // l'annee ...
+
+            $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
+            $finaldate_expiration = date("Y-m-d", $date_expiration);
+
+            $diffDebutAbonnement = strtotime($debutAbonnement);
+            $diffFinAbonnement = strtotime($finaldate_expiration);
+            $jourRestant = dateDiff($diffDebutAbonnement, $diffFinAbonnement);
+
+            $sql = "SELECT * FROM `accsociete` WHERE `id` = $id";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+
+                $update = "UPDATE `accsociete` SET `debutabo` = '".$debutAbonnement."', `finabo` = '".$finaldate_expiration."', `jrestant` = '".$jourRestant."', `typecompte` = '3' WHERE `id` = $id";
+                if(mysqli_query($connect, $update))
+                {
+
+                        $json = json_encode("#ABOOR#SUCCESS");
+
+                }
+                else
+                {
+
+                        $json = json_encode("#ABOOR#FAILED");
+
+                }
+
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+            break;
+        case 'commandeorannuel':
+            $id = $_GET['id'];
+            $debutAbonnement = date("Y-m-d");
+            $date_expire    =   $debutAbonnement;
+            $nbre=365;
+            $tmp=explode('-', $date_expire);
+            $jour = $tmp[2]; // on récupère le jour
+            $mois = $tmp[1]; // puis le mois
+            $annee = $tmp[0]; // l'annee ...
+
+            $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
+            $finaldate_expiration = date("Y-m-d", $date_expiration);
+
+            $diffDebutAbonnement = strtotime($debutAbonnement);
+            $diffFinAbonnement = strtotime($finaldate_expiration);
+            $jourRestant = dateDiff($diffDebutAbonnement, $diffFinAbonnement);
+
+            $sql = "SELECT * FROM `accsociete` WHERE `id` = $id";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+
+                $update = "UPDATE `accsociete` SET `debutabo` = '".$debutAbonnement."', `finabo` = '".$finaldate_expiration."', `jrestant` = '".$jourRestant."', `typecompte` = '3' WHERE `id` = $id";
+                if(mysqli_query($connect, $update))
+                {
+
+                        $json = json_encode("#ABOORANN#SUCCESS");
+
+                }
+                else
+                {
+
+                        $json = json_encode("#ABOORANN#FAILED");
+
+                }
+
+
 
             }
 
