@@ -17,7 +17,12 @@ class Gestioncompte extends Component {
             prix: '',
             statutListeCadeaux: '',
             statutListeCadeauxInactive: '',
-            gestionInterface: '1'
+            gestionInterface: '1',
+            
+            /* Gestion partie abonnement */
+            statutAbonnement: '0'
+
+            /* Gestion partie abonnement */
         }
 
     }
@@ -420,8 +425,336 @@ class Gestioncompte extends Component {
         
     }
 
-    
+    commandeBronzeMensuel(statutabo)
+    {
 
+        if(statutabo === '1')
+        {
+
+            fetch('http://127.0.0.1/fidapi/main.php?action=commandebronzeannuel&id=' + this.props.idUserRecup)
+            .then((response) => response.json())
+            .then((response) => {
+    
+                console.log(response)
+                
+                if(response === "#ABOBRONZEANN#SUCCESS")
+                {
+    
+                    this.setState({
+                        statutAbonnement: '7'
+                    })
+    
+                    setTimeout(() => window.location.href = "/dashboard",2500)
+    
+                }
+                else if (response === "#ABOBRONZEANN#FAILED") {
+                  
+                    this.setState({
+                        statutAbonnement: '8'
+                    })  
+    
+                }
+            })
+            .catch(err => console.error(err))
+
+        }
+        else
+        {
+
+            fetch('http://127.0.0.1/fidapi/main.php?action=commandebronzemensuel&id=' + this.props.idUserRecup)
+            .then((response) => response.json())
+            .then((response) => {
+    
+                console.log(response)
+                
+                if(response === "#ABOBRONZE#SUCCESS")
+                {
+    
+                    this.setState({
+                        statutAbonnement: '1'
+                    })
+    
+                    setTimeout(() => window.location.href = "/dashboard",2500)
+    
+                }
+                else if (response === "#ABOBRONZE#FAILED") {
+                  
+                    this.setState({
+                        statutAbonnement: '2'
+                    })  
+    
+                }
+            })
+            .catch(err => console.error(err))
+
+        }
+
+
+    }
+
+    
+    commandeArgentMensuel(statutabo)
+    {
+
+        if(statutabo === '1')
+        {
+
+            fetch('http://127.0.0.1/fidapi/main.php?action=commandeargentannuel&id=' + this.props.idUserRecup)
+            .then((response) => response.json())
+            .then((response) => {
+    
+                console.log(response)
+                
+                if(response === "#ABOARGENTANN#SUCCESS")
+                {
+    
+                    this.setState({
+                        statutAbonnement: '9'
+                    })
+    
+                    setTimeout(() => window.location.href = "/dashboard",2500)
+    
+                }
+                else if (response === "#ABOARGENTANN#FAILED") {
+                  
+                    this.setState({
+                        statutAbonnement: '10'
+                    })  
+    
+                }
+    
+    
+    
+    
+            })
+            .catch(err => console.error(err))
+
+
+        }
+        else
+        {
+
+
+            fetch('http://127.0.0.1/fidapi/main.php?action=commandeargentmensuel&id=' + this.props.idUserRecup)
+            .then((response) => response.json())
+            .then((response) => {
+    
+                console.log(response)
+                
+                if(response === "#ABOARGENT#SUCCESS")
+                {
+    
+                    this.setState({
+                        statutAbonnement: '3'
+                    })
+    
+                    setTimeout(() => window.location.href = "/dashboard",2500)
+    
+                }
+                else if (response === "#ABOARGENT#FAILED") {
+                  
+                    this.setState({
+                        statutAbonnement: '4'
+                    })  
+    
+                }
+    
+    
+    
+    
+            })
+            .catch(err => console.error(err))
+
+
+        }
+
+
+
+
+    }
+
+    commandeOrMensuel(statutabo)
+    {
+
+        if(statutabo === '1')
+        {
+
+            fetch('http://127.0.0.1/fidapi/main.php?action=commandeorannuel&id=' + this.props.idUserRecup)
+            .then((response) => response.json())
+            .then((response) => {
+    
+                console.log(response)
+                
+                if(response === "#ABOORANN#SUCCESS")
+                {
+    
+                    this.setState({
+                        statutAbonnement: '11'
+                    })
+    
+                    setTimeout(() => window.location.href = "/dashboard",2500)
+    
+                }
+                else if (response === "#ABOORANN#FAILED") {
+                  
+                    this.setState({
+                        statutAbonnement: '12'
+                    })  
+    
+                }
+    
+    
+    
+    
+            })
+            .catch(err => console.error(err))
+
+
+        }
+        else
+        {
+
+            fetch('http://127.0.0.1/fidapi/main.php?action=commandeormensuel&id=' + this.props.idUserRecup)
+            .then((response) => response.json())
+            .then((response) => {
+    
+                console.log(response)
+                
+                if(response === "#ABOOR#SUCCESS")
+                {
+    
+                    this.setState({
+                        statutAbonnement: '5'
+                    })
+    
+                    setTimeout(() => window.location.href = "/dashboard",2500)
+    
+                }
+                else if (response === "#ABOOR#FAILED") {
+                  
+                    this.setState({
+                        statutAbonnement: '6'
+                    })  
+    
+                }
+    
+    
+    
+    
+            })
+            .catch(err => console.error(err))
+
+
+
+        }
+
+
+
+    }
+
+    afficheStatutAbonnement()
+    {
+
+
+        if(this.state.statutAbonnement === '1')
+        {
+
+            return <div className="alert alert-success" role="alert">
+                L'achat du grade bronze a bien été pris en compte. (30 Jours disponibles)
+            </div>
+
+        }
+        else if (this.state.statutAbonnement === '2') 
+        {
+          
+            return <div className="alert alert-danger" role="alert">
+                L'achat du grade bronze n'a pas été pris en compte. (30 Jours disponibles)
+            </div>
+
+        }
+        else if (this.state.statutAbonnement === '3') 
+        {
+          
+            return <div className="alert alert-success" role="alert">
+                L'achat du grade argent a bien été pris en compte. (30 Jours disponibles)
+            </div>
+
+        }
+        else if (this.state.statutAbonnement === '4') 
+        {
+          
+            return <div className="alert alert-danger" role="alert">
+                L'achat du grade argent n'a pas été pris en compte. (30 Jours disponibles)
+            </div>
+
+        }
+        else if (this.state.statutAbonnement === '5') 
+        {
+          
+            return <div className="alert alert-success" role="alert">
+                L'achat du grade Or a bien été pris en compte. (30 Jours disponibles)
+            </div>
+
+        }
+        else if (this.state.statutAbonnement === '6') 
+        {
+          
+            return <div className="alert alert-danger" role="alert">
+                L'achat du grade Or n'a pas été pris en compte. (30 Jours disponibles)
+            </div>
+
+        }
+        else if (this.state.statutAbonnement === '7') 
+        {
+          
+            return <div className="alert alert-success" role="alert">
+                L'achat du grade Bronze a bien été pris en compte. (365 Jours disponibles)
+            </div>
+
+        }
+        else if (this.state.statutAbonnement === '8') 
+        {
+          
+            return <div className="alert alert-danger" role="alert">
+                L'achat du grade Bronze n'a pas été pris en compte. (365 Jours disponibles)
+            </div>
+
+        }
+        else if (this.state.statutAbonnement === '9') 
+        {
+          
+            return <div className="alert alert-success" role="alert">
+                L'achat du grade Argent a bien été pris en compte. (365 Jours disponibles)
+            </div>
+
+        }
+        else if (this.state.statutAbonnement === '10') 
+        {
+          
+            return <div className="alert alert-danger" role="alert">
+                L'achat du grade Argent n'a pas été pris en compte. (365 Jours disponibles)
+            </div>
+
+        }
+        else if (this.state.statutAbonnement === '11') 
+        {
+          
+            return <div className="alert alert-success" role="alert">
+                L'achat du grade Or a bien été pris en compte. (365 Jours disponibles)
+            </div>
+
+        }
+        else if (this.state.statutAbonnement === '12') 
+        {
+          
+            return <div className="alert alert-danger" role="alert">
+                L'achat du grade Or n'a pas été pris en compte. (365 Jours disponibles)
+            </div>
+
+        }
+        
+
+    }
 
   render() {
     return (
@@ -743,7 +1076,7 @@ class Gestioncompte extends Component {
                                                 FORMULE D'ABONNEMENT MENSUEL
 
                                             </div>
-
+                                            {this.afficheStatutAbonnement()}
                                             <div class="card card-body bg-white">
 
                                             <div className="mb-5 mt-5">
@@ -761,7 +1094,7 @@ class Gestioncompte extends Component {
                                                                 <li><i class="fas fa-check"></i> Gestion carte</li>
                                                                 <li><i class="fas fa-check"></i> Gestion planning</li>
                                                             </ul>
-                                                            <button type="button" className="btn btn-outline-secondary mb-3">Order now</button>
+                                                            <button type="button" onClick={this.commandeBronzeMensuel.bind(this)} className="btn btn-outline-secondary mb-3">Commandez maintenant</button>
                                                         </div>
                                                     </div>
                                                     <div className="card card-pricing popular shadow text-center px-3 mb-4">
@@ -779,7 +1112,7 @@ class Gestioncompte extends Component {
                                                                 <li><i class="fas fa-check"></i> Gestion planning</li>
                                                                 <li><i class="fas fa-check"></i> Support technique / client</li>
                                                             </ul>
-                                                            <a href="https://www.totoprayogo.com" target="_blank" className="btn btn-primary mb-3">Order Now</a>
+                                                            <button type="button" onClick={this.commandeArgentMensuel.bind(this)} className="btn btn-primary mb-3">Commandez maintenant</button>
                                                         </div>
                                                     </div>
                                                     <div className="card card-pricing text-center px-3 mb-4">
@@ -798,7 +1131,7 @@ class Gestioncompte extends Component {
                                                                 <li><i class="fas fa-check"></i> Gestion planning</li>
                                                                 <li><i class="fas fa-check"></i> Support technique / client</li>
                                                             </ul>
-                                                            <button type="button" className="btn btn-outline-secondary mb-3">Order now</button>
+                                                            <button type="button" onClick={this.commandeOrMensuel.bind(this)} className="btn btn-outline-secondary mb-3">Commandez maintenant</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -828,7 +1161,7 @@ class Gestioncompte extends Component {
                                                                     <li><i class="fas fa-check"></i> Gestion carte</li>
                                                                     <li><i class="fas fa-check"></i> Gestion planning</li>
                                                                 </ul>
-                                                                <button type="button" className="btn btn-outline-secondary mb-3">Order now</button>
+                                                                <button type="button" onClick={() => this.commandeBronzeMensuel('1')} className="btn btn-outline-secondary mb-3">Commandez maintenant</button>
                                                             </div>
                                                         </div>
                                                         <div className="card card-pricing popular shadow text-center px-3 mb-4">
@@ -846,7 +1179,7 @@ class Gestioncompte extends Component {
                                                                     <li><i class="fas fa-check"></i> Gestion planning</li>
                                                                     <li><i class="fas fa-check"></i> Support technique / client</li>
                                                                 </ul>
-                                                                <a href="https://www.totoprayogo.com" target="_blank" className="btn btn-primary mb-3">Order Now</a>
+                                                                <button type="button" onClick={() => this.commandeArgentMensuel('1')} className="btn btn-primary mb-3">Commandez maintenant</button>
                                                             </div>
                                                         </div>
                                                         <div className="card card-pricing text-center px-3 mb-4">
@@ -865,7 +1198,7 @@ class Gestioncompte extends Component {
                                                                     <li><i class="fas fa-check"></i> Gestion planning</li>
                                                                     <li><i class="fas fa-check"></i> Support technique / client</li>
                                                                 </ul>
-                                                                <button type="button" className="btn btn-outline-secondary mb-3">Order now</button>
+                                                                <button type="button" onClick={() => this.commandeOrMensuel('1')} className="btn btn-outline-secondary mb-3">Commandez maintenant</button>
                                                             </div>
                                                         </div>
                                                     </div>

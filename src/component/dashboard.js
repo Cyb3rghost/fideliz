@@ -312,7 +312,9 @@ class Dashboard extends Component {
                                 <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">Type de compte</div>
                                 <div className="h5 mb-0 font-weight-bold text-gray-800">
                                 {this.state.typeCompte === '0' && 'Normal'}
-                                {this.state.typeCompte === '1' && 'Premium'}
+                                {this.state.typeCompte === '1' && 'Bronze'}
+                                {this.state.typeCompte === '2' && 'Argent'}
+                                {this.state.typeCompte === '3' && 'Or'}
                                 </div>
                                 </div>
                                 <div className="col-auto">
