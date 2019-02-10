@@ -43,75 +43,75 @@ class Voirclient extends Component {
     componentDidMount()
     {
 
-        var idClient = window.location.search.substring(4);
-        fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient)
-        .then((response) => response.json())
-        .then((response) => {
 
-            {response.map((value, index) => 
-                (
-                    this.setState({
-                        dataInscription: value.dinscription,
-                        nomClient: value.nom,
-                        prenomClient: value.prenom,
-                        adresseClient: value.adresse,
-                        emailClient: value.email,
-                        telephoneClient: value.telephone,
-                        carteTotal: value.nbcarteterminer,
-                        pointageTotal: value.nbpointagetotal                     
-                    })
-                )
-              )}
+            var idClient = window.location.search.substring(4);
+            fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient)
+            .then((response) => response.json())
+            .then((response) => {
     
-
-        })
-        .catch(err => console.error(err))
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + idClient)
-        .then((response) => response.json())
-        .then((response) => {
-
-            if(response === "#VOIRCARTE#NOEXIST")
-            {
-
-                this.setState({
-                    carteStatutMsg: '1'                                      
-                })
-            }
-            else
-            {
-
-                
-                this.setState({
-                    carteStatutMsg: '2'
-                })
-
-                {response.map((valuedeux, index) => 
+                {response.map((value, index) => 
                     (
                         this.setState({
-                            carteDateCreation: valuedeux.datecreation,
-                            carteNom: valuedeux.nom,
-                            cartePrenom: valuedeux.prenom,
-                            carteNbPointage: valuedeux.nbpointage,
-                            carteLimitPointage: valuedeux.limitpointage,
-                            carteStatut: valuedeux.statut,
-                            carteCadeaux: valuedeux.cadeaux,
-                            carteImgBackground: valuedeux.imgbackground,
-                            carteImgIcon: valuedeux.imgicon,
-                            carteQrCode: valuedeux.qrcode                                            
+                            dataInscription: value.dinscription,
+                            nomClient: value.nom,
+                            prenomClient: value.prenom,
+                            adresseClient: value.adresse,
+                            emailClient: value.email,
+                            telephoneClient: value.telephone,
+                            carteTotal: value.nbcarteterminer,
+                            pointageTotal: value.nbpointagetotal                     
                         })
                     )
                   )}
-
-
-            }
-
-
+        
     
-
-        })
-        .catch(err => console.error(err))
-
+            })
+            .catch(err => console.error(err))
+    
+            fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + idClient)
+            .then((response) => response.json())
+            .then((response) => {
+    
+                if(response === "#VOIRCARTE#NOEXIST")
+                {
+    
+                    this.setState({
+                        carteStatutMsg: '1'                                      
+                    })
+                }
+                else
+                {
+    
+                    
+                    this.setState({
+                        carteStatutMsg: '2'
+                    })
+    
+                    {response.map((valuedeux, index) => 
+                        (
+                            this.setState({
+                                carteDateCreation: valuedeux.datecreation,
+                                carteNom: valuedeux.nom,
+                                cartePrenom: valuedeux.prenom,
+                                carteNbPointage: valuedeux.nbpointage,
+                                carteLimitPointage: valuedeux.limitpointage,
+                                carteStatut: valuedeux.statut,
+                                carteCadeaux: valuedeux.cadeaux,
+                                carteImgBackground: valuedeux.imgbackground,
+                                carteImgIcon: valuedeux.imgicon,
+                                carteQrCode: valuedeux.qrcode                                            
+                            })
+                        )
+                      )}
+    
+    
+                }
+    
+    
+        
+    
+            })
+            .catch(err => console.error(err))
 
     }
 

@@ -26,7 +26,7 @@ class Dashboard extends Component {
     componentDidMount()
     {
 
-        alert('Secure : ' + this.props.loggedIn + '\nId : ' + this.props.idUserRecup)
+        alert('Secure : ' + this.props.loggedIn + '\nId : ' + this.props.idUserRecup + '\nType de Compte : ' + this.props.infoTypeCompte)
 
         fetch('http://127.0.0.1/fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup)
         .then((response) => response.json())

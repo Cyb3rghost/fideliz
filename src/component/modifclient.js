@@ -28,27 +28,26 @@ class Modifclient extends Component {
     componentDidMount()
     {
 
-        var idClient = window.location.search.substring(4);
-        fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient)
-        .then((response) => response.json())
-        .then((response) => {
-
-            {response.map((value, index) => 
-                (
-                    this.setState({
-                        nomClient: value.nom,
-                        prenomClient: value.prenom,
-                        adresseClient: value.adresse,
-                        emailClient: value.email,
-                        telephoneClient: value.telephone,                    
-                    })
-                )
-              )}
+            var idClient = window.location.search.substring(4);
+            fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient)
+            .then((response) => response.json())
+            .then((response) => {
     
-
-        })
-        .catch(err => console.error(err))
-
+                {response.map((value, index) => 
+                    (
+                        this.setState({
+                            nomClient: value.nom,
+                            prenomClient: value.prenom,
+                            adresseClient: value.adresse,
+                            emailClient: value.email,
+                            telephoneClient: value.telephone,                    
+                        })
+                    )
+                  )}
+        
+    
+            })
+            .catch(err => console.error(err))
 
     }
 
@@ -81,6 +80,15 @@ class Modifclient extends Component {
                 console.log(response)
                 this.setState({
                     statutMsgMaj: '2'
+                })
+
+            }
+            else if(response === "#MAJCLIENT#NOSOUCHE")
+            {
+
+                console.log(response)
+                this.setState({
+                    statutMsgMaj: '4'
                 })
 
             }

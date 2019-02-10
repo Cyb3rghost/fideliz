@@ -74,8 +74,8 @@ class Ajoutcarte extends Component {
         var idClient = window.location.search.substring(4);
 
         fetch('http://127.0.0.1/fidapi/main.php?action=creationCarte&id=' + idClient
-        + '&imgfondcarte=' + infosCarte 
-        + '&imgiconcarte=' + infosCarteIcon
+        + '&imgfondcarte=' + this.props.bkdgCarte
+        + '&imgiconcarte=' + this.props.iconCarte
         + '&pointage=' + limitPointage
         + '&cadeaux=' + cadeaux)
         .then((response) => response.json())

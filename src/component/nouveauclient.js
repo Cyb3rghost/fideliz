@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Redirect} from "react-router-dom";
 
 import Menu from './menu'
 
@@ -18,6 +19,16 @@ class Nouveauclient extends Component {
             statutMsg: ''
         }
 
+
+    }
+
+    componentDidMount()
+    {
+
+        if(this.props.infoTypeCompte === "0")
+        {
+            window.location.href = "/dashboard"
+        }
 
     }
 
@@ -71,7 +82,7 @@ class Nouveauclient extends Component {
         if(this.state.statutMsg === '1')
         {
 
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
         
                 Votre client {this.state.nomClient + ' ' + this.state.prenomClient} a bien été créer !
         
@@ -82,7 +93,7 @@ class Nouveauclient extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
                 Votre client {this.state.nomClient + ' ' + this.state.prenomClient} n'a pas été créer !
         
@@ -93,7 +104,7 @@ class Nouveauclient extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
                 Un client avec ces informations existe déjà. Vérifiez l'adresse email ou le mot de passe s'il vous plait. 
         
@@ -293,7 +304,7 @@ class Nouveauclient extends Component {
                     <hr/>
 
                     {/* DEBUT CODE */}
-
+                    {this.vrfInsertion()}
 
                     <div class="form-group row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Nom</label>

@@ -536,8 +536,97 @@ class Listetypecarte extends Component {
 
                     {/* DEBUT CODE */}
 
+                        {this.props.infoTypeCompte === "0" &&
                     
-                    <a href={'/ajoutcarte?id=' + idClient}><div class="card">
+                                <div><a href={'/ajoutcarte?id=' + idClient}><div class="card">
+                                <div class="card-body">
+
+                                        <div className="row">
+
+                                            <div className="col-8">
+                                            
+                                            <h1>CARTE DE FIDELITE</h1>
+                                            
+                                            </div>
+                                            <div className="col-4">
+                                            
+                                                <img src={loyaltyCard} width="100" height="100" title="Carte de réduction" align="right" alt="Responsive image"/>
+
+                                            
+                                            </div>
+
+                                        </div>
+
+                                </div>
+                            </div></a>
+
+                            <br/></div>             
+                        
+                        }
+
+                        {this.props.infoTypeCompte === "1" &&
+                        
+                            <div><a href={'/ajoutcarte?id=' + idClient}><div class="card">
+                            <div class="card-body">
+
+                                    <div className="row">
+
+                                        <div className="col-8">
+                                        
+                                        <h1>CARTE DE FIDELITE</h1>
+                                        
+                                        </div>
+                                        <div className="col-4">
+                                        
+                                            <img src={loyaltyCard} width="100" height="100" title="Carte de réduction" align="right" alt="Responsive image"/>
+
+                                        
+                                        </div>
+
+                                    </div>
+
+                            </div>
+                        </div></a>
+
+                        <br/>
+                                
+                        <div class="card">
+                            <div class="card-body">
+
+                                    <div className="row">
+
+                                        <div className="col-8">
+                                        
+                                        <h1>CARTE DE REDUCTION</h1>
+                                        
+                                        </div>
+                                        <div className="col-4">
+                                        
+                                            <img src={loyaltyCard} width="100" height="100" title="Carte de réduction" align="right" alt="Responsive image"/>
+
+                                        
+                                        </div>
+
+                                    </div>
+
+                            </div>
+                        </div>
+
+                        <br/>                    
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        </div>             
+                
+                    }
+
+                    {this.props.infoTypeCompte === "2" &&
+                        
+                        <div><a href={'/ajoutcarte?id=' + idClient}><div class="card">
                         <div class="card-body">
 
                                 <div className="row">
@@ -560,7 +649,7 @@ class Listetypecarte extends Component {
                     </div></a>
 
                     <br/>
-
+                            
                     <div class="card">
                         <div class="card-body">
 
@@ -583,32 +672,35 @@ class Listetypecarte extends Component {
                         </div>
                     </div>
 
-                    <br/>
-
+                    <br/>                    
+                    
                     <div class="card">
-                        <div class="card-body">
+                            <div class="card-body">
 
-                                <div className="row">
+                                    <div className="row">
 
-                                    <div className="col-8">
-                                    
-                                    <h1>CARTE CADEAUX</h1>
-                                    
+                                        <div className="col-8">
+                                        
+                                        <h1>CARTE CADEAUX</h1>
+                                        
+                                        </div>
+                                        <div className="col-4">
+                                        
+                                            <img src={loyaltyCard} width="100" height="100" title="Carte cadeaux" align="right" alt="Responsive image"/>
+
+                                        
+                                        </div>
+
                                     </div>
-                                    <div className="col-4">
-                                    
-                                        <img src={loyaltyCard} width="100" height="100" title="Carte cadeaux" align="right" alt="Responsive image"/>
 
-                                    
-                                    </div>
-
-                                </div>
-
+                            </div>
                         </div>
-                    </div>
 
-                    <br/>
-
+                    <br/>                
+                    
+                    </div>             
+            
+                }
                     {/* FIN CODE */}
 
 

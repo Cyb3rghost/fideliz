@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cookie from 'react-cookies'
 import Select from 'react-select';
+import { BrowserRouter as Router, Route, Switch, Redirect, Link } from "react-router-dom";
 
 import './App.css';
 
@@ -48,10 +49,12 @@ class App extends Component {
             idUser: '',
             infCarteBackground: '',
             infCarteIcon: '',
+            infTypeCompte: '',
             vrfLogged: cookie.load('#FID#CO#SUCCESS'),
             vrfIdUser: cookie.load('#FID#CO#IDUSER'),
             vrfInfosCarteBg: cookie.load('#FID#CO#CARTEBG'),
             vrfInfosCarteIcon: cookie.load('#FID#CO#CARTEICON'),
+            vrfInfosTypeCompte: cookie.load('#FID#CO#TYPECPT'),
             // GESTION CONNEXION CLIENT
             connexionEmailClient: '',
             connexionPasswordClient: '',
@@ -118,7 +121,8 @@ class App extends Component {
                         isLogged: cookie.save('#FID#CO#SUCCESS', true, { path: '/' }),
                         idUser: cookie.save('#FID#CO#IDUSER', value.id, { path: '/' }),
                         infCarteBackground: cookie.save('#FID#CO#CARTEBG', value.imgfond, { path: '/' }),
-                        infCarteIcon: cookie.save('#FID#CO#CARTEICON', value.imgicon, { path: '/' })
+                        infCarteIcon: cookie.save('#FID#CO#CARTEICON', value.imgicon, { path: '/' }),
+                        infTypeCompte: cookie.save('#FID#CO#TYPECPT', value.typecompte, { path: '/'})
                       })
                   )
                 )}
@@ -199,9 +203,7 @@ class App extends Component {
       console.log(`Option selected:`, selectedOption);
     }
 
-  renderRoute()
-  {
-
+  render() {
     const { vrfLogged, vrfLoggedClient } = this.state
     const { selectedOption } = this.state;
 
@@ -209,286 +211,147 @@ class App extends Component {
             return { value: valux.id, label: valux.nomsociete }
     })
 
-    switch (window.location.pathname) 
-    {
-      case '/':
-        return <div className="container">
-
-        <div className="row justify-content-center">
-
-        <div className="col-xl-10 col-lg-12 col-md-9">
-
-            <div className="card o-hidden border-0 shadow-lg my-5">
-            <div className="card-body p-0">
-                
-                <div className="row">
-                <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                <div className="col-lg-6">
-                    <div className="p-5">
-                    <div className="text-center form-control-user">
-                        <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/> <small>Espace entreprise</small></h1>
-                    </div>
-                    <form className="user">
-                        <div className="form-group">
-                        <input 
-                        type="email" 
-                        value={this.state.connexionEmail}
-                        onChange={e => this.setState({connexionEmail: e.target.value})}
-                        className="form-control form-control-user" 
-                        placeholder="Enter Email Address..." 
-                        
-                        />
-                        </div>
-                        <div className="form-group">
-                        <input 
-                        type="password" 
-                        value={this.state.connexionPassword}
-                        onChange={e => this.setState({connexionPassword: e.target.value})}
-                        className="form-control form-control-user" 
-                        placeholder="Password" 
-                        
-                        />
-                        </div>
-                        <button type="button" onClick={this.Connexion.bind(this)} class="btn btn-primary btn-user btn-block">Connexion</button>
-                        <hr/>
-                        <a href="/connexionclient" className="btn btn-google btn-user btn-block">
-                        Accès compte client
-                        </a>
-                    </form>
-                    <hr/>
-                    <div className="text-center">
-                        <a className="small" href="forgot-password.html">Mot de passe oublié ?</a>
-                    </div>
-                    <div className="text-center">
-                        <a className="small" href="/register">Pas de compte entreprise ? Cliquez-ici !</a>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-
-        </div>
-
-        </div>
-        </div>
-        break;
-      case '/connexionclient':
-        return <div className="container">
-
-        <div className="row justify-content-center">
-
-        <div className="col-xl-10 col-lg-12 col-md-9">
-
-            <div className="card o-hidden border-0 shadow-lg my-5">
-            <div className="card-body p-0">
-                
-                <div className="row">
-                <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                <div className="col-lg-6">
-                    <div className="p-5">
-                    <div className="text-center">
-                        <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/> <small>Espace client</small></h1>
-                    </div>
-                    <form className="user">
-                        <div className="form-group">
-                            <Select
-                                value={selectedOption}
-                                onChange={this.handleChange}
-                                options={options}
-                            /> 
-                        </div>
-                        <div className="form-group">
-                        <input 
-                            value={this.state.connexionEmailClient}
-                            onChange={e => this.setState({connexionEmailClient: e.target.value})}
-                            type="email" 
-                            className="form-control" 
-                            placeholder="Email"  
-                        />
-                        </div>
-                        <div className="form-group">
-                        <input 
-                            value={this.state.connexionPasswordClient}
-                            onChange={e => this.setState({connexionPasswordClient: e.target.value})}
-                            type="password" 
-                            className="form-control" 
-                            placeholder="Password" 
-                        />
-                        </div>
-                        <button type="button" onClick={this.connexionClient.bind(this)} class="btn btn-primary btn-user btn-block">Connexion</button>
-                        <hr/>
-                        <a href="/" className="btn btn-google btn-user btn-block">
-                        Accès compte entreprise
-                        </a>
-                    </form>
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-
-        </div>
-
-        </div>
-        </div>
-        break;
-      case '/register':
-        return <Register />
-        break;
-      case '/dashboard':
-        if( vrfLogged ) {
-            return <Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} />
-        }
-        else{
-            window.location.href = "/"
-        }  
-        break;
-      case '/profil':
-        if( vrfLogged ) {
-            return <Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} />
-        }
-        else{
-            window.location.href = "/"
-        }  
-        break;
-      case '/client':
-        if( vrfLogged ) {
-            return <Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} />
-        }
-        else{
-            window.location.href = "/"
-        }  
-        break;
-      case '/nouveauclient':
-        if( vrfLogged ) {
-            return <Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} />
-        }
-        else{
-            window.location.href = "/"
-        } 
-        break;
-      case '/voirclient':
-        if( vrfLogged ) {
-            return <Voirclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} />
-        }
-        else{
-            window.location.href = "/"
-        }  
-        break;
-      case '/planning':
-        if( vrfLogged ) {
-            return <Planning loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser}  />
-        }
-        else{
-            window.location.href = "/"
-        } 
-        break;
-      case '/modifclient':
-        if( vrfLogged ) {
-            return <Modifclient loggedIn={this.state.vrfLogged} />
-        }
-        else{
-            window.location.href = "/"
-        } 
-        break;
-      case '/gestioncompte':
-        if( vrfLogged ) {
-            return <Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser}  />
-        }
-        else{
-            window.location.href = "/"
-        } 
-        break;
-      case '/listetypecarte':
-        if( vrfLogged ) {
-            return <Listetypecarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser}  />
-        }
-        else{
-            window.location.href = "/"
-        } 
-        break;
-      case '/ajoutcarte':
-        if( vrfLogged ) {
-            return <Ajoutcarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} bkgdCarte={this.state.infCarteBackground} iconCarte={this.state.infCarteIcon}  />
-        }
-        else{
-            window.location.href = "/"
-        } 
-        break;
-    /* PARTIE CLIENT */
-    case '/fichecoclient':
-        if( vrfLoggedClient ) {
-          return <Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
-        }
-        else{
-          window.location.href = "/connexionclient"
-        } 
-        break; 
-    case '/editionclient':
-        if( vrfLoggedClient ) {
-          return <Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
-        }
-        else{
-          window.location.href = "/connexionclient"
-        } 
-        break; 
-    case '/mescadeaux':
-        if( vrfLoggedClient ) {
-          return <Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
-        }
-        else{
-          window.location.href = "/connexionclient"
-        } 
-        break; 
-    case '/planningclient':
-        if( vrfLoggedClient ) {
-          return <Planningclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} />
-        }
-        else{
-          window.location.href = "/connexionclient"
-        } 
-        break; 
-    /* PARTIE CLIENT */    
-      case '/buttons':
-        return <Buttons />
-        break;
-      case '/cards':
-        return <Cards />
-        break;
-      case '/login':
-        return <Login />
-        break;
-      case '/forgot':
-        return <Forgot />
-        break;
-      case '/404':
-        return <Error />
-        break;
-      case '/blank':
-        return <Blank />
-        break;
-      case '/charts':
-        return <Charts />
-        break;
-      case '/table':
-        return <Table />
-        break;
-      default:
-        break;
-
-
-    }
-
-
-
-  }
-
-  render() {
     return (
-      <div id="page-top">
-        {this.renderRoute()}
-      </div>
+      <Router>
+        <Switch>
+
+            <Route exact path="/" render={() => <div className="container">
+
+                  <div className="row justify-content-center">
+
+                  <div className="col-xl-10 col-lg-12 col-md-9">
+
+                      <div className="card o-hidden border-0 shadow-lg my-5">
+                      <div className="card-body p-0">
+                          
+                          <div className="row">
+                          <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                          <div className="col-lg-6">
+                              <div className="p-5">
+                              <div className="text-center form-control-user">
+                                  <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/> <small>Espace entreprise</small></h1>
+                              </div>
+                              <form className="user">
+                                  <div className="form-group">
+                                  <input 
+                                  type="email" 
+                                  value={this.state.connexionEmail}
+                                  onChange={e => this.setState({connexionEmail: e.target.value})}
+                                  className="form-control form-control-user" 
+                                  placeholder="Enter Email Address..." 
+                                  
+                                  />
+                                  </div>
+                                  <div className="form-group">
+                                  <input 
+                                  type="password" 
+                                  value={this.state.connexionPassword}
+                                  onChange={e => this.setState({connexionPassword: e.target.value})}
+                                  className="form-control form-control-user" 
+                                  placeholder="Password" 
+                                  
+                                  />
+                                  </div>
+                                  <button type="button" onClick={this.Connexion.bind(this)} class="btn btn-primary btn-user btn-block">Connexion</button>
+                                  <hr/>
+                                  <a href="/connexionclient" className="btn btn-google btn-user btn-block">
+                                  Accès compte client
+                                  </a>
+                              </form>
+                              <hr/>
+                              <div className="text-center">
+                                  <a className="small" href="forgot-password.html">Mot de passe oublié ?</a>
+                              </div>
+                              <div className="text-center">
+                                  <a className="small" href="/register">Pas de compte entreprise ? Cliquez-ici !</a>
+                              </div>
+                              </div>
+                          </div>
+                          </div>
+                      </div>
+                      </div>
+
+                  </div>
+
+                  </div>
+                  </div>} /> 
+          <Route path="/connexionclient" render={() => <div className="container">
+
+          <div className="row justify-content-center">
+
+          <div className="col-xl-10 col-lg-12 col-md-9">
+
+              <div className="card o-hidden border-0 shadow-lg my-5">
+              <div className="card-body p-0">
+                  
+                  <div className="row">
+                  <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                  <div className="col-lg-6">
+                      <div className="p-5">
+                      <div className="text-center">
+                          <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/> <small>Espace client</small></h1>
+                      </div>
+                      <form className="user">
+                          <div className="form-group">
+                              <Select
+                                  value={selectedOption}
+                                  onChange={this.handleChange}
+                                  options={options}
+                              /> 
+                          </div>
+                          <div className="form-group">
+                          <input 
+                              value={this.state.connexionEmailClient}
+                              onChange={e => this.setState({connexionEmailClient: e.target.value})}
+                              type="email" 
+                              className="form-control" 
+                              placeholder="Email"  
+                          />
+                          </div>
+                          <div className="form-group">
+                          <input 
+                              value={this.state.connexionPasswordClient}
+                              onChange={e => this.setState({connexionPasswordClient: e.target.value})}
+                              type="password" 
+                              className="form-control" 
+                              placeholder="Password" 
+                          />
+                          </div>
+                          <button type="button" onClick={this.connexionClient.bind(this)} class="btn btn-primary btn-user btn-block">Connexion</button>
+                          <hr/>
+                          <a href="/" className="btn btn-google btn-user btn-block">
+                          Accès compte entreprise
+                          </a>
+                      </form>
+                      </div>
+                  </div>
+                  </div>
+              </div>
+              </div>
+
+          </div>
+
+          </div>
+          </div>} />
+        <Route path="/register" component={() => <Register />} />
+        <Route path="/dashboard" component={() => vrfLogged?<Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+        <Route path="/profil" component={() => vrfLogged?<Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} /> : <Redirect to="/" />} />
+        <Route path="/client" component={() => vrfLogged?<Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+        <Route path="/nouveauclient" component={() => vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+        <Route path="/voirclient" component={() => vrfLogged?<Voirclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+        <Route path="/planning" component={() => vrfLogged?<Planning loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.infTypeCompte} /> : <Redirect to="/" />} />
+        <Route path="/gestioncompte" component={() => vrfLogged?<Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+        <Route path="/listetypecarte" component={() => vrfLogged?<Listetypecarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+        <Route path="/ajoutcarte" component={() => vrfLogged?<Ajoutcarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
+        {/* PARTIE CLIENT */}
+        <Route path="/fichecoclient" component={() => vrfLoggedClient?<Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+        <Route path="/editionclient" component={() => vrfLoggedClient?<Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+        <Route path="/mescadeaux" component={() => vrfLoggedClient?<Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+        <Route path="/planningclient" component={() => vrfLoggedClient?<Planningclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+        <Route component={() => <Error />}/>
+
+        </Switch>
+      </Router>
     );
   }
 }

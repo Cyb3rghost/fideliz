@@ -370,20 +370,33 @@ class Client extends Component {
                         </div>
                         <div className="col-4">
                         
-                        <div class="input-group mb-3">
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                placeholder="Identifiant utilisateur..." 
-                                value={this.state.identifiantCompte}
-                                onChange={(e) => this.setState({identifiantCompte: e.target.value})}
-                            
-                            />
-                            <div class="input-group-append">
-                                <button class="btn btn-success" onClick={this.assocCompte.bind(this)} type="button" id="button-addon2">Association du compte</button>
+                        {this.props.infoTypeCompte != "0" &&
+                    
+                                <div><div class="input-group mb-3">
+                                <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    placeholder="Identifiant utilisateur..." 
+                                    value={this.state.identifiantCompte}
+                                    onChange={(e) => this.setState({identifiantCompte: e.target.value})}
+                                
+                                />
+                                <div class="input-group-append">
+                                    <button class="btn btn-success" onClick={this.assocCompte.bind(this)} type="button" id="button-addon2">Association du compte</button>
+                                </div>
                             </div>
-                        </div>
-                        <a href="/nouveauclient"><button class="btn btn-success btn-block" type="button" id="button-addon2">Nouveau client</button></a>
+                            <a href="/nouveauclient"><button class="btn btn-success btn-block" type="button" id="button-addon2">Nouveau client</button></a>  
+                            </div>                
+                    
+                        }
+
+                        {this.props.infoTypeCompte === "0" && 
+
+                            <div className="alert alert-danger" role="alert">
+                                Vous n'êtes pas autoriser à ajouter des nouveaux clients.
+                            </div> 
+                        }
+
 
                         </div>
                     
@@ -406,7 +419,7 @@ class Client extends Component {
                                     <td>{value.adresse}</td>
                                     <td>{value.telephone}</td>
                                     <td>{value.email}</td>
-                                    <td><a href={"/voirclient?id=" + value.id}>Voir</a> - <a href={"/modifclient?id=" + value.id}>Editez</a></td>
+                                    <td><a href={"/voirclient?id=" + value.id}>Voir</a></td>
                                 </tr>
                             )
                         )}
