@@ -56,7 +56,7 @@ if(isset($_GET['action']))
             else
             {
 
-                $sqlinscription = "INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`) VALUES (NULL, '".$emailEnt."', '".$protectmdp."', '1', '', '', '', '".$nomEntreprise."', '', '2', '0', '10', '0', '15', '0000-00-00', '0000-00-00', '0', 'null', 'null', '".$apikey."')";
+                $sqlinscription = "INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`) VALUES (NULL, '".$emailEnt."', '".$protectmdp."', '1', '', '', '', '".$nomEntreprise."', '', '2', '0', '10', '0', '15', '0000-00-00', '0000-00-00', '0', 'carddefault.jpg', 'logodefault.png', '".$apikey."')";
                 if(mysqli_query($connect, $sqlinscription))
                 {
 
@@ -336,6 +336,53 @@ if(isset($_GET['action']))
 
             mysqli_close($connect);
             break;
+        case 'majEntreprise':
+            $id = $_GET['ident'];
+            $nom = $_GET['nom'];
+            $prenom = $_GET['prenom'];
+            $adresse = $_GET['adresse'];
+            $email = $_GET['email'];
+            $nomSociete = $_GET['societe'];
+            $telephone = $_GET['telephone'];
+
+            $sql = "SELECT * FROM `accsociete` WHERE `id` = $id";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+
+                $sqldeux = "UPDATE `accsociete` SET `nom` = '".$nom."', `prenom` = '".$prenom."', `adresse` = '".$adresse."', `telephone` = '".$telephone."', `email` = '".$email."' WHERE `id` = $id";
+                if(mysqli_query($connect, $sqldeux))
+                {
+    
+                    $json = json_encode("#MAJENT#SUCCESS");
+    
+                }
+                else
+                {
+    
+                    $json = json_encode("#MAJENT#FAILED");
+    
+                }
+
+
+
+            }
+            else
+            {
+
+
+                $json = json_encode("#ENT#NOEXIST");
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
         case 'majClient':
             $id = $_GET['idclient'];
             $nom = $_GET['nom'];
@@ -374,6 +421,46 @@ if(isset($_GET['action']))
 
                 $json = json_encode("#MAJCLIENT#NOSOUCHE");
 
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'changeMdpEnt':
+            $id = $_GET['ident'];
+            $ancienMDP = $_GET['oldmdp'];
+            $cryptPassword = md5("secureINS".$ancienMDP."INSecure");
+            $nouveauMDP = $_GET['nouveaumdp'];
+            $cryptNewMDP = md5("secureINS".$nouveauMDP."INSecure");
+
+            $sql = "SELECT * FROM `accsociete` WHERE `id` = $id AND `password` = '".$cryptPassword."'";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                $sqldeux = "UPDATE `accsociete` SET `password` = '".$cryptNewMDP."' WHERE `id` = $id";
+                if(mysqli_query($connect, $sqldeux))
+                {
+
+                    $json = json_encode("#MDFMDP#SUCCESS");
+
+                }
+                else
+                {
+
+                    $json = json_encode("#MDFMDP#FAILED");
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#MDFMDP#NOSOUCHE");
 
             }
 

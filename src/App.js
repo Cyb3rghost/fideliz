@@ -8,6 +8,7 @@ import './App.css';
 /* INTERFACE ENTREPRISE */
 import Dashboard from './component/dashboard'
 import Profil from './component/profil'
+import Modifprofil from './component/modifprofil'
 import Client from './component/client'
 import Nouveauclient from './component/nouveauclient'
 import Voirclient from './component/voirclient'
@@ -335,7 +336,8 @@ class App extends Component {
           </div>} />
         <Route path="/register" component={() => <Register />} />
         <Route path="/dashboard" component={() => vrfLogged?<Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-        <Route path="/profil" component={() => vrfLogged?<Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} /> : <Redirect to="/" />} />
+        <Route path="/profil" component={() => vrfLogged?<Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+        <Route path="/modifprofil" component={() => vrfLogged?<Modifprofil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
         <Route path="/client" component={() => vrfLogged?<Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
         <Route path="/nouveauclient" component={() => vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
         <Route path="/voirclient" component={() => vrfLogged?<Voirclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />

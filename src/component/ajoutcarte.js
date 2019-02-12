@@ -196,7 +196,7 @@ class Ajoutcarte extends Component {
 
                 <div id="content">
 
-                    <Navbarup />
+                    <Navbarup idEntreprise={this.props.idUserRecup} />
 
                     <div className="container-fluid">
 
@@ -228,7 +228,7 @@ class Ajoutcarte extends Component {
                         <div className="panelCarte">
                         <div id="personalizecarte">  
                             <img src={'http://127.0.0.1/fidapi/img/' + this.props.bkdgCarte} className="img-responsive" id="img1" alt="" />
-                            <img src={'http://127.0.0.1/fidapi/img/' + this.props.iconCarte}  width="100" height="100" id="img2" className="img-rounded" alt="" />
+                            <img src={'http://127.0.0.1/fidapi/img/' + this.props.iconCarte}  className="img-responsive" id="img2" className="img-rounded" alt="" />
                             <QRCode
                                 value=""
                                 size={100}

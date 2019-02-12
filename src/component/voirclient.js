@@ -6,6 +6,8 @@ import addCarte from '../images/addcarte.png'
 
 import Navbarup from './navbarup'
 import Menu from './menu'
+import Select from 'react-select';
+
 
 class Voirclient extends Component {
 
@@ -23,6 +25,9 @@ class Voirclient extends Component {
             telephoneClient: '',
             carteTotal: '',
             pointageTotal: '',
+            selectedOption: null,
+            afflisteCadeaux: [],
+            prestation: '',
 
             carteDateCreation: '',
             carteNom: '',
@@ -113,6 +118,35 @@ class Voirclient extends Component {
     
             })
             .catch(err => console.error(err))
+
+            fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup)
+            .then((response) => response.json())
+            .then((response) => {
+    
+                console.log(response)
+    
+                if(response === "#SLCTLISTECADEAUX#ECHEC")
+                {
+    
+                    this.setState({
+                        carteStatutMsg: '10'
+                    })
+    
+                }
+                else
+                {
+    
+                    this.setState({
+                        afflisteCadeaux: response
+                    })
+    
+                }
+                
+        
+    
+            })
+            .catch(err => console.error(err)) 
+
 
     }
 
@@ -259,16 +293,33 @@ class Voirclient extends Component {
     {
 
         var idClient = window.location.search.substring(4);
+        const { selectedOption } = this.state;
+
+        let options = this.state.afflisteCadeaux.map(function (valux) {
+                return { value: valux.id, label: valux.prestation + ' - ' + valux.prix + '€' }
+        })
 
         if(this.state.carteStatutMsg != '2')
         {
-            return <div><a href={'/listetypecarte?id=' + idClient}><img src={addCarte} width="100" height="100" title="Ajouter une carte de fidélité" alt="Responsive image"/></a>
-            &nbsp;&nbsp;<a href={'/planning?id=' + idClient}><img src={calendrier} width="100" height="100" title="Gestion planning client" alt="Responsive image"/></a></div>
+            
+            return <div><a href={'/listetypecarte?id=' + idClient}><button type="button" onClick={this.addPointage.bind(this)} className="btn btn-primary btn-block"><i className="fas fa-hand-point-right"></i> Ajouter une carte de fidélité</button></a>
+            &nbsp;&nbsp;<a href={'/planning?id=' + idClient}><button type="button" className="btn btn-primary btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
         }
         else if(this.state.carteStatutMsg === '2')
         {
-            return <div><img src={pointage} width="100" height="100" onClick={this.addPointage.bind(this)} title="Pointé la carte de fidélité" alt="Responsive image"/>
-                   &nbsp;&nbsp;<a href={'/planning?id=' + idClient}><img src={calendrier} width="100" height="100" title="Gestion planning client" alt="Responsive image"/></a></div>
+
+            return <div>
+            <Select
+                style={{ width: 300 }}
+                value={selectedOption}
+                onChange={this.handleChange}
+                options={options}
+            /> 
+            <br/>
+            <button className="btn btn-primary btn-block" onClick={this.addPointage.bind(this)} type="button"><i className="fas fa-hand-point-right"></i> Pointage</button>
+            <br/>
+            <a href={'/planning?id=' + idClient}><button type="button" className="btn btn-primary btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
+
         }
 
 
@@ -327,7 +378,13 @@ class Voirclient extends Component {
     }
 
 
+    handleChange = (selectedOption) => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
+      }
+
   render() {
+
     return (
       <div>
 
@@ -339,35 +396,39 @@ class Voirclient extends Component {
 
                 <div id="content">
 
-                    <Navbarup />
+                    <Navbarup idEntreprise={this.props.idUserRecup} />
 
                     <div className="container-fluid">
 
-                    <div className="row">
 
-                            <div className="col-8">
                             
-                                <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                    <h1 className="h3 mb-0 text-gray-800">Fiche client</h1>
-                                </div>
+                        <div className="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 className="h3 mb-0 text-gray-800">Fiche client</h1>
+                        </div>
 
 
-                            </div>
-                            <div className="col-4">
-                            
-                                    {this.afficheActBouton()}
-                            
-                            </div>
-
-                    </div>
 
                     {this.verifieEtatPointage()}
 
                     <hr/>
 
                     {/* DEBUT CODE */}
+                    
+                    <div className="row">
 
-                    {this.afficheCarte()}
+                        <div className="col-md-6">
+                        
+                            {this.afficheCarte()}                        
+                        
+                        </div>
+                        <div className="col-md-6">
+                        
+                            {this.afficheActBouton()}
+                        
+                        </div>
+
+                    </div>
+
                     <br/>
                     <table class="table table-striped">
                         <thead>

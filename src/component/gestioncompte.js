@@ -769,7 +769,7 @@ class Gestioncompte extends Component {
 
                 <div id="content">
 
-                    <Navbarup />
+                    <Navbarup idEntreprise={this.props.idUserRecup} />
 
                     <div className="container-fluid">
                     

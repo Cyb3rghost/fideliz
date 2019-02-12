@@ -31,7 +31,7 @@ class Menu extends Component {
             <hr className="sidebar-divider my-0" />
 
             <li className="nav-item active">
-                <a className="nav-link" href="/">
+                <a className="nav-link" href="/dashboard">
                 <i className="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
             </li>

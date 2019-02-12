@@ -286,7 +286,7 @@ class Profil extends Component {
 
                 <div id="content">
 
-                    <Navbarup />
+                    <Navbarup idEntreprise={this.props.idUserRecup} />
 
                     <div className="container-fluid">
 
@@ -294,16 +294,24 @@ class Profil extends Component {
                         <h1 className="h3 mb-0 text-gray-800">Profil</h1>
                     </div>
 
-                    <hr/>
-
                     <h2>{this.state.nom}</h2>
                     <small>{this.state.prenom}</small>
 
                     <hr/>
 
                     <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Information sur le profil</h6>
+                                <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 className="m-0 font-weight-bold text-primary">Informations sur votre profil</h6>
+                                    <div className="dropdown no-arrow">
+                                        <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i className="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                        <div className="dropdown-header">Panel :</div>
+                                        <div className="dropdown-divider"></div>
+                                        <a className="dropdown-item" href="/modifprofil">Modifiez votre profil</a>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-body">
 
@@ -356,12 +364,12 @@ class Profil extends Component {
                             <td align="center">{this.state.typeCompte}</td>
                             </tr>
                             <tr>
-                            <th scope="row">Limite client</th>
-                            <td  align="center">{this.state.nbClient} / {this.state.limitClient}</td>
+                            <th scope="row">Client total</th>
+                            <td  align="center">{this.state.nbClient}</td>
                             </tr>
                             <tr>
-                            <th scope="row">Limite de pointage</th>
-                            <td  align="center">{this.state.nbPointage} / {this.state.limitPointage}</td>
+                            <th scope="row">Pointage total</th>
+                            <td  align="center">{this.state.nbPointage}</td>
                             </tr>
                             <tr>
                             <th scope="row">Début abonnement</th>
@@ -383,46 +391,6 @@ class Profil extends Component {
                             </div>
                         </div>
 
-
-
-
-                        <div class="row">
-                            <div class="col">
-
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Formule mensuelle</h6>
-                                </div>
-                                <div class="card-body">
-
-                                <table class="table table-striped"><thead><tr></tr></thead><tbody><tr><td><b>Limite de client</b></td><td align="center">Illimité</td></tr><tr><td><b>Limite de pointage</b></td><td align="center">Illimité</td></tr><tr><td><b>Prix :</b></td><td align="center">6.99 € / Mois</td></tr></tbody></table>
-                                <button type="button" class="btn btn-primary">Je m'abonne</button>
-
-                                </div>
-                            </div>
-
-
-                            </div>
-                            <div class="col">
-
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Formule annuelle</h6>
-                                </div>
-                                <div class="card-body">
-
-                                <table class="table table-striped"><thead><tr></tr></thead><tbody><tr><td><b>Limite de client</b></td><td align="center">Illimité</td></tr><tr><td><b>Limite de pointage</b></td><td align="center">Illimité</td></tr><tr><td><b>Prix :</b></td><td align="center">6.99 € / Mois</td></tr></tbody></table>
-                                <button type="button" class="btn btn-primary">Je m'abonne</button>
-
-                                </div>
-                            </div>
-
-
-
-
-                            </div>
-                        </div>
-
                         <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Information sur votre carte</h6>
@@ -439,31 +407,39 @@ class Profil extends Component {
                                 </div>   
 
                                 <br/>
+                                {this.props.infoTypeCompte != "0" &&
+                                    <div><table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td><b>Image de fond ( 600 x 300 )</b></td>
+                                            <td align="center">{this.state.imgFondCarte}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="file" onChange = {this.fileSelect} /></td>
+                                            <td align="center"><button class="btn btn-greenbutton btn-block" onClick = {this.fileUpload} type="submit">J'upload</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Logo ( 100x100 )</b></td>
+                                            <td align="center">{this.state.imgIconCarte}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="file" onChange = {this.fileSelectLogo} /></td>
+                                            <td align="center"><button class="btn btn-greenbutton btn-block" onClick = {this.fileUploadLogo} type="submit">J'upload</button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    </div> 
+                                }
 
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td><b>Image de fond ( 600 x 300 )</b></td>
-                                        <td align="center">{this.state.imgFondCarte}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="file" onChange = {this.fileSelect} /></td>
-                                        <td align="center"><button class="btn btn-greenbutton btn-block" onClick = {this.fileUpload} type="submit">J'upload</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td><b>Logo ( 100x100 )</b></td>
-                                        <td align="center">{this.state.imgIconCarte}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="file" onChange = {this.fileSelectLogo} /></td>
-                                        <td align="center"><button class="btn btn-greenbutton btn-block" onClick = {this.fileUploadLogo} type="submit">J'upload</button></td>
-                                    </tr>
-                                    </tbody>
-                                </table>  
+                                {this.props.infoTypeCompte === "0" &&
+                                    <div class="alert alert-danger" role="alert">
+                                        Vous devez upgrader votre compte pour pouvoir modifier votre carte.
+                                    </div>          
+                                }
 
                                 </div>
                             </div>
