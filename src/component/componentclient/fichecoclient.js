@@ -29,6 +29,7 @@ class Fichecoclient extends Component {
             carteTotal: '',
             pointageTotal: '',
 
+            carteId: '',
             carteDateCreation: '',
             carteNom: '',
             cartePrenom: '',
@@ -40,7 +41,8 @@ class Fichecoclient extends Component {
             carteImgIcon: '',
             carteQrCode: '',
             carteStatutMsg: '',
-            cartePointageMsg: ''
+            cartePointageMsg: '',
+            listePointage: []
 
         }
 
@@ -94,6 +96,7 @@ class Fichecoclient extends Component {
                 {response.map((valuedeux, index) => 
                     (
                         this.setState({
+                            carteId: valuedeux.id,
                             carteDateCreation: valuedeux.datecreation,
                             carteNom: valuedeux.nom,
                             cartePrenom: valuedeux.prenom,
@@ -107,6 +110,30 @@ class Fichecoclient extends Component {
                         })
                     )
                   )}
+
+                  fetch('http://127.0.0.1/fidapi/main.php?action=listePointageClient&idfid=' + this.state.carteId
+                  + '&idclient=' + this.props.idUserRecupClient 
+                  + '&ident=' + this.props.idEntRecupClient)
+                  .then((response) => response.json())
+                  .then((response) => {
+          
+                      switch (response) {
+                          case '#POINTAGE#VIDE':
+                              console.log(response)
+                              this.setState({
+                                  cartePointageMsg: '5'
+                              })
+                              break;            
+                          default:
+                              console.log(response)
+                              this.setState({
+                                  listePointage: response
+                              })
+                              break;
+                      }
+          
+                  })
+                  .catch(err => console.error(err)) 
 
 
             }
@@ -132,11 +159,35 @@ class Fichecoclient extends Component {
             }
 
 
-    
-
         })
         .catch(err => console.error(err))
 
+
+
+
+        /*fetch('http://127.0.0.1/fidapi/main.php?action=listePointageClient&idfid=' + this.state.carteId
+        + '&idclient=' + this.props.idUserRecupClient 
+        + '&ident=' + this.props.idEntRecupClient)
+        .then((response) => response.json())
+        .then((response) => {
+
+            switch (response) {
+                case '#POINTAGE#VIDE':
+                    console.log(response)
+                    this.setState({
+                        cartePointageMsg: '5'
+                    })
+                    break;            
+                default:
+                    console.log(response)
+                    this.setState({
+                        listePointage: response
+                    })
+                    break;
+            }
+
+        })
+        .catch(err => console.error(err))  */
 
 
     }
@@ -199,7 +250,10 @@ class Fichecoclient extends Component {
     {
 
         var idClient = window.location.search.substring(4);
+        var audio = new Audio();
+        audio.src = "sons/bip.mp3"
 
+        audio.play()
 
         fetch('http://127.0.0.1/fidapi/main.php?action=checkDatePointage&idclient=' + this.props.idUserRecupClient
         + '&identreprise=' + this.props.idEntRecupClient)
@@ -226,10 +280,16 @@ class Fichecoclient extends Component {
                                     switch (response) {
                                         case '#UPTENTREPRISE#SUCCESS':
                                             console.log(response)
-                                            setTimeout(() => window.location.href = "/fichecoclient",1000)
+                                            this.setState({
+                                                cartePointageMsg: '3'
+                                            })
+                                            setTimeout(() => window.location.href = "/fichecoclient",1500)
                                             break;   
                                         case '#UPTENTREPRISE#ECHEC':
                                             console.log(response)
+                                            this.setState({
+                                                cartePointageMsg: '4'
+                                            })
                                             break;            
                                         default:
                                             break;
@@ -267,10 +327,16 @@ class Fichecoclient extends Component {
                                     switch (response) {
                                         case '#UPTENTREPRISE#SUCCESS':
                                             console.log(response)
-                                            setTimeout(() => window.location.href = "/fichecoclient",1000)
+                                            this.setState({
+                                                cartePointageMsg: '3'
+                                            })
+                                            setTimeout(() => window.location.href = "/fichecoclient",1500)
                                             break;   
                                         case '#UPTENTREPRISE#ECHEC':
                                             console.log(response)
+                                            this.setState({
+                                                cartePointageMsg: '4'
+                                            })
                                             break;            
                                         default:
                                             break;
@@ -312,9 +378,9 @@ class Fichecoclient extends Component {
         if(this.state.cartePointageMsg === '1')
         {
 
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
         
-                Votre pointage est en attente ! <br/><button onClick={this.confirmation.bind(this)} class="btn btn-default" type="submit">Veuillez confirmer !</button>
+                <center>Votre pointage est en attente ! <br/><button onClick={this.confirmation.bind(this)} type="button" class="btn btn-dark">Veuillez confirmer !</button></center>
         
             </div>
 
@@ -324,14 +390,70 @@ class Fichecoclient extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
                 Aucune carte de fidélité n'est liée à ce compte.
         
             </div>
 
         }
+        else if (this.state.cartePointageMsg === '3') 
+        {
+            
+
+            return <div className="alert alert-success">
         
+                Votre pointage a bien été valider. Patientez...
+        
+            </div>
+
+        }        
+        else if (this.state.cartePointageMsg === '4') 
+        {
+            
+
+            return <div className="alert alert-danger">
+        
+                Votre pointage n'a pas été valider.
+        
+            </div>
+
+        }  
+
+
+    }
+
+    afficheListePointage()
+    {
+
+        if(this.state.carteStatutMsg === '5')
+        {
+
+            return <div className="alert alert-danger">
+        
+                Aucun pointage à afficher.
+        
+            </div>
+
+        }
+        else
+        {
+
+
+            return this.state.listePointage.map((valuedeux, index) => 
+            (
+                <tr key={index}>
+                    <td>{valuedeux.entreprise}</td>
+                    <td>{valuedeux.departpointage}</td>
+                    <td>{valuedeux.finpointage}</td>
+                    <td>{valuedeux.prestation}</td>
+                    <td>{valuedeux.prix}</td>
+                </tr>
+            )
+            )
+
+
+        }
 
 
     }
@@ -380,47 +502,82 @@ class Fichecoclient extends Component {
                     {/* DEBUT CODE */}
 
                     <br/>
-                    <table className="table table-striped">
-                        <thead>
-                        <tr>
-                            
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Date inscription : </td>
-                            <td>{this.state.dataInscription}</td>
-                        </tr>
-                        <tr>
-                            <td>Nom : </td>
-                            <td>{this.state.nomClient}</td>
-                        </tr>
-                        <tr>
-                            <td>Prénom : </td>
-                            <td>{this.state.prenomClient}</td>
-                        </tr>
-                        <tr>
-                            <td>Adresse : </td>
-                            <td>{this.state.adresseClient}</td>
-                        </tr>
-                        <tr>
-                            <td>Email : </td>
-                            <td>{this.state.emailClient}</td>
-                        </tr>
-                        <tr>
-                            <td>N° Téléphone : </td>
-                            <td>{this.state.telephoneClient}</td>
-                        </tr>
-                        <tr>
-                            <td>Carte total : </td>
-                            <td>{this.state.carteTotal}</td>
-                        </tr>
-                        <tr>
-                            <td>Pointage total : </td>
-                            <td>{this.state.pointageTotal}</td>
-                        </tr>
-                        </tbody>
-                    </table>                                    
+
+                    <ul className="nav nav-tabs" id="myTab" role="tablist">
+                        <li className="nav-item">
+                            <a className="nav-link active" id="home-tab" data-toggle="tab" href="#infos" role="tab" aria-controls="infos" aria-selected="true">Informations sur votre profil</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" id="profile-tab" data-toggle="tab" href="#listepointages" role="tab" aria-controls="profile" aria-selected="false">Historique des pointages</a>
+                        </li>
+                        </ul>
+                        <div className="tab-content" id="myTabContent">
+                        <div className="tab-pane fade show active" id="infos" role="tabpanel" aria-labelledby="home-tab">
+                        
+                                <br/>
+                                <table className="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Date inscription : </td>
+                                        <td>{this.state.dataInscription}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nom : </td>
+                                        <td>{this.state.nomClient}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Prénom : </td>
+                                        <td>{this.state.prenomClient}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Adresse : </td>
+                                        <td>{this.state.adresseClient}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email : </td>
+                                        <td>{this.state.emailClient}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>N° Téléphone : </td>
+                                        <td>{this.state.telephoneClient}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Carte total : </td>
+                                        <td>{this.state.carteTotal}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pointage total : </td>
+                                        <td>{this.state.pointageTotal}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                        
+                        </div>
+                        <div className="tab-pane fade" id="listepointages" role="tabpanel" aria-labelledby="profile-tab">
+
+                                <table className="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <td>Entreprise</td>
+                                        <td>Départ pointage</td>
+                                        <td>Fin pointage</td>
+                                        <td>Prestation</td>
+                                        <td>Prix</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.afficheListePointage()}
+                                    </tbody>
+                                </table>
+                        
+                        </div>
+                    </div>
+                                    
 
 
                     {/* FIN CODE */}

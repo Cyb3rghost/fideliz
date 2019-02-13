@@ -29,6 +29,7 @@ class Voirclient extends Component {
             afflisteCadeaux: [],
             prestation: '',
 
+            carteId: '',
             carteDateCreation: '',
             carteNom: '',
             cartePrenom: '',
@@ -48,7 +49,6 @@ class Voirclient extends Component {
 
     componentDidMount()
     {
-
 
             var idClient = window.location.search.substring(4);
             fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient)
@@ -96,6 +96,7 @@ class Voirclient extends Component {
                     {response.map((valuedeux, index) => 
                         (
                             this.setState({
+                                carteId: valuedeux.id,
                                 carteDateCreation: valuedeux.datecreation,
                                 carteNom: valuedeux.nom,
                                 cartePrenom: valuedeux.prenom,
@@ -207,7 +208,13 @@ class Voirclient extends Component {
     {
 
         var idClient = window.location.search.substring(4);
+        var myprestation = this.state.selectedOption.label
 
+        var mysplitprestation = myprestation.split(" - ");
+        var audio = new Audio();
+        audio.src = "sons/bip.mp3"
+
+        
 
         fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + idClient)
         .then((response) => response.json())
@@ -224,12 +231,18 @@ class Voirclient extends Component {
                     break;   
                 case '#CLOTURATION#NONECESSAIRE':
                     console.log(response)
-                    fetch('http://127.0.0.1/fidapi/main.php?action=pointage&identreprise=' + this.state.idEntreprise + '&idclient=' + idClient)
+                    fetch('http://127.0.0.1/fidapi/main.php?action=pointage&identreprise=' + this.state.idEntreprise 
+                    + '&idcarte=' + this.state.carteId
+                    + '&idclient=' + idClient
+                    + '&prestation=' + mysplitprestation[0]
+                    + '&prix=' + mysplitprestation[1].substring(0, mysplitprestation[1].length-1))
                     .then((response) => response.json())
                     .then((response) => {
             
                         switch (response) {
                             case "#CARTEUPTCODE#SUCCESS":
+                                console.log(response)
+                                audio.play();
                                 this.setState({
                                     cartePointageMsg: '1'
                                 })
@@ -238,30 +251,35 @@ class Voirclient extends Component {
                                 break;
                             case "#CARTEUPTCODE#ECHEC":
                                 console.log(response)
+                                audio.play();
                                 this.setState({
                                     cartePointageMsg: '2'
                                 })
                                 break; 
                             case "#ADDPOINTAGE#ECHEC":
                                 console.log(response)
+                                audio.play();
                                 this.setState({
                                     cartePointageMsg: '2'
                                 })
                                 break;     
                             case "#DATACLT#ECHEC":
                                 console.log(response)
+                                audio.play();
                                 this.setState({
                                     cartePointageMsg: '2'
                                 })
                                 break; 
                             case "#DATAENT#ECHEC":
                                 console.log(response)
+                                audio.play();
                                 this.setState({
                                     cartePointageMsg: '2'
                                 })
                                 break; 
                             case "#CHECKPOINTAGE#EXISTE":
                                 console.log(response)
+                                audio.play();
                                 this.setState({
                                     cartePointageMsg: '3'
                                 })
@@ -332,7 +350,7 @@ class Voirclient extends Component {
         if(this.state.cartePointageMsg === '1')
         {
 
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
         
                 Le pointage a bien été initialiser. Votre client peut maintenant valider !
         
@@ -344,7 +362,7 @@ class Voirclient extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
                 Le pointage n'a pas pu être initialiser. Veuillez recommencer...
         
@@ -355,7 +373,7 @@ class Voirclient extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
                 Veuillez terminer le pointage en cours avant de recommencer...
         
@@ -366,7 +384,7 @@ class Voirclient extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
                 Limitation pointage atteinte, la carte été cloturer. Veuillez recrée une nouvelle carte.
         
@@ -398,6 +416,8 @@ class Voirclient extends Component {
 
                     <Navbarup idEntreprise={this.props.idUserRecup} />
 
+                    {this.verifieEtatPointage()}
+
                     <div className="container-fluid">
 
 
@@ -408,7 +428,7 @@ class Voirclient extends Component {
 
 
 
-                    {this.verifieEtatPointage()}
+                    
 
                     <hr/>
 

@@ -590,10 +590,13 @@ if(isset($_GET['action']))
             echo $json;
             break;
         case 'pointage':
+            $idCarte = $_GET['idcarte'];
             $idEntreprise = $_GET['identreprise'];
             $idClient = $_GET['idclient'];
             $debutpointage = date("Y-m-d H:i:s"); 
             $code = rand(1, 99).rand(2, 999).rand(3, 9999);
+            $prestation = $_GET['prestation'];
+            $prix = $_GET['prix'];
 
             $sql = "SELECT * FROM `accsociete` WHERE `id` = $idEntreprise";
             $result = mysqli_query($connect, $sql);
@@ -633,7 +636,7 @@ if(isset($_GET['action']))
                     else
                     {
 
-                        $sqlquatre = "INSERT INTO `pointage` (`id`, `identreprise`, `idclient`, `entreprise`, `departpointage`, `client`, `finpointage`, `statut`, `code`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nomDeLaSociete."', '".$debutpointage."', '".$client."', '".$debutpointage."', '1', '".$code."')";
+                        $sqlquatre = "INSERT INTO `pointage` (`id`, `idcarte`, `identreprise`, `idclient`, `entreprise`, `departpointage`, `client`, `finpointage`, `statut`, `code`, `prestation`, `prix`) VALUES (NULL, '".$idCarte."', '".$idEntreprise."', '".$idClient."', '".$nomDeLaSociete."', '".$debutpointage."', '".$client."', '".$debutpointage."', '1', '".$code."', '".$prestation."', '".$prix."')";
                         if(mysqli_query($connect, $sqlquatre))
                         {
         
@@ -1924,29 +1927,36 @@ if(isset($_GET['action']))
 
             mysqli_close($connect);
             break;
-        case 'test':
-            /*$debutAbonnement = date("Y-m-d");
-        
-            $date_expire    =   $debutAbonnement;
-            $nbre=30;
-            $tmp=explode('-', $date_expire);
-            $jour = $tmp[2]; // on récupère le jour
-            $mois = $tmp[1]; // puis le mois
-            $annee = $tmp[0]; // l'annee ...
+        case 'listePointageClient':
+            $idCarteFid = $_GET['idfid'];
+            $idEntreprise = $_GET['ident'];
+            $idClient = $_GET['idclient'];
+            
+            $sql = "SELECT * FROM `pointage` WHERE `idcarte` = '".$idCarteFid."' AND `identreprise` = '".$idEntreprise."' AND `idclient` = '".$idClient."' ORDER BY `id` DESC";
+            $result = mysqli_query($connect, $sql);
 
-            $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
+            if(mysqli_num_rows($result))
+            {
 
-            echo '<br />'.date("Y-m-d", $date_expiration);*/
+                    while($row[] = mysqli_fetch_assoc($result))
+                    {
 
-            /*$datetime1 = date_create('2009-10-11');
-            $datetime2 = date_create('2009-10-13');
-            $interval = date_diff($datetime1, $datetime2);
-            echo $interval->format('%R%a');*/
+                        $json=json_encode($row);
 
-            $debutAbonnement = strtotime(date("Y-m-d"));
-            $finAbonnement = strtotime("2019-03-24");
+                    }
 
-            echo dateDiff($debutAbonnement, $finAbonnement);
+            }
+            else
+            {
+
+                $json = json_encode("#POINTAGE#VIDE");
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
 
             break;
         default:
