@@ -307,6 +307,16 @@ class Voirclient extends Component {
 
     }
 
+    addPointageTest()
+    {
+
+        console.log(this.props)
+        const { params } = this.props;
+
+        console.log(params)
+
+    }
+
     afficheActBouton()
     {
 
@@ -320,7 +330,7 @@ class Voirclient extends Component {
         if(this.state.carteStatutMsg != '2')
         {
             
-            return <div><a href={'/listetypecarte?id=' + idClient}><button type="button" onClick={this.addPointage.bind(this)} className="btn btn-primary btn-block"><i className="fas fa-hand-point-right"></i> Ajouter une carte de fidélité</button></a>
+            return <div><button type="button" onClick={this.addPointageTest.bind(this)} >Test</button><a href={'/listetypecarte?id=' + idClient}><button type="button" className="btn btn-primary btn-block"><i className="fas fa-hand-point-right"></i> Ajouter une carte de fidélité</button></a>
             &nbsp;&nbsp;<a href={'/planning?id=' + idClient}><button type="button" className="btn btn-primary btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
         }
         else if(this.state.carteStatutMsg === '2')
