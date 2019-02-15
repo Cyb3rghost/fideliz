@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Link } from "react-router-dom";
 
 import Navbarup from './navbarup'
 import Menu from './menu'
@@ -255,7 +254,7 @@ class Client extends Component {
                                     <td>{value.adresse}</td>
                                     <td>{value.telephone}</td>
                                     <td>{value.email}</td>
-                                    <td><Link to={'/voirclient/' + value.id}>Voir</Link></td>
+                                    <td><a href={'/voirclient/' + value.id}>Voir</a></td>
                                 </tr>
                             )
                         )}
