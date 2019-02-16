@@ -54,7 +54,7 @@ class Navbarupclient extends Component {
     return (
       <div>
 
-            <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <nav className="navbar navbar-expand navbar-light bg-gradient-perso topbar mb-4 static-top shadow">
 
             <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
                 <i className="fa fa-bars"></i>
@@ -108,7 +108,7 @@ class Navbarupclient extends Component {
 
                 <li className="nav-item dropdown no-arrow">
                 <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span className="mr-2 d-none d-lg-inline text-gray-600">{this.state.utilisateur} <i class="fas fa-angle-down"></i></span>
+                    <span className="mr-2 d-none d-lg-inline">{this.state.utilisateur} <i class="fas fa-angle-down"></i></span>
                 </a>
                 <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                     <a className="dropdown-item" href="#">
