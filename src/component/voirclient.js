@@ -41,7 +41,9 @@ class Voirclient extends Component {
             carteImgIcon: '',
             carteQrCode: '',
             carteStatutMsg: '',
-            cartePointageMsg: ''
+            cartePointageMsg: '',
+            gainsClient: '',
+            prestationsClients: ''
 
         }
 
@@ -51,29 +53,7 @@ class Voirclient extends Component {
     {
 
             var idClient = this.props.match.params.id
-            fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient)
-            .then((response) => response.json())
-            .then((response) => {
-    
-                {response.map((value, index) => 
-                    (
-                        this.setState({
-                            dataInscription: value.dinscription,
-                            nomClient: value.nom,
-                            prenomClient: value.prenom,
-                            adresseClient: value.adresse,
-                            emailClient: value.email,
-                            telephoneClient: value.telephone,
-                            carteTotal: value.nbcarteterminer,
-                            pointageTotal: value.nbpointagetotal                     
-                        })
-                    )
-                  )}
-        
-    
-            })
-            .catch(err => console.error(err))
-    
+
             fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + idClient)
             .then((response) => response.json())
             .then((response) => {
@@ -110,6 +90,93 @@ class Voirclient extends Component {
                             })
                         )
                       )}
+
+                      fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient)
+                      .then((response) => response.json())
+                      .then((response) => {
+              
+                          {response.map((value, index) => 
+                              (
+                                  this.setState({
+                                      dataInscription: value.dinscription,
+                                      nomClient: value.nom,
+                                      prenomClient: value.prenom,
+                                      adresseClient: value.adresse,
+                                      emailClient: value.email,
+                                      telephoneClient: value.telephone,
+                                      carteTotal: value.nbcarteterminer,
+                                      pointageTotal: value.nbpointagetotal                     
+                                  })
+                              )
+                            )}
+
+                            fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup)
+                            .then((response) => response.json())
+                            .then((response) => {
+                    
+                                console.log(response)
+                    
+                                if(response === "#SLCTLISTECADEAUX#ECHEC")
+                                {
+                    
+                                    this.setState({
+                                        carteStatutMsg: '10'
+                                    })
+                    
+                                }
+                                else
+                                {
+                    
+                                    this.setState({
+                                        afflisteCadeaux: response
+                                    })
+                    
+                                }
+                                
+                                fetch('http://127.0.0.1/fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup
+                                + '&idclt=' + idClient)
+                                .then((response) => response.json())
+                                .then((response) => {
+                        
+                                    this.setState({
+                                        gainsClient: response                    
+                                    })
+
+                                    fetch('http://127.0.0.1/fidapi/main.php?action=prestationsCadeauxClients&idcarte=' + this.state.carteId
+                                    + '&idclt=' + idClient)
+                                    .then((response) => response.json())
+                                    .then((response) => {
+                            
+                                        if(response === "#GTTPRSTATION#FAILED")
+                                        {
+
+                                            console.log(response)
+
+
+                                        }
+                                        else
+                                        {
+
+                                            this.setState({
+                                                prestationsClients: response                    
+                                            })
+
+                                        }
+
+                                    })
+                                    .catch(err => console.error(err))
+                        
+                                })
+                                .catch(err => console.error(err))    
+
+
+                    
+                            })
+                            .catch(err => console.error(err)) 
+                  
+              
+                      })
+                      .catch(err => console.error(err))
     
     
                 }
@@ -120,33 +187,11 @@ class Voirclient extends Component {
             })
             .catch(err => console.error(err))
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup)
-            .then((response) => response.json())
-            .then((response) => {
-    
-                console.log(response)
-    
-                if(response === "#SLCTLISTECADEAUX#ECHEC")
-                {
-    
-                    this.setState({
-                        carteStatutMsg: '10'
-                    })
-    
-                }
-                else
-                {
-    
-                    this.setState({
-                        afflisteCadeaux: response
-                    })
-    
-                }
-                
-        
-    
-            })
-            .catch(err => console.error(err)) 
+
+
+
+
+            /**/
 
 
     }
@@ -395,7 +440,6 @@ class Voirclient extends Component {
 
     }
 
-
     handleChange = (selectedOption) => {
         this.setState({ selectedOption });
         console.log(`Option selected:`, selectedOption);
@@ -443,6 +487,44 @@ class Voirclient extends Component {
                         </div>
                         <div className="col-md-6">
                         
+                            <div className="row">
+                            
+                                <div className="col-md-6 mb-4">
+                                <div className="card border-left-primary shadow h-100 py-2">
+                                    <div className="card-body">
+                                    <div className="row no-gutters align-items-center">
+                                        <div className="col mr-2">
+                                        <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Gains total sur client</div>
+                                        <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.gainsClient} €</div>
+                                        </div>
+                                        <div className="col-auto">
+                                        <i class="fas fa-hand-holding-usd fa-2x"></i>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>  
+
+                                <div className="col-md-6 mb-4">
+                                <div className="card border-left-primary shadow h-100 py-2">
+                                    <div className="card-body">
+                                    <div className="row no-gutters align-items-center">
+                                        <div className="col mr-2">
+                                        <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Prestation total offerte au client</div>
+                                        <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.prestationsClients} €</div>
+                                        </div>
+                                        <div className="col-auto">
+                                        <i class="fas fa-exchange-alt fa-2x"></i>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>                            
+                            
+                            </div>
+
+
+
                             {this.afficheActBouton()}
                         
                         </div>
@@ -457,6 +539,10 @@ class Voirclient extends Component {
                         </tr>
                         </thead>
                         <tbody>
+                        <tr>
+                            <td>ID Carte : </td>
+                            <td>{this.state.carteId}</td>
+                        </tr>
                         <tr>
                             <td>Date inscription : </td>
                             <td>{this.state.dataInscription}</td>

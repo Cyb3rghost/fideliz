@@ -1959,6 +1959,98 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
+        case 'gainsTotalClient':
+
+            $idEntreprise = $_GET['ident'];
+
+
+            $sql = "SELECT ROUND(SUM(prix), 2) AS `sommeTotal` FROM `pointage` WHERE `identreprise` = $idEntreprise AND `statut` = '2'";
+
+            if($result = mysqli_query($connect, $sql))
+            {
+
+                while($row = mysqli_fetch_assoc($result))
+                {
+
+                    $json=json_encode($row['sommeTotal']);
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#GTOTALCLT#FAILED");
+
+            }
+
+            echo $json;
+            
+            mysqli_close($connect);
+
+            break;
+        case 'gainsClient':
+
+            $idEntreprise = $_GET['ident'];
+            $idClient = $_GET['idclt'];
+
+
+            $sql = "SELECT ROUND(SUM(prix), 2) AS `sommeTotal` FROM `pointage` WHERE `identreprise` = $idEntreprise AND `idclient` = $idClient AND `statut` = '2'";
+
+            if($result = mysqli_query($connect, $sql))
+            {
+
+                while($row = mysqli_fetch_assoc($result))
+                {
+
+                    $json=json_encode($row['sommeTotal']);
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#GTOTALCLT#FAILED");
+
+            }
+
+            echo $json;
+            
+            mysqli_close($connect);
+
+            break;
+        case 'prestationsCadeauxClients':
+
+            $idCarte = $_GET['idcarte'];
+            $idClient = $_GET['idclt'];
+
+
+            $sql = "SELECT ROUND(SUM(prix), 2) AS `sommeTotal` FROM `fidcadeaux` WHERE `idclient` = $idClient AND `idcarte` = '".$idCarte."' AND `statut` = '2'";
+
+            if($result = mysqli_query($connect, $sql))
+            {
+
+                while($row = mysqli_fetch_assoc($result))
+                {
+
+                    $json=json_encode($row['sommeTotal']);
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#GTTPRSTATION#FAILED");
+
+            }
+
+            echo $json;
+            
+            mysqli_close($connect);
+
+            break;
         default:
             # code...
             break;

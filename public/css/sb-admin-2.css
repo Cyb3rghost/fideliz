@@ -11939,3 +11939,24 @@ body.sidebar-toggled footer.sticky-footer {
 
 
 /* 16/02/2019 */ 
+
+/* 18/02/2019 */
+
+
+.cadreStatsClient
+{
+
+
+      width: 200px;
+      height: 200px;
+      background-color: white;
+      color: #808080;
+      text-align: center;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 22px;
+
+}
+
+
+/* 18/02/2019 */
