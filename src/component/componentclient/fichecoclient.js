@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
 
-import userClient from '../../images/adduser.png';
-import addCarte from '../../images/addcarte.png';
-
-import backgroundImage from '../../images/backgroundCarte.jpg'
-import iconImg from '../../images/logocarte.png'
-import pointage from '../../images/pointage.png'
 import edition from '../../images/gestionCompteProfil.png'
 
 import Navbarupclient from './navbarupclient'
@@ -28,6 +22,7 @@ class Fichecoclient extends Component {
             telephoneClient: '',
             carteTotal: '',
             pointageTotal: '',
+            prestationsClients: '',
 
             carteId: '',
             carteDateCreation: '',
@@ -163,31 +158,30 @@ class Fichecoclient extends Component {
         .catch(err => console.error(err))
 
 
-
-
-        /*fetch('http://127.0.0.1/fidapi/main.php?action=listePointageClient&idfid=' + this.state.carteId
-        + '&idclient=' + this.props.idUserRecupClient 
-        + '&ident=' + this.props.idEntRecupClient)
+        fetch('http://127.0.0.1/fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
-            switch (response) {
-                case '#POINTAGE#VIDE':
-                    console.log(response)
-                    this.setState({
-                        cartePointageMsg: '5'
-                    })
-                    break;            
-                default:
-                    console.log(response)
-                    this.setState({
-                        listePointage: response
-                    })
-                    break;
+            if(response === "#GTTPRSTATION#FAILED")
+            {
+
+                console.log(response)
+
+
+            }
+            else
+            {
+
+                console.log(response)
+
+                this.setState({
+                    prestationsClients: response                    
+                })
+
             }
 
         })
-        .catch(err => console.error(err))  */
+        .catch(err => console.error(err))
 
 
     }
@@ -228,17 +222,6 @@ class Fichecoclient extends Component {
                 </div>  
             </div>
             <br/>
-            {/*this.state.carteDateCreation
-            this.state.carteNom
-            this.state.cartePrenom
-            this.state.carteNbPointage
-            this.state.carteLimitPointage
-            this.state.carteStatut
-            this.state.carteCadeaux
-            this.state.carteImgBackground
-            this.state.carteImgIcon
-            this.state.carteQrCode
-            */}
             </div>
 
         }
@@ -497,7 +480,35 @@ class Fichecoclient extends Component {
                     <hr/>
                     {this.verifieEtatPointage()}
                     <br/>
-                    {this.afficheCarte()}
+
+                    <div className="row">
+                    
+                        <div className="col-md-6">
+                        
+                            {this.afficheCarte()}
+                        
+                        </div>
+                        <div className="col-md-6">
+                        
+                            <div className="card border-left-primary shadow h-100 py-2">
+                                <div className="card-body">
+                                <div className="row no-gutters align-items-center">
+                                    <div className="col mr-2">
+                                    <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Economie réalisés sur les prestations</div>
+                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.prestationsClients} €</div>
+                                    </div>
+                                    <div className="col-auto">
+                                    <i class="fas fa-exchange-alt fa-2x"></i>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    
+                    </div>
+
+
 
                     {/* DEBUT CODE */}
 

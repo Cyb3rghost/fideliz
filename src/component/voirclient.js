@@ -64,6 +64,45 @@ class Voirclient extends Component {
                     this.setState({
                         carteStatutMsg: '1'                                      
                     })
+
+                    fetch('http://127.0.0.1/fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup
+                    + '&idclt=' + idClient)
+                    .then((response) => response.json())
+                    .then((response) => {
+            
+                        this.setState({
+                            gainsClient: response                    
+                        })
+
+                        fetch('http://127.0.0.1/fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + idClient)
+                        .then((response) => response.json())
+                        .then((response) => {
+                
+                            if(response === "#GTTPRSTATION#FAILED")
+                            {
+
+                                console.log(response)
+
+
+                            }
+                            else
+                            {
+
+                                console.log(response)
+
+                                this.setState({
+                                    prestationsClients: response                    
+                                })
+
+                            }
+
+                        })
+                        .catch(err => console.error(err))
+            
+                    })
+                    .catch(err => console.error(err))    
+
+                    
                 }
                 else
                 {
@@ -231,17 +270,6 @@ class Voirclient extends Component {
             </div>  
             </div>
             <br/>
-            {/*this.state.carteDateCreation
-            this.state.carteNom
-            this.state.cartePrenom
-            this.state.carteNbPointage
-            this.state.carteLimitPointage
-            this.state.carteStatut
-            this.state.carteCadeaux
-            this.state.carteImgBackground
-            this.state.carteImgIcon
-            this.state.carteQrCode
-            */}
             </div>
 
         }

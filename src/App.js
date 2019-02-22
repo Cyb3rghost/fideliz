@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import cookie from 'react-cookies'
 import Select from 'react-select';
-import { BrowserRouter as Router, Route, Switch, Redirect, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
 import './App.css';
 
@@ -27,15 +27,9 @@ import Planningclient from './component/componentclient/planningclient'
 /* INTERFACE CLIENT */
 
 
-import Cards from './component/testcomposant/cards'
-import Buttons from './component/testcomposant/buttons'
-import Login from './component/login'
 import Register from './component/register'
-import Forgot from './component/testcomposant/forgot'
 import Error from './component/404'
-import Blank from './component/testcomposant/blank'
-import Charts from './component/testcomposant/charts'
-import Table from './component/testcomposant/table'
+import Maintenance from './component/maintenance'
 
 class App extends Component {
 
@@ -67,7 +61,9 @@ class App extends Component {
             idTransitionRedirection: '',
 
             selectedOption: null,
-            options: []
+            options: [],
+            dataMaintenance: '',
+            dataVersion: ''
 
         }
 
@@ -75,7 +71,27 @@ class App extends Component {
 
     componentDidMount()
     {
-  
+
+        fetch('http://127.0.0.1/fidapi/main.php?action=maintenance')
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response)
+            
+            {response.map((value) => 
+              (
+
+                  this.setState({
+                    dataMaintenance: value.maintenance,
+                    dataVersion: value.version,
+                  })
+
+              )
+            )}
+
+
+        })
+        .catch(err => console.error(err))
+
         fetch('http://127.0.0.1/fidapi/main.php?action=selectionSociete')
         .then((response) => response.json())
         .then((response) => {
@@ -205,154 +221,158 @@ class App extends Component {
     }
 
   render() {
-    const { vrfLogged, vrfLoggedClient } = this.state
+    const { vrfLogged, vrfLoggedClient, dataMaintenance } = this.state
     const { selectedOption } = this.state;
 
     let options = this.state.options.map(function (valux) {
             return { value: valux.id, label: valux.nomsociete }
     })
 
+
     return (
       <Router>
-        <Switch>
+            <Switch>
+                <Route exact path="/" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <div className="container">
 
-            <Route exact path="/" render={() => <div className="container">
+                <div className="row justify-content-center">
 
-                  <div className="row justify-content-center">
+                <div className="col-xl-10 col-lg-12 col-md-9">
 
-                  <div className="col-xl-10 col-lg-12 col-md-9">
+                    <div className="card o-hidden border-0 shadow-lg my-5">
+                    <div className="card-body p-0">
+                        
+                        <div className="row">
+                        <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                        <div className="col-lg-6">
+                            <div className="p-5">
+                            <div className="text-center form-control-user">
+                                <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/> <small>Espace entreprise</small></h1>
+                            </div>
+                            <form className="user">
+                                <div className="form-group">
+                                <input 
+                                type="email" 
+                                value={this.state.connexionEmail}
+                                onChange={e => this.setState({connexionEmail: e.target.value})}
+                                className="form-control form-control-user" 
+                                placeholder="Enter Email Address..." 
+                                
+                                />
+                                </div>
+                                <div className="form-group">
+                                <input 
+                                type="password" 
+                                value={this.state.connexionPassword}
+                                onChange={e => this.setState({connexionPassword: e.target.value})}
+                                className="form-control form-control-user" 
+                                placeholder="Password" 
+                                
+                                />
+                                </div>
+                                <button type="button" onClick={this.Connexion.bind(this)} class="btn btn-primary btn-user btn-block">Connexion</button>
+                                <hr/>
+                                <a href="/connexionclient" className="btn btn-google btn-user btn-block">
+                                Accès compte client
+                                </a>
+                            </form>
+                            <hr/>
+                            <div className="text-center">
+                                <a className="small" href="forgot-password.html">Mot de passe oublié ?</a>
+                            </div>
+                            <div className="text-center">
+                                <a className="small" href="/register">Pas de compte entreprise ? Cliquez-ici !</a>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
 
-                      <div className="card o-hidden border-0 shadow-lg my-5">
-                      <div className="card-body p-0">
-                          
-                          <div className="row">
-                          <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                          <div className="col-lg-6">
-                              <div className="p-5">
-                              <div className="text-center form-control-user">
-                                  <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/> <small>Espace entreprise</small></h1>
-                              </div>
-                              <form className="user">
-                                  <div className="form-group">
-                                  <input 
-                                  type="email" 
-                                  value={this.state.connexionEmail}
-                                  onChange={e => this.setState({connexionEmail: e.target.value})}
-                                  className="form-control form-control-user" 
-                                  placeholder="Enter Email Address..." 
-                                  
-                                  />
-                                  </div>
-                                  <div className="form-group">
-                                  <input 
-                                  type="password" 
-                                  value={this.state.connexionPassword}
-                                  onChange={e => this.setState({connexionPassword: e.target.value})}
-                                  className="form-control form-control-user" 
-                                  placeholder="Password" 
-                                  
-                                  />
-                                  </div>
-                                  <button type="button" onClick={this.Connexion.bind(this)} class="btn btn-primary btn-user btn-block">Connexion</button>
-                                  <hr/>
-                                  <a href="/connexionclient" className="btn btn-google btn-user btn-block">
-                                  Accès compte client
-                                  </a>
-                              </form>
-                              <hr/>
-                              <div className="text-center">
-                                  <a className="small" href="forgot-password.html">Mot de passe oublié ?</a>
-                              </div>
-                              <div className="text-center">
-                                  <a className="small" href="/register">Pas de compte entreprise ? Cliquez-ici !</a>
-                              </div>
-                              </div>
-                          </div>
-                          </div>
-                      </div>
-                      </div>
+                </div>
 
-                  </div>
+                </div>
+                </div>} /> 
 
-                  </div>
-                  </div>} /> 
-          <Route path="/connexionclient" render={() => <div className="container">
+            <Route path="/connexionclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <div className="container">
 
-          <div className="row justify-content-center">
+            <div className="row justify-content-center">
 
-          <div className="col-xl-10 col-lg-12 col-md-9">
+            <div className="col-xl-10 col-lg-12 col-md-9">
 
-              <div className="card o-hidden border-0 shadow-lg my-5">
-              <div className="card-body p-0">
-                  
-                  <div className="row">
-                  <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                  <div className="col-lg-6">
-                      <div className="p-5">
-                      <div className="text-center">
-                          <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/> <small>Espace client</small></h1>
-                      </div>
-                      <form className="user">
-                          <div className="form-group">
-                              <Select
-                                  value={selectedOption}
-                                  onChange={this.handleChange}
-                                  options={options}
-                              /> 
-                          </div>
-                          <div className="form-group">
-                          <input 
-                              value={this.state.connexionEmailClient}
-                              onChange={e => this.setState({connexionEmailClient: e.target.value})}
-                              type="email" 
-                              className="form-control" 
-                              placeholder="Email"  
-                          />
-                          </div>
-                          <div className="form-group">
-                          <input 
-                              value={this.state.connexionPasswordClient}
-                              onChange={e => this.setState({connexionPasswordClient: e.target.value})}
-                              type="password" 
-                              className="form-control" 
-                              placeholder="Password" 
-                          />
-                          </div>
-                          <button type="button" onClick={this.connexionClient.bind(this)} class="btn btn-primary btn-user btn-block">Connexion</button>
-                          <hr/>
-                          <a href="/" className="btn btn-google btn-user btn-block">
-                          Accès compte entreprise
-                          </a>
-                      </form>
-                      </div>
-                  </div>
-                  </div>
-              </div>
-              </div>
+                <div className="card o-hidden border-0 shadow-lg my-5">
+                <div className="card-body p-0">
+                    
+                    <div className="row">
+                    <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                    <div className="col-lg-6">
+                        <div className="p-5">
+                        <div className="text-center">
+                            <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/> <small>Espace client</small></h1>
+                        </div>
+                        <form className="user">
+                            <div className="form-group">
+                                <Select
+                                    value={selectedOption}
+                                    onChange={this.handleChange}
+                                    options={options}
+                                /> 
+                            </div>
+                            <div className="form-group">
+                            <input 
+                                value={this.state.connexionEmailClient}
+                                onChange={e => this.setState({connexionEmailClient: e.target.value})}
+                                type="email" 
+                                className="form-control" 
+                                placeholder="Email"  
+                            />
+                            </div>
+                            <div className="form-group">
+                            <input 
+                                value={this.state.connexionPasswordClient}
+                                onChange={e => this.setState({connexionPasswordClient: e.target.value})}
+                                type="password" 
+                                className="form-control" 
+                                placeholder="Password" 
+                            />
+                            </div>
+                            <button type="button" onClick={this.connexionClient.bind(this)} class="btn btn-primary btn-user btn-block">Connexion</button>
+                            <hr/>
+                            <a href="/" className="btn btn-google btn-user btn-block">
+                            Accès compte entreprise
+                            </a>
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
 
-          </div>
+            </div>
 
-          </div>
-          </div>} />
-        <Route path="/register" component={() => <Register />} />
-        <Route path="/dashboard" component={() => vrfLogged?<Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-        <Route path="/profil" component={() => vrfLogged?<Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-        <Route path="/modifprofil" component={() => vrfLogged?<Modifprofil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-        <Route path="/client" component={() => vrfLogged?<Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-        <Route path="/nouveauclient" component={() => vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-        <Route path="/voirclient/:id" component={( props ) => vrfLogged?<Voirclient {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-        <Route path="/planning" component={() => vrfLogged?<Planning loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.infTypeCompte} /> : <Redirect to="/" />} />
-        <Route path="/gestioncompte" component={() => vrfLogged?<Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-        <Route path="/listetypecarte" component={() => vrfLogged?<Listetypecarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-        <Route path="/ajoutcarte" component={() => vrfLogged?<Ajoutcarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
-        {/* PARTIE CLIENT */}
-        <Route path="/fichecoclient" component={() => vrfLoggedClient?<Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-        <Route path="/editionclient" component={() => vrfLoggedClient?<Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-        <Route path="/mescadeaux" component={() => vrfLoggedClient?<Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-        <Route path="/planningclient" component={() => vrfLoggedClient?<Planningclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-        <Route component={() => <Error />}/>
+            </div>
+            </div>} />
 
-        </Switch>
+            <Route path="/register" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <Register /> } />
+            <Route path="/dashboard" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/profil" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/modifprofil" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Modifprofil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/client" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/nouveauclient" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/voirclient/:id" component={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Voirclient {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/planning" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Planning loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.infTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/gestioncompte" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/listetypecarte" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Listetypecarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/ajoutcarte" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Ajoutcarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
+            <Route path="/maintenance" component={() => <Maintenance version={this.state.dataVersion} />} />
+
+            <Route path="/fichecoclient" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+            <Route path="/editionclient" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+            <Route path="/mescadeaux" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+            <Route path="/planningclient" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Planningclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+            <Route component={() => <Error />}/>
+
+
+            </Switch>
       </Router>
     );
   }

@@ -11524,6 +11524,14 @@ form.user .btn-user {
   width: 12.5rem;
 }
 
+.maintenance {
+
+  color: #5a5c69;
+  font-size: 7rem;
+  line-height: 1;
+
+}
+
 @-webkit-keyframes noise-anim {
   0% {
     clip: rect(70px, 9999px, 93px, 0);

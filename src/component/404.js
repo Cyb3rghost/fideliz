@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import Menu from './menu'
-
 class Error extends Component {
 
   render() {

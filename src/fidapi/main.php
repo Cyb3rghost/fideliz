@@ -2020,6 +2020,35 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
+        case 'prestationsCadeauxClientsTotal':
+
+            $idClient = $_GET['idclt'];
+
+            $sql = "SELECT ROUND(SUM(prix), 2) AS `sommeTotal` FROM `fidcadeaux` WHERE `idclient` = $idClient AND `statut` = '2'";
+
+            if($result = mysqli_query($connect, $sql))
+            {
+
+                while($row = mysqli_fetch_assoc($result))
+                {
+
+                    $json=json_encode($row['sommeTotal']);
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#GTTPRSTATION#FAILED");
+
+            }
+
+            echo $json;
+            
+            mysqli_close($connect);
+
+            break;
         case 'prestationsCadeauxClients':
 
             $idCarte = $_GET['idcarte'];
@@ -2048,6 +2077,32 @@ if(isset($_GET['action']))
 
             echo $json;
             
+            mysqli_close($connect);
+
+            break;
+        case 'maintenance':
+
+            $sql = "SELECT * FROM `parametres` WHERE `id` = '1'";
+            if($result = mysqli_query($connect, $sql))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+
+                    $json=json_encode($row);
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#MAINTENANCE#ERREURDATA");
+                
+            }
+
+            echo $json;
+
             mysqli_close($connect);
 
             break;
