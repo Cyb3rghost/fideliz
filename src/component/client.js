@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Loader from 'react-loader-spinner'
 
 import Navbarup from './navbarup'
 import Menu from './menu'
@@ -13,7 +14,8 @@ class Client extends Component {
             nombreClient: '',
             identifiantCompte: '',
             statutMsg: '',
-            dataClient: []
+            dataClient: [],
+            loading: false
         }
 
 
@@ -50,7 +52,8 @@ class Client extends Component {
             {
 
                 this.setState({
-                    dataClient: response
+                    dataClient: response,
+                    loading: true
                 })
 
             }
@@ -170,16 +173,12 @@ class Client extends Component {
 
   render() {
     const { dataClient } = this.state;
-    return (
-      <div>
 
-            <div id="wrapper">
+    let loadingdata;
+    if(this.state.loading)
+    {
 
-                <Menu />
-
-                <div id="content-wrapper" className="d-flex flex-column">
-
-                <div id="content">
+        loadingdata = <div>
 
                     <Navbarup idEntreprise={this.props.idUserRecup} />
 
@@ -195,7 +194,7 @@ class Client extends Component {
 
 
                     <div className="row">
-                    
+
                         <div className="col-8">
                         
                             <p>Nombre de client :</p><br/>
@@ -206,7 +205,7 @@ class Client extends Component {
                         <div className="col-4">
                         
                         {this.props.infoTypeCompte != "0" &&
-                    
+
                                 <div><div class="input-group mb-3">
                                 <input 
                                     type="text" 
@@ -222,7 +221,7 @@ class Client extends Component {
                             </div>
                             <a href="/nouveauclient"><button class="btn btn-success btn-block" type="button" id="button-addon2">Nouveau client</button></a>  
                             </div>                
-                    
+
                         }
 
                         {this.props.infoTypeCompte === "0" && 
@@ -234,7 +233,7 @@ class Client extends Component {
 
 
                         </div>
-                    
+
                     </div>
 
                     <hr/>
@@ -265,6 +264,34 @@ class Client extends Component {
 
 
                     </div>
+
+        </div>
+
+    }
+    else
+    {
+
+        loadingdata =  <div className="styleLoader"><center><Loader 
+                            type="Triangle"
+                            color="#00BFFF"
+                            height="100"	
+                            width="100"
+                        /> </center></div>
+
+    }
+
+    return (
+      <div>
+
+            <div id="wrapper">
+
+                <Menu />
+
+                <div id="content-wrapper" className="d-flex flex-column">
+
+                <div id="content">
+
+                    {loadingdata}
 
                 </div>
 

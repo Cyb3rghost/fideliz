@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Loader from 'react-loader-spinner'
 
 import Navbarup from './navbarup'
 import Menu from './menu'
@@ -20,7 +21,8 @@ class Modifprofil extends Component {
             actuelMdp: '',
             retapeMdp: '',
             nouveauMdp: '',
-            statutMsgMaj: ''
+            statutMsgMaj: '',
+            loading: false
 
         }
 
@@ -42,7 +44,8 @@ class Modifprofil extends Component {
                         email: value.email,
                         adresse: value.adresse,
                         nomSociete: value.nomsociete,
-                        telephone: value.telephone,                     
+                        telephone: value.telephone,
+                        loading: true                     
                     })
                 )
               )}
@@ -247,16 +250,12 @@ class Modifprofil extends Component {
 
 
   render() {
-    return (
-      <div>
 
-            <div id="wrapper">
+    let loadingdata;
+    if(this.state.loading)
+    {
 
-                <Menu />
-
-                <div id="content-wrapper" className="d-flex flex-column">
-
-                <div id="content">
+        loadingdata = <div>
 
                     <Navbarup idEntreprise={this.props.idUserRecup} />
 
@@ -411,7 +410,37 @@ class Modifprofil extends Component {
                                 </div>
                     </div>
 
-                </div>
+                    </div>
+
+
+        </div>
+
+
+    }
+    else
+    {
+
+        loadingdata =  <div className="styleLoader"><center><Loader 
+                            type="Triangle"
+                            color="#00BFFF"
+                            height="100"	
+                            width="100"
+                        /> </center></div>
+
+    }
+
+    return (
+      <div>
+
+            <div id="wrapper">
+
+                <Menu />
+
+                <div id="content-wrapper" className="d-flex flex-column">
+
+                <div id="content">
+
+                    {loadingdata}
 
                 </div>
 
