@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Loader from 'react-loader-spinner'
+
 
 import Navbarupclient from './navbarupclient'
 import Menu from './menuclient'
@@ -14,6 +16,7 @@ class Mescadeaux extends Component {
             statutConfirmationCadeaux: '',
             statutCadeauxAttente: '',
             statutCadeauxRecu: '',
+            loading: false
         }
 
     }
@@ -72,7 +75,8 @@ class Mescadeaux extends Component {
 
                 this.setState({
                     cadeauxRecu: response,
-                    statutCadeauxRecu: '1'
+                    statutCadeauxRecu: '1',
+                    loading: true
                 })                
 
             }
@@ -272,8 +276,87 @@ class Mescadeaux extends Component {
 
 
   render() {
-    var idClient = window.location.search.substring(4);
     var QRCode = require('qrcode.react');
+    let loadingdata;
+
+    if(this.state.loading)
+    {
+
+        loadingdata = <div>
+
+                            <Navbarupclient idUser={this.props.idUserRecupClient} />
+
+                            <div className="container-fluid">
+
+                            <div className="row">
+
+                                    <div className="col-8">
+                                    
+                                        <div className="d-sm-flex align-items-center justify-content-between mb-4">
+                                            <h1 className="h3 mb-0 text-gray-800">Cadeaux fidélité</h1>
+                                        </div>
+
+
+                                    </div>
+                                    <div className="col-4">
+                                                                
+                                        
+
+                                    </div>
+
+                            </div>
+
+                            <hr/>
+
+                            {/* DEBUT CODE */}
+
+                            {this.checkStatutConfirmation()}
+
+                            <div className="page-header">
+                                <div className="container-perso">
+
+                                    <h1>• En Attente... <br/></h1>
+                                    <p className="text-justify">Vous trouverez ici votre prestation en attente de réclamation, l'entreprise devras alors confirmer la validation
+                                    de la prestation en cours avant de pouvoir recrée une carte de fidélité. <b>Attention :</b> Confirmer votre cadeau uniquement quand la prestation à été réaliser !</p>
+
+                                </div>
+                            </div>    
+
+                            {this.afficheCadeauxAttente()}
+
+                            <div className="page-header">
+                                <div className="container-perso">
+
+                                    <h1>• Cadeaux reçu... <br/></h1>
+                                    <p className="text-justify">Vous trouverez ici vos prestations terminées.</p>
+
+                                </div>
+                            </div>    
+
+                            {this.afficheCadeauxRecu()}
+
+                            {/* FIN CODE */}
+
+
+                            </div>
+
+        </div>
+
+
+    }
+    else
+    {
+
+        loadingdata =  <div className="styleLoader"><center><Loader 
+                            type="Triangle"
+                            color="#00BFFF"
+                            height="100"	
+                            width="100"
+                        /> </center></div>
+        
+
+    }
+
 
     return (
       <div>
@@ -286,61 +369,7 @@ class Mescadeaux extends Component {
 
                 <div id="content">
 
-                    <Navbarupclient idUser={this.props.idUserRecupClient} />
-
-                    <div className="container-fluid">
-
-                    <div className="row">
-
-                            <div className="col-8">
-                            
-                                <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                    <h1 className="h3 mb-0 text-gray-800">Cadeaux fidélité</h1>
-                                </div>
-
-
-                            </div>
-                            <div className="col-4">
-                                                        
-                                
-
-                            </div>
-
-                    </div>
-
-                    <hr/>
-                    
-                    {/* DEBUT CODE */}
- 
-                    {this.checkStatutConfirmation()}
-
-                    <div className="page-header">
-                        <div className="container-perso">
-
-                            <h1>• En Attente... <br/></h1>
-                            <p className="text-justify">Vous trouverez ici votre prestation en attente de réclamation, l'entreprise devras alors confirmer la validation
-                            de la prestation en cours avant de pouvoir recrée une carte de fidélité. <b>Attention :</b> Confirmer votre cadeau uniquement quand la prestation à été réaliser !</p>
-
-                        </div>
-                    </div>    
-
-                    {this.afficheCadeauxAttente()}
-
-                    <div className="page-header">
-                        <div className="container-perso">
-
-                            <h1>• Cadeaux reçu... <br/></h1>
-                            <p className="text-justify">Vous trouverez ici vos prestations terminées.</p>
-
-                        </div>
-                    </div>    
-
-                    {this.afficheCadeauxRecu()}
-
-                    {/* FIN CODE */}
-
-
-                    </div>
+                    {loadingdata}
 
                 </div>
 

@@ -23,7 +23,8 @@ class Dashboard extends Component {
             jRestants: '',
             apikey: '',
             totalGainsClient: '',
-            loading: false
+            loading: false,
+            testing: []
         }
 
     }
@@ -31,55 +32,47 @@ class Dashboard extends Component {
     componentDidMount()
     {
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup)
-        .then((response) => response.json())
-        .then((response) => {
+        var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup).then(function(response){ 
+            return response.json()
+        });
+        var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup).then(function(response){
+                    return response.json()
+        });
+        var apiRequest3 = fetch('http://127.0.0.1/fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup).then(function(response){
+                    return response.json()
+        });
 
-            {response.map((value, index) => 
-                (
-                    this.setState({
-                        nbClient: value.nbclient,
-                        limitClient: value.limitclient,
-                        nbPointage: value.nbpointage,
-                        limitPointage: value.limitpointage,
-                        typeCompte: value.typecompte,
-                        debutAbo: value.debutabo,
-                        finAbo: value.finabo, 
-                        jRestants: value.jrestant,
-                        apikey: value.apikey,
-                        loading: true                         
-                    })
-                )
-              )}
-    
+        var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{}};
 
-        })
-        .catch(err => console.error(err))
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup)
-        .then((response) => response.json())
-        .then((response) => {
-
-            this.setState({
-                totalClient: response                    
-            })
-
-        })
-        .catch(err => console.error(err))
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup)
-        .then((response) => response.json())
-        .then((response) => {
+        Promise.all([apiRequest1,apiRequest2, apiRequest3])
+        .then(function(values){
+            combinedData["apiRequest1"] = values[0];
+            combinedData["apiRequest2"] = values[1];
+            combinedData["apiRequest3"] = values[2];
+            
+            {combinedData["apiRequest1"].map((value) => 
+            (
+                this.setState({
+                    nbClient: value.nbclient,
+                    limitClient: value.limitclient,
+                    nbPointage: value.nbpointage,
+                    limitPointage: value.limitpointage,
+                    typeCompte: value.typecompte,
+                    debutAbo: value.debutabo,
+                    finAbo: value.finabo, 
+                    jRestants: value.jrestant,
+                    apikey: value.apikey,
+                    loading: true                         
+                })
+            )
+            )}
 
             this.setState({
-                totalGainsClient: response
-                                   
+                totalClient: combinedData["apiRequest2"],  
+                totalGainsClient: combinedData["apiRequest3"]            
             })
 
-        })
-        .catch(err => console.error(err))
-
-
+        }.bind(this));
 
     }
 

@@ -24,8 +24,46 @@ class Client extends Component {
     componentDidMount()
     {
 
+        var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup).then(function(response){ 
+            return response.json()
+        });
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup)
+        var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=listeClient&id=' + this.props.idUserRecup).then(function(response){ 
+            return response.json()
+        });
+
+        var combinedData = {"apiRequest1":{},"apiRequest2":{}};
+
+        Promise.all([apiRequest1,apiRequest2])
+        .then(function(values){
+            combinedData["apiRequest1"] = values[0];
+            combinedData["apiRequest2"] = values[1];
+
+            this.setState({
+                nombreClient: combinedData["apiRequest1"],             
+            })
+
+            if(combinedData["apiRequest2"] === "#LISTECLIENT#ECHEC")
+            {
+
+                this.setState({
+                    statutMsg: '1'
+                })
+
+            }
+            else
+            {
+
+                this.setState({
+                    dataClient: combinedData["apiRequest2"],
+                    loading: true
+                })
+
+            }
+
+        }.bind(this));
+
+        /*fetch('http://127.0.0.1/fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup)
         .then((response) => response.json())
         .then((response) => {
 
@@ -62,7 +100,7 @@ class Client extends Component {
 
 
         })
-        .catch(err => console.error(err))
+        .catch(err => console.error(err))*/
 
 
     }

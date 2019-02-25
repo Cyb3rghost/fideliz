@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import DatePicker from "react-datepicker";
+import Loader from 'react-loader-spinner'
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -24,7 +25,8 @@ class Planningclient extends Component {
             statutMsgPlanning: '',
             planningAtt: [],
             planningVld: [],
-            planningHst: []
+            planningHst: [],
+            loading: false
 
           };
         this.handleChange = this.handleChange.bind(this);
@@ -110,7 +112,8 @@ class Planningclient extends Component {
             {
 
                 this.setState({
-                    planningHst: response
+                    planningHst: response,
+                    loading: true
                 })
 
             }
@@ -314,8 +317,178 @@ class Planningclient extends Component {
     }
 
   render() {
-    var idClient = window.location.search.substring(4);
     const { planningAtt, planningVld, planningHst } = this.state;
+
+    let loadingdata;
+    if(this.state.loading)
+    {
+
+        loadingdata = <div>
+
+                            <Navbarupclient idUser={this.props.idUserRecupClient} />
+
+                            <div className="container-fluid">
+
+                            <div className="row">
+
+                                    <div className="col-8">
+                                    
+                                        <div className="d-sm-flex align-items-center justify-content-between mb-4">
+                                            <h1 className="h3 mb-0 text-gray-800">Gestion du planning</h1>
+                                        </div>
+
+
+                                    </div>
+                                    <div className="col-4">
+                                                                
+                                        <center>
+                                            <div className="form-inline">
+
+                                                <div className="form-group">
+                                                    <DatePicker
+                                                        className="form-control"
+                                                        selected={this.state.startDate}
+                                                        onChange={this.handleChange}
+                                                    />
+                                                </div>
+                                                <div className="form-group">
+
+                                                <input 
+                                                    type="time" 
+                                                    min="00:00" 
+                                                    max="18:00" 
+                                                    className="form-control" 
+                                                    value={this.state.heures}
+                                                    onChange={(e) => this.setState({heures: e.target.value})}
+                                                /> 
+                                                </div>
+                                                <button type="submit" onClick={() => this.addPlanning(this.props.idUserRecupClient)} className="btn btn-success">Proposer cette date</button>
+                                            </div>
+                                        </center>
+
+                                    </div>
+
+                            </div>
+
+                            <hr/>
+                            {this.afficheStatutPlanning()}
+                            <br/>
+
+                            {/* DEBUT CODE */}
+
+                            <div className="container-perso">
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                        
+                                        <div class="card">
+                                            <h5 class="card-header">Planning en attente</h5>
+                                            <div class="card-body">
+                                                {planningAtt.map((value, index) => 
+                                                            (<div key={index} className="planningAttente">
+                                                                                
+                                                                    <div className="row">
+                                                                    
+                                                                        <div className="col-2">
+                                                                        
+                                                                            <img src={attente} width="30" height="30" alt="Planning en attente..."/>
+                                                                        
+                                                                        </div>
+                                                                        <div className="col-10">
+                                                                        
+                                                                            {value.date} <img src={refuse} width="30" height="30" onClick={() => this.refuseDate(value.id)} align="right" title="Refuser la date" alt="Refuser la date"/> <img src={check} width="30" onClick={() => this.valideDate(value.id)} height="30" align="right" title="Validation de la date" alt="Validation de la date"/>
+                                                                        
+                                                                        </div>                                    
+                                                                    
+                                                                    
+                                                                    </div>
+                                                                
+                                                                </div>)
+                                                        )} 
+                                            </div>
+                                        </div>
+                                        
+                                        </div>
+                                        <div className="col-md-6">
+                                        
+
+                                        <div class="card">
+                                            <h5 class="card-header">Planning à venir</h5>
+                                            <div class="card-body">
+                                                {planningVld.map((value, index) => 
+                                                                (<div key={index} className="planningAttente">
+                                                                                    
+                                                                        <div className="row">
+                                                                        
+                                                                            <div className="col-2">
+                                                                            
+                                                                                <img src={confirmation} width="30" height="30" alt="Planning en attente..."/>
+                                                                            
+                                                                            </div>
+                                                                            <div className="col-10">
+                                                                            
+                                                                                {value.date}
+                                                                            
+                                                                            </div>                                    
+                                                                        
+                                                                        
+                                                                        </div>
+                                                                    
+                                                                    </div>)
+                                                            )} 
+                                            </div>
+                                        </div>
+                                        
+                                        </div>
+                                    </div>
+
+                                    <br/>
+                                    
+                                    <div class="card">
+                                            <h5 class="card-header">Historique du planning</h5>
+                                            <div class="card-body">
+                                                <table class="table table-striped">
+                                                <thead>
+                                                <tr>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {planningHst.map((value, index) => 
+                                                    (<tr key={index}>
+
+                                                    <td>{value.date}</td>
+                                                    {value.statut === '4' && <td><span className="badgeAccepter">Terminer</span></td>} 
+                                                    {value.statut === '2' && <td><span className="badgeAccepter">Accepter</span></td>}  
+                                                    {value.statut === '3' && <td><span className="badgeRefuser">Refuser</span></td>}  
+                                                        
+                                                    </tr>)
+                                                )} 
+                                                </tbody>
+                                            </table>
+                                            </div>
+                                        </div>
+
+                                </div>
+                            {/* FIN CODE */}
+
+
+                            </div>
+
+        </div>
+
+
+    }
+    else
+    {
+
+        loadingdata =  <div className="styleLoader"><center><Loader 
+                            type="Triangle"
+                            color="#00BFFF"
+                            height="100"	
+                            width="100"
+                        /> </center></div>
+        
+
+    }
 
     return (
       <div>
@@ -328,153 +501,7 @@ class Planningclient extends Component {
 
                 <div id="content">
 
-                    <Navbarupclient idUser={this.props.idUserRecupClient} />
-
-                    <div className="container-fluid">
-
-                    <div className="row">
-
-                            <div className="col-8">
-                            
-                                <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                    <h1 className="h3 mb-0 text-gray-800">Gestion du planning</h1>
-                                </div>
-
-
-                            </div>
-                            <div className="col-4">
-                                                        
-                                <center>
-                                    <div className="form-inline">
-
-                                        <div className="form-group">
-                                            <DatePicker
-                                                className="form-control"
-                                                selected={this.state.startDate}
-                                                onChange={this.handleChange}
-                                            />
-                                        </div>
-                                        <div className="form-group">
-
-                                        <input 
-                                            type="time" 
-                                            min="00:00" 
-                                            max="18:00" 
-                                            className="form-control" 
-                                            value={this.state.heures}
-                                            onChange={(e) => this.setState({heures: e.target.value})}
-                                        /> 
-                                        </div>
-                                        <button type="submit" onClick={() => this.addPlanning(this.props.idUserRecupClient)} className="btn btn-success">Proposer cette date</button>
-                                    </div>
-                                </center>
-
-                            </div>
-
-                    </div>
-
-                    <hr/>
-                    {this.afficheStatutPlanning()}
-                    <br/>
-
-                    {/* DEBUT CODE */}
-
-                    <div className="container-perso">
-                            <div className="row">
-                                <div className="col-md-6">
-                                
-                                <div class="card">
-                                    <h5 class="card-header">Planning en attente</h5>
-                                    <div class="card-body">
-                                        {planningAtt.map((value, index) => 
-                                                    (<div key={index} className="planningAttente">
-                                                                        
-                                                            <div className="row">
-                                                            
-                                                                <div className="col-2">
-                                                                
-                                                                    <img src={attente} width="30" height="30" alt="Planning en attente..."/>
-                                                                
-                                                                </div>
-                                                                <div className="col-10">
-                                                                
-                                                                    {value.date} <img src={refuse} width="30" height="30" onClick={() => this.refuseDate(value.id)} align="right" title="Refuser la date" alt="Refuser la date"/> <img src={check} width="30" onClick={() => this.valideDate(value.id)} height="30" align="right" title="Validation de la date" alt="Validation de la date"/>
-                                                                
-                                                                </div>                                    
-                                                            
-                                                            
-                                                            </div>
-                                                        
-                                                        </div>)
-                                                )} 
-                                    </div>
-                                </div>
-                                
-                                </div>
-                                <div className="col-md-6">
-                                
-
-                                <div class="card">
-                                    <h5 class="card-header">Planning à venir</h5>
-                                    <div class="card-body">
-                                        {planningVld.map((value, index) => 
-                                                        (<div key={index} className="planningAttente">
-                                                                            
-                                                                <div className="row">
-                                                                
-                                                                    <div className="col-2">
-                                                                    
-                                                                        <img src={confirmation} width="30" height="30" alt="Planning en attente..."/>
-                                                                    
-                                                                    </div>
-                                                                    <div className="col-10">
-                                                                    
-                                                                        {value.date}
-                                                                    
-                                                                    </div>                                    
-                                                                
-                                                                
-                                                                </div>
-                                                            
-                                                            </div>)
-                                                    )} 
-                                    </div>
-                                </div>
-                                
-                                </div>
-                            </div>
-
-                            <br/>
-                            
-                            <div class="card">
-                                    <h5 class="card-header">Historique du planning</h5>
-                                    <div class="card-body">
-                                        <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {planningHst.map((value, index) => 
-                                            (<tr key={index}>
-
-                                            <td>{value.date}</td>
-                                            {value.statut === '4' && <td><span className="badgeAccepter">Terminer</span></td>} 
-                                            {value.statut === '2' && <td><span className="badgeAccepter">Accepter</span></td>}  
-                                            {value.statut === '3' && <td><span className="badgeRefuser">Refuser</span></td>}  
-                                                
-                                            </tr>)
-                                        )} 
-                                        </tbody>
-                                    </table>
-                                    </div>
-                                </div>
-
-                        </div>
-                    {/* FIN CODE */}
-
-
-                    </div>
+                    {loadingdata}
 
                 </div>
 

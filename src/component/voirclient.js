@@ -52,7 +52,188 @@ class Voirclient extends Component {
 
             var idClient = this.props.match.params.id
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + idClient)
+            var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + idClient).then(function(response){ 
+                return response.json()
+            });
+
+            var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup
+            + '&idclt=' + idClient).then(function(response){ 
+                return response.json()
+            });
+
+            var apiRequest3 = fetch('http://127.0.0.1/fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + idClient).then(function(response){ 
+                return response.json()
+            });
+
+            var apiRequest4 = fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient).then(function(response){ 
+                return response.json()
+            });
+
+            var apiRequest5 = fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup).then(function(response){ 
+                return response.json()
+            });
+
+            var apiRequest6 = fetch('http://127.0.0.1/fidapi/main.php?action=prestationsCadeauxClients&idcarte=' + this.state.carteId
+            + '&idclt=' + idClient).then(function(response){ 
+                return response.json()
+            });
+
+            var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{},"apiRequest4":{},"apiRequest5":{},"apiRequest6":{}};
+
+            Promise.all([apiRequest1,apiRequest2,apiRequest3,apiRequest4,apiRequest5, apiRequest6])
+            .then(function(values){
+                combinedData["apiRequest1"] = values[0];
+                combinedData["apiRequest2"] = values[1];
+                combinedData["apiRequest3"] = values[2];
+                combinedData["apiRequest4"] = values[3];
+                combinedData["apiRequest5"] = values[4];
+                combinedData["apiRequest6"] = values[5];
+
+                if(combinedData["apiRequest1"] === "#VOIRCARTE#NOEXIST")
+                {
+
+                    this.setState({
+                        carteStatutMsg: '1',
+                        gainsClient: combinedData["apiRequest2"]                                  
+                    })
+
+                    if(combinedData["apiRequest3"] === "#GTTPRSTATION#FAILED")
+                    {
+
+                        console.log(combinedData["apiRequest3"])
+
+                    }
+                    else
+                    {
+
+                        this.setState({
+                            prestationsClients: combinedData["apiRequest3"]                
+                        })
+
+                        {combinedData["apiRequest4"].map((value) => 
+                            (
+                                this.setState({
+                                    dataInscription: value.dinscription,
+                                    nomClient: value.nom,
+                                    prenomClient: value.prenom,
+                                    adresseClient: value.adresse,
+                                    emailClient: value.email,
+                                    telephoneClient: value.telephone,
+                                    carteTotal: value.nbcarteterminer,
+                                    pointageTotal: value.nbpointagetotal                     
+                                })
+                            )
+                          )}
+
+                          if(combinedData["apiRequest5"] === "#SLCTLISTECADEAUX#ECHEC")
+                          {
+              
+                              this.setState({
+                                  carteStatutMsg: '10'
+                              })
+              
+                          }
+                          else
+                          {
+              
+                              this.setState({
+                                  afflisteCadeaux: combinedData["apiRequest5"],
+                                  loading: true 
+                              })
+              
+                          }
+
+
+                    }
+
+
+                }
+                else
+                {
+
+                    this.setState({
+                        carteStatutMsg: '2'
+                    })
+    
+                    {combinedData["apiRequest1"].map((valuedeux, index) => 
+                        (
+                            this.setState({
+                                carteId: valuedeux.id,
+                                carteDateCreation: valuedeux.datecreation,
+                                carteNom: valuedeux.nom,
+                                cartePrenom: valuedeux.prenom,
+                                carteNbPointage: valuedeux.nbpointage,
+                                carteLimitPointage: valuedeux.limitpointage,
+                                carteStatut: valuedeux.statut,
+                                carteCadeaux: valuedeux.cadeaux,
+                                carteImgBackground: valuedeux.imgbackground,
+                                carteImgIcon: valuedeux.imgicon,
+                                carteQrCode: valuedeux.qrcode                                            
+                            })
+                        )
+                      )}
+
+                      {combinedData["apiRequest4"].map((value, index) => 
+                        (
+                            this.setState({
+                                dataInscription: value.dinscription,
+                                nomClient: value.nom,
+                                prenomClient: value.prenom,
+                                adresseClient: value.adresse,
+                                emailClient: value.email,
+                                telephoneClient: value.telephone,
+                                carteTotal: value.nbcarteterminer,
+                                pointageTotal: value.nbpointagetotal                     
+                            })
+                        )
+                      )}  
+                      
+                      if(combinedData["apiRequest5"] === "#SLCTLISTECADEAUX#ECHEC")
+                      {
+          
+                          this.setState({
+                              carteStatutMsg: '10'
+                          })
+          
+                      }
+                      else
+                      {
+          
+                          this.setState({
+                              afflisteCadeaux: combinedData["apiRequest5"]
+                          })
+          
+                      }                      
+
+                      this.setState({
+                        gainsClient: combinedData["apiRequest2"]                   
+                      })
+
+                      if(combinedData["apiRequest6"] === "#GTTPRSTATION#FAILED")
+                      {
+
+                          console.log(combinedData["apiRequest6"])
+
+
+                      }
+                      else
+                      {
+
+                          this.setState({
+                              prestationsClients: combinedData["apiRequest6"],
+                              loading: true                 
+                          })
+
+                      }
+
+
+                }
+
+    
+            }.bind(this));
+
+
+            /*fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + idClient)
             .then((response) => response.json())
             .then((response) => {
     
@@ -314,13 +495,7 @@ class Voirclient extends Component {
         
     
             })
-            .catch(err => console.error(err))
-
-
-
-
-
-            /**/
+            .catch(err => console.error(err))*/
 
 
     }

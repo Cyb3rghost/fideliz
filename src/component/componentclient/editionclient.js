@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-
-import userClient from '../../images/adduser.png';
+import Loader from 'react-loader-spinner'
 
 import Navbarupclient from './navbarupclient'
 import Menu from './menuclient'
@@ -22,7 +21,8 @@ class Editionclient extends Component {
             actuelMdp: '',
             nouveauMdp: '',
             retapeMdp: '',
-            statutMsgMaj: ''
+            statutMsgMaj: '',
+            loading: false
 
         }
 
@@ -32,7 +32,6 @@ class Editionclient extends Component {
     componentDidMount()
     {
 
-        var idClient = window.location.search.substring(4);
         fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
@@ -44,7 +43,8 @@ class Editionclient extends Component {
                         prenomClient: value.prenom,
                         adresseClient: value.adresse,
                         emailClient: value.email,
-                        telephoneClient: value.telephone,                    
+                        telephoneClient: value.telephone,
+                        loading: true                    
                     })
                 )
               )}
@@ -246,7 +246,164 @@ class Editionclient extends Component {
     }
 
   render() {
-    var idClient = window.location.search.substring(4);
+
+    let loadingdata;
+    if(this.state.loading)
+    {
+
+        loadingdata = <div>
+
+                            <Navbarupclient idUser={this.props.idUserRecupClient} />
+
+                            <div className="container-fluid">
+
+                            <div className="row">
+
+                                    <div className="col-8">
+                                    
+                                        <div className="d-sm-flex align-items-center justify-content-between mb-4">
+                                            <h1 className="h3 mb-0 text-gray-800">Editez votre profil</h1>
+                                        </div>
+
+
+                                    </div>
+                                    <div className="col-4">
+                                                                
+                                        
+
+                                    </div>
+
+                            </div>
+
+                            <hr/>
+                            {this.afficheStatutMaj()}
+
+                            {/* DEBUT CODE */}
+
+                            <br/>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Nom : </td>
+                                    <td><input 
+                                    type="text" 
+                                    className="form-control" 
+                                    value={this.state.nomClient} 
+                                    onChange={(e) => this.setState({nomClient: e.target.value})}
+                                    /></td>
+                                </tr>
+                                <tr>
+                                    <td>Prénom : </td>
+                                    <td><input type="text" 
+                                    className="form-control" 
+                                    value={this.state.prenomClient} 
+                                    onChange={(e) => this.setState({prenomClient: e.target.value})}
+                                    /></td>
+                                </tr>
+                                <tr>
+                                    <td>Adresse : </td>
+                                    <td><input 
+                                    type="text" 
+                                    className="form-control" 
+                                    value={this.state.adresseClient} 
+                                    onChange={(e) => this.setState({adresseClient: e.target.value})}
+                                    /></td>
+                                </tr>
+                                <tr>
+                                    <td>Email : </td>
+                                    <td><input 
+                                    type="text" 
+                                    className="form-control" 
+                                    value={this.state.emailClient} 
+                                    onChange={(e) => this.setState({emailClient: e.target.value})}
+                                    /></td>
+                                </tr>
+                                <tr>
+                                    <td>N° Téléphone : </td>
+                                    <td><input 
+                                    type="text" 
+                                    className="form-control" 
+                                    value={this.state.telephoneClient} 
+                                    onChange={(e) => this.setState({telephoneClient: e.target.value})}
+                                    /></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><button class="btn btn-success btn-block" onClick={this.majClient.bind(this)} type="submit">Sauvegarder les modifications</button></td>
+                                </tr>
+                                </tbody>
+                            </table> 
+
+                            <br/>
+
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Mot de passe actuel : </td>
+                                    <td><input 
+                                    type="password" 
+                                    className="form-control" 
+                                    value={this.state.actuelMdp} 
+                                    onChange={(e) => this.setState({actuelMdp: e.target.value})}
+                                    required /></td>
+                                </tr>
+                                <tr>
+                                    <td>Nouveau mot de passe : </td>
+                                    <td><input type="password" 
+                                    className="form-control" 
+                                    value={this.state.nouveauMdp} 
+                                    onChange={(e) => this.setState({nouveauMdp: e.target.value})}
+                                    required /></td>
+                                </tr>
+                                <tr>
+                                    <td>Retapez le mot de passe : </td>
+                                    <td><input 
+                                    type="password" 
+                                    className="form-control" 
+                                    value={this.state.retapeMdp} 
+                                    onChange={(e) => this.setState({retapeMdp: e.target.value})}
+                                    required /></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><button class="btn btn-success btn-block" onClick={this.changeMDP.bind(this)} type="submit">Sauvegarder les modifications</button></td>
+                                </tr>
+                                </tbody>
+                            </table> 
+
+                            {/* FIN CODE */}
+
+
+                            </div>
+
+        </div>
+
+
+    }
+    else
+    {
+
+        loadingdata =  <div className="styleLoader"><center><Loader 
+                            type="Triangle"
+                            color="#00BFFF"
+                            height="100"	
+                            width="100"
+                        /> </center></div>
+        
+
+    }
+
+
 
     return (
       <div>
@@ -259,138 +416,7 @@ class Editionclient extends Component {
 
                 <div id="content">
 
-                    <Navbarupclient idUser={this.props.idUserRecupClient} />
-
-                    <div className="container-fluid">
-
-                    <div className="row">
-
-                            <div className="col-8">
-                            
-                                <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                    <h1 className="h3 mb-0 text-gray-800">Editez votre profil</h1>
-                                </div>
-
-
-                            </div>
-                            <div className="col-4">
-                                                        
-                                
-
-                            </div>
-
-                    </div>
-
-                    <hr/>
-                    {this.afficheStatutMaj()}
-
-                    {/* DEBUT CODE */}
-
-                    <br/>
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Nom : </td>
-                            <td><input 
-                            type="text" 
-                            className="form-control" 
-                            value={this.state.nomClient} 
-                            onChange={(e) => this.setState({nomClient: e.target.value})}
-                            /></td>
-                        </tr>
-                        <tr>
-                            <td>Prénom : </td>
-                            <td><input type="text" 
-                            className="form-control" 
-                            value={this.state.prenomClient} 
-                            onChange={(e) => this.setState({prenomClient: e.target.value})}
-                            /></td>
-                        </tr>
-                        <tr>
-                            <td>Adresse : </td>
-                            <td><input 
-                            type="text" 
-                            className="form-control" 
-                            value={this.state.adresseClient} 
-                            onChange={(e) => this.setState({adresseClient: e.target.value})}
-                            /></td>
-                        </tr>
-                        <tr>
-                            <td>Email : </td>
-                            <td><input 
-                            type="text" 
-                            className="form-control" 
-                            value={this.state.emailClient} 
-                            onChange={(e) => this.setState({emailClient: e.target.value})}
-                            /></td>
-                        </tr>
-                        <tr>
-                            <td>N° Téléphone : </td>
-                            <td><input 
-                            type="text" 
-                            className="form-control" 
-                            value={this.state.telephoneClient} 
-                            onChange={(e) => this.setState({telephoneClient: e.target.value})}
-                            /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><button class="btn btn-success btn-block" onClick={this.majClient.bind(this)} type="submit">Sauvegarder les modifications</button></td>
-                        </tr>
-                        </tbody>
-                    </table> 
-
-                    <br/>
-
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Mot de passe actuel : </td>
-                            <td><input 
-                            type="password" 
-                            className="form-control" 
-                            value={this.state.actuelMdp} 
-                            onChange={(e) => this.setState({actuelMdp: e.target.value})}
-                            required /></td>
-                        </tr>
-                        <tr>
-                            <td>Nouveau mot de passe : </td>
-                            <td><input type="password" 
-                            className="form-control" 
-                            value={this.state.nouveauMdp} 
-                            onChange={(e) => this.setState({nouveauMdp: e.target.value})}
-                            required /></td>
-                        </tr>
-                        <tr>
-                            <td>Retapez le mot de passe : </td>
-                            <td><input 
-                            type="password" 
-                            className="form-control" 
-                            value={this.state.retapeMdp} 
-                            onChange={(e) => this.setState({retapeMdp: e.target.value})}
-                            required /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><button class="btn btn-success btn-block" onClick={this.changeMDP.bind(this)} type="submit">Sauvegarder les modifications</button></td>
-                        </tr>
-                        </tbody>
-                    </table> 
-
-                    {/* FIN CODE */}
-
-
-                    </div>
+                    {loadingdata}
 
                 </div>
 

@@ -33,14 +33,24 @@ class Gestioncompte extends Component {
     componentDidMount()
     {
 
+        var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup).then(function(response){ 
+            return response.json()
+          });
+    
+        var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeauxInactive&id=' + this.props.idUserRecup).then(function(response){
+                    return response.json()
+        });
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup)
-        .then((response) => response.json())
-        .then((response) => {
+        var combinedData = {"apiRequest1":{},"apiRequest2":{}};
 
-            console.log(response)
+        Promise.all([apiRequest1,apiRequest2])
+        .then(function(values){
+            combinedData["apiRequest1"] = values[0];
+            combinedData["apiRequest2"] = values[1];
 
-            if(response === "#SLCTLISTECADEAUX#ECHEC")
+            console.log(combinedData["apiRequest1"])
+
+            if(combinedData["apiRequest1"] === "#SLCTLISTECADEAUX#ECHEC")
             {
 
                 this.setState({
@@ -52,25 +62,14 @@ class Gestioncompte extends Component {
             {
 
                 this.setState({
-                    cadeaux: response
+                    cadeaux: combinedData["apiRequest1"]
                 })
 
             }
-            
 
+            console.log(combinedData["apiRequest2"])
 
-    
-
-        })
-        .catch(err => console.error(err))   
-        
-        fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeauxInactive&id=' + this.props.idUserRecup)
-        .then((response) => response.json())
-        .then((response) => {
-
-            console.log(response)
-
-            if(response === "#SLCTLISTECADEAUXINACTIF#ECHEC")
+            if(combinedData["apiRequest2"] === "#SLCTLISTECADEAUXINACTIF#ECHEC")
             {
 
                 this.setState({
@@ -82,16 +81,13 @@ class Gestioncompte extends Component {
             {
 
                 this.setState({
-                    cadeauxInactive: response,
+                    cadeauxInactive: combinedData["apiRequest2"],
                     loading: true
                 })
 
             }
 
-        })
-        .catch(err => console.error(err))  
-
-
+        }.bind(this));
 
     }
 

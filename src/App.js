@@ -72,35 +72,40 @@ class App extends Component {
     componentDidMount()
     {
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=maintenance')
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response)
-            
-            {response.map((value) => 
-              (
+      var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=maintenance').then(function(response){ 
+        return response.json()
+      });
 
-                  this.setState({
-                    dataMaintenance: value.maintenance,
-                    dataVersion: value.version,
-                  })
+      var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=selectionSociete').then(function(response){
+                  return response.json()
+      });
 
-              )
-            )}
+      var combinedData = {"apiRequest1":{},"apiRequest2":{}};
 
+      Promise.all([apiRequest1,apiRequest2])
+      .then(function(values){
+          combinedData["apiRequest1"] = values[0];
+          combinedData["apiRequest2"] = values[1];
 
-        })
-        .catch(err => console.error(err))
+          console.log(combinedData["apiRequest1"])
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=selectionSociete')
-        .then((response) => response.json())
-        .then((response) => {
-          console.log(response)
+          {combinedData["apiRequest1"].map((value) => 
+            (
+
+                this.setState({
+                  dataMaintenance: value.maintenance,
+                  dataVersion: value.version,
+                })
+
+            )
+          )}
+
+          console.log(combinedData["apiRequest2"])
           this.setState({
-            options: response
+            options: combinedData["apiRequest2"]
           })
-        })
-        .catch(err => console.error(err))
+
+      }.bind(this));
   
     }
 
@@ -352,24 +357,24 @@ class App extends Component {
             </div>
             </div>} />
 
-            <Route path="/register" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <Register /> } />
-            <Route path="/dashboard" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/profil" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/modifprofil" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Modifprofil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/client" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/nouveauclient" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/voirclient/:id" component={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Voirclient {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/planning" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Planning loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.infTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/gestioncompte" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/listetypecarte" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Listetypecarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/ajoutcarte" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Ajoutcarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
-            <Route path="/maintenance" component={() => <Maintenance version={this.state.dataVersion} />} />
+            <Route path="/register" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <Register /> } />
+            <Route path="/dashboard" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/profil" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/modifprofil" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Modifprofil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/client" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/nouveauclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/voirclient/:id" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Voirclient {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/planning" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Planning loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.infTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/gestioncompte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/listetypecarte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Listetypecarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/ajoutcarte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Ajoutcarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
+            <Route path="/maintenance" render={() => <Maintenance version={this.state.dataVersion} />} />
 
-            <Route path="/fichecoclient" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-            <Route path="/editionclient" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-            <Route path="/mescadeaux" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-            <Route path="/planningclient" component={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Planningclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-            <Route component={() => <Error />}/>
+            <Route path="/fichecoclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+            <Route path="/editionclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+            <Route path="/mescadeaux" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+            <Route path="/planningclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Planningclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+            <Route render={() => <Error />}/>
 
 
             </Switch>
