@@ -1,210 +1,303 @@
 import React, { Component } from 'react';
 import DatePicker from "react-datepicker";
+import Loader from 'react-loader-spinner'
+import moment from 'moment';
+import { ReactAgenda , ReactAgendaCtrl, guid , getUnique , getLast , getFirst , Modal } from 'react-agenda';
 
 import "react-datepicker/dist/react-datepicker.css";
+import 'react-agenda/build/styles.css';
+import 'react-datetime/css/react-datetime.css';
 
 import Navbarup from './navbarup'
 import Menu from './menu'
-import calendrier from '../images/calendar.png'
-import attente from '../images/attente.png'
-import confirmation from '../images/confirme.png'
 
+var now = new Date();
+
+require('moment/locale/fr.js');
+    var colors= {
+      'color-1':"rgba(102, 195, 131 , 1)" ,
+      "color-2":"rgba(242, 177, 52, 1)" ,
+      "color-3":"rgba(235, 85, 59, 1)" ,
+      "color-4":"rgba(70, 159, 213, 1)",
+      "color-5":"rgba(170, 59, 123, 1)"
+    } 
+
+
+var items = [
+    {
+     _id            :guid(),
+      name          : 'Meeting , dev staff!',
+      startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0),
+      endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0),
+      classes       : 'color-1 color-4'
+    },
+    {
+     _id            :guid(),
+      name          : 'Working lunch , Holly',
+      startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 11, 0),
+      endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 13, 0),
+      classes       : 'color-2'
+    },
+    {
+     _id            :guid(),
+      name          : 'Conference , plaza',
+      startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 11 , 0),
+      endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 14 ,30),
+      classes       : 'color-4'
+    },
+    {
+     _id            :'event-4',
+      name          : 'Customers issues review',
+      startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate()+2, 10, 0),
+      endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate()+2, 15, 0),
+      classes       : 'color-3'
+  
+    },
+    {
+      _id           :'event-5',
+      name          : 'Group activity',
+      startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate()+3, 10, 0),
+      endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate()+3, 16, 30),
+      classes       : 'color-4'
+    },
+    {
+      _id           :'event-6',
+      name          : 'Fun Day !',
+      startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate()+7, 9, 14),
+      endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate()+7, 17),
+      classes       : 'color-3'
+    }
+  ];   
+  
 class Planning extends Component {
 
     constructor(props)
     {
 
-        super(props)
+        super(props)   
         this.state = {
+            items:[],
+            selected:[],
+            cellHeight:(60 / 4),
+            showModal:false,
+            locale:"fr",
+            rowsPerHour:4,
+            numberOfDays:4,
             startDate: new Date(),
-            heures: '',
-            statutMsgPlanning: '',
-            planningAtt: [],
-            planningVld: [],
-            planningHst: []
+            loading: true
+        }
+        this.handleRangeSelection = this.handleRangeSelection.bind(this)
+        this.handleItemEdit = this.handleItemEdit.bind(this)
+        this.zoomIn = this.zoomIn.bind(this)
+        this.zoomOut = this.zoomOut.bind(this)
+        this._openModal = this._openModal.bind(this)
+        this._closeModal = this._closeModal.bind(this)
+        this.addNewEvent = this.addNewEvent.bind(this)
+        this.removeEvent = this.removeEvent.bind(this)
+        this.editEvent = this.editEvent.bind(this)
+        this.changeView = this.changeView.bind(this)
+        this.handleCellSelection = this.handleCellSelection.bind(this)
 
-          };
-        this.handleChange = this.handleChange.bind(this);
     }
    
-    handleChange(date) {
-        this.setState({
-          startDate: date
-        });
+    componentDidMount(){
+
+        this.setState({items:items})
+    
+    
+      }
+    
+    
+    componentWillReceiveProps(next , last){
+      if(next.items){
+    
+        this.setState({items:next.items})
+      }
     }
-
-    componentDidMount()
-    {
-
-        var idclient = window.location.search.substring(4)
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=planningAttente&identreprise=' + this.props.idUserRecup
-        + '&idclient=' + idclient)
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response)
-
-            if(response === "#PLANNINGATT#VIDE")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '3'
-                })
-
-            }
-            else
-            {
-
-                this.setState({
-                    planningAtt: response
-                })
-
-            }
-
-        })
-        .catch(err => console.error(err))
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=planningValider&identreprise=' + this.props.idUserRecup
-        + '&idclient=' + idclient)
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response)
-
-            if(response === "#PLANNINGVLD#VIDE")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '3'
-                })
-
-            }
-            else
-            {
-
-                this.setState({
-                    planningVld: response
-                })
-
-            }
-
-
-
-        })
-        .catch(err => console.error(err))
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=planningHistorique&identreprise=' + this.props.idUserRecup
-        + '&idclient=' + idclient)
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response)
-
-            if(response === "#PLANNINGHST#VIDE")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '5'
-                })
-
-            }
-            else
-            {
-
-                this.setState({
-                    planningHst: response
-                })
-
-            }
-
-
-
-        })
-        .catch(err => console.error(err))
-
-
-
-    }
-
-    addPlanning(idclient)
-    {
-
-        alert("http://127.0.0.1/fidapi/main.php?action=addPlanning&identreprise=" + this.props.idUserRecup + "&idclient=" + idclient + "&date=" + this.state.startDate.toLocaleDateString() + "&heures=" + this.state.heures)
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=addPlanning&identreprise=' + this.props.idUserRecup
-        + '&idclient=' + idclient
-        + '&date=' + this.state.startDate.toLocaleDateString()
-        + '&heures=' + this.state.heures)
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response)
-            
-            if(response === "#ADDPLANNING#SUCCESS")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '1'
-                })
-
-                setTimeout(() => window.location.href = "/planning?id=" + idclient,2500)
-
-
-            }
-            else if(response === "#ADDPLANNING#ECHEC")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '2'
-                })
-
-
-            }
-
-
-        })
-        .catch(err => console.error(err))
-
-
-    }
-
-    afficheStatutPlanning()
-    {
-
-        if(this.state.statutMsgPlanning === "1")
-        {
-
-            return <div className="msgSuccessPerso">
-        
-                Votre date a était mis en attente de validation.
-        
-            </div>
-
+      handleItemEdit(item, openModal) {
+    
+        if(item && openModal === true){
+          this.setState({selected:[item] })
+          return this._openModal();
         }
-        else if(this.state.statutMsgPlanning === "2")
-        {
-
-            return <div className="msgErrorPerso">
-        
-                Votre date n'a pas était ajouter.
-        
-            </div>
-
+    
+    
+    
+      }
+      handleCellSelection(item, openModal) {
+    
+        if(this.state.selected && this.state.selected[0] === item){
+          return  this._openModal();
         }
-        else if(this.state.statutMsgPlanning === "4")
-        {
-
-            return <div className="msgErrorPerso">
-        
-                Cette date a été déjà programmer. Veuillez attendre la validation...
-        
-            </div>
-
-        }
-
-
+           this.setState({selected:[item] })
+    
+      }
+    
+      zoomIn(){
+    var num = this.state.cellHeight + 15
+        this.setState({cellHeight:num})
+      }
+      zoomOut(){
+    var num = this.state.cellHeight - 15
+        this.setState({cellHeight:num})
+      }
+    
+    
+      handleDateRangeChange (startDate, endDate) {
+          this.setState({startDate:startDate })
+    
+      }
+    
+      handleRangeSelection (selected) {
+    
+    
+    this.setState({selected:selected , showCtrl:true})
+    this._openModal();
+    
     }
+    
+    _openModal(){
+      this.setState({showModal:true})
+    }
+    _closeModal(e){
+      if(e){
+        e.stopPropagation();
+        e.preventDefault();
+      }
+        this.setState({showModal:false})
+    }
+    
+    handleItemChange(items , item){
+    
+    this.setState({items:items})
+    }
+    
+    handleItemSize(items , item){
+    
+      this.setState({items:items})
+    
+    }
+    
+    removeEvent(items , item){
+    
+        this.setState({ items:items});
+    }
+    
+    addNewEvent (items , newItems){
+    
+      this.setState({showModal:false ,selected:[] , items:items});
+      this._closeModal();
+    }
+    editEvent (items , item){
+    
+      this.setState({showModal:false ,selected:[] , items:items});
+      this._closeModal();
+    }
+    
+    changeView (days , event ){
+    this.setState({numberOfDays:days})
+    }
+
 
   render() {
-    var idClient = window.location.search.substring(4);
-    const { planningAtt, planningVld, planningHst } = this.state;
+
+    var AgendaItem = function(props){
+        console.log( ' item component props' , props)
+        return <div style={{display:'block', position:'absolute' , background:'#FFF'}}>{props.item.name} <button onClick={()=> props.edit(props.item)}>Edit </button></div>
+    }
+
+
+
+    let loadingdata;
+    if(this.state.loading)
+    {
+
+        loadingdata = <div>
+
+                            <Navbarup idUser={this.props.idUserRecupClient} />
+
+                            <div className="container-fluid">
+
+                            <div className="row">
+
+                                    <div className="col-8">
+                                    
+                                        <div className="d-sm-flex align-items-center justify-content-between mb-4">
+                                            <h1 className="h3 mb-0 text-gray-800">Gestion du planning</h1>
+                                        </div>
+
+
+                                    </div>
+   
+                                    <div className="content-expanded bg-white">
+
+                                        <div className="control-buttons">
+                                        <button  className="button-control" onClick={this.zoomIn}> <i class="fas fa-search-plus"></i> </button>
+                                        <button  className="button-control" onClick={this.zoomOut}> <i class="fas fa-search-minus"></i> </button>
+                                        <button  className="button-control" onClick={this._openModal}> <i class="fas fa-clock"></i> </button>
+                                        <button  className="button-control" onClick={this.changeView.bind(null , 7)}> {moment.duration(7, "days").humanize()}  </button>
+                                        <button  className="button-control" onClick={this.changeView.bind(null , 4)}> {moment.duration(4, "days").humanize()}  </button>
+                                        <button  className="button-control" onClick={this.changeView.bind(null , 3)}> {moment.duration(3, "days").humanize()}  </button>
+                                        <button  className="button-control" onClick={this.changeView.bind(null , 1)}> {moment.duration(1, "day").humanize()} </button>
+                                        </div>
+
+                                        <ReactAgenda
+                                        minDate={new Date(now.getFullYear(), now.getMonth()-3)}
+                                        maxDate={new Date(now.getFullYear(), now.getMonth()+3)}
+                                        startDate={this.state.startDate}
+                                        startAtTime={8}
+                                        endAtTime={23}
+                                        cellHeight={this.state.cellHeight}
+                                        locale="fr"
+                                        items={this.state.items}
+                                        numberOfDays={this.state.numberOfDays}
+                                        headFormat={"ddd DD MMM"}
+                                        rowsPerHour={this.state.rowsPerHour}
+                                        itemColors={colors}
+                                        helper={true}
+                                        //itemComponent={AgendaItem}
+                                        view="calendar"
+                                        autoScale={false}
+                                        fixedHeader={true}
+                                        onRangeSelection={this.handleRangeSelection.bind(this)}
+                                        onChangeEvent={this.handleItemChange.bind(this)}
+                                        onChangeDuration={this.handleItemSize.bind(this)}
+                                        onItemEdit={this.handleItemEdit.bind(this)}
+                                        onCellSelect={this.handleCellSelection.bind(this)}
+                                        onItemRemove={this.removeEvent.bind(this)}
+                                        onDateRangeChange={this.handleDateRangeChange.bind(this)} />
+                                        {
+                                        this.state.showModal? <Modal clickOutside={this._closeModal} >
+                                        <div className="modal-content">
+                                            <ReactAgendaCtrl items={this.state.items} itemColors={colors} selectedCells={this.state.selected} Addnew={this.addNewEvent} edit={this.editEvent}  />
+
+                                        </div>
+                                        </Modal>:''
+                                        }
+
+
+                                        </div>
+
+
+                            </div>
+                            </div>
+
+        </div>
+
+
+    }
+    else
+    {
+
+        loadingdata =  <div className="styleLoader"><center><Loader 
+                            type="Triangle"
+                            color="#00BFFF"
+                            height="100"	
+                            width="100"
+                        /> </center></div>
+        
+
+    }
 
     return (
       <div>
@@ -217,169 +310,7 @@ class Planning extends Component {
 
                 <div id="content">
 
-                    <Navbarup idEntreprise={this.props.idUserRecup} />
-
-                    <div className="container-fluid">
-
-                    <div className="row">
-
-                            <div className="col-6">
-                            
-                                <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                    <h1 className="h3 mb-0 text-gray-800">Planning</h1>
-                                </div>
-
-
-                            </div>
-                            <div className="col-6">
-                            
-                                <center>
-                                <div className="row">
-
-                                    <div className="col">
-                                        <DatePicker
-                                            className="form-control"
-                                            selected={this.state.startDate}
-                                            onChange={this.handleChange}
-                                        />
-                                    </div>
-                                    <div className="col">
-
-                                    <input 
-                                        type="time" 
-                                        min="00:00" 
-                                        max="18:00" 
-                                        className="form-control" 
-                                        value={this.state.heures}
-                                        onChange={(e) => this.setState({heures: e.target.value})}
-                                    /> 
-                                    </div>
-                                    <div className="col">
-
-                                    <button type="submit" onClick={() => this.addPlanning(idClient)} className="btn btn-success btn-block">Envoyer</button>
-                                    
-                                    </div>
-                                </div>
-                                </center>
-                            
-                            </div>
-
-                    </div>
-
-                    {this.afficheStatutPlanning()}
-                    <hr/>
-
-                    {/* DEBUT CODE */}
-
-                    
-                    <div className="row">
-
-                        <div className="col-6">
-                        
-                        <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Planning en attente</h6>
-                                </div>
-                                <div class="card-body">
-
-                                    <table class="table">
-                                    <thead>
-                                        <tr>
-                                        
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    {planningAtt.map((value, index) => 
-                                    (<tr key={index}>
-
-                                        <td><img src={attente} width="30" height="30" alt="Planning en attente..."/></td>
-                                        <td align="center">{value.date}</td>
-                                            
-                                        </tr>)
-                                    )} 
-
-
-                                    </tbody>
-                                    </table>                   
-
-                                </div>
-                            </div>
-     
-                        
-                        </div>
-                        <div className="col-6">
-                                
-                        <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Planning à venir</h6>
-                                </div>
-                                <div class="card-body">
-
-                                    <table class="table">
-                                    <thead>
-                                        <tr>
-                                        
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    
-                                    {planningVld.map((value, index) => 
-                                    (<tr key={index}>
-
-                                        <td><img src={confirmation} width="30" height="30" alt="Planning en attente..."/></td>
-                                        <td align="center">{value.date}</td>
-                                            
-                                        </tr>)
-                                    )} 
-
-                                    </tbody>
-                                    </table>                   
-
-                                </div>
-                            </div>                        
-                        
-                        </div>
-
-
-                    </div>
-
-                    <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Historique du planning</h6>
-                                </div>
-                                <div class="card-body">
-
-                                    <table class="table">
-                                    <thead>
-                                        <tr>
-                                        
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        
-                                    {planningHst.map((value, index) => 
-                                    (<tr key={index}>
-
-                                        <td>{value.date}</td>
-                                        {value.statut === '4' && <td><span className="badgeAccepter">Terminer</span></td>} 
-                                        {value.statut === '2' && <td><span className="badgeAccepter">Accepter</span></td>}  
-                                        {value.statut === '3' && <td><span className="badgeRefuser">Refuser</span></td>}  
-                                            
-                                        </tr>)
-                                    )} 
-
-                                    </tbody>
-                                    </table>                   
-
-                                </div>
-                            </div>
-
-                    {/* FIN CODE */}
-
-
-                    </div>
+                    {loadingdata}
 
                 </div>
 
@@ -398,24 +329,6 @@ class Planning extends Component {
             <a className="scroll-to-top rounded" href="#page-top">
                 <i className="fas fa-angle-up"></i>
             </a>
-
-            <div className="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    </div>
-                    <div className="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div className="modal-footer">
-                    <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a className="btn btn-primary" href="login.html">Logout</a>
-                    </div>
-                </div>
-                </div>
-            </div>
 
       </div>
     );

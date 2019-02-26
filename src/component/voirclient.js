@@ -659,7 +659,7 @@ class Voirclient extends Component {
         {
             
             return <div><a href={'/listetypecarte?id=' + idClient}><button type="button" className="btn btn-primary btn-block"><i className="fas fa-hand-point-right"></i> Ajouter une carte de fidélité</button></a>
-            &nbsp;&nbsp;<a href={'/planning?id=' + idClient}><button type="button" className="btn btn-primary btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
+            &nbsp;&nbsp;<a href={'/planning/' + idClient}><button type="button" className="btn btn-primary btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
         }
         else if(this.state.carteStatutMsg === '2')
         {
@@ -674,7 +674,7 @@ class Voirclient extends Component {
             <br/>
             <button className="btn btn-primary btn-block" onClick={this.addPointage.bind(this)} type="button"><i className="fas fa-hand-point-right"></i> Pointage</button>
             <br/>
-            <a href={'/planning?id=' + idClient}><button type="button" className="btn btn-primary btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
+            <a href={'/planning/' + idClient}><button type="button" className="btn btn-primary btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
 
         }
 

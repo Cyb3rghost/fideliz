@@ -48,7 +48,154 @@ class Fichecoclient extends Component {
     componentDidMount()
     {
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
+        var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient).then(function(response){ 
+            return response.json()
+        });
+        var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + this.props.idUserRecupClient).then(function(response){
+                    return response.json()
+        });
+        var apiRequest3 = fetch('http://127.0.0.1/fidapi/main.php?action=listePointageClient&idfid=' + this.state.carteId
+        + '&idclient=' + this.props.idUserRecupClient 
+        + '&ident=' + this.props.idEntRecupClient).then(function(response){
+                    return response.json()
+        });
+        var apiRequest4 = fetch('http://127.0.0.1/fidapi/main.php?action=checkPointage&id=' + this.props.idUserRecupClient).then(function(response){
+                    return response.json()
+        });
+        var apiRequest5 = fetch('http://127.0.0.1/fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + this.props.idUserRecupClient).then(function(response){
+                    return response.json()
+        });
+
+        var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{},"apiRequest4":{},"apiRequest5":{}}
+
+        Promise.all([apiRequest1,apiRequest2, apiRequest3, apiRequest4, apiRequest5])
+        .then(function(values){
+            combinedData["apiRequest1"] = values[0];
+            combinedData["apiRequest2"] = values[1];
+            combinedData["apiRequest3"] = values[2];
+            combinedData["apiRequest4"] = values[3];
+            combinedData["apiRequest5"] = values[4];
+
+            {combinedData["apiRequest1"].map((value, index) => 
+                (
+                    this.setState({
+                        dataInscription: value.dinscription,
+                        nomClient: value.nom,
+                        prenomClient: value.prenom,
+                        adresseClient: value.adresse,
+                        emailClient: value.email,
+                        telephoneClient: value.telephone,
+                        carteTotal: value.nbcarteterminer,
+                        pointageTotal: value.nbpointagetotal,
+                        loading: true                   
+                    })
+                )
+              )}
+
+              if(combinedData["apiRequest2"] === "#VOIRCARTE#NOEXIST")
+              {
+  
+                  this.setState({
+                      carteStatutMsg: '1'                                      
+                  })
+
+                  if(combinedData["apiRequest5"] === "#GTTPRSTATION#FAILED")
+                  {
+      
+                      console.log(combinedData["apiRequest5"])
+      
+      
+                  }
+                  else
+                  {
+      
+                      console.log(combinedData["apiRequest5"])
+      
+                      this.setState({
+                          prestationsClients: combinedData["apiRequest5"]                    
+                      })
+      
+                  }
+
+              }
+              else
+              {
+  
+                  
+                  this.setState({
+                      carteStatutMsg: '2'
+                  })
+  
+                  {combinedData["apiRequest2"].map((valuedeux, index) => 
+                      (
+                          this.setState({
+                              carteId: valuedeux.id,
+                              carteDateCreation: valuedeux.datecreation,
+                              carteNom: valuedeux.nom,
+                              cartePrenom: valuedeux.prenom,
+                              carteNbPointage: valuedeux.nbpointage,
+                              carteLimitPointage: valuedeux.limitpointage,
+                              carteStatut: valuedeux.statut,
+                              carteCadeaux: valuedeux.cadeaux,
+                              carteImgBackground: valuedeux.imgbackground,
+                              carteImgIcon: valuedeux.imgicon,
+                              carteQrCode: valuedeux.qrcode,
+                              loading: true                                            
+                          })
+                      )
+                    )}
+  
+                    switch (combinedData["apiRequest3"]) {
+                        case '#POINTAGE#VIDE':
+                            console.log(combinedData["apiRequest3"])
+                            this.setState({
+                                cartePointageMsg: '5'
+                            })
+                            break;            
+                        default:
+                            console.log(combinedData["apiRequest3"])
+                            this.setState({
+                                listePointage: combinedData["apiRequest3"]
+                            })
+                            break;
+                    }
+
+                    switch (combinedData["apiRequest4"]) {
+                        case '#CHKPOINTAGE#SUCCESS':
+                            this.setState({
+                                cartePointageMsg: '1'
+                            })
+                            break;          
+                        default:
+                            break;
+                    }
+
+                    if(combinedData["apiRequest5"] === "#GTTPRSTATION#FAILED")
+                    {
+        
+                        console.log(combinedData["apiRequest5"])
+        
+        
+                    }
+                    else
+                    {
+        
+                        console.log(combinedData["apiRequest5"])
+        
+                        this.setState({
+                            prestationsClients: combinedData["apiRequest5"]                    
+                        })
+        
+                    }
+  
+  
+              }
+
+
+
+        }.bind(this));
+
+        /*fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -185,7 +332,7 @@ class Fichecoclient extends Component {
             }
 
         })
-        .catch(err => console.error(err))
+        .catch(err => console.error(err)) */
 
 
     }
@@ -242,109 +389,41 @@ class Fichecoclient extends Component {
 
         audio.play()
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=checkDatePointage&idclient=' + this.props.idUserRecupClient
-        + '&identreprise=' + this.props.idEntRecupClient)
+        fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
             switch (response) {
-                case '#CHKDATEPTGE#SUCCESS':
+                case '#CLOTURATION#SUCCESS':
                     console.log(response)
-                    fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
+                    break;   
+                case '#CLOTURATION#NONECESSAIRE':
+                    console.log(response)
+                    fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
                     .then((response) => response.json())
                     .then((response) => {
             
                         switch (response) {
-                            case '#CLOTURATION#SUCCESS':
+                            case '#UPTENTREPRISE#SUCCESS':
                                 console.log(response)
-                                break;   
-                            case '#CLOTURATION#NONECESSAIRE':
-                                console.log(response)
-                                fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
-                                .then((response) => response.json())
-                                .then((response) => {
-                        
-                                    switch (response) {
-                                        case '#UPTENTREPRISE#SUCCESS':
-                                            console.log(response)
-                                            this.setState({
-                                                cartePointageMsg: '3'
-                                            })
-                                            setTimeout(() => window.location.href = "/fichecoclient",1500)
-                                            break;   
-                                        case '#UPTENTREPRISE#ECHEC':
-                                            console.log(response)
-                                            this.setState({
-                                                cartePointageMsg: '4'
-                                            })
-                                            break;            
-                                        default:
-                                            break;
-                                    }
-                        
+                                this.setState({
+                                    cartePointageMsg: '3'
                                 })
-                                .catch(err => console.error(err))
+                                setTimeout(() => window.location.href = "/fichecoclient",1500)
+                                break;   
+                            case '#UPTENTREPRISE#ECHEC':
+                                console.log(response)
+                                this.setState({
+                                    cartePointageMsg: '4'
+                                })
                                 break;            
                             default:
                                 break;
                         }
             
-            
-                
-            
                     })
-                    .catch(err => console.error(err))  
-                    break;   
-                case '#CHKDATEPTGE#NOEXIST':
-                    console.log(response)
-                    fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
-                    .then((response) => response.json())
-                    .then((response) => {
-            
-                        switch (response) {
-                            case '#CLOTURATION#SUCCESS':
-                                console.log(response)
-                                break;   
-                            case '#CLOTURATION#NONECESSAIRE':
-                                console.log(response)
-                                fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
-                                .then((response) => response.json())
-                                .then((response) => {
-                        
-                                    switch (response) {
-                                        case '#UPTENTREPRISE#SUCCESS':
-                                            console.log(response)
-                                            this.setState({
-                                                cartePointageMsg: '3'
-                                            })
-                                            setTimeout(() => window.location.href = "/fichecoclient",1500)
-                                            break;   
-                                        case '#UPTENTREPRISE#ECHEC':
-                                            console.log(response)
-                                            this.setState({
-                                                cartePointageMsg: '4'
-                                            })
-                                            break;            
-                                        default:
-                                            break;
-                                    }
-                        
-                                })
-                                .catch(err => console.error(err))
-                                break;            
-                            default:
-                                break;
-                        }
-            
-            
-                
-            
-                    })
-                    .catch(err => console.error(err))                    
-                    break;   
-                case '#CHKDATEPTGE#ECHEC': 
-                    console.log(response)
-                    break;
+                    .catch(err => console.error(err))
+                    break;            
                 default:
                     break;
             }
@@ -353,7 +432,7 @@ class Fichecoclient extends Component {
     
 
         })
-        .catch(err => console.error(err))
+        .catch(err => console.error(err))   
 
 
     }

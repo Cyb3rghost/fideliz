@@ -24,7 +24,67 @@ class Mescadeaux extends Component {
     componentDidMount()
     {
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxAttente&id=' + this.props.idUserRecupClient)
+        var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxAttente&id=' + this.props.idUserRecupClient).then(function(response){ 
+            return response.json()
+        });
+        var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxRecu&id=' + this.props.idUserRecupClient).then(function(response){
+                    return response.json()
+        });
+
+        var combinedData = {"apiRequest1":{},"apiRequest2":{}};
+
+        Promise.all([apiRequest1,apiRequest2])
+        .then(function(values){
+            combinedData["apiRequest1"] = values[0];
+            combinedData["apiRequest2"] = values[1];
+
+            console.log(combinedData["apiRequest1"])
+
+            if(combinedData["apiRequest1"] === "#AFFCADEAUX#ECHEC")
+            {
+
+                this.setState({
+                    statutCadeauxAttente: '2'
+                })
+
+
+
+            }
+            else
+            {
+
+                this.setState({
+                    cadeauxAttente: combinedData["apiRequest1"],
+                    statutCadeauxAttente: '1'
+                })                
+
+            }
+
+            if(combinedData["apiRequest2"] === "#AFFCADEAUXRECU#ECHEC")
+            {
+
+                this.setState({
+                    statutCadeauxRecu: '2'
+                })
+
+
+
+            }
+            else
+            {
+
+                this.setState({
+                    cadeauxRecu: combinedData["apiRequest2"],
+                    statutCadeauxRecu: '1',
+                    loading: true
+                })                
+
+            }
+
+
+        }.bind(this));
+
+        /*fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxAttente&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -85,7 +145,7 @@ class Mescadeaux extends Component {
     
 
         })
-        .catch(err => console.error(err))        
+        .catch(err => console.error(err))*/        
 
     }
 
