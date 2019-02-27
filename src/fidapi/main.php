@@ -1899,6 +1899,119 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
+        case 'affichePlanning':
+
+            $sql = "SELECT * FROM `planning`";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+
+                    $json = json_encode($row);
+
+                }
+
+
+            }
+            else
+            {
+
+                $json = json_encode("#LSTPLANNING#VIDE");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'ajoutPlanningEntreprise':
+            $idEntreprise = "2";
+            $idClient = "0";
+            $nom = $_GET['nom'];
+            $starDate = $_GET['startdate'];
+            $endDate = $_GET['endDate'];
+            $startHeure = $_GET['startheure'];
+            $endHeure = $_GET['endheure'];
+            $uid = $_GET['uid'];
+            $color = $_GET['color'];
+
+            $sql = "INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `nom`, `startdatetime`, `enddatetime`, `departheure`, `finheure`, `classes`, `uid`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nom."', '".$starDate."', '".$endDate."', '".$startHeure."', '".$endHeure."', '".$color."', '".$uid."')";
+            if($result = mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#ADDPLANNING#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#ADDPLANNING#FAILED");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'editRdv':
+            $idEntreprise = "2";
+            $idClient = "0";
+            $nom = $_GET['nom'];
+            $starDate = $_GET['startdate'];
+            $endDate = $_GET['endDate'];
+            $startHeure = $_GET['startheure'];
+            $endHeure = $_GET['endheure'];
+            $uid = $_GET['uid'];
+            $color = $_GET['color'];
+
+            $sql = "UPDATE `planning` SET `nom` = '".$nom."', `startdatetime` = '".$starDate."', `enddatetime` = '".$endDate."', `departheure` = '".$startHeure."', `finheure` = '".$endHeure."', `classes` = '".$color."' WHERE `uid` = '".$uid."'";
+            if($result = mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#EDITRDV#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#EDITRDV#FAILED");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'suppressionRdv':
+
+            $uid = $_GET['uid'];
+
+            $sql = "DELETE FROM `planning` WHERE `uid` = '".$uid."'";
+            if(mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#DELRDV#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#DELRDV#FAILED");
+
+
+            }
+            
+            echo $json;
+            
+            mysqli_close($connect);
+
+            break;
         default:
             # code...
             break;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mar. 26 fév. 2019 à 20:33
+-- Généré le :  mer. 27 fév. 2019 à 14:55
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -57,7 +57,7 @@ CREATE TABLE `accsociete` (
 
 INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`) VALUES
 (1, 'ludovic.lvnr@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'PAYET', 'Eddy', '56 chemin des fleurs 97400', 'EddyCoiffure', '0692101112', 1, 0, 0, 0, 0, '0000-00-00', '0000-00-00', 0, 'backgroundCarte.jpg', 'logocarte.png', 'e6c14066a83d3416238afbc40a9f437a'),
-(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 2, 0, 10, 27, 15, '2019-02-18', '2019-03-20', 22, 'carddefault.jpg', 'logodefault.png', 'b3470a6aba7953782f54486b8cc28d02'),
+(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 2, 0, 10, 27, 15, '2019-02-18', '2019-03-20', 21, 'carddefault.jpg', 'logodefault.png', 'b3470a6aba7953782f54486b8cc28d02'),
 (3, 'blizzard@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'Blizzard', '', 2, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'null', 'null', 'fedd6393d9b9224fcba3c3ce0ba33b96'),
 (4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 1, 0, 10, 0, 15, '2019-02-09', '2019-03-11', 28, 'null', 'null', 'e3fe6a42aaf6a6f49760186c481afad6'),
 (5, 'cathy@gmail.com', 'af56310c080ab9d9f3d96be9f16edebf', 1, '', '', '', 'MenageParty', '', 1, 0, 10, 1, 15, '2019-02-10', '2019-03-12', 30, 'BCGC144501D09-02-2019.jpg', 'LOGO517944D09-02-2019.png', '2dd7b6dff53be1b24f1d9b967071778d'),
@@ -228,6 +228,42 @@ INSERT INTO `parametres` (`id`, `maintenance`, `version`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `planning`
+--
+
+CREATE TABLE `planning` (
+  `id` int(11) NOT NULL,
+  `identreprise` int(11) NOT NULL,
+  `idclient` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `startdatetime` varchar(255) NOT NULL,
+  `enddatetime` varchar(255) NOT NULL,
+  `departheure` varchar(8) NOT NULL,
+  `finheure` varchar(8) NOT NULL,
+  `classes` varchar(7) NOT NULL,
+  `uid` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `planning`
+--
+
+INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `nom`, `startdatetime`, `enddatetime`, `departheure`, `finheure`, `classes`, `uid`) VALUES
+(7, 2, 0, 'Test1', '27/02/2019', '27/02/2019', '09:30:00', '09:45:00', 'color-1', '5e814022-5a85-cb2f-5d13-685bb8048180'),
+(2, 2, 0, 'JeTestFoireuxOuPas', '27/02/2019', '27/02/2019', '08:00:00', '09:00:00', 'color-2', ''),
+(9, 2, 0, 'Test4', '28/02/2019', '28/02/2019', '11:30:00', '11:45:00', 'color-2', 'd5a39237-287f-9a40-1fa7-4861f24035c1'),
+(8, 2, 0, 'Test2', '28/02/2019', '28/02/2019', '09:00:00', '09:15:00', 'color-4', '48aef676-2300-26d0-93e4-daf256762f4b'),
+(17, 2, 0, 'Testici', '03/03/2019', '03/03/2019', '08:00:00', '08:15:00', 'color-1', '22752970-367c-135e-38ec-5edef5a368ac'),
+(11, 2, 0, 'Gros test ', '01/03/2019', '01/03/2019', '08:00:00', '13:45:00', 'color-2', '27abb1a2-a421-d099-f19c-d6f13c5bf66c'),
+(18, 2, 0, 'hgfghf', '01/03/2019', '01/03/2019', '08:00:00', '08:30:00', 'color-1', '160582b9-dd25-b5fd-858c-fae660c58ee6'),
+(13, 2, 0, 'Chika', '02/03/2019', '02/03/2019', '08:00:00', '12:15:00', 'color-3', '46c12722-dbb7-ae05-bec1-f0a223894e24'),
+(14, 2, 0, 'sqdqsdqsd', '03/03/2019', '03/03/2019', '08:00:00', '08:15:00', 'color-1', '7b406713-d61f-377e-cd79-66bbbe117120'),
+(15, 2, 0, 'SuccessStory', '27/02/2019', '27/02/2019', '12:15:00', '14:15:00', 'color-1', 'f291ca12-986e-fdb1-e797-660794cbad1d'),
+(16, 2, 0, 'eezefez', '01/03/2019', '01/03/2019', '08:00:00', '08:15:00', 'color-1', '9b6de51f-e03c-f31c-97a5-490878bfba9b');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `pointage`
 --
 
@@ -341,6 +377,12 @@ ALTER TABLE `parametres`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `planning`
+--
+ALTER TABLE `planning`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `pointage`
 --
 ALTER TABLE `pointage`
@@ -380,6 +422,11 @@ ALTER TABLE `fidcadeaux`
 --
 ALTER TABLE `parametres`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT pour la table `planning`
+--
+ALTER TABLE `planning`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT pour la table `pointage`
 --
