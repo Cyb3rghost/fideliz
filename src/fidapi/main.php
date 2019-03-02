@@ -1901,7 +1901,9 @@ if(isset($_GET['action']))
             break;
         case 'affichePlanning':
 
-            $sql = "SELECT * FROM `planning`";
+            $dateDuJour = $_GET['today'];
+
+            $sql = "SELECT * FROM `planning` WHERE `start` = '".$dateDuJour."'";
             $result = mysqli_query($connect, $sql);
 
             if(mysqli_num_rows($result))
@@ -1936,10 +1938,8 @@ if(isset($_GET['action']))
             $endDate = $_GET['endDate'];
             $startHeure = $_GET['startheure'];
             $endHeure = $_GET['endheure'];
-            $uid = $_GET['uid'];
-            $color = $_GET['color'];
 
-            $sql = "INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `nom`, `startdatetime`, `enddatetime`, `departheure`, `finheure`, `classes`, `uid`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nom."', '".$starDate."', '".$endDate."', '".$startHeure."', '".$endHeure."', '".$color."', '".$uid."')";
+            $sql = "INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `title`, `start`, `end`, `departheure`, `finheure`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nom."', '".$starDate."', '".$endDate."', '".$startHeure."', '".$endHeure."')";
             if($result = mysqli_query($connect, $sql))
             {
 

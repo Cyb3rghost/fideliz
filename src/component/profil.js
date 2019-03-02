@@ -277,10 +277,7 @@ class Profil extends Component {
 
     }
 
-
-
   render() {
-
     let loadingdata;
     if(this.state.loading)
     {

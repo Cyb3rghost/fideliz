@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Loader from 'react-loader-spinner'
-
 
 import Navbarupclient from './navbarupclient'
 import Menu from './menuclient'
@@ -16,7 +14,6 @@ class Mescadeaux extends Component {
             statutConfirmationCadeaux: '',
             statutCadeauxAttente: '',
             statutCadeauxRecu: '',
-            loading: false
         }
 
     }
@@ -24,67 +21,7 @@ class Mescadeaux extends Component {
     componentDidMount()
     {
 
-        var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxAttente&id=' + this.props.idUserRecupClient).then(function(response){ 
-            return response.json()
-        });
-        var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxRecu&id=' + this.props.idUserRecupClient).then(function(response){
-                    return response.json()
-        });
-
-        var combinedData = {"apiRequest1":{},"apiRequest2":{}};
-
-        Promise.all([apiRequest1,apiRequest2])
-        .then(function(values){
-            combinedData["apiRequest1"] = values[0];
-            combinedData["apiRequest2"] = values[1];
-
-            console.log(combinedData["apiRequest1"])
-
-            if(combinedData["apiRequest1"] === "#AFFCADEAUX#ECHEC")
-            {
-
-                this.setState({
-                    statutCadeauxAttente: '2'
-                })
-
-
-
-            }
-            else
-            {
-
-                this.setState({
-                    cadeauxAttente: combinedData["apiRequest1"],
-                    statutCadeauxAttente: '1'
-                })                
-
-            }
-
-            if(combinedData["apiRequest2"] === "#AFFCADEAUXRECU#ECHEC")
-            {
-
-                this.setState({
-                    statutCadeauxRecu: '2'
-                })
-
-
-
-            }
-            else
-            {
-
-                this.setState({
-                    cadeauxRecu: combinedData["apiRequest2"],
-                    statutCadeauxRecu: '1',
-                    loading: true
-                })                
-
-            }
-
-
-        }.bind(this));
-
-        /*fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxAttente&id=' + this.props.idUserRecupClient)
+        fetch('http://127.0.0.1/fidapi/main.php?action=afficheCadeauxAttente&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -135,8 +72,7 @@ class Mescadeaux extends Component {
 
                 this.setState({
                     cadeauxRecu: response,
-                    statutCadeauxRecu: '1',
-                    loading: true
+                    statutCadeauxRecu: '1'
                 })                
 
             }
@@ -145,7 +81,7 @@ class Mescadeaux extends Component {
     
 
         })
-        .catch(err => console.error(err))*/        
+        .catch(err => console.error(err))        
 
     }
 
@@ -336,87 +272,8 @@ class Mescadeaux extends Component {
 
 
   render() {
+    var idClient = window.location.search.substring(4);
     var QRCode = require('qrcode.react');
-    let loadingdata;
-
-    if(this.state.loading)
-    {
-
-        loadingdata = <div>
-
-                            <Navbarupclient idUser={this.props.idUserRecupClient} />
-
-                            <div className="container-fluid">
-
-                            <div className="row">
-
-                                    <div className="col-8">
-                                    
-                                        <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                            <h1 className="h3 mb-0 text-gray-800">Cadeaux fidélité</h1>
-                                        </div>
-
-
-                                    </div>
-                                    <div className="col-4">
-                                                                
-                                        
-
-                                    </div>
-
-                            </div>
-
-                            <hr/>
-
-                            {/* DEBUT CODE */}
-
-                            {this.checkStatutConfirmation()}
-
-                            <div className="page-header">
-                                <div className="container-perso">
-
-                                    <h1>• En Attente... <br/></h1>
-                                    <p className="text-justify">Vous trouverez ici votre prestation en attente de réclamation, l'entreprise devras alors confirmer la validation
-                                    de la prestation en cours avant de pouvoir recrée une carte de fidélité. <b>Attention :</b> Confirmer votre cadeau uniquement quand la prestation à été réaliser !</p>
-
-                                </div>
-                            </div>    
-
-                            {this.afficheCadeauxAttente()}
-
-                            <div className="page-header">
-                                <div className="container-perso">
-
-                                    <h1>• Cadeaux reçu... <br/></h1>
-                                    <p className="text-justify">Vous trouverez ici vos prestations terminées.</p>
-
-                                </div>
-                            </div>    
-
-                            {this.afficheCadeauxRecu()}
-
-                            {/* FIN CODE */}
-
-
-                            </div>
-
-        </div>
-
-
-    }
-    else
-    {
-
-        loadingdata =  <div className="styleLoader"><center><Loader 
-                            type="Triangle"
-                            color="#00BFFF"
-                            height="100"	
-                            width="100"
-                        /> </center></div>
-        
-
-    }
-
 
     return (
       <div>
@@ -429,7 +286,61 @@ class Mescadeaux extends Component {
 
                 <div id="content">
 
-                    {loadingdata}
+                    <Navbarupclient idUser={this.props.idUserRecupClient} />
+
+                    <div className="container-fluid">
+
+                    <div className="row">
+
+                            <div className="col-8">
+                            
+                                <div className="d-sm-flex align-items-center justify-content-between mb-4">
+                                    <h1 className="h3 mb-0 text-gray-800">Cadeaux fidélité</h1>
+                                </div>
+
+
+                            </div>
+                            <div className="col-4">
+                                                        
+                                
+
+                            </div>
+
+                    </div>
+
+                    <hr/>
+                    
+                    {/* DEBUT CODE */}
+ 
+                    {this.checkStatutConfirmation()}
+
+                    <div className="page-header">
+                        <div className="container-perso">
+
+                            <h1>• En Attente... <br/></h1>
+                            <p className="text-justify">Vous trouverez ici votre prestation en attente de réclamation, l'entreprise devras alors confirmer la validation
+                            de la prestation en cours avant de pouvoir recrée une carte de fidélité. <b>Attention :</b> Confirmer votre cadeau uniquement quand la prestation à été réaliser !</p>
+
+                        </div>
+                    </div>    
+
+                    {this.afficheCadeauxAttente()}
+
+                    <div className="page-header">
+                        <div className="container-perso">
+
+                            <h1>• Cadeaux reçu... <br/></h1>
+                            <p className="text-justify">Vous trouverez ici vos prestations terminées.</p>
+
+                        </div>
+                    </div>    
+
+                    {this.afficheCadeauxRecu()}
+
+                    {/* FIN CODE */}
+
+
+                    </div>
 
                 </div>
 

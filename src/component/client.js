@@ -209,167 +209,168 @@ class Client extends Component {
 
     }
 
-  render() {
-    const { dataClient } = this.state;
-
-    let loadingdata;
-    if(this.state.loading)
-    {
-
-        loadingdata = <div>
-
-                    <Navbarup idEntreprise={this.props.idUserRecup} />
-
-                    <div className="container-fluid">
-
-                    <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 className="h3 mb-0 text-gray-800">Carnet client</h1>
-                    </div>
-
-                    <hr/>
-
-                    {/* DEBUT CODE */}
-
-
-                    <div className="row">
-
-                        <div className="col-8">
-                        
-                            <p>Nombre de client :</p><br/>
-                            <h1>{this.state.nombreClient}</h1>
-                        
-
+    render() {
+        const { dataClient } = this.state;
+    
+        let loadingdata;
+        if(this.state.loading)
+        {
+    
+            loadingdata = <div>
+    
+                        <Navbarup idEntreprise={this.props.idUserRecup} />
+    
+                        <div className="container-fluid">
+    
+                        <div className="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 className="h3 mb-0 text-gray-800">Carnet client</h1>
                         </div>
-                        <div className="col-4">
-                        
-                        {this.props.infoTypeCompte != "0" &&
-
-                                <div><div class="input-group mb-3">
-                                <input 
-                                    type="text" 
-                                    className="form-control" 
-                                    placeholder="Identifiant utilisateur..." 
-                                    value={this.state.identifiantCompte}
-                                    onChange={(e) => this.setState({identifiantCompte: e.target.value})}
-                                
-                                />
-                                <div class="input-group-append">
-                                    <button class="btn btn-success" onClick={this.assocCompte.bind(this)} type="button" id="button-addon2">Association du compte</button>
-                                </div>
+    
+                        <hr/>
+    
+                        {/* DEBUT CODE */}
+    
+    
+                        <div className="row">
+    
+                            <div className="col-8">
+                            
+                                <p>Nombre de client :</p><br/>
+                                <h1>{this.state.nombreClient}</h1>
+                            
+    
                             </div>
-                            <a href="/nouveauclient"><button class="btn btn-success btn-block" type="button" id="button-addon2">Nouveau client</button></a>  
-                            </div>                
-
-                        }
-
-                        {this.props.infoTypeCompte === "0" && 
-
-                            <div className="alert alert-danger" role="alert">
-                                Vous n'êtes pas autoriser à ajouter des nouveaux clients.
-                            </div> 
-                        }
-
-
+                            <div className="col-4">
+                            
+                            {this.props.infoTypeCompte != "0" &&
+    
+                                    <div><div class="input-group mb-3">
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        placeholder="Identifiant utilisateur..." 
+                                        value={this.state.identifiantCompte}
+                                        onChange={(e) => this.setState({identifiantCompte: e.target.value})}
+                                    
+                                    />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-success" onClick={this.assocCompte.bind(this)} type="button" id="button-addon2">Association du compte</button>
+                                    </div>
+                                </div>
+                                <a href="/nouveauclient"><button class="btn btn-success btn-block" type="button" id="button-addon2">Nouveau client</button></a>  
+                                </div>                
+    
+                            }
+    
+                            {this.props.infoTypeCompte === "0" && 
+    
+                                <div className="alert alert-danger" role="alert">
+                                    Vous n'êtes pas autoriser à ajouter des nouveaux clients.
+                                </div> 
+                            }
+    
+    
+                            </div>
+    
                         </div>
-
-                    </div>
-
-                    <hr/>
-
-                    {this.afficheStatut()}
-
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {dataClient.map((value, index) => 
-                            (<tr key={index}>
-                                    <td>{value.nom}</td>
-                                    <td>{value.prenom}</td>
-                                    <td>{value.adresse}</td>
-                                    <td>{value.telephone}</td>
-                                    <td>{value.email}</td>
-                                    <td><a href={'/voirclient/' + value.id}>Voir</a></td>
-                                </tr>
-                            )
-                        )}
-                        </tbody>
-                    </table> 
-
-                    {/* FIN CODE */}
-
-
-                    </div>
-
-        </div>
-
-    }
-    else
-    {
-
-        loadingdata =  <div className="styleLoader"><center><Loader 
-                            type="Triangle"
-                            color="#00BFFF"
-                            height="100"	
-                            width="100"
-                        /> </center></div>
-
-    }
-
-    return (
-      <div>
-
-            <div id="wrapper">
-
-                <Menu />
-
-                <div id="content-wrapper" className="d-flex flex-column">
-
-                <div id="content">
-
-                    {loadingdata}
-
-                </div>
-
-                <footer className="sticky-footer bg-white">
-                    <div className="container my-auto">
-                    <div className="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2019</span>
-                    </div>
-                    </div>
-                </footer>
-
-                </div>
-
+    
+                        <hr/>
+    
+                        {this.afficheStatut()}
+    
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {dataClient.map((value, index) => 
+                                (<tr key={index}>
+                                        <td>{value.nom}</td>
+                                        <td>{value.prenom}</td>
+                                        <td>{value.adresse}</td>
+                                        <td>{value.telephone}</td>
+                                        <td>{value.email}</td>
+                                        <td><a href={'/voirclient/' + value.id}>Voir</a></td>
+                                    </tr>
+                                )
+                            )}
+                            </tbody>
+                        </table> 
+    
+                        {/* FIN CODE */}
+    
+    
+                        </div>
+    
             </div>
-
-            <a className="scroll-to-top rounded" href="#page-top">
-                <i className="fas fa-angle-up"></i>
-            </a>
-
-            <div className="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+    
+        }
+        else
+        {
+    
+            loadingdata =  <div className="styleLoader"><center><Loader 
+                                type="Triangle"
+                                color="#00BFFF"
+                                height="100"	
+                                width="100"
+                            /> </center></div>
+    
+        }
+    
+        return (
+          <div>
+    
+                <div id="wrapper">
+    
+                    <Menu />
+    
+                    <div id="content-wrapper" className="d-flex flex-column">
+    
+                    <div id="content">
+    
+                        {loadingdata}
+    
                     </div>
-                    <div className="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div className="modal-footer">
-                    <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a className="btn btn-primary" href="login.html">Logout</a>
+    
+                    <footer className="sticky-footer bg-white">
+                        <div className="container my-auto">
+                        <div className="copyright text-center my-auto">
+                            <span>Copyright &copy; Your Website 2019</span>
+                        </div>
+                        </div>
+                    </footer>
+    
+                    </div>
+    
+                </div>
+    
+                <a className="scroll-to-top rounded" href="#page-top">
+                    <i className="fas fa-angle-up"></i>
+                </a>
+    
+                <div className="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button className="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        </div>
+                        <div className="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                        <div className="modal-footer">
+                        <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a className="btn btn-primary" href="login.html">Logout</a>
+                        </div>
+                    </div>
                     </div>
                 </div>
-                </div>
-            </div>
-
-      </div>
-    );
-  }
-}
-
-export default Client;
+    
+          </div>
+        );
+      }
+    }
+    
+    export default Client;
+    

@@ -17,7 +17,6 @@ import Modifclient from './component/modifclient'
 import Gestioncompte from './component/gestioncompte'
 import Listetypecarte from './component/listetypecarte'
 import Ajoutcarte from './component/ajoutcarte'
-import Log from './component/log'
 /* INTERFACE ENTREPRISE */
 
 /* INTERFACE CLIENT */
@@ -31,7 +30,6 @@ import Planningclient from './component/componentclient/planningclient'
 import Register from './component/register'
 import Error from './component/404'
 import Maintenance from './component/maintenance'
-import Table from './component/testcomposant/table'
 
 class App extends Component {
 
@@ -74,40 +72,35 @@ class App extends Component {
     componentDidMount()
     {
 
-      var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=maintenance').then(function(response){ 
-        return response.json()
-      });
+        fetch('http://127.0.0.1/fidapi/main.php?action=maintenance')
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response)
+            
+            {response.map((value) => 
+              (
 
-      var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=selectionSociete').then(function(response){
-                  return response.json()
-      });
+                  this.setState({
+                    dataMaintenance: value.maintenance,
+                    dataVersion: value.version,
+                  })
 
-      var combinedData = {"apiRequest1":{},"apiRequest2":{}};
+              )
+            )}
 
-      Promise.all([apiRequest1,apiRequest2])
-      .then(function(values){
-          combinedData["apiRequest1"] = values[0];
-          combinedData["apiRequest2"] = values[1];
 
-          console.log(combinedData["apiRequest1"])
+        })
+        .catch(err => console.error(err))
 
-          {combinedData["apiRequest1"].map((value) => 
-            (
-
-                this.setState({
-                  dataMaintenance: value.maintenance,
-                  dataVersion: value.version,
-                })
-
-            )
-          )}
-
-          console.log(combinedData["apiRequest2"])
+        fetch('http://127.0.0.1/fidapi/main.php?action=selectionSociete')
+        .then((response) => response.json())
+        .then((response) => {
+          console.log(response)
           this.setState({
-            options: combinedData["apiRequest2"]
+            options: response
           })
-
-      }.bind(this));
+        })
+        .catch(err => console.error(err))
   
     }
 
@@ -366,11 +359,10 @@ class App extends Component {
             <Route path="/client" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
             <Route path="/nouveauclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
             <Route path="/voirclient/:id" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Voirclient {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/planning/:id" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Planning {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.infTypeCompte} /> : <Redirect to="/" />} />
+            <Route path="/planning" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Planning loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.infTypeCompte} /> : <Redirect to="/" />} />
             <Route path="/gestioncompte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
             <Route path="/listetypecarte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Listetypecarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
             <Route path="/ajoutcarte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Ajoutcarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
-            <Route path="/log" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Log loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
             <Route path="/maintenance" render={() => <Maintenance version={this.state.dataVersion} />} />
 
             <Route path="/fichecoclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />

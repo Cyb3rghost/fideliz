@@ -22,9 +22,7 @@ class Dashboard extends Component {
             finAbo: '', 
             jRestants: '',
             apikey: '',
-            totalGainsClient: '',
-            loading: false,
-            testing: []
+            totalGainsClient: ''
         }
 
     }
@@ -32,52 +30,55 @@ class Dashboard extends Component {
     componentDidMount()
     {
 
-        var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup).then(function(response){ 
-            return response.json()
-        });
-        var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup).then(function(response){
-                    return response.json()
-        });
-        var apiRequest3 = fetch('http://127.0.0.1/fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup).then(function(response){
-                    return response.json()
-        });
+            var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup).then(function(response){ 
+                return response.json()
+            });
+            var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup).then(function(response){
+                        return response.json()
+            });
+            var apiRequest3 = fetch('http://127.0.0.1/fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup).then(function(response){
+                        return response.json()
+            });
 
-        var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{}};
+            var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{}};
 
-        Promise.all([apiRequest1,apiRequest2, apiRequest3])
-        .then(function(values){
-            combinedData["apiRequest1"] = values[0];
-            combinedData["apiRequest2"] = values[1];
-            combinedData["apiRequest3"] = values[2];
-            
-            {combinedData["apiRequest1"].map((value) => 
-            (
+            Promise.all([apiRequest1,apiRequest2, apiRequest3])
+            .then(function(values){
+                combinedData["apiRequest1"] = values[0];
+                combinedData["apiRequest2"] = values[1];
+                combinedData["apiRequest3"] = values[2];
+                
+                {combinedData["apiRequest1"].map((value) => 
+                (
+                    this.setState({
+                        nbClient: value.nbclient,
+                        limitClient: value.limitclient,
+                        nbPointage: value.nbpointage,
+                        limitPointage: value.limitpointage,
+                        typeCompte: value.typecompte,
+                        debutAbo: value.debutabo,
+                        finAbo: value.finabo, 
+                        jRestants: value.jrestant,
+                        apikey: value.apikey,
+                        loading: true                         
+                    })
+                )
+                )}
+
                 this.setState({
-                    nbClient: value.nbclient,
-                    limitClient: value.limitclient,
-                    nbPointage: value.nbpointage,
-                    limitPointage: value.limitpointage,
-                    typeCompte: value.typecompte,
-                    debutAbo: value.debutabo,
-                    finAbo: value.finabo, 
-                    jRestants: value.jrestant,
-                    apikey: value.apikey,
-                    loading: true                         
+                    totalClient: combinedData["apiRequest2"],  
+                    totalGainsClient: combinedData["apiRequest3"]            
                 })
-            )
-            )}
 
-            this.setState({
-                totalClient: combinedData["apiRequest2"],  
-                totalGainsClient: combinedData["apiRequest3"]            
-            })
+            }.bind(this));
 
-        }.bind(this));
+        
+
 
     }
 
-  render() {
 
+  render() {
     var LineChart = require("react-chartjs").Line;
     var DoughnutChart = require("react-chartjs").Doughnut;
     var chartData = {
@@ -419,39 +420,40 @@ class Dashboard extends Component {
 
 
     return (
-      <div>
-
-           <div id="wrapper">
-
-                    <Menu />
-
-                    <div id="content-wrapper" className="d-flex flex-column">
-
-                    <div id="content">
-
-                        {loadingdata}
-
-                    </div>
-
-                    <footer className="sticky-footer bg-white">
-                        <div className="container my-auto">
-                        <div className="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2019</span>
-                        </div>
-                        </div>
-                    </footer>
-
-                    </div>
-
-                </div>
-
-                <a className="scroll-to-top rounded" href="#page-top">
-                    <i className="fas fa-angle-up"></i>
-                </a>
-
-      </div>
-    );
+        <div>
+  
+             <div id="wrapper">
+  
+                      <Menu />
+  
+                      <div id="content-wrapper" className="d-flex flex-column">
+  
+                      <div id="content">
+  
+                          {loadingdata}
+  
+                      </div>
+  
+                      <footer className="sticky-footer bg-white">
+                          <div className="container my-auto">
+                          <div className="copyright text-center my-auto">
+                              <span>Copyright &copy; Your Website 2019</span>
+                          </div>
+                          </div>
+                      </footer>
+  
+                      </div>
+  
+                  </div>
+  
+                  <a className="scroll-to-top rounded" href="#page-top">
+                      <i className="fas fa-angle-up"></i>
+                  </a>
+  
+        </div>
+      );
+    }
   }
-}
-
-export default Dashboard;
+  
+  export default Dashboard;
+  

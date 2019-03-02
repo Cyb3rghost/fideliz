@@ -738,7 +738,7 @@ class Voirclient extends Component {
         console.log(`Option selected:`, selectedOption);
       }
 
-  render() {
+    render() {
 
     let loadingdata;
     if(this.state.loading)
@@ -888,7 +888,7 @@ class Voirclient extends Component {
     }
 
     return (
-      <div>
+        <div>
 
             <div id="wrapper">
 
@@ -936,9 +936,10 @@ class Voirclient extends Component {
                 </div>
             </div>
 
-      </div>
+        </div>
     );
-  }
+    }
 }
 
 export default Voirclient;
+    

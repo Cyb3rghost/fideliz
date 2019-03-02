@@ -44,8 +44,8 @@ class Modifprofil extends Component {
                         email: value.email,
                         adresse: value.adresse,
                         nomSociete: value.nomsociete,
-                        telephone: value.telephone,
-                        loading: true                     
+                        telephone: value.telephone,  
+                        loading: true                   
                     })
                 )
               )}
@@ -250,7 +250,6 @@ class Modifprofil extends Component {
 
 
   render() {
-
     let loadingdata;
     if(this.state.loading)
     {

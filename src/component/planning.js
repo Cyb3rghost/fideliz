@@ -1,85 +1,18 @@
 import React, { Component } from 'react';
+import DatePicker from "react-datepicker";
 import Loader from 'react-loader-spinner'
-import moment from 'moment';
 
-
-import 'react-agenda/build/styles.css';
-import 'react-datetime/css/react-datetime.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 import Navbarup from './navbarup'
 import Menu from './menu'
-
-import { ReactAgenda , ReactAgendaCtrl , guid ,  Modal } from 'react-agenda';
-
-var now = new Date();
+import calendrier from '../images/calendar.png'
+import attente from '../images/attente.png'
+import confirmation from '../images/confirme.png'
 
 require('moment/locale/fr.js');
 
-    var colors= {
-      'color-1':"rgba(102, 195, 131 , 1)" ,
-      "color-2":"rgba(242, 177, 52, 1)" ,
-      "color-3":"rgba(235, 85, 59, 1)" ,
-      "color-4":"rgba(70, 159, 213, 1)",
-      "color-5":"rgba(170, 59, 123, 1)"
-    }
-
-
-/*var items = [
-  {
-   _id            :guid(),
-    name          : 'Meeting , dev staff!',
-    startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0),
-    endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0),
-    classes       : 'color-1 color-4'
-  },
-  {
-   _id            :guid(),
-    name          : 'Working lunch , Holly',
-    startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 11, 0),
-    endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 13, 0),
-    classes       : 'color-2'
-  },
-  {
-   _id            :guid(),
-    name          : 'Conference , plaza',
-    startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 11 , 0),
-    endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 14 ,30),
-    classes       : 'color-4'
-  },
-  {
-   _id            :'event-4',
-    name          : 'Customers issues review',
-    startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate()+2, 10, 0),
-    endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate()+2, 15, 0),
-    classes       : 'color-3'
-
-  },
-  {
-    _id           :'event-5',
-    name          : 'Group activity',
-    startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate()+3, 10, 0),
-    endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate()+3, 16, 30),
-    classes       : 'color-4'
-  },
-  {
-    _id           :'event-6',
-    name          : 'Fun Day !',
-    startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate()+7, 9, 14),
-    endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate()+7, 17),
-    classes       : 'color-3'
-  },
-  {
-    _id           :'7',
-    name          : 'Test !',
-    startDateTime : new Date(now.getFullYear(), now.getMonth(), now.getDate()+7, 14, 18),
-    endDateTime   : new Date(now.getFullYear(), now.getMonth(), now.getDate()+7, 21),
-    classes       : 'color-3'
-  }
-];*/
-
 var items = [
-
-
 
 ];
 
@@ -90,209 +23,104 @@ class Planning extends Component {
 
         super(props)   
         this.state = {
-            items:[],
-            selected:[],
-            cellHeight:(60 / 4),
-            showModal:false,
-            locale:"fr",
-            rowsPerHour:4,
-            numberOfDays:4,
-            startDate: new Date(),
-            loading: true
-        }
-        this.handleRangeSelection = this.handleRangeSelection.bind(this)
-        this.handleItemEdit = this.handleItemEdit.bind(this)
-        this.zoomIn = this.zoomIn.bind(this)
-        this.zoomOut = this.zoomOut.bind(this)
-        this._openModal = this._openModal.bind(this)
-        this._closeModal = this._closeModal.bind(this)
-        this.addNewEvent = this.addNewEvent.bind(this)
-        this.removeEvent = this.removeEvent.bind(this)
-        this.editEvent = this.editEvent.bind(this)
-        this.changeView = this.changeView.bind(this)
-        this.handleCellSelection = this.handleCellSelection.bind(this)
+          events: [
+          ],
+          startDate: new Date(),
+          endDate: new Date(),
+          agendaDate: new Date(),
+          titleRDV: '',
+          statutMsg: '',
+          loading: true
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleChangeEnd = this.handleChangeEnd.bind(this);
+        this.handleChangeAgenda = this.handleChangeAgenda.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount()
+    {
 
-      fetch('http://127.0.0.1/fidapi/main.php?action=affichePlanning')
+      var dateDuJour = this.state.agendaDate.toLocaleDateString()
+
+      fetch('http://127.0.0.1/fidapi/main.php?action=affichePlanning&today=' + dateDuJour)
       .then((response) => response.json())
       .then((response) => {
         console.log(response)
 
-        this.setState({items:response})
-
-        var testInfo = this.state.items.map( function(value) {
-
-              var obtenirJourDepart = value.startdatetime.split('/');
-              var obtenirJourFin = value.enddatetime.split('/');
-              var obtenirHeureDepart = value.departheure.split(':');
-              var obtenirMinuteFin = value.finheure.split(":");
-
-              var addDataItems = { 
-                _id           : value.uid,
-                name          : value.nom,
-                startDateTime : new Date(now.getFullYear(), now.getMonth(), obtenirJourDepart[0], obtenirHeureDepart[0], obtenirHeureDepart[1]),
-                endDateTime   : new Date(now.getFullYear(), now.getMonth(), obtenirJourFin[0], obtenirMinuteFin[0], obtenirMinuteFin[1]),
-                classes       : value.classes
-                                  }
-              return addDataItems;
-        });
-
-        items.push(...testInfo);
-        this.setState({items:items})
-        console.log(now.getDate())
+        this.setState({events:response})
 
       })
       .catch(err => console.error(err))
 
 
-      
-  
     }
-  
-  
-  componentWillReceiveProps(next , last){
-    if(next.items){
-  
-      this.setState({items:next.items})
-    }
-  }
-    handleItemEdit(item, openModal) {
-  
-      if(item && openModal === true){
-        this.setState({selected:[item] })
-        return this._openModal();
-      }
-  
-  
-  
-    }
-    handleCellSelection(item, openModal) {
-  
-      if(this.state.selected && this.state.selected[0] === item){
-        return  this._openModal();
-      }
-         this.setState({selected:[item] })
-  
-    }
-  
-    zoomIn(){
-  var num = this.state.cellHeight + 15
-      this.setState({cellHeight:num})
-    }
-    zoomOut(){
-  var num = this.state.cellHeight - 15
-      this.setState({cellHeight:num})
-    }
-  
-  
-    handleDateRangeChange (startDate, endDate) {
-        this.setState({startDate:startDate })
-  
-    }
-  
-    handleRangeSelection (selected) {
-  
-  
-  this.setState({selected:selected , showCtrl:true})
-  this._openModal();
-  
-  }
-  
-  _openModal(){
-    this.setState({showModal:true})
-  }
-  _closeModal(e){
-    if(e){
-      e.stopPropagation();
-      e.preventDefault();
-    }
-      this.setState({showModal:false})
-  }
-  
-  handleItemChange(items , item){
-  
-  this.setState({items:items})
-  }
-  
-  handleItemSize(items , item){
-  
-    this.setState({items:items})
-  
-  }
-  
-  removeEvent(items , item){
-      console.log(item._id)
 
-      fetch('http://127.0.0.1/fidapi/main.php?action=suppressionRdv&uid=' + item._id)
+    handleChange(date) {
+      console.log(date)
+      this.setState({
+        startDate: date
+      });
+    }
+
+    handleChangeEnd(date) {
+      console.log(date)
+      this.setState({
+        endDate: date
+      });
+    }
+
+    handleChangeAgenda(date) {
+      console.log(date)
+      this.setState({
+        agendaDate: date
+      });
+
+      var dateDuJour = this.state.agendaDate.toLocaleDateString()
+
+      fetch('http://127.0.0.1/fidapi/main.php?action=affichePlanning&today=' + dateDuJour)
       .then((response) => response.json())
       .then((response) => {
         console.log(response)
 
-        if(response === "#DELRDV#SUCCESS")
+        this.setState({events:response})
+
+      })
+      .catch(err => console.error(err))
+
+    }
+
+    addRdv()
+    {
+
+        if(this.state.startDate.toLocaleDateString() === this.state.endDate.toLocaleDateString())
         {
 
-            this.setState({ items:items})
+            fetch('http://127.0.0.1/fidapi/main.php?action=ajoutPlanningEntreprise&idEntreprise=2&idclt=0&nom=' + this.state.titleRDV
+            + '&startdate=' + this.state.startDate.toLocaleDateString()
+            + '&endDate=' + this.state.endDate.toLocaleDateString()
+            + '&startheure=' + this.state.startDate.toLocaleTimeString()
+            + '&endheure=' + this.state.endDate.toLocaleTimeString())
+            .then((response) => response.json())
+            .then((response) => {
+              console.log(response)
+            })
+            .catch(err => console.error(err))
+
 
         }
+        else
+        {
 
-      })
-      .catch(err => console.error(err))
-      //this.setState({ items:items});
-  }
-  
-  addNewEvent (items , newItems){
-    
-    console.log(newItems)
+            this.setState({
+              statutMsg: '1'
+            })
+        }
 
-    /*fetch('http://127.0.0.1/fidapi/main.php?action=ajoutPlanningEntreprise&idEntreprise=2&idclt=0&nom=' + newItems.name
-    + '&startdate=' + newItems.startDateTime.toLocaleDateString()
-    + '&endDate=' + newItems.endDateTime.toLocaleDateString()
-    + '&startheure=' + newItems.startDateTime.toLocaleTimeString()
-    + '&endheure=' + newItems.endDateTime.toLocaleTimeString()
-    + '&uid=' + newItems._id
-    + '&color=' + newItems.classes)
-    .then((response) => response.json())
-    .then((response) => {
-      console.log(response)
-    })
-    .catch(err => console.error(err))*/
 
-    this.setState({showModal:false ,selected:[] , items:items});
-    this._closeModal();
-  }
-  editEvent (items , item){
-  
-    console.log(item)
 
-    fetch('http://127.0.0.1/fidapi/main.php?action=editRdv&nom=' + item.name
-    + '&startdate=' + item.startDateTime.toLocaleDateString()
-    + '&endDate=' + item.endDateTime.toLocaleDateString()
-    + '&startheure=' + item.startDateTime.toLocaleTimeString()
-    + '&endheure=' + item.endDateTime.toLocaleTimeString()
-    + '&uid=' + item._id
-    + '&color=' + item.classes)
-    .then((response) => response.json())
-    .then((response) => {
-      console.log(response)
-    })
-    .catch(err => console.error(err))
-
-    this.setState({showModal:false ,selected:[] , items:items});
-    this._closeModal();
-  }
-  
-  changeView (days , event ){
-  this.setState({numberOfDays:days})
-  }
+    }
 
   render() {
-
-    var AgendaItem = function(props){
-      console.log( ' item component props' , props)
-      return <div style={{display:'block', position:'absolute' , background:'#FFF'}}>{props.item.name} <button onClick={()=> props.edit(props.item)}>Edit </button></div>
-    }
 
     let loadingdata;
     if(this.state.loading)
@@ -306,72 +134,77 @@ class Planning extends Component {
 
                             <div className="row">
 
-                                    <div className="col-8">
+                                    <div className="col-md-12">
                                     
                                         <div className="d-sm-flex align-items-center justify-content-between mb-4">
                                             <h1 className="h3 mb-0 text-gray-800">Gestion du planning</h1>
                                         </div>
 
                                     </div>
-   
-                                    <div className="content-expanded bg-white">
-
-                                        <div className="control-buttons">
-                                          <button  className="button-control" onClick={this.zoomIn}> <i class="fas fa-search-plus"></i> </button>
-                                          <button  className="button-control" onClick={this.zoomOut}> <i class="fas fa-search-minus"></i> </button>
-                                          <button  className="button-control" onClick={this._openModal}> <i class="far fa-plus-square"></i> </button>
-                                          <button  className="button-control" onClick={this.changeView.bind(null , 7)}> {moment.duration(7, "days").humanize()}  </button>
-                                          <button  className="button-control" onClick={this.changeView.bind(null , 4)}> {moment.duration(4, "days").humanize()}  </button>
-                                          <button  className="button-control" onClick={this.changeView.bind(null , 3)}> {moment.duration(3, "days").humanize()}  </button>
-                                          <button  className="button-control" onClick={this.changeView.bind(null , 1)}> {moment.duration(1, "day").humanize()} </button>
-                                        </div>
-
-                                        <ReactAgenda
-                                          minDate={new Date(now.getFullYear(), now.getMonth()-3)}
-                                          maxDate={new Date(now.getFullYear(), now.getMonth()+3)}
-                                          startDate={this.state.startDate}
-                                          startAtTime={8}
-                                          endAtTime={23}
-                                          cellHeight={this.state.cellHeight}
-                                          locale="fr"
-                                          items={this.state.items}
-                                          numberOfDays={this.state.numberOfDays}
-                                          headFormat={"ddd DD MMM"}
-                                          rowsPerHour={this.state.rowsPerHour}
-                                          itemColors={colors}
-                                          helper={true}
-                                          //itemComponent={AgendaItem}
-                                          view="calendar"
-                                          autoScale={false}
-                                          fixedHeader={true}
-                                          onRangeSelection={this.handleRangeSelection.bind(this)}
-                                          onChangeEvent={this.handleItemChange.bind(this)}
-                                          onChangeDuration={this.handleItemSize.bind(this)}
-                                          onItemEdit={this.handleItemEdit.bind(this)}
-                                          onCellSelect={this.handleCellSelection.bind(this)}
-                                          onItemRemove={this.removeEvent.bind(this)}
-                                          onDateRangeChange={this.handleDateRangeChange.bind(this)} />
-                                        {
-                                          this.state.showModal? <Modal clickOutside={this._closeModal} >
-                                          <div className="modal-content">
-                                            <ReactAgendaCtrl 
-                                            items={this.state.items} 
-                                            itemColors={colors} 
-                                            selectedCells={this.state.selected} 
-                                            Addnew={this.addNewEvent} 
-                                            edit={this.editEvent}  
-                                            />
-
-                                          </div>
-                                        </Modal>:''
-                                        }
-
-
-                                        </div>
-
-
+              
 
                             </div>
+
+                            <div className="card">
+
+                            <div className="card-body">
+                              <label>Titre du rendez-vous : </label><input 
+                              className="form-control" 
+                              value={this.state.titleRDV}
+                              onChange={(e) => this.setState({titleRDV: e.target.value})}
+                              />
+                              <br/>
+                              <label>Départ du rendez-vous :  </label>
+                              <DatePicker
+                                        selected={this.state.startDate}
+                                        onChange={this.handleChange}
+                                        showTimeSelect
+                                        timeIntervals={15}
+                                        dateFormat="d/MM/yyyy h:mm"
+                                        timeCaption="time"
+                                        className="form-control"
+                              />
+                              <label>Fin du rendez-vous :  </label>
+                              <DatePicker
+                                        selected={this.state.endDate}
+                                        onChange={this.handleChangeEnd}
+                                        showTimeSelect
+                                        timeIntervals={15}
+                                        dateFormat="d/MM/yyyy h:mm"
+                                        timeCaption="time"
+                                        className="form-control"
+                              /><br/>
+                              <br/>
+                              <button type="button" onClick={this.addRdv.bind(this)} class="btn btn-primary">Prise d'un rendez-vous</button>
+                            </div>
+                            </div>
+                            <br/>
+
+                            <table class="table table-dark">
+                              <thead>
+                                <tr>
+                                  <th> <DatePicker
+                                            selected={this.state.agendaDate}
+                                            onChange={this.handleChangeAgenda}
+                                            dateFormat="d/MM/yyyy"
+                                  /></th>
+                                  <th scope="col">Temps</th>
+                                  <th scope="col">Evènement</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {this.state.events.map((value) => 
+                                    (
+                                        <tr>
+                                            <td></td>
+                                            <td>{value.departheure} à {value.finheure}</td>
+                                            <td>{value.title}</td>
+                                        </tr>
+                                    )
+                                )}
+                              </tbody>
+                            </table>
+                            
                             </div>
 
         </div>
