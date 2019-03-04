@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
-import DatePicker from "react-datepicker";
+import { render } from "react-dom";
 import Loader from 'react-loader-spinner'
 
-import "react-datepicker/dist/react-datepicker.css";
+import BigCalendar from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import globalize from 'globalize'
 
 import Navbarup from './navbarup'
 import Menu from './menu'
-import calendrier from '../images/calendar.png'
-import attente from '../images/attente.png'
-import confirmation from '../images/confirme.png'
 
-require('moment/locale/fr.js');
+require('globalize/lib/cultures/globalize.culture.fr')
 
-var items = [
+ const allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k]);
 
-];
+ const propTypes = {}
+ const items = [
+
+ ];
+
 
 class Planning extends Component {
 
@@ -23,104 +26,141 @@ class Planning extends Component {
 
         super(props)   
         this.state = {
-          events: [
-          ],
-          startDate: new Date(),
-          endDate: new Date(),
-          agendaDate: new Date(),
-          titleRDV: '',
-          statutMsg: '',
-          loading: true
-        };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleChangeEnd = this.handleChangeEnd.bind(this);
-        this.handleChangeAgenda = this.handleChangeAgenda.bind(this);
+            events: [],
+            items: [],
+            view: "day",
+            date: new Date(),
+            width: 500,
+            culture: 'fr',
+            loading: true
+        }
+
     }
 
-    componentDidMount()
-    {
+    componentDidMount() {
 
-      var dateDuJour = this.state.agendaDate.toLocaleDateString()
-
-      fetch('http://127.0.0.1/fidapi/main.php?action=affichePlanning&today=' + dateDuJour)
+      const idClient = this.props.match.params.id
+      fetch('http://127.0.0.1/fidapi/main.php?action=affichePlanning' 
+      + '&idEntreprise=' + this.props.idUserRecup
+      + '&idclt=' + idClient
+      + '&statut=1')
       .then((response) => response.json())
       .then((response) => {
         console.log(response)
 
         this.setState({events:response})
 
-      })
-      .catch(err => console.error(err))
+        var testInfo = this.state.events.map( function(value) {
 
+              if(value.statut === '1')
+              {
 
-    }
+                var txtmsg = "[ATT]"
 
-    handleChange(date) {
-      console.log(date)
-      this.setState({
-        startDate: date
-      });
-    }
+              }
+              else if(value.statut === "2")
+              {
 
-    handleChangeEnd(date) {
-      console.log(date)
-      this.setState({
-        endDate: date
-      });
-    }
+                var txtmsg = "[CONF]"
 
-    handleChangeAgenda(date) {
-      console.log(date)
-      this.setState({
-        agendaDate: date
-      });
+              }
 
-      var dateDuJour = this.state.agendaDate.toLocaleDateString()
+              var addDataItems = { 
+                id: value.id,
+                title: value.title + ' - ' + txtmsg,
+                start: new Date(value.reelstart),
+                end: new Date(value.reelend),
+                statut: value.statut,
+                                  }
+              return addDataItems;
+        });
 
-      fetch('http://127.0.0.1/fidapi/main.php?action=affichePlanning&today=' + dateDuJour)
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response)
+        items.push(...testInfo);
+        this.setState({events:items})
 
-        this.setState({events:response})
 
       })
-      .catch(err => console.error(err))
+      .catch(err => console.error(err))      
 
     }
 
-    addRdv()
-    {
+    handleSelect = ({ start, end }) => {
+      const title = window.prompt('New Event name')
+      const idClient = this.props.match.params.id
+      if (title)
+        console.log(title + ' / ' + start + ' / ' + end)
+        fetch('http://127.0.0.1/fidapi/main.php?action=ajoutPlanningEntreprise&idEntreprise=' + this.props.idUserRecup 
+        + '&idclt=' + idClient
+        + '&nom=' + title
+        + '&startdate=' + start.toLocaleDateString()
+        + '&endDate=' + end.toLocaleDateString()
+        + '&startheure=' + start.toLocaleTimeString()
+        + '&endheure=' + end.toLocaleTimeString()
+        + '&statut=1'
+        + '&reelstart=' + start.toUTCString()
+        + '&reelend=' + end.toUTCString())
+        .then((response) => response.json())
+        .then((response) => {
+          console.log(response)
+          
+          this.setState({
+            events: [
+              ...this.state.events,
+              {
+                title,
+                start,
+                end,
+                statut: '1'
+              },
+            ],
+          })
 
-        if(this.state.startDate.toLocaleDateString() === this.state.endDate.toLocaleDateString())
-        {
+        })
+        .catch(err => console.error(err))
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=ajoutPlanningEntreprise&idEntreprise=2&idclt=0&nom=' + this.state.titleRDV
-            + '&startdate=' + this.state.startDate.toLocaleDateString()
-            + '&endDate=' + this.state.endDate.toLocaleDateString()
-            + '&startheure=' + this.state.startDate.toLocaleTimeString()
-            + '&endheure=' + this.state.endDate.toLocaleTimeString())
-            .then((response) => response.json())
-            .then((response) => {
-              console.log(response)
-            })
-            .catch(err => console.error(err))
+    }
+
+    //Clicking an existing event allows you to remove it
+    onSelectEvent(pEvent) {
+      console.log(pEvent)
+      const r = window.confirm(pEvent.title + '\nS: ' + pEvent.start + '\nE:' + pEvent.end + '\nStatut :' + pEvent.statut + "Would you like to remove this event?")
+      if(r === true){
+        
+        fetch('http://127.0.0.1/fidapi/main.php?action=suppressionRdv' 
+        + '&id=' + pEvent.id)
+        .then((response) => response.json())
+        .then((response) => {
+  
+          if(response === "#DELRDV#SUCCESS")
+          {
+
+            console.log(response)
+
+            this.setState((prevState, props) => {
+              const events = [...prevState.events]
+              const idx = events.indexOf(pEvent)
+              events.splice(idx, 1);
+              return { events };
+            });
+
+          }
+          else if(response === "#DELRDV#FAILED")
+          {
+
+            console.log(response)
+
+          }
+
+        })
+        .catch(err => console.error(err)) 
 
 
-        }
-        else
-        {
 
-            this.setState({
-              statutMsg: '1'
-            })
-        }
-
-
-
+      }
     }
 
   render() {
+    const localizer = BigCalendar.globalizeLocalizer(globalize) 
 
     let loadingdata;
     if(this.state.loading)
@@ -134,77 +174,38 @@ class Planning extends Component {
 
                             <div className="row">
 
-                                    <div className="col-md-12">
+                                    <div className="col-8">
                                     
                                         <div className="d-sm-flex align-items-center justify-content-between mb-4">
                                             <h1 className="h3 mb-0 text-gray-800">Gestion du planning</h1>
                                         </div>
 
-                                    </div>
-              
+                                    </div>    
 
                             </div>
-
-                            <div className="card">
-
-                            <div className="card-body">
-                              <label>Titre du rendez-vous : </label><input 
-                              className="form-control" 
-                              value={this.state.titleRDV}
-                              onChange={(e) => this.setState({titleRDV: e.target.value})}
-                              />
-                              <br/>
-                              <label>Départ du rendez-vous :  </label>
-                              <DatePicker
-                                        selected={this.state.startDate}
-                                        onChange={this.handleChange}
-                                        showTimeSelect
-                                        timeIntervals={15}
-                                        dateFormat="d/MM/yyyy h:mm"
-                                        timeCaption="time"
-                                        className="form-control"
-                              />
-                              <label>Fin du rendez-vous :  </label>
-                              <DatePicker
-                                        selected={this.state.endDate}
-                                        onChange={this.handleChangeEnd}
-                                        showTimeSelect
-                                        timeIntervals={15}
-                                        dateFormat="d/MM/yyyy h:mm"
-                                        timeCaption="time"
-                                        className="form-control"
-                              /><br/>
-                              <br/>
-                              <button type="button" onClick={this.addRdv.bind(this)} class="btn btn-primary">Prise d'un rendez-vous</button>
-                            </div>
-                            </div>
-                            <br/>
-
-                            <table class="table table-dark">
-                              <thead>
-                                <tr>
-                                  <th> <DatePicker
-                                            selected={this.state.agendaDate}
-                                            onChange={this.handleChangeAgenda}
-                                            dateFormat="d/MM/yyyy"
-                                  /></th>
-                                  <th scope="col">Temps</th>
-                                  <th scope="col">Evènement</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {this.state.events.map((value) => 
-                                    (
-                                        <tr>
-                                            <td></td>
-                                            <td>{value.departheure} à {value.finheure}</td>
-                                            <td>{value.title}</td>
-                                        </tr>
-                                    )
-                                )}
-                              </tbody>
-                            </table>
-                            
+                            <div className="bg-white" style={{ height: 700 }}>
+                                      <button onClick={() => this.setState({ view: "month" })}><i class="fas fa-plus-square"></i></button>
+                                      <button onClick={() => this.setState({ view: "day" })}>Day</button>
+                                      <button onClick={() => this.setState({ view: "month" })}>Month</button>
+                                      <button onClick={() => this.setState({ view: "week" })}>Week</button>
+                                      
+                                      <BigCalendar
+                                        selectable
+                                        localizer={localizer}
+                                        events={this.state.events}
+                                        toolbar={true}
+                                        step={15}
+                                        timeslots={8}
+                                        culture={this.state.culture}
+                                        view={this.state.view}
+                                        onView={() => {}}
+                                        date={this.state.date}
+                                        onNavigate={date => this.setState({ date })}
+                                        onSelectEvent={event => this.onSelectEvent(event)}
+                                        onSelectSlot={this.handleSelect}
+                                      /> 
+                                      
+                                    </div>   
                             </div>
 
         </div>
@@ -259,5 +260,7 @@ class Planning extends Component {
     );
   }
 }
+
+Planning.propTypes = propTypes
 
 export default Planning;

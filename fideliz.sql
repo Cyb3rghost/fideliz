@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  sam. 02 mars 2019 à 12:24
+-- Généré le :  lun. 04 mars 2019 à 19:08
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -57,7 +57,7 @@ CREATE TABLE `accsociete` (
 
 INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`) VALUES
 (1, 'ludovic.lvnr@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'PAYET', 'Eddy', '56 chemin des fleurs 97400', 'EddyCoiffure', '0692101112', 1, 0, 0, 0, 0, '0000-00-00', '0000-00-00', 0, 'backgroundCarte.jpg', 'logocarte.png', 'e6c14066a83d3416238afbc40a9f437a'),
-(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 2, 0, 10, 27, 15, '2019-02-18', '2019-03-20', 18, 'carddefault.jpg', 'logodefault.png', 'b3470a6aba7953782f54486b8cc28d02'),
+(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 2, 0, 10, 27, 15, '2019-02-18', '2019-03-20', 16, 'carddefault.jpg', 'logodefault.png', 'b3470a6aba7953782f54486b8cc28d02'),
 (3, 'blizzard@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'Blizzard', '', 2, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'null', 'null', 'fedd6393d9b9224fcba3c3ce0ba33b96'),
 (4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 1, 0, 10, 0, 15, '2019-02-09', '2019-03-11', 28, 'null', 'null', 'e3fe6a42aaf6a6f49760186c481afad6'),
 (5, 'cathy@gmail.com', 'af56310c080ab9d9f3d96be9f16edebf', 1, '', '', '', 'MenageParty', '', 1, 0, 10, 1, 15, '2019-02-10', '2019-03-12', 30, 'BCGC144501D09-02-2019.jpg', 'LOGO517944D09-02-2019.png', '2dd7b6dff53be1b24f1d9b967071778d'),
@@ -239,25 +239,22 @@ CREATE TABLE `planning` (
   `start` varchar(255) NOT NULL,
   `end` varchar(255) NOT NULL,
   `departheure` varchar(8) NOT NULL,
-  `finheure` varchar(8) NOT NULL
+  `finheure` varchar(8) NOT NULL,
+  `statut` int(11) NOT NULL,
+  `reelstart` varchar(255) NOT NULL,
+  `reelend` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `planning`
 --
 
-INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `title`, `start`, `end`, `departheure`, `finheure`) VALUES
-(1, 2, 0, 'Test', '28/02/2019', '28/02/2019', '11:00:00', '12:00:00'),
-(2, 2, 0, 'testmars', '01/03/2019', '01/03/2019', '09:45:00', '11:00:00'),
-(3, 2, 0, 'gtrgtrr', '28/02/2019', '28/02/2019', '12:45:00', '13:45:00'),
-(4, 2, 0, 'dqsdqsdqsdsdsdqdqsdds', '28/02/2019', '01/03/2019', '14:47:20', '14:00:00'),
-(5, 2, 0, 'holatest', '28/02/2019', '28/02/2019', '15:30:00', '15:30:00'),
-(6, 2, 0, 'testlekmazek', 'Thu Feb 28 2019 15:09:41 GMT 0400 (heure du Golfe)', 'Thu Feb 28 2019 17:30:00 GMT 0400 (heure du Golfe)', '15:09:41', '17:30:00'),
-(7, 2, 0, '', 'Thu Feb 28 2019 18:00:00 GMT 0400 (heure du Golfe)', 'Thu Feb 28 2019 19:00:00 GMT 0400 (heure du Golfe)', '18:00:00', '19:00:00'),
-(8, 2, 0, 'buenosdias !!!', 'Thu Feb 28 2019 15:18:38 GMT 0400 (heure du Golfe)', 'Thu Feb 28 2019 18:00:00 GMT 0400 (heure du Golfe)', '15:18:38', '18:00:00'),
-(9, 2, 0, 'Ludovic LEVENEUR', 'Thu Feb 28 2019 16:15:00 GMT 0400 (heure du Golfe)', 'Thu Feb 28 2019 15:23:28 GMT 0400 (heure du Golfe)', '16:15:00', '15:23:28'),
-(10, 2, 0, 'Toto Bobo', 'Thu Feb 28 2019 15:15:00 GMT 0400 (heure du Golfe)', 'Thu Feb 28 2019 18:00:00 GMT 0400 (heure du Golfe)', '15:15:00', '18:00:00'),
-(11, 2, 0, 'qsqdsdqsdqd', '02/03/2019', '02/03/2019', '22:32:39', '23:15:00');
+INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `title`, `start`, `end`, `departheure`, `finheure`, `statut`, `reelstart`, `reelend`) VALUES
+(37, 2, 8, 'Coupe avec Eddy', '07/03/2019', '07/03/2019', '18:00:00', '19:00:00', 2, 'Thu, 07 Mar 2019 14:00:00 GMT', 'Thu, 07 Mar 2019 15:00:00 GMT'),
+(36, 2, 8, 'TchockQuatre', '04/03/2019', '04/03/2019', '14:00:00', '15:00:00', 1, 'Mon, 04 Mar 2019 10:00:00 GMT', 'Mon, 04 Mar 2019 11:00:00 GMT'),
+(35, 2, 8, 'TchockTrois', '04/03/2019', '04/03/2019', '13:00:00', '14:00:00', 1, 'Mon, 04 Mar 2019 09:00:00 GMT', 'Mon, 04 Mar 2019 10:00:00 GMT'),
+(34, 2, 8, 'TchockDeux', '04/03/2019', '04/03/2019', '12:00:00', '13:00:00', 1, 'Mon, 04 Mar 2019 08:00:00 GMT', 'Mon, 04 Mar 2019 09:00:00 GMT'),
+(33, 2, 8, 'Tchock', '04/03/2019', '04/03/2019', '11:00:00', '12:00:00', 1, 'Mon, 04 Mar 2019 07:00:00 GMT', 'Mon, 04 Mar 2019 08:00:00 GMT');
 
 -- --------------------------------------------------------
 
@@ -424,7 +421,7 @@ ALTER TABLE `parametres`
 -- AUTO_INCREMENT pour la table `planning`
 --
 ALTER TABLE `planning`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 --
 -- AUTO_INCREMENT pour la table `pointage`
 --

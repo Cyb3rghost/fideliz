@@ -1901,9 +1901,10 @@ if(isset($_GET['action']))
             break;
         case 'affichePlanning':
 
-            $dateDuJour = $_GET['today'];
+            $idEntreprise = $_GET['idEntreprise'];
+            $idClient = $_GET['idclt'];
 
-            $sql = "SELECT * FROM `planning` WHERE `start` = '".$dateDuJour."'";
+            $sql = "SELECT * FROM `planning` WHERE `identreprise` = '".$idEntreprise."' AND `idclient` = '".$idClient."'";
             $result = mysqli_query($connect, $sql);
 
             if(mysqli_num_rows($result))
@@ -1931,16 +1932,19 @@ if(isset($_GET['action']))
 
             break;
         case 'ajoutPlanningEntreprise':
-            $idEntreprise = "2";
-            $idClient = "0";
+            $idEntreprise = $_GET['idEntreprise'];
+            $idClient = $_GET['idclt'];
             $nom = $_GET['nom'];
             $starDate = $_GET['startdate'];
             $endDate = $_GET['endDate'];
             $startHeure = $_GET['startheure'];
             $endHeure = $_GET['endheure'];
-
-            $sql = "INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `title`, `start`, `end`, `departheure`, `finheure`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nom."', '".$starDate."', '".$endDate."', '".$startHeure."', '".$endHeure."')";
-            if($result = mysqli_query($connect, $sql))
+            $statut = $_GET['statut'];
+            $reelstart = $_GET['reelstart'];
+            $reelend = $_GET['reelend'];
+            
+            $sqldeux = "INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `title`, `start`, `end`, `departheure`, `finheure`, `statut`, `reelstart`, `reelend`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nom."', '".$starDate."', '".$endDate."', '".$startHeure."', '".$endHeure."', '".$statut."', '".$reelstart."', '".$reelend."')";
+            if($resultdeux = mysqli_query($connect, $sqldeux))
             {
 
                 $json = json_encode("#ADDPLANNING#SUCCESS");
@@ -1990,9 +1994,9 @@ if(isset($_GET['action']))
             break;
         case 'suppressionRdv':
 
-            $uid = $_GET['uid'];
+            $uid = $_GET['id'];
 
-            $sql = "DELETE FROM `planning` WHERE `uid` = '".$uid."'";
+            $sql = "DELETE FROM `planning` WHERE `id` = '".$uid."'";
             if(mysqli_query($connect, $sql))
             {
 
