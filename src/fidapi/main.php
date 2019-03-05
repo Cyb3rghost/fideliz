@@ -1902,9 +1902,9 @@ if(isset($_GET['action']))
         case 'affichePlanning':
 
             $idEntreprise = $_GET['idEntreprise'];
-            $idClient = $_GET['idclt'];
+            //$idClient = $_GET['idclt'];
 
-            $sql = "SELECT * FROM `planning` WHERE `identreprise` = '".$idEntreprise."' AND `idclient` = '".$idClient."'";
+            $sql = "SELECT * FROM `planning` WHERE `identreprise` = '".$idEntreprise."'";
             $result = mysqli_query($connect, $sql);
 
             if(mysqli_num_rows($result))
@@ -1942,8 +1942,9 @@ if(isset($_GET['action']))
             $statut = $_GET['statut'];
             $reelstart = $_GET['reelstart'];
             $reelend = $_GET['reelend'];
+            $idpropo = $_GET['idpropo'];
             
-            $sqldeux = "INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `title`, `start`, `end`, `departheure`, `finheure`, `statut`, `reelstart`, `reelend`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nom."', '".$starDate."', '".$endDate."', '".$startHeure."', '".$endHeure."', '".$statut."', '".$reelstart."', '".$reelend."')";
+            $sqldeux = "INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `title`, `start`, `end`, `departheure`, `finheure`, `statut`, `reelstart`, `reelend`, `idproposant`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nom."', '".$starDate."', '".$endDate."', '".$startHeure."', '".$endHeure."', '".$statut."', '".$reelstart."', '".$reelend."', '".$idpropo."')";
             if($resultdeux = mysqli_query($connect, $sqldeux))
             {
 
@@ -1989,6 +1990,29 @@ if(isset($_GET['action']))
 
             echo $json;
 
+            mysqli_close($connect);
+
+            break;
+        case 'confirmationRdv':
+
+            $uid = $_GET['id'];
+
+            $sql = "UPDATE `planning` SET `statut` = '2' WHERE `id` = $uid";
+            if(mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#CONFRDV#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#CONFRDV#FAILED");
+
+            }
+            
+            echo $json;
+            
             mysqli_close($connect);
 
             break;

@@ -5,6 +5,7 @@ import Loader from 'react-loader-spinner'
 import BigCalendar from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import globalize from 'globalize'
+import moment from 'moment'
 
 import Navbarup from './navbarup'
 import Menu from './menu'
@@ -18,7 +19,6 @@ require('globalize/lib/cultures/globalize.culture.fr')
 
  ];
 
-
 class Planning extends Component {
 
     constructor(props)
@@ -28,7 +28,7 @@ class Planning extends Component {
         this.state = {
             events: [],
             items: [],
-            view: "day",
+            view: "week",
             date: new Date(),
             width: 500,
             culture: 'fr',
@@ -39,11 +39,8 @@ class Planning extends Component {
 
     componentDidMount() {
 
-      const idClient = this.props.match.params.id
       fetch('http://127.0.0.1/fidapi/main.php?action=affichePlanning' 
-      + '&idEntreprise=' + this.props.idUserRecup
-      + '&idclt=' + idClient
-      + '&statut=1')
+      + '&idEntreprise=' + this.props.idUserRecup)
       .then((response) => response.json())
       .then((response) => {
         console.log(response)
@@ -70,7 +67,9 @@ class Planning extends Component {
                 title: value.title + ' - ' + txtmsg,
                 start: new Date(value.reelstart),
                 end: new Date(value.reelend),
+                idclient: value.idclient,
                 statut: value.statut,
+                idproposant: value.idproposant,
                                   }
               return addDataItems;
         });
@@ -98,7 +97,8 @@ class Planning extends Component {
         + '&endheure=' + end.toLocaleTimeString()
         + '&statut=1'
         + '&reelstart=' + start.toUTCString()
-        + '&reelend=' + end.toUTCString())
+        + '&reelend=' + end.toUTCString()
+        + '&idpropo=' + this.props.idUserRecup)
         .then((response) => response.json())
         .then((response) => {
           console.log(response)
@@ -110,6 +110,7 @@ class Planning extends Component {
                 title,
                 start,
                 end,
+                idclient: idClient,
                 statut: '1'
               },
             ],
@@ -122,42 +123,138 @@ class Planning extends Component {
 
     //Clicking an existing event allows you to remove it
     onSelectEvent(pEvent) {
-      console.log(pEvent)
-      const r = window.confirm(pEvent.title + '\nS: ' + pEvent.start + '\nE:' + pEvent.end + '\nStatut :' + pEvent.statut + "Would you like to remove this event?")
-      if(r === true){
+      console.log(pEvent.idclient)
+      const idClient = this.props.match.params.id
+
+      if(pEvent.idclient === idClient)
+      {
+
+          if(pEvent.idproposant == this.props.idUserRecup)
+          {
+    
+            const r = window.confirm(pEvent.title + '\nS: ' + pEvent.start + '\nE:' + pEvent.end + '\nStatut :' + pEvent.statut + '\n Id propo : ' + pEvent.idproposant + "\n Voulez-vous supprimer cette évènement ?")
+    
+            if(r === true)
+            {
+    
+                fetch('http://127.0.0.1/fidapi/main.php?action=suppressionRdv' 
+                + '&id=' + pEvent.id)
+                .then((response) => response.json())
+                .then((response) => {
+          
+                  if(response === "#DELRDV#SUCCESS")
+                  {
         
-        fetch('http://127.0.0.1/fidapi/main.php?action=suppressionRdv' 
-        + '&id=' + pEvent.id)
-        .then((response) => response.json())
-        .then((response) => {
-  
-          if(response === "#DELRDV#SUCCESS")
-          {
-
-            console.log(response)
-
-            this.setState((prevState, props) => {
-              const events = [...prevState.events]
-              const idx = events.indexOf(pEvent)
-              events.splice(idx, 1);
-              return { events };
-            });
-
+                    console.log(response)
+        
+                    this.setState((prevState, props) => {
+                      const events = [...prevState.events]
+                      const idx = events.indexOf(pEvent)
+                      events.splice(idx, 1);
+                      return { events };
+                    });
+        
+                  }
+                  else if(response === "#DELRDV#FAILED")
+                  {
+        
+                    console.log(response)
+        
+                  }
+        
+                })
+                .catch(err => console.error(err)) 
+    
+            }
+    
+    
           }
-          else if(response === "#DELRDV#FAILED")
+          else
           {
-
-            console.log(response)
-
+    
+            if(pEvent.statut === "1")
+            {
+      
+              const r = window.confirm(pEvent.title + '\nS: ' + pEvent.start + '\nE:' + pEvent.end + '\nStatut :' + pEvent.statut + '\n Id propo : ' + pEvent.idproposant + "\n Voulez-vous confirmer votre rendez-vous ? (Ok) pour confirmer (Annuler) pour refuser.")
+      
+              if(r === false){
+                
+                fetch('http://127.0.0.1/fidapi/main.php?action=suppressionRdv' 
+                + '&id=' + pEvent.id)
+                .then((response) => response.json())
+                .then((response) => {
+          
+                  if(response === "#DELRDV#SUCCESS")
+                  {
+        
+                    console.log(response)
+        
+                    this.setState((prevState, props) => {
+                      const events = [...prevState.events]
+                      const idx = events.indexOf(pEvent)
+                      events.splice(idx, 1);
+                      return { events };
+                    });
+        
+                  }
+                  else if(response === "#DELRDV#FAILED")
+                  {
+        
+                    console.log(response)
+        
+                  }
+        
+                })
+                .catch(err => console.error(err)) 
+              
+              }
+              else
+              {
+      
+                  fetch('http://127.0.0.1/fidapi/main.php?action=confirmationRdv' 
+                  + '&id=' + pEvent.id)
+                  .then((response) => response.json())
+                  .then((response) => {
+            
+                    if(response === "#CONFRDV#SUCCESS")
+                    {
+          
+                      console.log(response)
+      
+                      
+                      setTimeout(() => window.location.pathname = '/planning/' + idClient, 1500)
+          
+                    }
+                    else if(response === "#CONFRDV#FAILED")
+                    {
+          
+                      console.log(response)
+          
+                    }
+          
+                  })
+                  .catch(err => console.error(err))
+      
+              }
+      
+      
+            }
+            else
+            {
+      
+              console.log("Aucune action possible sur une action confirmer !")
+      
+            }
+            
           }
-
-        })
-        .catch(err => console.error(err)) 
 
 
 
       }
+      
     }
+   
+
 
   render() {
     const localizer = BigCalendar.globalizeLocalizer(globalize) 
@@ -188,10 +285,57 @@ class Planning extends Component {
                                       <button onClick={() => this.setState({ view: "day" })}>Day</button>
                                       <button onClick={() => this.setState({ view: "month" })}>Month</button>
                                       <button onClick={() => this.setState({ view: "week" })}>Week</button>
+                                      <button onClick={() => this.setState({ view: "agenda" })}>Agenda</button>
                                       
                                       <BigCalendar
                                         selectable
                                         localizer={localizer}
+                                        eventPropGetter={
+                                          (event, start, end, statut, idclient) => {
+                                            let newStyle = {
+                                              backgroundColor: "#3174ad",
+                                              color: '#fff',
+                                              borderRadius: "0px",
+                                              border: "none",
+                                              width: "100%",
+                                              padding: "2px 5px",
+                                              boxshadow: "none",
+                                              margin: "0"
+                                            };
+
+                                            if(event.idclient === this.props.match.params.id)
+                                            {
+
+                                                if (event.statut === "1"){
+                                                  newStyle.backgroundColor = "#ffa000"
+                                                  newStyle.color = "#FFF"
+                                                  newStyle.borderColor = "#ffa000";
+                                                }
+                                          
+                                                if (event.statut === "2"){
+                                                  newStyle.backgroundColor = "#43a047"
+                                                  newStyle.color = "#FFF"
+                                                  newStyle.borderColor = "#43a047";
+                                                }
+
+                                            }
+                                            else
+                                            {
+
+                                              newStyle.backgroundColor = "#D32F2F"
+                                              newStyle.color = "#D32F2F"
+                                              newStyle.borderColor = "#D32F2F";
+
+                                            }
+                                      
+
+
+                                            return {
+                                              className: "",
+                                              style: newStyle
+                                            };
+                                          }
+                                        }
                                         events={this.state.events}
                                         toolbar={true}
                                         step={15}
@@ -224,6 +368,7 @@ class Planning extends Component {
         
 
     }
+
 
     return (
       <div>

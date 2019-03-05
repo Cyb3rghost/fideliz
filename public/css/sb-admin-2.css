@@ -11979,3 +11979,29 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 /* 02/03/2019 */ 
+
+/* 05/03/2019 */
+
+.rbc-events-container {
+  display: grid;
+  grid-template-rows: repeat(24, 40px); /* 24 hours; each slot 40px tall */
+}
+
+.rbc-day-slot .rbc-event {
+  position: static; /* don't use the default's relative positioning */
+}
+
+.rbc-event {
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  padding: 2px 5px;
+  background-color: #3174ad;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+/* 05/03/2019 */

@@ -1,321 +1,370 @@
 import React, { Component } from 'react';
-import DatePicker from "react-datepicker";
+import { render } from "react-dom";
+import Loader from 'react-loader-spinner'
 
-import "react-datepicker/dist/react-datepicker.css";
+import BigCalendar from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import globalize from 'globalize'
 
-import attente from '../../images/attente.png'
-import confirmation from '../../images/confirme.png'
-import check from '../../images/check.png'
-import refuse from '../../images/croix.png'
-
-import Navbarupclient from './navbarupclient'
+import Navbarup from './navbarupclient'
 import Menu from './menuclient'
 
+require('globalize/lib/cultures/globalize.culture.fr')
+
+ const allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k]);
+
+ const propTypes = {}
+ const items = [
+
+ ];
 
 class Planningclient extends Component {
 
     constructor(props)
     {
 
-        super(props)
+        super(props)   
         this.state = {
-            startDate: new Date(),
-            heures: '',
-            statutMsgPlanning: '',
-            planningAtt: [],
-            planningVld: [],
-            planningHst: []
+            events: [],
+            items: [],
+            view: "week",
+            date: new Date(),
+            width: 500,
+            culture: 'fr',
+            loading: true
+        }
 
-          };
-        this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentDidMount() {
+
+      fetch('http://127.0.0.1/fidapi/main.php?action=affichePlanning' 
+      + '&idEntreprise=' + this.props.idEntRecupClient
+      + '&idclt=' + this.props.idUserRecupClient)
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response)
+
+        this.setState({events:response})
+
+        var testInfo = this.state.events.map( function(value) {
+
+              if(value.statut === '1')
+              {
+
+                var txtmsg = "[ATT]"
+
+              }
+              else if(value.statut === "2")
+              {
+
+                var txtmsg = "[CONF]"
+
+              }
+
+              var addDataItems = { 
+                id: value.id,
+                title: value.title + ' - ' + txtmsg,
+                start: new Date(value.reelstart),
+                end: new Date(value.reelend),
+                idclient: value.idclient,
+                statut: value.statut,
+                idproposant: value.idproposant,
+                                  }
+              return addDataItems;
+        });
+
+        items.push(...testInfo);
+        this.setState({events:items})
+
+
+      })
+      .catch(err => console.error(err))      
+
+    }
+
+    handleSelect = ({ start, end }) => {
+      const title = window.prompt('New Event name')
+      if (title)
+        console.log(title + ' / ' + start + ' / ' + end)
+        fetch('http://127.0.0.1/fidapi/main.php?action=ajoutPlanningEntreprise&idEntreprise=' + this.props.idEntRecupClient 
+        + '&idclt=' + this.props.idUserRecupClient
+        + '&nom=' + title
+        + '&startdate=' + start.toLocaleDateString()
+        + '&endDate=' + end.toLocaleDateString()
+        + '&startheure=' + start.toLocaleTimeString()
+        + '&endheure=' + end.toLocaleTimeString()
+        + '&statut=1'
+        + '&reelstart=' + start.toUTCString()
+        + '&reelend=' + end.toUTCString()
+        + '&idpropo=' + this.props.idUserRecupClient)
+        .then((response) => response.json())
+        .then((response) => {
+          console.log(response)
+          
+          this.setState({
+            events: [
+              ...this.state.events,
+              {
+                title,
+                start,
+                end,
+                statut: '1'
+              },
+            ],
+          })
+
+        })
+        .catch(err => console.error(err))
+
+    }
+
+    //Clicking an existing event allows you to remove it
+    onSelectEvent(pEvent) {
+      console.log(pEvent.id)
+
+      if(pEvent.idclient === this.props.idUserRecupClient)
+      {
+
+
+        if(pEvent.idproposant == this.props.idUserRecupClient)
+        {
+  
+          const r = window.confirm(pEvent.title + '\nS: ' + pEvent.start + '\nE:' + pEvent.end + '\nStatut :' + pEvent.statut + '\n Id propo : ' + pEvent.idproposant + "\n Voulez-vous supprimer cette évènement ?")
+  
+          if(r === true)
+          {
+  
+              fetch('http://127.0.0.1/fidapi/main.php?action=suppressionRdv' 
+              + '&id=' + pEvent.id)
+              .then((response) => response.json())
+              .then((response) => {
+        
+                if(response === "#DELRDV#SUCCESS")
+                {
+      
+                  console.log(response)
+      
+                  this.setState((prevState, props) => {
+                    const events = [...prevState.events]
+                    const idx = events.indexOf(pEvent)
+                    events.splice(idx, 1);
+                    return { events };
+                  });
+      
+                }
+                else if(response === "#DELRDV#FAILED")
+                {
+      
+                  console.log(response)
+      
+                }
+      
+              })
+              .catch(err => console.error(err)) 
+  
+          }
+  
+  
+        }
+        else
+        {
+  
+          if(pEvent.statut === "1")
+          {
+    
+            const r = window.confirm(pEvent.title + '\nS: ' + pEvent.start + '\nE:' + pEvent.end + '\nStatut :' + pEvent.statut + '\n Id propo : ' + pEvent.idproposant + "\n Voulez-vous confirmer votre rendez-vous ? (Ok) pour confirmer (Annuler) pour refuser.")
+    
+            if(r === false){
+              
+              fetch('http://127.0.0.1/fidapi/main.php?action=suppressionRdv' 
+              + '&id=' + pEvent.id)
+              .then((response) => response.json())
+              .then((response) => {
+        
+                if(response === "#DELRDV#SUCCESS")
+                {
+      
+                  console.log(response)
+      
+                  this.setState((prevState, props) => {
+                    const events = [...prevState.events]
+                    const idx = events.indexOf(pEvent)
+                    events.splice(idx, 1);
+                    return { events };
+                  });
+      
+                }
+                else if(response === "#DELRDV#FAILED")
+                {
+      
+                  console.log(response)
+      
+                }
+      
+              })
+              .catch(err => console.error(err)) 
+            
+            }
+            else
+            {
+    
+                fetch('http://127.0.0.1/fidapi/main.php?action=confirmationRdv' 
+                + '&id=' + pEvent.id)
+                .then((response) => response.json())
+                .then((response) => {
+          
+                  if(response === "#CONFRDV#SUCCESS")
+                  {
+        
+                    console.log(response)
+    
+                    
+                    setTimeout(() => window.location.pathname = '/planningclient', 1500)
+        
+                  }
+                  else if(response === "#CONFRDV#FAILED")
+                  {
+        
+                    console.log(response)
+        
+                  }
+        
+                })
+                .catch(err => console.error(err))
+    
+            }
+    
+    
+          }
+          else
+          {
+    
+            console.log("Aucune action possible sur une action confirmer !")
+    
+          }
+          
+        }
+
+
+      }
+      
     }
    
-    handleChange(date) {
-        this.setState({
-          startDate: date
-        });
-    }
 
-    componentDidMount()
-    {
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=planningAttente&identreprise=' + this.props.idEntRecupClient
-        + '&idclient=' + this.props.idUserRecupClient)
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response)
-
-            if(response === "#PLANNINGATT#VIDE")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '3'
-                })
-
-            }
-            else
-            {
-
-                this.setState({
-                    planningAtt: response
-                })
-
-            }
-
-
-
-        })
-        .catch(err => console.error(err))
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=planningValider&identreprise=' + this.props.idEntRecupClient
-        + '&idclient=' + this.props.idUserRecupClient)
-        .then((response) => response.json())
-        .then((response) => {
-
-            if(response === "#PLANNINGVLD#VIDE")
-            {
-
-                console.log(response)
-
-            }
-            else
-            {
-
-                this.setState({
-                    planningVld: response
-                })
-
-            }
-
-
-
-        })
-        .catch(err => console.error(err))
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=planningHistorique&identreprise=' + this.props.idEntRecupClient
-        + '&idclient=' + this.props.idUserRecupClient)
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response)
-
-            if(response === "#PLANNINGHST#VIDE")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '5'
-                })
-
-            }
-            else
-            {
-
-                this.setState({
-                    planningHst: response
-                })
-
-            }
-
-
-
-        })
-        .catch(err => console.error(err))
-
-
-
-    }
-
-    addPlanning(idclient)
-    {
-
-        alert("http://127.0.0.1/fidapi/main.php?action=addPlanning&identreprise=" + this.props.idEntRecupClient + "&idclient=" + idclient + "&date=" + this.state.startDate.toLocaleDateString() + "&heures=" + this.state.heures)
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=addPlanning&identreprise=' + this.props.idEntRecupClient
-        + '&idclient=' + this.props.idUserRecupClient
-        + '&date=' + this.state.startDate.toLocaleDateString()
-        + '&heures=' + this.state.heures)
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response)
-            
-            if(response === "#ADDPLANNING#SUCCESS")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '1'
-                })
-
-                setTimeout(() => window.location.href = "/planning?id=" + idclient,2500)
-
-
-            }
-            else if(response === "#ADDPLANNING#ECHEC")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '2'
-                })
-
-
-            }
-
-
-        })
-        .catch(err => console.error(err))
-
-
-    }
-
-    afficheStatutPlanning()
-    {
-
-        if(this.state.statutMsgPlanning === "1")
-        {
-
-            return <div className="msgSuccessPerso">
-        
-                Votre date a était mis en attente de validation.
-        
-            </div>
-
-        }
-        else if(this.state.statutMsgPlanning === "2")
-        {
-
-            return <div className="msgErrorPerso">
-        
-                Votre date n'a pas était ajouter.
-        
-            </div>
-
-        }
-        else if(this.state.statutMsgPlanning === "4")
-        {
-
-            return <div className="msgErrorPerso">
-        
-                Cette date a été déjà programmer. Veuillez attendre la validation...
-        
-            </div>
-
-        }
-        else if(this.state.statutMsgPlanning === "6")
-        {
-
-            return <div className="msgErrorPerso">
-        
-                Votre date n'a pas pu être confirmer.
-        
-            </div>
-
-        }
-        else if(this.state.statutMsgPlanning === "7")
-        {
-
-            return <div className="msgSuccessPerso">
-        
-                Votre date a bien été valider. Patientez...
-        
-            </div>
-
-        }
-        else if(this.state.statutMsgPlanning === "8")
-        {
-
-            return <div className="msgErrorPerso">
-        
-                Votre date n'a pas pû être refuser.
-        
-            </div>
-
-        }
-        else if(this.state.statutMsgPlanning === "9")
-        {
-
-            return <div className="msgSuccessPerso">
-        
-                Votre date a bien été refuser. Patientez...
-        
-            </div>
-
-        }
-
-
-
-
-    }
-
-    valideDate(idate)
-    {
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=confirmationDate&idate=' + idate
-        + '&idclient=' + this.props.idUserRecupClient
-        + '&idEntreprise=' + this.props.idEntRecupClient)
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response)
-
-            if(response === "#CONFIRMDATE#ECHEC")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '6'
-                })
-
-            }
-            else if(response === "#CONFIRMDATE#SUCCESS")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '7'
-                })
-
-                setTimeout(() => window.location.href = "/planningclient", 2500)
-
-            }
-
-        })
-        .catch(err => console.error(err))
-
-    }
-
-    refuseDate(idate)
-    {
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=refusDate&idate=' + idate
-        + '&idclient=' + this.props.idUserRecupClient
-        + '&idEntreprise=' + this.props.idEntRecupClient)
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response)
-
-            if(response === "#REFUSDATE#ECHEC")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '8'
-                })
-
-            }
-            else if(response === "#REFUSDATE#SUCCESS")
-            {
-
-                this.setState({
-                    statutMsgPlanning: '9'
-                })
-
-                setTimeout(() => window.location.href = "/planningclient", 2500)
-
-            }
-
-        })
-        .catch(err => console.error(err))
-
-
-    }
 
   render() {
-    var idClient = window.location.search.substring(4);
-    const { planningAtt, planningVld, planningHst } = this.state;
+    const localizer = BigCalendar.globalizeLocalizer(globalize) 
+
+    let loadingdata;
+    if(this.state.loading)
+    {
+
+        loadingdata = <div>
+
+                            <Navbarup idUser={this.props.idUserRecupClient} />
+
+                            <div className="container-fluid">
+
+                            <div className="row">
+
+                                    <div className="col-8">
+                                    
+                                        <div className="d-sm-flex align-items-center justify-content-between mb-4">
+                                            <h1 className="h3 mb-0 text-gray-800">Gestion du planning</h1>
+                                        </div>
+
+                                    </div>    
+
+                            </div>
+                            <div className="bg-white" style={{ height: 700 }}>
+                                      <button onClick={() => this.setState({ view: "month" })}><i class="fas fa-plus-square"></i></button>
+                                      <button onClick={() => this.setState({ view: "day" })}>Day</button>
+                                      <button onClick={() => this.setState({ view: "month" })}>Month</button>
+                                      <button onClick={() => this.setState({ view: "week" })}>Week</button>
+                                      <button onClick={() => this.setState({ view: "agenda" })}>Agenda</button>
+                                      
+                                      <BigCalendar
+                                        selectable
+                                        localizer={localizer}
+                                        eventPropGetter={
+                                          (event, start, end, statut, idclient) => {
+                                            let newStyle = {
+                                              backgroundColor: "#3174ad",
+                                              color: '#fff',
+                                              borderRadius: "0px",
+                                              border: "none",
+                                              width: "100%",
+                                              padding: "2px 5px",
+                                              boxshadow: "none",
+                                              margin: "0"
+                                            };
+                                      
+                                            if(event.idclient === this.props.idUserRecupClient)
+                                            {
+
+                                              if (event.statut === "1"){
+                                                newStyle.backgroundColor = "#ffa000"
+                                                newStyle.color = "#FFF"
+                                                newStyle.borderColor = "#ffa000";
+                                              }
+                                        
+                                              if (event.statut === "2"){
+                                                newStyle.backgroundColor = "#43a047"
+                                                newStyle.color = "#FFF"
+                                                newStyle.borderColor = "#43a047";
+                                              }
+
+                                            }
+                                            else
+                                            {
+
+                                              newStyle.backgroundColor = "#D32F2F"
+                                              newStyle.color = "#D32F2F"
+                                              newStyle.borderColor = "#D32F2F";
+
+                                            }
+
+
+                                            return {
+                                              className: "",
+                                              style: newStyle
+                                            };
+                                          }
+                                        }
+                                        events={this.state.events}
+                                        toolbar={true}
+                                        step={15}
+                                        timeslots={8}
+                                        culture={this.state.culture}
+                                        view={this.state.view}
+                                        onView={() => {}}
+                                        date={this.state.date}
+                                        onNavigate={date => this.setState({ date })}
+                                        onSelectEvent={event => this.onSelectEvent(event)}
+                                        onSelectSlot={this.handleSelect}
+                                      /> 
+                                      
+                                    </div>   
+                            </div>
+
+        </div>
+
+
+    }
+    else
+    {
+
+        loadingdata =  <div className="styleLoader"><center><Loader 
+                            type="Triangle"
+                            color="#00BFFF"
+                            height="100"	
+                            width="100"
+                        /> </center></div>
+        
+
+    }
+
 
     return (
       <div>
@@ -328,153 +377,7 @@ class Planningclient extends Component {
 
                 <div id="content">
 
-                    <Navbarupclient idUser={this.props.idUserRecupClient} />
-
-                    <div className="container-fluid">
-
-                    <div className="row">
-
-                            <div className="col-8">
-                            
-                                <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                    <h1 className="h3 mb-0 text-gray-800">Gestion du planning</h1>
-                                </div>
-
-
-                            </div>
-                            <div className="col-4">
-                                                        
-                                <center>
-                                    <div className="form-inline">
-
-                                        <div className="form-group">
-                                            <DatePicker
-                                                className="form-control"
-                                                selected={this.state.startDate}
-                                                onChange={this.handleChange}
-                                            />
-                                        </div>
-                                        <div className="form-group">
-
-                                        <input 
-                                            type="time" 
-                                            min="00:00" 
-                                            max="18:00" 
-                                            className="form-control" 
-                                            value={this.state.heures}
-                                            onChange={(e) => this.setState({heures: e.target.value})}
-                                        /> 
-                                        </div>
-                                        <button type="submit" onClick={() => this.addPlanning(this.props.idUserRecupClient)} className="btn btn-success">Proposer cette date</button>
-                                    </div>
-                                </center>
-
-                            </div>
-
-                    </div>
-
-                    <hr/>
-                    {this.afficheStatutPlanning()}
-                    <br/>
-
-                    {/* DEBUT CODE */}
-
-                    <div className="container-perso">
-                            <div className="row">
-                                <div className="col-md-6">
-                                
-                                <div class="card">
-                                    <h5 class="card-header">Planning en attente</h5>
-                                    <div class="card-body">
-                                        {planningAtt.map((value, index) => 
-                                                    (<div key={index} className="planningAttente">
-                                                                        
-                                                            <div className="row">
-                                                            
-                                                                <div className="col-2">
-                                                                
-                                                                    <img src={attente} width="30" height="30" alt="Planning en attente..."/>
-                                                                
-                                                                </div>
-                                                                <div className="col-10">
-                                                                
-                                                                    {value.date} <img src={refuse} width="30" height="30" onClick={() => this.refuseDate(value.id)} align="right" title="Refuser la date" alt="Refuser la date"/> <img src={check} width="30" onClick={() => this.valideDate(value.id)} height="30" align="right" title="Validation de la date" alt="Validation de la date"/>
-                                                                
-                                                                </div>                                    
-                                                            
-                                                            
-                                                            </div>
-                                                        
-                                                        </div>)
-                                                )} 
-                                    </div>
-                                </div>
-                                
-                                </div>
-                                <div className="col-md-6">
-                                
-
-                                <div class="card">
-                                    <h5 class="card-header">Planning à venir</h5>
-                                    <div class="card-body">
-                                        {planningVld.map((value, index) => 
-                                                        (<div key={index} className="planningAttente">
-                                                                            
-                                                                <div className="row">
-                                                                
-                                                                    <div className="col-2">
-                                                                    
-                                                                        <img src={confirmation} width="30" height="30" alt="Planning en attente..."/>
-                                                                    
-                                                                    </div>
-                                                                    <div className="col-10">
-                                                                    
-                                                                        {value.date}
-                                                                    
-                                                                    </div>                                    
-                                                                
-                                                                
-                                                                </div>
-                                                            
-                                                            </div>)
-                                                    )} 
-                                    </div>
-                                </div>
-                                
-                                </div>
-                            </div>
-
-                            <br/>
-                            
-                            <div class="card">
-                                    <h5 class="card-header">Historique du planning</h5>
-                                    <div class="card-body">
-                                        <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {planningHst.map((value, index) => 
-                                            (<tr key={index}>
-
-                                            <td>{value.date}</td>
-                                            {value.statut === '4' && <td><span className="badgeAccepter">Terminer</span></td>} 
-                                            {value.statut === '2' && <td><span className="badgeAccepter">Accepter</span></td>}  
-                                            {value.statut === '3' && <td><span className="badgeRefuser">Refuser</span></td>}  
-                                                
-                                            </tr>)
-                                        )} 
-                                        </tbody>
-                                    </table>
-                                    </div>
-                                </div>
-
-                        </div>
-                    {/* FIN CODE */}
-
-
-                    </div>
+                    {loadingdata}
 
                 </div>
 
@@ -494,27 +397,11 @@ class Planningclient extends Component {
                 <i className="fas fa-angle-up"></i>
             </a>
 
-            <div className="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    </div>
-                    <div className="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div className="modal-footer">
-                    <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a className="btn btn-primary" href="login.html">Logout</a>
-                    </div>
-                </div>
-                </div>
-            </div>
-
       </div>
     );
   }
 }
+
+Planningclient.propTypes = propTypes
 
 export default Planningclient;
