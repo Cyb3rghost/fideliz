@@ -100,19 +100,38 @@ class Planningclient extends Component {
         + '&idpropo=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
-          console.log(response)
+
           
-          this.setState({
-            events: [
-              ...this.state.events,
-              {
-                title,
-                start,
-                end,
-                statut: '1'
-              },
-            ],
-          })
+          if(response === "#PLAGE#NONDISPONIBLE")
+          {
+
+            console.log(response)
+
+          }
+          else if(response === "#ADDPLANNING#SUCCESS")
+          {
+
+            console.log(response)
+            this.setState({
+              events: [
+                ...this.state.events,
+                {
+                  title,
+                  start,
+                  end,
+                  idclient: this.props.idUserRecupClient,
+                  statut: '1'
+                },
+              ],
+            })
+
+          }
+          else if(response === "#ADDPLANNING#FAILED")
+          {
+
+            console.log(response)
+
+          }
 
         })
         .catch(err => console.error(err))
@@ -120,7 +139,7 @@ class Planningclient extends Component {
     }
 
     //Clicking an existing event allows you to remove it
-    onSelectEvent(pEvent) {
+    onDoubleClickEvent(pEvent) {
       console.log(pEvent.id)
 
       if(pEvent.idclient === this.props.idUserRecupClient)
@@ -334,14 +353,14 @@ class Planningclient extends Component {
                                         }
                                         events={this.state.events}
                                         toolbar={true}
-                                        step={15}
-                                        timeslots={8}
+                                        step={60}
+                                        timeslots={1}
                                         culture={this.state.culture}
                                         view={this.state.view}
                                         onView={() => {}}
                                         date={this.state.date}
                                         onNavigate={date => this.setState({ date })}
-                                        onSelectEvent={event => this.onSelectEvent(event)}
+                                        onDoubleClickEvent={event => this.onDoubleClickEvent(event)}
                                         onSelectSlot={this.handleSelect}
                                       /> 
                                       

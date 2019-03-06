@@ -1944,17 +1944,33 @@ if(isset($_GET['action']))
             $reelend = $_GET['reelend'];
             $idpropo = $_GET['idpropo'];
             
-            $sqldeux = "INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `title`, `start`, `end`, `departheure`, `finheure`, `statut`, `reelstart`, `reelend`, `idproposant`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nom."', '".$starDate."', '".$endDate."', '".$startHeure."', '".$endHeure."', '".$statut."', '".$reelstart."', '".$reelend."', '".$idpropo."')";
-            if($resultdeux = mysqli_query($connect, $sqldeux))
+            $sql = "SELECT * FROM `planning` WHERE `identreprise` = '".$idEntreprise."' AND `reelstart` BETWEEN '".$reelstart."' AND '".$reelend."'";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
             {
 
-                $json = json_encode("#ADDPLANNING#SUCCESS");
+
+                $json = json_encode("#PLAGE#NONDISPONIBLE");
+
 
             }
             else
             {
 
-                $json = json_encode("#ADDPLANNING#FAILED");
+                $sqldeux = "INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `title`, `start`, `end`, `departheure`, `finheure`, `statut`, `reelstart`, `reelend`, `idproposant`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$nom."', '".$starDate."', '".$endDate."', '".$startHeure."', '".$endHeure."', '".$statut."', '".$reelstart."', '".$reelend."', '".$idpropo."')";
+                if($resultdeux = mysqli_query($connect, $sqldeux))
+                {
+    
+                    $json = json_encode("#ADDPLANNING#SUCCESS");
+    
+                }
+                else
+                {
+    
+                    $json = json_encode("#ADDPLANNING#FAILED");
+    
+                }
 
             }
 
