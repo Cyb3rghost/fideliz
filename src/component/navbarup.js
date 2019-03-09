@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import cookie from 'react-cookies'
+import Configuration from './fidconfig'
 
 import News from '../images/news.png'
 import Update from '../images/update.png'
@@ -22,7 +23,7 @@ class Navbarup extends Component {
   componentDidMount()
   {
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=datadashboard&id=' + this.props.idEntreprise)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idEntreprise)
         .then((response) => response.json())
         .then((response) => {
 

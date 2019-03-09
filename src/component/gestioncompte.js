@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner'
+import Configuration from './fidconfig'
 
 import Navbarup from './navbarup'
 import Wallet from '../images/walletabo.png'
@@ -33,11 +34,11 @@ class Gestioncompte extends Component {
     componentDidMount()
     {
 
-        var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup).then(function(response){ 
+        var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup).then(function(response){ 
             return response.json()
           });
     
-        var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeauxInactive&id=' + this.props.idUserRecup).then(function(response){
+        var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeauxInactive&id=' + this.props.idUserRecup).then(function(response){
                     return response.json()
         });
 
@@ -96,7 +97,7 @@ class Gestioncompte extends Component {
 
         alert('Prestation : ' + this.state.maprestation + '\nPrix : ' + this.state.prix)
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=ajoutCadeaux&id=' + this.props.idUserRecup + '&prestation=' + this.state.maprestation + '&prix=' + this.state.prix)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=ajoutCadeaux&id=' + this.props.idUserRecup + '&prestation=' + this.state.maprestation + '&prix=' + this.state.prix)
         .then((response) => response.json())
         .then((response) => {
 
@@ -244,7 +245,7 @@ class Gestioncompte extends Component {
     activeCadeaux(idcadeaux)
     {
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=activePrestation&id=' + idcadeaux)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=activePrestation&id=' + idcadeaux)
         .then((response) => response.json())
         .then((response) => {
 
@@ -279,7 +280,7 @@ class Gestioncompte extends Component {
     desactiveCadeaux(idcadeaux)
     {
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=desactivePrestation&id=' + idcadeaux)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=desactivePrestation&id=' + idcadeaux)
         .then((response) => response.json())
         .then((response) => {
 
@@ -314,7 +315,7 @@ class Gestioncompte extends Component {
     suppressionCadeaux(idcadeaux)
     {
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=suppressionPrestation&id=' + idcadeaux)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=suppressionPrestation&id=' + idcadeaux)
         .then((response) => response.json())
         .then((response) => {
 
@@ -427,7 +428,7 @@ class Gestioncompte extends Component {
         if(statutabo === '1')
         {
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=commandebronzeannuel&id=' + this.props.idUserRecup)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandebronzeannuel&id=' + this.props.idUserRecup)
             .then((response) => response.json())
             .then((response) => {
     
@@ -457,7 +458,7 @@ class Gestioncompte extends Component {
         else
         {
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=commandebronzemensuel&id=' + this.props.idUserRecup)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandebronzemensuel&id=' + this.props.idUserRecup)
             .then((response) => response.json())
             .then((response) => {
     
@@ -495,7 +496,7 @@ class Gestioncompte extends Component {
         if(statutabo === '1')
         {
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=commandeargentannuel&id=' + this.props.idUserRecup)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeargentannuel&id=' + this.props.idUserRecup)
             .then((response) => response.json())
             .then((response) => {
     
@@ -531,7 +532,7 @@ class Gestioncompte extends Component {
         {
 
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=commandeargentmensuel&id=' + this.props.idUserRecup)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeargentmensuel&id=' + this.props.idUserRecup)
             .then((response) => response.json())
             .then((response) => {
     
@@ -575,7 +576,7 @@ class Gestioncompte extends Component {
         if(statutabo === '1')
         {
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=commandeorannuel&id=' + this.props.idUserRecup)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeorannuel&id=' + this.props.idUserRecup)
             .then((response) => response.json())
             .then((response) => {
     
@@ -610,7 +611,7 @@ class Gestioncompte extends Component {
         else
         {
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=commandeormensuel&id=' + this.props.idUserRecup)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeormensuel&id=' + this.props.idUserRecup)
             .then((response) => response.json())
             .then((response) => {
     

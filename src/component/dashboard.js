@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Configuration from './fidconfig'
 
 import Navbarup from './navbarup'
 import Menu from './menu'
@@ -30,13 +31,15 @@ class Dashboard extends Component {
     componentDidMount()
     {
 
-            var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup).then(function(response){ 
+            console.log('AdresseTest : ' + Configuration.hostnameManuelServer)
+
+            var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup).then(function(response){ 
                 return response.json()
             });
-            var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup).then(function(response){
+            var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup).then(function(response){
                         return response.json()
             });
-            var apiRequest3 = fetch('http://127.0.0.1/fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup).then(function(response){
+            var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup).then(function(response){
                         return response.json()
             });
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Configuration from './fidconfig'
 
 class Register extends Component {
 
@@ -24,7 +25,7 @@ class Register extends Component {
         if(passwordEntreprise === retape)
         {
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=inscription&nEntreprise=' + nomEntreprise + '&mailEntreprise=' + emailEntreprise + '&password=' + passwordEntreprise)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=inscription&nEntreprise=' + nomEntreprise + '&mailEntreprise=' + emailEntreprise + '&password=' + passwordEntreprise)
             .then((response) => response.json())
             .then((response) => {
                 console.log(response)

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import edition from '../../images/gestionCompteProfil.png'
+import Configuration from '../fidconfig'
 
 import Navbarupclient from './navbarupclient'
 import Menu from './menuclient'
@@ -46,7 +47,7 @@ class Fichecoclient extends Component {
     componentDidMount()
     {
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -69,7 +70,7 @@ class Fichecoclient extends Component {
         })
         .catch(err => console.error(err))
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirCarteClient&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -106,7 +107,7 @@ class Fichecoclient extends Component {
                     )
                   )}
 
-                  fetch('http://127.0.0.1/fidapi/main.php?action=listePointageClient&idfid=' + this.state.carteId
+                  fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=listePointageClient&idfid=' + this.state.carteId
                   + '&idclient=' + this.props.idUserRecupClient 
                   + '&ident=' + this.props.idEntRecupClient)
                   .then((response) => response.json())
@@ -139,7 +140,7 @@ class Fichecoclient extends Component {
         })
         .catch(err => console.error(err))
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=checkPointage&id=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkPointage&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -158,7 +159,7 @@ class Fichecoclient extends Component {
         .catch(err => console.error(err))
 
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -210,9 +211,9 @@ class Fichecoclient extends Component {
             <div className="container-perso">
                 <div className="panelCarte">
                     <div id="personalizecarte">  
-                        <img src={'http://127.0.0.1/fidapi/img/' + this.state.carteImgBackground} className="img-responsive" id="img1" alt="" /> 
+                        <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.carteImgBackground} className="img-responsive" id="img1" alt="" /> 
                         <h2 id="positionDonnee">{this.state.carteNom} {this.state.cartePrenom} <br/><small>{this.state.carteDateCreation} - {this.state.carteNbPointage} / {this.state.carteLimitPointage} Pointages</small></h2>
-                        <img src={'http://127.0.0.1/fidapi/img/' + this.state.carteImgIcon}  width="100" height="100" id="img2" className="img-rounded" alt="" />
+                        <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.carteImgIcon}  width="100" height="100" id="img2" className="img-rounded" alt="" />
                         <QRCode
                             value={this.state.carteQrCode}
                             size={100}
@@ -232,115 +233,46 @@ class Fichecoclient extends Component {
     confirmation()
     {
 
-        var idClient = window.location.search.substring(4);
         var audio = new Audio();
         audio.src = "sons/bip.mp3"
 
         audio.play()
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=checkDatePointage&idclient=' + this.props.idUserRecupClient
-        + '&identreprise=' + this.props.idEntRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
             switch (response) {
-                case '#CHKDATEPTGE#SUCCESS':
+                case '#CLOTURATION#SUCCESS':
                     console.log(response)
-                    fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
+                    break;   
+                case '#CLOTURATION#NONECESSAIRE':
+                    console.log(response)
+                    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
                     .then((response) => response.json())
                     .then((response) => {
             
                         switch (response) {
-                            case '#CLOTURATION#SUCCESS':
+                            case '#UPTENTREPRISE#SUCCESS':
                                 console.log(response)
-                                break;   
-                            case '#CLOTURATION#NONECESSAIRE':
-                                console.log(response)
-                                fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
-                                .then((response) => response.json())
-                                .then((response) => {
-                        
-                                    switch (response) {
-                                        case '#UPTENTREPRISE#SUCCESS':
-                                            console.log(response)
-                                            this.setState({
-                                                cartePointageMsg: '3'
-                                            })
-                                            setTimeout(() => window.location.href = "/fichecoclient",1500)
-                                            break;   
-                                        case '#UPTENTREPRISE#ECHEC':
-                                            console.log(response)
-                                            this.setState({
-                                                cartePointageMsg: '4'
-                                            })
-                                            break;            
-                                        default:
-                                            break;
-                                    }
-                        
+                                this.setState({
+                                    cartePointageMsg: '3'
                                 })
-                                .catch(err => console.error(err))
+                                setTimeout(() => window.location.href = "/fichecoclient",1500)
+                                break;   
+                            case '#UPTENTREPRISE#ECHEC':
+                                console.log(response)
+                                this.setState({
+                                    cartePointageMsg: '4'
+                                })
                                 break;            
                             default:
                                 break;
                         }
             
-            
-                
-            
                     })
-                    .catch(err => console.error(err))  
-                    break;   
-                case '#CHKDATEPTGE#NOEXIST':
-                    console.log(response)
-                    fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
-                    .then((response) => response.json())
-                    .then((response) => {
-            
-                        switch (response) {
-                            case '#CLOTURATION#SUCCESS':
-                                console.log(response)
-                                break;   
-                            case '#CLOTURATION#NONECESSAIRE':
-                                console.log(response)
-                                fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
-                                .then((response) => response.json())
-                                .then((response) => {
-                        
-                                    switch (response) {
-                                        case '#UPTENTREPRISE#SUCCESS':
-                                            console.log(response)
-                                            this.setState({
-                                                cartePointageMsg: '3'
-                                            })
-                                            setTimeout(() => window.location.href = "/fichecoclient",1500)
-                                            break;   
-                                        case '#UPTENTREPRISE#ECHEC':
-                                            console.log(response)
-                                            this.setState({
-                                                cartePointageMsg: '4'
-                                            })
-                                            break;            
-                                        default:
-                                            break;
-                                    }
-                        
-                                })
-                                .catch(err => console.error(err))
-                                break;            
-                            default:
-                                break;
-                        }
-            
-            
-                
-            
-                    })
-                    .catch(err => console.error(err))                    
-                    break;   
-                case '#CHKDATEPTGE#ECHEC': 
-                    console.log(response)
-                    break;
+                    .catch(err => console.error(err))
+                    break;            
                 default:
                     break;
             }
@@ -349,7 +281,7 @@ class Fichecoclient extends Component {
     
 
         })
-        .catch(err => console.error(err))
+        .catch(err => console.error(err))  
 
 
     }
@@ -358,18 +290,8 @@ class Fichecoclient extends Component {
     {
 
 
-        if(this.state.cartePointageMsg === '1')
-        {
 
-            return <div className="alert alert-success">
-        
-                <center>Votre pointage est en attente ! <br/><button onClick={this.confirmation.bind(this)} type="button" class="btn btn-dark">Veuillez confirmer !</button></center>
-        
-            </div>
-
-
-        }
-        else if (this.state.cartePointageMsg === '2') 
+        if (this.state.cartePointageMsg === '2') 
         {
             
 
@@ -403,6 +325,65 @@ class Fichecoclient extends Component {
 
         }  
 
+
+    }
+
+    scannerPointage()
+    {
+
+        if(this.state.cartePointageMsg === '1')
+        {
+
+            if(navigator.getUserMedia){
+                navigator.getUserMedia(
+                {
+                  video: true
+                }, 
+                function(localMediaStream){}, 
+                function(err){
+                  console.log('The following error occurred when trying to access the camera: ' + err); 
+                }
+
+            
+              );
+                return <div className="row">
+
+                <div className="col-md-12">
+                <div className="card border-left-success border-right-success shadow h-100 py-2">
+                        <div className="card-body">
+                        <center>Votre pointage est en attente ! <br/>
+                              <button type="button" onClick={() => window.location.href='/qrcodeclient'} className="btn btn-dark"><i className="fas fa-qrcode"></i> QRCODE</button>
+                        </center>
+                        {/*<button onClick={this.confirmation.bind(this)} type="button" class="btn btn-dark">Veuillez confirmer !</button></center>*/}
+                        </div>
+                    </div>
+                </div>                           
+                </div>
+
+              } else {
+                console.log('Sorry, browser does not support camera access');
+
+                return <div className="row">
+
+                <div className="col-md-12">
+                <div className="card border-left-success border-right-success shadow h-100 py-2">
+                        <div className="card-body">
+                        <center>Votre pointage est en attente ! <br/>
+                            <button type="button" onClick={this.confirmation.bind(this)} className="btn btn-dark"><i className="fas fa-handshake"></i> Validation manuelle</button>
+                        </center>
+                        {/*<button onClick={this.confirmation.bind(this)} type="button" class="btn btn-dark">Veuillez confirmer !</button></center>*/}
+                        </div>
+                    </div>
+                </div>                           
+                </div>
+
+              }
+
+
+            
+
+
+        }
 
     }
 
@@ -489,19 +470,27 @@ class Fichecoclient extends Component {
                         
                         </div>
                         <div className="col-md-6">
-                        
+
+                            {this.scannerPointage()}<br/>
+
+                            <div className="row">
+
+                            <div className="col-md-12">
                             <div className="card border-left-primary shadow h-100 py-2">
-                                <div className="card-body">
-                                <div className="row no-gutters align-items-center">
-                                    <div className="col mr-2">
-                                    <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Economie réalisés sur les prestations</div>
-                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.prestationsClients} €</div>
+                                    <div className="card-body">
+                                    <div className="row no-gutters align-items-center">
+                                        <div className="col mr-2">
+                                        <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Economie réalisés sur les prestations</div>
+                                        <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.prestationsClients} €</div>
+                                        </div>
+                                        <div className="col-auto">
+                                        <i class="fas fa-exchange-alt fa-2x"></i>
+                                        </div>
                                     </div>
-                                    <div className="col-auto">
-                                    <i class="fas fa-exchange-alt fa-2x"></i>
                                     </div>
                                 </div>
-                                </div>
+                            </div>                           
+
                             </div>
                         
                         </div>

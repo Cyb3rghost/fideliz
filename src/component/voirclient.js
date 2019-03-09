@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner'
+import Configuration from './fidconfig'
 
 import Navbarup from './navbarup'
 import Menu from './menu'
@@ -41,6 +42,7 @@ class Voirclient extends Component {
             cartePointageMsg: '',
             gainsClient: '',
             prestationsClients: '',
+            value: null,
             loading: false
 
         }
@@ -52,28 +54,28 @@ class Voirclient extends Component {
 
             var idClient = this.props.match.params.id
 
-            var apiRequest1 = fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + idClient).then(function(response){ 
+            var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirCarteClient&id=' + idClient).then(function(response){ 
                 return response.json()
             });
 
-            var apiRequest2 = fetch('http://127.0.0.1/fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup
+            var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup
             + '&idclt=' + idClient).then(function(response){ 
                 return response.json()
             });
 
-            var apiRequest3 = fetch('http://127.0.0.1/fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + idClient).then(function(response){ 
+            var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + idClient).then(function(response){ 
                 return response.json()
             });
 
-            var apiRequest4 = fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient).then(function(response){ 
+            var apiRequest4 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + idClient).then(function(response){ 
                 return response.json()
             });
 
-            var apiRequest5 = fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup).then(function(response){ 
+            var apiRequest5 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup).then(function(response){ 
                 return response.json()
             });
 
-            var apiRequest6 = fetch('http://127.0.0.1/fidapi/main.php?action=prestationsCadeauxClients&idcarte=' + this.state.carteId
+            var apiRequest6 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=prestationsCadeauxClients&idcarte=' + this.state.carteId
             + '&idclt=' + idClient).then(function(response){ 
                 return response.json()
             });
@@ -226,277 +228,31 @@ class Voirclient extends Component {
 
                       }
 
+                      /* Refaire le check du pointage en attente (stateMessage = 5) */
+
+                      fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=verificationPointage&id=' + idClient)
+                      .then((response) => response.json())
+                      .then((response) => {
+              
+                          if(response === "#VERIFPOINTAGE#EXISTE")
+                          {
+
+                                this.setState({
+                                    cartePointageMsg: '5'
+                                })
+
+
+                          }
+                  
+              
+                      })
+                      .catch(err => console.error(err))
+
 
                 }
 
     
             }.bind(this));
-
-
-            /*fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + idClient)
-            .then((response) => response.json())
-            .then((response) => {
-    
-                if(response === "#VOIRCARTE#NOEXIST")
-                {
-    
-                    this.setState({
-                        carteStatutMsg: '1'                                      
-                    })
-
-                    fetch('http://127.0.0.1/fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup
-                    + '&idclt=' + idClient)
-                    .then((response) => response.json())
-                    .then((response) => {
-            
-                        this.setState({
-                            gainsClient: response                    
-                        })
-
-                        fetch('http://127.0.0.1/fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + idClient)
-                        .then((response) => response.json())
-                        .then((response) => {
-                
-                            if(response === "#GTTPRSTATION#FAILED")
-                            {
-
-                                console.log(response)
-
-
-                            }
-                            else
-                            {
-
-                                console.log(response)
-
-                                this.setState({
-                                    prestationsClients: response
-                                                        
-                                })
-
-                                fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient)
-                                .then((response) => response.json())
-                                .then((response) => {
-                        
-                                    {response.map((value, index) => 
-                                        (
-                                            this.setState({
-                                                dataInscription: value.dinscription,
-                                                nomClient: value.nom,
-                                                prenomClient: value.prenom,
-                                                adresseClient: value.adresse,
-                                                emailClient: value.email,
-                                                telephoneClient: value.telephone,
-                                                carteTotal: value.nbcarteterminer,
-                                                pointageTotal: value.nbpointagetotal                     
-                                            })
-                                        )
-                                      )}
-          
-                                      fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup)
-                                      .then((response) => response.json())
-                                      .then((response) => {
-                              
-                                          console.log(response)
-                              
-                                          if(response === "#SLCTLISTECADEAUX#ECHEC")
-                                          {
-                              
-                                              this.setState({
-                                                  carteStatutMsg: '10'
-                                              })
-                              
-                                          }
-                                          else
-                                          {
-                              
-                                              this.setState({
-                                                  afflisteCadeaux: response
-                                              })
-                              
-                                          }
-                                          
-                                          fetch('http://127.0.0.1/fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup
-                                          + '&idclt=' + idClient)
-                                          .then((response) => response.json())
-                                          .then((response) => {
-                                  
-                                              this.setState({
-                                                  gainsClient: response                    
-                                              })
-          
-                                              fetch('http://127.0.0.1/fidapi/main.php?action=prestationsCadeauxClients&idcarte=' + this.state.carteId
-                                              + '&idclt=' + idClient)
-                                              .then((response) => response.json())
-                                              .then((response) => {
-                                      
-                                                  if(response === "#GTTPRSTATION#FAILED")
-                                                  {
-          
-                                                      console.log(response)
-          
-          
-                                                  }
-                                                  else
-                                                  {
-          
-                                                      this.setState({
-                                                          prestationsClients: response,
-                                                          loading: true                 
-                                                      })
-          
-                                                  }
-          
-                                              })
-                                              .catch(err => console.error(err))
-                                  
-                                          })
-                                          .catch(err => console.error(err))    
-          
-          
-                              
-                                      })
-                                      .catch(err => console.error(err)) 
-                            
-                        
-                                })
-                                .catch(err => console.error(err))
-
-
-
-                            }
-
-                        })
-                        .catch(err => console.error(err))
-            
-                    })
-                    .catch(err => console.error(err))    
-
-                    
-                }
-                else
-                {
-    
-                    
-                    this.setState({
-                        carteStatutMsg: '2'
-                    })
-    
-                    {response.map((valuedeux, index) => 
-                        (
-                            this.setState({
-                                carteId: valuedeux.id,
-                                carteDateCreation: valuedeux.datecreation,
-                                carteNom: valuedeux.nom,
-                                cartePrenom: valuedeux.prenom,
-                                carteNbPointage: valuedeux.nbpointage,
-                                carteLimitPointage: valuedeux.limitpointage,
-                                carteStatut: valuedeux.statut,
-                                carteCadeaux: valuedeux.cadeaux,
-                                carteImgBackground: valuedeux.imgbackground,
-                                carteImgIcon: valuedeux.imgicon,
-                                carteQrCode: valuedeux.qrcode                                            
-                            })
-                        )
-                      )}
-
-                      fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient)
-                      .then((response) => response.json())
-                      .then((response) => {
-              
-                          {response.map((value, index) => 
-                              (
-                                  this.setState({
-                                      dataInscription: value.dinscription,
-                                      nomClient: value.nom,
-                                      prenomClient: value.prenom,
-                                      adresseClient: value.adresse,
-                                      emailClient: value.email,
-                                      telephoneClient: value.telephone,
-                                      carteTotal: value.nbcarteterminer,
-                                      pointageTotal: value.nbpointagetotal                     
-                                  })
-                              )
-                            )}
-
-                            fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup)
-                            .then((response) => response.json())
-                            .then((response) => {
-                    
-                                console.log(response)
-                    
-                                if(response === "#SLCTLISTECADEAUX#ECHEC")
-                                {
-                    
-                                    this.setState({
-                                        carteStatutMsg: '10'
-                                    })
-                    
-                                }
-                                else
-                                {
-                    
-                                    this.setState({
-                                        afflisteCadeaux: response
-                                    })
-                    
-                                }
-                                
-                                fetch('http://127.0.0.1/fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup
-                                + '&idclt=' + idClient)
-                                .then((response) => response.json())
-                                .then((response) => {
-                        
-                                    this.setState({
-                                        gainsClient: response                    
-                                    })
-
-                                    fetch('http://127.0.0.1/fidapi/main.php?action=prestationsCadeauxClients&idcarte=' + this.state.carteId
-                                    + '&idclt=' + idClient)
-                                    .then((response) => response.json())
-                                    .then((response) => {
-                            
-                                        if(response === "#GTTPRSTATION#FAILED")
-                                        {
-
-                                            console.log(response)
-
-
-                                        }
-                                        else
-                                        {
-
-                                            this.setState({
-                                                prestationsClients: response,
-                                                loading: true                 
-                                            })
-
-                                        }
-
-                                    })
-                                    .catch(err => console.error(err))
-                        
-                                })
-                                .catch(err => console.error(err))    
-
-
-                    
-                            })
-                            .catch(err => console.error(err)) 
-                  
-              
-                      })
-                      .catch(err => console.error(err))
-    
-    
-                }
-    
-    
-        
-    
-            })
-            .catch(err => console.error(err))*/
-
 
     }
 
@@ -523,9 +279,9 @@ class Voirclient extends Component {
             return <div>
             <div className="container-perso"><div className="panelCarte">
                 <div id="personalizecarte">  
-                    <img src={'http://127.0.0.1/fidapi/img/' + this.state.carteImgBackground} className="img-responsive" id="img1" alt="" /> 
+                    <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.carteImgBackground} className="img-responsive" id="img1" alt="" /> 
                     <h2 id="positionDonnee">{this.state.carteNom} {this.state.cartePrenom} <br/><small>{this.state.carteDateCreation} - {this.state.carteNbPointage} / {this.state.carteLimitPointage} Pointages</small></h2>
-                    <img src={'http://127.0.0.1/fidapi/img/' + this.state.carteImgIcon}  width="100" height="100" id="img2" className="img-rounded" alt="" />
+                    <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.carteImgIcon}  width="100" height="100" id="img2" className="img-rounded" alt="" />
                     <QRCode
                         value={this.state.carteQrCode}
                         size={100}
@@ -549,12 +305,8 @@ class Voirclient extends Component {
         var myprestation = this.state.selectedOption.label
 
         var mysplitprestation = myprestation.split(" - ");
-        var audio = new Audio();
-        audio.src = "sons/bip.mp3"
 
-        
-
-        fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + idClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + idClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -565,11 +317,11 @@ class Voirclient extends Component {
                         cartePointageMsg: '4'
                     })
 
-                    setTimeout(() => window.location.href = "/voirclient?id=" + idClient,2500)
+                    setTimeout(() => window.location.href = "/voirclient/" + idClient,2500)
                     break;   
                 case '#CLOTURATION#NONECESSAIRE':
                     console.log(response)
-                    fetch('http://127.0.0.1/fidapi/main.php?action=pointage&identreprise=' + this.state.idEntreprise 
+                    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=pointage&identreprise=' + this.state.idEntreprise 
                     + '&idcarte=' + this.state.carteId
                     + '&idclient=' + idClient
                     + '&prestation=' + mysplitprestation[0]
@@ -580,44 +332,38 @@ class Voirclient extends Component {
                         switch (response) {
                             case "#CARTEUPTCODE#SUCCESS":
                                 console.log(response)
-                                audio.play();
                                 this.setState({
                                     cartePointageMsg: '1'
                                 })
             
-                                setTimeout(() => window.location.href = "/voirclient?id=" + idClient,2500)
+                                setTimeout(() => window.location.href = "/voirclient/" + idClient,2500)
                                 break;
                             case "#CARTEUPTCODE#ECHEC":
                                 console.log(response)
-                                audio.play();
                                 this.setState({
                                     cartePointageMsg: '2'
                                 })
                                 break; 
                             case "#ADDPOINTAGE#ECHEC":
                                 console.log(response)
-                                audio.play();
                                 this.setState({
                                     cartePointageMsg: '2'
                                 })
                                 break;     
                             case "#DATACLT#ECHEC":
                                 console.log(response)
-                                audio.play();
                                 this.setState({
                                     cartePointageMsg: '2'
                                 })
                                 break; 
                             case "#DATAENT#ECHEC":
                                 console.log(response)
-                                audio.play();
                                 this.setState({
                                     cartePointageMsg: '2'
                                 })
                                 break; 
                             case "#CHECKPOINTAGE#EXISTE":
                                 console.log(response)
-                                audio.play();
                                 this.setState({
                                     cartePointageMsg: '3'
                                 })
@@ -728,7 +474,18 @@ class Voirclient extends Component {
         
             </div>
 
-        }        
+        }    
+        else if (this.state.cartePointageMsg === '5') 
+        {
+            
+
+            return <div className="alert alert-warning">
+        
+                <center>Votre client possède un pointage en attente...</center>
+        
+            </div>
+
+        }    
 
 
     }
@@ -814,6 +571,8 @@ class Voirclient extends Component {
 
 
                                 {this.afficheActBouton()}
+
+                                <br/>
                             
                             </div>
 

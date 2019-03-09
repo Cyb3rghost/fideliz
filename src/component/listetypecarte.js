@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Configuration from './fidconfig'
 
 import Navbarup from './navbarup'
 import loyaltyCard from '../images/loyaltycard.png';
@@ -44,7 +45,7 @@ class Listetypecarte extends Component {
     componentDidMount()
     {
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -67,7 +68,7 @@ class Listetypecarte extends Component {
         })
         .catch(err => console.error(err))
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirCarteClient&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -112,7 +113,7 @@ class Listetypecarte extends Component {
         })
         .catch(err => console.error(err))
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=checkPointage&id=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkPointage&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -160,9 +161,9 @@ class Listetypecarte extends Component {
             <div className="container-perso">
                 <div className="panelCarte">
                     <div id="personalizecarte">  
-                        <img src={'http://127.0.0.1/fidapi/img/' + this.state.carteImgBackground} className="img-responsive" id="img1" alt="" /> 
+                        <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.carteImgBackground} className="img-responsive" id="img1" alt="" /> 
                         <h2 id="positionDonnee">{this.state.carteNom} {this.state.cartePrenom} <br/><small>{this.state.carteDateCreation} - {this.state.carteNbPointage} / {this.state.carteLimitPointage} Pointages</small></h2>
-                        <img src={'http://127.0.0.1/fidapi/img/' + this.state.carteImgIcon}  width="100" height="100" id="img2" className="img-rounded" alt="" />
+                        <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.carteImgIcon}  width="100" height="100" id="img2" className="img-rounded" alt="" />
                         <QRCode
                             value={this.state.carteQrCode}
                             size={100}
@@ -196,7 +197,7 @@ class Listetypecarte extends Component {
         var idClient = window.location.search.substring(4);
 
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=checkDatePointage&idclient=' + this.props.idUserRecupClient
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkDatePointage&idclient=' + this.props.idUserRecupClient
         + '&identreprise=' + this.props.idEntRecupClient)
         .then((response) => response.json())
         .then((response) => {
@@ -204,7 +205,7 @@ class Listetypecarte extends Component {
             switch (response) {
                 case '#CHKDATEPTGE#SUCCESS':
                     console.log(response)
-                    fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
+                    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
                     .then((response) => response.json())
                     .then((response) => {
             
@@ -214,7 +215,7 @@ class Listetypecarte extends Component {
                                 break;   
                             case '#CLOTURATION#NONECESSAIRE':
                                 console.log(response)
-                                fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
+                                fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
                                 .then((response) => response.json())
                                 .then((response) => {
                         
@@ -245,7 +246,7 @@ class Listetypecarte extends Component {
                     break;   
                 case '#CHKDATEPTGE#NOEXIST':
                     console.log(response)
-                    fetch('http://127.0.0.1/fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
+                    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
                     .then((response) => response.json())
                     .then((response) => {
             
@@ -255,7 +256,7 @@ class Listetypecarte extends Component {
                                 break;   
                             case '#CLOTURATION#NONECESSAIRE':
                                 console.log(response)
-                                fetch('http://127.0.0.1/fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
+                                fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
                                 .then((response) => response.json())
                                 .then((response) => {
                         

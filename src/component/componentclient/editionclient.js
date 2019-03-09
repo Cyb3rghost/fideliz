@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Configuration from '../fidconfig'
 
 import userClient from '../../images/adduser.png';
 
@@ -33,7 +34,7 @@ class Editionclient extends Component {
     {
 
         var idClient = window.location.search.substring(4);
-        fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -60,7 +61,7 @@ class Editionclient extends Component {
     {
 
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=majClient&idclient=' + this.props.idUserRecupClient
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=majClient&idclient=' + this.props.idUserRecupClient
         + '&nom=' + this.state.nomClient
         + '&prenom=' + this.state.prenomClient
         + '&email=' + this.state.emailClient
@@ -109,7 +110,7 @@ class Editionclient extends Component {
         if(this.state.nouveauMdp === this.state.retapeMdp)
         {
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=changeMdp&idclient=' + this.props.idUserRecupClient
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=changeMdp&idclient=' + this.props.idUserRecupClient
             + '&oldmdp=' + this.state.actuelMdp
             + '&nouveaumdp=' + this.state.nouveauMdp)
             .then((response) => response.json())

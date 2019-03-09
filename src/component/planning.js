@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { render } from "react-dom";
 import Loader from 'react-loader-spinner'
+import Configuration from './fidconfig'
 
 import BigCalendar from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -39,7 +40,7 @@ class Planning extends Component {
 
     componentDidMount() {
 
-      fetch('http://127.0.0.1/fidapi/main.php?action=affichePlanning' 
+      fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=affichePlanning' 
       + '&idEntreprise=' + this.props.idUserRecup)
       .then((response) => response.json())
       .then((response) => {
@@ -88,7 +89,7 @@ class Planning extends Component {
       const idClient = this.props.match.params.id
       if (title)
         console.log(title + ' / ' + start + ' / ' + end)
-        fetch('http://127.0.0.1/fidapi/main.php?action=ajoutPlanningEntreprise&idEntreprise=' + this.props.idUserRecup 
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=ajoutPlanningEntreprise&idEntreprise=' + this.props.idUserRecup 
         + '&idclt=' + idClient
         + '&nom=' + title
         + '&startdate=' + start.toLocaleDateString()
@@ -137,7 +138,7 @@ class Planning extends Component {
             if(r === true)
             {
     
-                fetch('http://127.0.0.1/fidapi/main.php?action=suppressionRdv' 
+                fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=suppressionRdv' 
                 + '&id=' + pEvent.id)
                 .then((response) => response.json())
                 .then((response) => {
@@ -179,7 +180,7 @@ class Planning extends Component {
       
               if(r === false){
                 
-                fetch('http://127.0.0.1/fidapi/main.php?action=suppressionRdv' 
+                fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=suppressionRdv' 
                 + '&id=' + pEvent.id)
                 .then((response) => response.json())
                 .then((response) => {
@@ -211,7 +212,7 @@ class Planning extends Component {
               else
               {
       
-                  fetch('http://127.0.0.1/fidapi/main.php?action=confirmationRdv' 
+                  fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=confirmationRdv' 
                   + '&id=' + pEvent.id)
                   .then((response) => response.json())
                   .then((response) => {

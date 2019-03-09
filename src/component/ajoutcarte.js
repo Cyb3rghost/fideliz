@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Configuration from './fidconfig'
 
 import Navbarup from './navbarup'
 import Menu from './menu'
@@ -36,7 +37,7 @@ class Ajoutcarte extends Component {
             dateDuJour: date
         })
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup)
         .then((response) => response.json())
         .then((response) => {
 
@@ -73,7 +74,7 @@ class Ajoutcarte extends Component {
         const { idUserRecup, infosCarte, infosCarteIcon } = this.props;
         var idClient = window.location.search.substring(4);
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=creationCarte&id=' + idClient
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=creationCarte&id=' + idClient
         + '&imgfondcarte=' + this.props.bkdgCarte
         + '&imgiconcarte=' + this.props.iconCarte
         + '&pointage=' + limitPointage
@@ -227,8 +228,8 @@ class Ajoutcarte extends Component {
                     
                         <div className="panelCarte">
                         <div id="personalizecarte">  
-                            <img src={'http://127.0.0.1/fidapi/img/' + this.props.bkdgCarte} className="img-responsive" id="img1" alt="" />
-                            <img src={'http://127.0.0.1/fidapi/img/' + this.props.iconCarte}  className="img-responsive" id="img2" className="img-rounded" alt="" />
+                            <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.props.bkdgCarte} className="img-responsive" id="img1" alt="" />
+                            <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.props.iconCarte}  className="img-responsive" id="img2" className="img-rounded" alt="" />
                             <QRCode
                                 value=""
                                 size={100}

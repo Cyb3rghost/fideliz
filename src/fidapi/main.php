@@ -719,6 +719,30 @@ if(isset($_GET['action']))
 
 
             break;
+        case 'verificationPointage':
+
+            $idClient = $_GET['id'];
+
+            $sqltrois = "SELECT * FROM `pointage` WHERE `idclient` = $idClient AND `statut` = '1'";
+            $resultquatre = mysqli_query($connect, $sqltrois);
+            if(mysqli_num_rows($resultquatre))
+            {
+
+                $json = json_encode("#VERIFPOINTAGE#EXISTE");
+
+            }
+            else
+            {
+
+                $json = json_encode("#VERIFPOINTAGE#NOEXISTE");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
         case 'checkPointage':
             $id = $_GET['id'];
 
@@ -837,11 +861,12 @@ if(isset($_GET['action']))
             {
         
                 $nombrePointageTotal = $raw['nbpointagetotal'];
+                $pointBoutique = $raw['pointboutique'];
         
             }
 
             mysqli_query($connect, "UPDATE `acctclient` SET `nbpointagetotal` = $nombrePointageTotal + 1 WHERE `id` = $id");
-
+            mysqli_query($connect, "UPDATE `acctclient` SET `pointboutique` = $pointBoutique + 1 WHERE `id` = $id OR `idsouche` = $id");
             $resultrois = mysqli_query($connect, "SELECT * FROM `accsociete` WHERE `id` = $idEntreprise");
             
             while($rbw = mysqli_fetch_assoc($resultrois))

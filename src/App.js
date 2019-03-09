@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import cookie from 'react-cookies'
 import Select from 'react-select';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
-
+import Configuration from './component/fidconfig'
 import './App.css';
 
 /* INTERFACE ENTREPRISE */
@@ -17,6 +17,7 @@ import Modifclient from './component/modifclient'
 import Gestioncompte from './component/gestioncompte'
 import Listetypecarte from './component/listetypecarte'
 import Ajoutcarte from './component/ajoutcarte'
+import Log from './component/log'
 /* INTERFACE ENTREPRISE */
 
 /* INTERFACE CLIENT */
@@ -24,12 +25,14 @@ import Fichecoclient from './component/componentclient/fichecoclient'
 import Editionclient from './component/componentclient/editionclient'
 import Mescadeaux from './component/componentclient/mescadeaux'
 import Planningclient from './component/componentclient/planningclient'
+import Qrcodeclient from './component/componentclient/qrcodeclient'
 /* INTERFACE CLIENT */
 
 
 import Register from './component/register'
 import Error from './component/404'
 import Maintenance from './component/maintenance'
+import Table from './component/testcomposant/table'
 
 class App extends Component {
 
@@ -72,7 +75,7 @@ class App extends Component {
     componentDidMount()
     {
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=maintenance')
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=maintenance')
         .then((response) => response.json())
         .then((response) => {
             console.log(response)
@@ -92,7 +95,7 @@ class App extends Component {
         })
         .catch(err => console.error(err))
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=selectionSociete')
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=selectionSociete')
         .then((response) => response.json())
         .then((response) => {
           console.log(response)
@@ -109,12 +112,12 @@ class App extends Component {
   
       const {connexionEmail, connexionPassword, isLogged, idUser } = this.state;
 
-      fetch('http://127.0.0.1/fidapi/main.php?action=jourRestantMaj&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
+      fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=jourRestantMaj&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
       .then((response) => response.json())
       .then((response) => {
           console.log(response)
           
-          fetch('http://127.0.0.1/fidapi/main.php?action=connexion&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
+          fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=connexion&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
           .then((response) => response.json())
           .then((response) => {
               console.log(response)
@@ -172,7 +175,7 @@ class App extends Component {
   
         //alert('Email : ' + emailClient + '\n Password : ' + passwordClient)
   
-        fetch('http://127.0.0.1/fidapi/main.php?action=connexionClient&idEntreprise=' + selectedOption.value + '&cntemail=' + connexionEmailClient + '&cntpassword=' + connexionPasswordClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=connexionClient&idEntreprise=' + selectedOption.value + '&cntemail=' + connexionEmailClient + '&cntpassword=' + connexionPasswordClient)
         .then((response) => response.json())
         .then((response) => {
           console.log(response)
@@ -363,12 +366,15 @@ class App extends Component {
             <Route path="/gestioncompte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
             <Route path="/listetypecarte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Listetypecarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
             <Route path="/ajoutcarte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Ajoutcarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
+            <Route path="/log" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Log loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
             <Route path="/maintenance" render={() => <Maintenance version={this.state.dataVersion} />} />
+            <Route path="/table" render={() => <Table />} />
 
             <Route path="/fichecoclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
             <Route path="/editionclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
             <Route path="/mescadeaux" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
             <Route path="/planningclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Planningclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+            <Route path="/qrcodeclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Qrcodeclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
             <Route render={() => <Error />}/>
 
 

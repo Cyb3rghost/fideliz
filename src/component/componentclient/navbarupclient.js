@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Configuration from '../fidconfig'
+
 import cookie from 'react-cookies'
 
 import News from '../../images/news.png'
@@ -19,7 +21,7 @@ class Navbarupclient extends Component {
   componentDidMount()
   {
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=voirCarteClient&id=' + this.props.idUser)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirCarteClient&id=' + this.props.idUser)
         .then((response) => response.json())
         .then((response) => {
 

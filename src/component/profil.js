@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Loader from 'react-loader-spinner'
+import Configuration from './fidconfig'
 
 import Navbarup from './navbarup'
 import Menu from './menu'
@@ -42,7 +43,7 @@ class Profil extends Component {
     {
 
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup)
         .then((response) => response.json())
         .then((response) => {
 
@@ -87,7 +88,7 @@ class Profil extends Component {
 
         const fd = new FormData();
         fd.append('image', this.state.selectedFileBKG, this.state.selectedFileBKG.name);
-        axios.post('http://127.0.0.1/fidapi/main.php?action=uploadBackgroundImg&id=' + this.props.idUserRecup, fd
+        axios.post(Configuration.hostnameManuelServer + 'fidapi/main.php?action=uploadBackgroundImg&id=' + this.props.idUserRecup, fd
         ).then(res=>
         {
             console.log(res);
@@ -138,7 +139,7 @@ class Profil extends Component {
 
         const fd = new FormData();
         fd.append('image', this.state.selectedFileLogo, this.state.selectedFileLogo.name);
-        axios.post('http://127.0.0.1/fidapi/main.php?action=uploadLogoImg&id=' + this.props.idUserRecup, fd
+        axios.post(Configuration.hostnameManuelServer + 'fidapi/main.php?action=uploadLogoImg&id=' + this.props.idUserRecup, fd
         ).then(res=>
         {
             console.log(res);
@@ -398,8 +399,8 @@ class Profil extends Component {
 
                                 <div className="panelCarte">
                                     <div id="personalizecarte">  
-                                    <img src={'http://127.0.0.1/fidapi/img/' + this.state.imgFondCarte} className="img-responsive" id="img1" alt="" />
-                                    <img src={'http://127.0.0.1/fidapi/img/' + this.state.imgIconCarte}  className="img-responsive img-rounded" id="img2" alt="" />
+                                    <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.imgFondCarte} className="img-responsive" id="img1" alt="" />
+                                    <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.imgIconCarte}  className="img-responsive img-rounded" id="img2" alt="" />
                                     
                                     </div> 
                                 </div>   

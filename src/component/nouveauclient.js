@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Redirect} from "react-router-dom";
+import Configuration from './fidconfig'
 
 import Navbarup from './navbarup'
 import Menu from './menu'
@@ -38,7 +39,7 @@ class Nouveauclient extends Component {
 
         const { nomClient, prenomClient, adresseClient, telephoneClient, emailClient, passwordClient } = this.state;
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=ajoutClient&id=' + this.props.idUserRecup
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=ajoutClient&id=' + this.props.idUserRecup
         + '&nomClient=' + nomClient 
         + '&prenomClient=' + prenomClient 
         + '&adresseClient=' + adresseClient

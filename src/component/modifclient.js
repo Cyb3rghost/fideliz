@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Configuration from './fidconfig'
 
 import Navbarup from './navbarup'
 import Menu from './menu'
@@ -30,7 +31,7 @@ class Modifclient extends Component {
     {
 
             var idClient = window.location.search.substring(4);
-            fetch('http://127.0.0.1/fidapi/main.php?action=voirClient&id=' + idClient)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + idClient)
             .then((response) => response.json())
             .then((response) => {
     
@@ -57,7 +58,7 @@ class Modifclient extends Component {
 
         var idClient = window.location.search.substring(4);
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=majClient&idclient=' + idClient
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=majClient&idclient=' + idClient
         + '&nom=' + this.state.nomClient
         + '&prenom=' + this.state.prenomClient
         + '&email=' + this.state.emailClient
@@ -107,7 +108,7 @@ class Modifclient extends Component {
         if(this.state.nouveauMdp === this.state.retapeMdp)
         {
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=changeMdp&idclient=' + idClient
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=changeMdp&idclient=' + idClient
             + '&oldmdp=' + this.state.actuelMdp
             + '&nouveaumdp=' + this.state.nouveauMdp)
             .then((response) => response.json())

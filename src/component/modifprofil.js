@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Loader from 'react-loader-spinner'
+import Configuration from './fidconfig'
 
 import Navbarup from './navbarup'
 import Menu from './menu'
@@ -32,7 +33,7 @@ class Modifprofil extends Component {
     {
 
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup)
         .then((response) => response.json())
         .then((response) => {
 
@@ -61,7 +62,7 @@ class Modifprofil extends Component {
     {
 
 
-        fetch('http://127.0.0.1/fidapi/main.php?action=majEntreprise&ident=' + this.props.idUserRecup
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=majEntreprise&ident=' + this.props.idUserRecup
         + '&nom=' + this.state.nom
         + '&prenom=' + this.state.prenom
         + '&email=' + this.state.email
@@ -111,7 +112,7 @@ class Modifprofil extends Component {
         if(this.state.nouveauMdp === this.state.retapeMdp)
         {
 
-            fetch('http://127.0.0.1/fidapi/main.php?action=changeMdpEnt&ident=' + this.props.idUserRecup
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=changeMdpEnt&ident=' + this.props.idUserRecup
             + '&oldmdp=' + this.state.actuelMdp
             + '&nouveaumdp=' + this.state.nouveauMdp)
             .then((response) => response.json())

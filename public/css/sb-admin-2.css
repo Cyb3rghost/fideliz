@@ -11871,7 +11871,9 @@ body.sidebar-toggled footer.sticky-footer {
   position: absolute;
   z-index: 4;
   margin-left: 15px;
-  margin-top: 13%;
+  margin-bottom: 2.5%;
+  bottom: 0px;
+
 }
 
 #positionDonnee {
