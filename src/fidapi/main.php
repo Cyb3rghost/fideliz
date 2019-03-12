@@ -998,7 +998,7 @@ if(isset($_GET['action']))
             else
             {
 
-                $sqldeux = "INSERT INTO `cadeaux` (`id`, `identreprise`, `prestation`, `prix`, `activation`) VALUES (NULL, '".$idEntreprise."', '".$prestation."', '".$prix."', '1');";
+                $sqldeux = "INSERT INTO `cadeaux` (`id`, `identreprise`, `idprestation`, `prestation`, `prix`, `activation`, `prdtgrp`) VALUES (NULL, '".$idEntreprise."', '0', '".$prestation."', '".$prix."', '1', '0');";
                 if(mysqli_query($connect, $sqldeux))
                 {
 
@@ -1021,6 +1021,71 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
+        case 'ajoutCadeauxGroupage':
+            $idEntreprise = $_GET['id'];
+            $idProduitPrincipale = $_GET['idprincipalproduit'];
+            $prestation = $_GET['prestation'];
+            $prix = $_GET['prix'];
+
+            $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise AND `prestation` = '".$prestation."'";
+            $result = mysqli_query($connect, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                $json = json_encode("#AJTCADEAUX#EXISTE");
+
+            }
+            else
+            {
+
+                $sqldeux = "INSERT INTO `cadeaux` (`id`, `identreprise`, `idprestation`, `prestation`, `prix`, `activation`, `prdtgrp`) VALUES (NULL, '".$idEntreprise."', '".$idProduitPrincipale."', '".$prestation."', '".$prix."', '1', '0');";
+                if(mysqli_query($connect, $sqldeux))
+                {
+
+                    $json = json_encode("#AJTCADEAUX#SUCCESS");
+
+                }
+                else
+                {
+
+                    $json = json_encode("#AJTCADEAUX#ECHEC");
+
+                }
+                
+
+
+            }
+            
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'majProduitTotal':
+
+            $idProduitPrincipale = $_GET['idprincipalproduit'];
+            $sommeTotal = $_GET['sommetotal'];
+
+            $sql = "UPDATE `cadeaux` SET `prix` = '".$sommeTotal."', `prdtgrp` = '1' WHERE `id` = $idProduitPrincipale;";
+            if(mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#MAJPRDTOTAL#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#MAJPRDTOTAL#FAILED");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
         case 'afficheListeCadeaux':
             $idEntreprise = $_GET['id'];
             
@@ -1053,10 +1118,11 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
-        case 'afficheListeCadeaux':
+        case 'afficheListeCadeauxGroupe':
             $idEntreprise = $_GET['id'];
+            $idPrestation = $_GET['idprestation'];
             
-            $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise AND `activation` = '1'";
+            $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise AND `idprestation` = '".$idPrestation."' AND `activation` = '1'";
             $result = mysqli_query($connect, $sql);
 
             if(mysqli_num_rows($result))
@@ -1075,7 +1141,7 @@ if(isset($_GET['action']))
             {
 
 
-                $json = json_encode("#SLCTLISTECADEAUX#ECHEC");
+                $json = json_encode("#LISTECADEAUXGRP#ECHEC");
 
 
             }
@@ -1353,6 +1419,34 @@ if(isset($_GET['action']))
 
             $sql = "SELECT * FROM `accsociete`";
             $test = array();
+            if($result = mysqli_query($connect, $sql))
+            {
+
+                while($row[] = mysqli_fetch_assoc($result))
+                {
+
+                    $json=json_encode($row);
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#LISTENT#FAILED");
+                
+            }
+
+            echo $json;
+            mysqli_close($connect);
+
+            break;
+        case 'selectionPrestation':
+
+            $idEntreprise = $_GET['identreprise'];
+
+
+            $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = '".$idEntreprise."' AND `activation` = '1'";
             if($result = mysqli_query($connect, $sql))
             {
 

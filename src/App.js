@@ -18,6 +18,7 @@ import Gestioncompte from './component/gestioncompte'
 import Listetypecarte from './component/listetypecarte'
 import Ajoutcarte from './component/ajoutcarte'
 import Log from './component/log'
+import Prestations from './component/prestations'
 /* INTERFACE ENTREPRISE */
 
 /* INTERFACE CLIENT */
@@ -367,6 +368,7 @@ class App extends Component {
             <Route path="/listetypecarte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Listetypecarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
             <Route path="/ajoutcarte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Ajoutcarte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
             <Route path="/log" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Log loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
+            <Route path="/prestations" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Prestations loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
             <Route path="/maintenance" render={() => <Maintenance version={this.state.dataVersion} />} />
             <Route path="/table" render={() => <Table />} />
 

@@ -46,9 +46,14 @@ class Menu extends Component {
                 <span>Client</span></a>
             </li>
             <li className="nav-item">
+                <a className="nav-link" href="/prestations">
+                <i className="fas fa-fw fa-users"></i>
+                <span>Gestion de prestation</span></a>
+            </li>
+            <li className="nav-item">
                 <a className="nav-link" href="/gestioncompte">
                 <i className="fas fa-fw fa-cog"></i>
-                <span>Gestion de compte</span></a>
+                <span>Gestion de l'abonnement</span></a>
             </li>
             <li className="nav-item">
                 <a className="nav-link" href="/log">
