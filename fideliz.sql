@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mar. 12 mars 2019 à 20:49
+-- Généré le :  jeu. 14 mars 2019 à 14:27
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -57,7 +57,7 @@ CREATE TABLE `accsociete` (
 
 INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`) VALUES
 (1, 'ludovic.lvnr@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'PAYET', 'Eddy', '56 chemin des fleurs 97400', 'EddyCoiffure', '0692101112', 1, 0, 0, 0, 0, '0000-00-00', '0000-00-00', 0, 'backgroundCarte.jpg', 'logocarte.png', 'e6c14066a83d3416238afbc40a9f437a'),
-(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 2, 0, 10, 40, 15, '2019-02-18', '2019-03-20', 9, 'carddefault.jpg', 'logodefault.png', 'b3470a6aba7953782f54486b8cc28d02'),
+(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 2, 0, 10, 40, 15, '2019-02-18', '2019-03-20', 6, 'carddefault.jpg', 'logodefault.png', 'b3470a6aba7953782f54486b8cc28d02'),
 (3, 'blizzard@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'Blizzard', '', 2, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'null', 'null', 'fedd6393d9b9224fcba3c3ce0ba33b96'),
 (4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 1, 0, 10, 0, 15, '2019-02-09', '2019-03-11', 28, 'null', 'null', 'e3fe6a42aaf6a6f49760186c481afad6'),
 (5, 'cathy@gmail.com', 'af56310c080ab9d9f3d96be9f16edebf', 1, '', '', '', 'MenageParty', '', 1, 0, 10, 1, 15, '2019-02-10', '2019-03-12', 30, 'BCGC144501D09-02-2019.jpg', 'LOGO517944D09-02-2019.png', '2dd7b6dff53be1b24f1d9b967071778d'),
@@ -130,9 +130,9 @@ CREATE TABLE `cadeaux` (
 
 INSERT INTO `cadeaux` (`id`, `identreprise`, `idprestation`, `prestation`, `prix`, `activation`, `prdtgrp`) VALUES
 (1, 2, 0, 'Brushing', 50.55, 1, 0),
-(2, 2, 0, 'Shampooing', 10, 1, 0),
-(3, 2, 0, 'Coupe homme', 100, 1, 1),
-(8, 2, 0, 'Margarita', 60, 1, 1),
+(2, 2, 0, 'testingou', 110.91, 1, 1),
+(3, 2, 0, 'Coupe hommes', 110, 1, 0),
+(8, 2, 0, 'Margarita', 60, 1, 0),
 (9, 5, 0, 'Brushing', 20, 1, 0),
 (10, 7, 0, 'Brushing', 20, 1, 0),
 (11, 7, 0, 'Couleur', 50, 1, 0),
@@ -142,14 +142,21 @@ INSERT INTO `cadeaux` (`id`, `identreprise`, `idprestation`, `prestation`, `prix
 (15, 2, 0, 'Tchuk', 20.2, 1, 0),
 (16, 2, 0, 'Blam', 10.88, 1, 0),
 (17, 2, 0, 'Testo', 5.55, 1, 0),
-(26, 2, 3, 'ProduitDeux', 20, 1, 0),
-(27, 2, 3, 'ProduitQuatre', 40, 1, 0),
-(28, 2, 3, 'ProduitTrois', 30, 1, 0),
-(29, 2, 3, 'ProduitUn', 10, 1, 0),
-(30, 2, 8, 'TDeux', 10, 1, 0),
-(31, 2, 8, 'TUn', 5, 1, 0),
-(32, 2, 8, 'TQuatre', 30, 1, 0),
-(33, 2, 8, 'TTrois', 15, 1, 0);
+(26, 2, 0, 'ProduitDeux', 20, 1, 0),
+(27, 2, 0, 'ProduitQuatre', 40, 1, 0),
+(28, 2, 0, 'ProduitTrois', 30, 1, 0),
+(29, 2, 0, 'ProduitUn', 10, 1, 0),
+(30, 2, 0, 'TDeux', 10, 1, 0),
+(31, 2, 0, 'TUn', 5, 1, 0),
+(32, 2, 0, 'TQuatre', 30, 1, 0),
+(33, 2, 0, 'TTrois', 15, 1, 0),
+(34, 2, 0, 'Divers', 74.16, 1, 0),
+(35, 2, 0, 'PrestaDeux', 20, 1, 0),
+(36, 2, 0, 'PrestaTrois', 100.55, 1, 0),
+(37, 2, 0, 'PrestaUn', 10, 1, 0),
+(42, 2, 2, 'WhatYourName', 78.11, 1, 0),
+(43, 2, 2, 'Toctoc', 22.23, 1, 0),
+(44, 2, 2, 'Coucou', 10.57, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -452,7 +459,7 @@ ALTER TABLE `acctclient`
 -- AUTO_INCREMENT pour la table `cadeaux`
 --
 ALTER TABLE `cadeaux`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT pour la table `cartefidelite`
 --

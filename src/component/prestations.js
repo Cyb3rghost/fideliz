@@ -31,44 +31,7 @@ const columns = [{
   },{
     dataField: 'multiple',
     text: 'Prestation multiples',
-    events: {
-        onClick: (e, column, columnIndex, row, rowIndex) => {
-
-          fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeauxGroupe&id=' + row.identreprise 
-          + '&idprestation=' + row.id)
-          .then((response) => response.json())
-          .then((response) => {
-  
-              if(response === "#LISTECADEAUXGRP#ECHEC")
-              {
-  
-                  alert("Cette prestation n'est pas groupée.")
-  
-              }
-              else
-              {
-
-                var testInfo = response.map( function(value) {
-            
-                        return '- ' + value.prestation + ' : ' + value.prix + ' €\n' 
-
-                })
-
-                alert("La produit [" + row.prestation + "] regroupe : \n" +
-                testInfo + '\n'
-                + 'Valeur total : ' + row.prix )
-                
-
-              }
-      
-  
-          })
-          .catch(err => console.error(err))
-
-        },
-      }
   }];
-
 
 class Prestations extends Component {
 
@@ -87,10 +50,17 @@ class Prestations extends Component {
             statutListeCadeauxInactive: '',
             gestionInterface: '1',
             celluleDesactivation: '0',
+            cellulePrixTotal: '0',
+            celluleNomPrestation: '',
+            celluleGrp: '',
+            activeDegroupage: false,
             open: false,
             openDeux: false,
+            openTrois: false,
+            openQuatre: false,
             selectedOption: null,
             totalMultiplePrix: '',
+            lstProduitGrp: [],
             options: []
             
         }
@@ -184,6 +154,24 @@ class Prestations extends Component {
      
     onCloseModalDeux = () => {
         this.setState({ openDeux: false });
+      };
+
+      onOpenModalTrois = () => {
+        this.setState({ openTrois: true });
+      };
+     
+      
+    onCloseModalTrois = () => {
+        this.setState({ openTrois: false });
+      };
+
+      onOpenModalQuatre = () => {
+        this.setState({ openQuatre: true });
+      };
+     
+      
+    onCloseModalQuatre = () => {
+        this.setState({ openQuatre: false });
       };
 
     ajoutPrestation()
@@ -506,7 +494,108 @@ class Prestations extends Component {
 
     }
     
+    afficheDegroupage()
+    {
 
+        if(this.state.activeDegroupage === true)
+        {
+
+            return <button type="button" onClick={this.onOpenModalTrois} title="Voir ou dégroupage du produit" className="btn btn-dark"><i class="fas fa-unlink"></i></button>
+
+        }
+        
+    }
+
+    appelDataGroupage(idcellule, dataPrix)
+    {
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeauxGroupe&id=' + this.props.idUserRecup
+        + '&idprestation=' + idcellule)
+        .then((response) => response.json())
+        .then((response) => {
+
+            if(response === "#LISTECADEAUXGRP#ECHEC")
+            {
+
+                alert("Cette prestation n'est pas groupée.")
+
+            }
+            else
+            {
+
+                    this.setState({
+                        lstProduitGrp: response,
+                        cellulePrixTotal: dataPrix
+                    })              
+
+            }
+    
+
+        })
+        .catch(err => console.error(err))
+
+
+    }
+
+    dissolutionGroupage(idproduitdegroupage)
+    {
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=dissolutionGroupage&id=' + this.props.idUserRecup
+        + '&idprestation=' + idproduitdegroupage)
+        .then((response) => response.json())
+        .then((response) => {
+
+            if(response === "#DISSOLUTION#SUCCESS")
+            {
+
+                console.log(response)
+                window.location.href ='/prestations'
+
+            }
+    
+
+        })
+        .catch(err => console.error(err)) 
+        
+        
+
+
+    }
+
+    appelModifierPrestation()
+    {
+        this.onOpenModalQuatre()
+    }
+
+    modifierPrestation(idPrestation)
+    {
+
+        /*console.log(Configuration.hostnameManuelServer + 'fidapi/main.php?action=modificationProduit'
+        + '&idprestation=' + idPrestation
+        + '&nomprestation=' + this.state.celluleNomPrestation
+        + '&prixprestation=' + this.state.cellulePrixTotal)*/
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=modificationProduit'
+        + '&idprestation=' + idPrestation
+        + '&nomprestation=' + this.state.celluleNomPrestation
+        + '&prixprestation=' + this.state.cellulePrixTotal)
+        .then((response) => response.json())
+        .then((response) => {
+
+            if(response === "#MDFPRODUIT#SUCCESS")
+            {
+
+                console.log(response)
+                window.location.href ='/prestations'
+
+            }
+    
+
+        })
+        .catch(err => console.error(err))   
+
+    }
+
+    
     afficheListePrestation()
     {
 
@@ -534,7 +623,7 @@ class Prestations extends Component {
                     if(value.prdtgrp === '1')
                     {
 
-                        var afficheMultiple = <i title="Voir les sous-produits" className="fas fa-copy"></i>
+                        var afficheMultiple = 'Produit groupé'
 
                     }
                     else if(value.prdtgrp === '0')
@@ -550,6 +639,7 @@ class Prestations extends Component {
                             var addDataItems = { 
                             id: value.id,
                             identreprise: value.identreprise,
+                            prdtgrp: value.prdtgrp,
                             prestation: value.prestation, 
                             prix: value.prix + ' €',
                             multiple: afficheMultiple
@@ -557,19 +647,6 @@ class Prestations extends Component {
                             return addDataItems;
 
                     }
-
-                    
-                    /*if(value.id = value.idprestation)
-                    {
-
-                        var addDataItemsDeux = { 
-                            id: '',
-                            prestation: value.prestation, 
-                            prix: value.prix + ' €'
-                                                }
-                            return addDataItemsDeux;
-
-                    }*/
 
                 }) }
                 columns={ columns }
@@ -580,15 +657,17 @@ class Prestations extends Component {
                     <div>
                         <div className="row">
                         
-                            <div className="col-md-1">
+                            <div className="col-md-10">
                             
-                                <button type="button" onClick={() => this.desactiveCadeaux(this.state.celluleDesactivation)} title="Désactivation du produit" className="btn btn-dark"><i className="fas fa-times"></i></button>
+                                <SearchBar { ...props.searchProps } />
 
                             </div>
-                            <div className="col-md-11">
-                            
-                                    <SearchBar { ...props.searchProps } />
-                            
+                            <div className="col-md-2">
+
+                                {this.afficheDegroupage()}
+                                &nbsp;<button type="button" onClick={() => this.desactiveCadeaux(this.state.celluleDesactivation)} title="Désactivation du produit" className="btn btn-dark"><i className="fas fa-times"></i></button>
+                                &nbsp;<button type="button" onClick={() => this.appelModifierPrestation(this.state.celluleDesactivation, this.state.celluleNomPrestation, this.state.cellulePrixTotal)} title="Modification du produit" className="btn btn-dark"><i className="fas fa-edit"></i></button>
+
                             </div>
                         
                         </div>
@@ -601,22 +680,46 @@ class Prestations extends Component {
                                 ref={ n => this.node = n }
                                 filter={ filterFactory() }
                                 pagination={ paginationFactory() }
-                                selectRow={ {   mode: 'checkbox',
+                                selectRow={ {   mode: 'radio',
                                 clickToSelect: true,
                                 onSelect: (row) => {
-                                  console.log(row.id);
-                                  this.setState({
-                                      celluleDesactivation: row.id
-                                  })
+                                  console.log(row.prix);
+                                  if(row.prdtgrp === '0')
+                                  {
+
+                                    var formatPrix = row.prix.split(' ');
+
+                                    this.setState({
+                                        celluleDesactivation: row.id,
+                                        celluleNomPrestation: row.prestation,
+                                        cellulePrixTotal: formatPrix[0],
+                                        celluleGrp: row.prdtgrp,
+                                        activeDegroupage: false
+                                    })
+
+                                  }
+                                  else if(row.prdtgrp === '1')
+                                  {
+
+                                    var formatPrix = row.prix.split(' ');
+
+                                    this.setState({
+                                        celluleDesactivation: row.id,
+                                        celluleNomPrestation: row.prestation,
+                                        cellulePrixTotal: formatPrix[0],
+                                        celluleGrp: row.prdtgrp,
+                                        activeDegroupage: true
+                                    })
+
+                                    this.appelDataGroupage(row.id, formatPrix[0])
+
+                                  }
+
                                   /*console.log(isSelect);
                                   console.log(rowIndex);
                                   console.log(e);*/
                                 },
-                                onSelectAll: (isSelect, rows, e) => {
-                                  console.log(isSelect);
-                                  console.log(rows);
-                                  console.log(e);
-                                }} }
+                                } }
                                 
                                 striped
                                 hover
@@ -828,8 +931,48 @@ class Prestations extends Component {
 
     }
 
+    testEtatGrouper()
+    {
+
+        if(this.state.celluleGrp === '0')
+        {
+
+            return <div className="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" className="sr-only">Password</label>
+                <input 
+                    type="number" 
+                    className="form-control" 
+                    placeholder="Prix" 
+                    value={this.state.cellulePrixTotal}
+                    onChange={e => this.setState({cellulePrixTotal: e.target.value})}
+                />                        
+            </div>   
+
+        }
+        else if(this.state.celluleGrp === '1')
+        {
+
+            return <div className="form-group mx-sm-3 mb-2">
+                <label for="inputPassword2" className="sr-only">Password</label>
+                <input 
+                    type="number" 
+                    className="form-control" 
+                    placeholder="Prix" 
+                    value={this.state.cellulePrixTotal}
+                    onChange={e => this.setState({cellulePrixTotal: e.target.value})}
+                    readOnly
+                />                        
+            </div>  
+
+        }
+
+      
+
+
+    }
+
   render() {
-    const { open, openDeux } = this.state;
+    const { open, openDeux, openTrois, openQuatre } = this.state;
     const { selectedOption } = this.state;
 
     let options = this.state.options.map(function (valux) {
@@ -873,8 +1016,8 @@ class Prestations extends Component {
                         </div>
                         <div className="col-md-6">
                         
-                        <button type="submit" onClick={this.onOpenModal} className="btn btn-primary btn-block"><i class="fas fa-exchange-alt"></i> Prestation simple</button> 
-                        <button type="submit" onClick={this.onOpenModalDeux} className="btn btn-primary btn-block"><i class="fas fa-exchange-alt"></i> Prestations multiples</button>
+                        <button type="submit" onClick={this.onOpenModal} className="btn btn-dark btn-block"><i class="fas fa-exchange-alt"></i> Prestation simple</button> 
+                        <button type="submit" onClick={this.onOpenModalDeux} className="btn btn-dark btn-block"><i class="fas fa-exchange-alt"></i> Prestations multiples</button>
                         
                     </div>
 
@@ -895,6 +1038,7 @@ class Prestations extends Component {
 
                         <br/>
                         {this.afficheStatutCadeaux()} 
+
                         <div className="tab-content" id="myTabContent">
                         <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         
@@ -1008,6 +1152,42 @@ class Prestations extends Component {
                         <p className="text-right">Nouvelle valeur total : {this.state.totalMultiplePrix} €</p>
                         <hr/>
                         <button type="button" align="center" onClick={() => this.addGroupement(this.state.selectedOption.value, this.props.idUserRecup)} className="btn btn-success">Création du groupement de produit</button>
+                    </Modal>
+
+                    <Modal open={openTrois} onClose={this.onCloseModalTrois} center>
+                        <h2>Fiche prestation multiple</h2>
+                        <hr/>
+                        <p style={CSSDemoStyle_Content}>
+                        {this.state.lstProduitGrp.map( function(value) {
+                            
+                            return `- ${value.prestation} : ${value.prix} €\n`
+
+                        })}
+                        </p>
+                        <p className="text-right">Valeur total de la prestation : {this.state.cellulePrixTotal}</p>
+                        <hr/>
+                        <button type="button" onClick={() => this.dissolutionGroupage(this.state.celluleDesactivation)} className="btn btn-danger">Dissolution du groupage.</button>
+                    </Modal>
+
+                    <Modal open={openQuatre} onClose={this.onCloseModalQuatre} center>
+                        <h2>Modifier votre prestation</h2>
+                        <hr/>
+                        <div class="form-inline">
+                        <div class="form-group mb-2">
+                            <label for="staticEmail2" className="sr-only">Email</label>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                placeholder="Ma prestation" 
+                                value={this.state.celluleNomPrestation}
+                                onChange={e => this.setState({celluleNomPrestation: e.target.value})}
+                            
+                            />                        
+                        </div>
+                        {this.testEtatGrouper()}
+
+                            <button type="submit" onClick={() => this.modifierPrestation(this.state.celluleDesactivation)} class="btn btn-primary">Modifier la prestation</button>
+                        </div>
                     </Modal>
 
                     </div>

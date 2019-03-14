@@ -1151,6 +1151,36 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
+        case 'dissolutionGroupage':
+            $idEntreprise = $_GET['id'];
+            $idPrestation = $_GET['idprestation'];
+            
+            $sql = "DELETE FROM `cadeaux` WHERE `idprestation` = '".$idPrestation."'";
+            $sqldeux = "UPDATE `cadeaux` SET `prdtgrp` = '0' WHERE `id` = '".$idPrestation."'";
+            if(mysqli_query($connect, $sql))
+            {
+
+                if(mysqli_query($connect, $sqldeux))
+                {
+
+                    $json = json_encode("#DISSOLUTION#SUCCESS");
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#DISSOLUTION#FAILED");
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
         case 'afficheListeCadeauxInactive':
             $idEntreprise = $_GET['id'];
             
@@ -1221,6 +1251,32 @@ if(isset($_GET['action']))
             {
 
                 $json = json_encode("#DISABLEGIFT#ECHEC");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'modificationProduit':
+            $idprestation = $_GET['idprestation'];
+            $nomPrestation = $_GET['nomprestation'];
+            $prixPrestation = $_GET['prixprestation'];
+
+
+            $sql = "UPDATE `cadeaux` SET `prestation` = '".$nomPrestation."', prix = '".$prixPrestation."' WHERE `id` = $idprestation";
+            if(mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#MDFPRODUIT#SUCCESS");
+
+
+            }
+            else
+            {
+
+                $json = json_encode("#MDFPRODUIT#FAILED");
 
             }
 
