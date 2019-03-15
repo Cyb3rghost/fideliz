@@ -853,6 +853,11 @@ pre code {
 }
 
 @media (min-width: 576px) {
+  .sidebar {
+
+    display: none;
+
+  }
   .col-sm {
     -ms-flex-preferred-size: 0;
     flex-basis: 0;

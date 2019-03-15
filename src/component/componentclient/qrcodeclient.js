@@ -37,7 +37,9 @@ class Qrcodeclient extends Component {
                     break;   
                 case '#CLOTURATION#NONECESSAIRE':
                     console.log(response)
-                    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
+                    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient 
+                    + '&idEntreprise=' + this.props.idEntRecupClient
+                    + '&qrcode=' + data)
                     .then((response) => response.json())
                     .then((response) => {
             
@@ -49,12 +51,25 @@ class Qrcodeclient extends Component {
                                 })
                                 setTimeout(() => window.location.href = "/fichecoclient",1500)
                                 break;   
+                            case '#VALIDATIONDIRECT#SUCCESS':
+                                console.log(response)
+                                this.setState({
+                                    cartePointageMsg: '3'
+                                })
+                                setTimeout(() => window.location.href = "/fichecoclient",1500)
+                                break; 
                             case '#UPTENTREPRISE#ECHEC':
                                 console.log(response)
                                 this.setState({
                                     cartePointageMsg: '4'
                                 })
-                                break;            
+                                break;   
+                            case '#VALIDATIONDIRECT#ECHEC':
+                                console.log(response)
+                                this.setState({
+                                    cartePointageMsg: '4'
+                                })
+                                break;          
                             default:
                                 break;
                         }

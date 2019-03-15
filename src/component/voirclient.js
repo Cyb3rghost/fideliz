@@ -302,89 +302,185 @@ class Voirclient extends Component {
     {
 
         var idClient = this.props.match.params.id
-        var myprestation = this.state.selectedOption.label
 
-        var mysplitprestation = myprestation.split(" - ");
+        if(this.state.selectedOption === null)
+        {
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + idClient)
-        .then((response) => response.json())
-        .then((response) => {
-
-            switch (response) {
-                case '#CLOTURATION#SUCCESS':
-                    console.log(response)
-                    this.setState({
-                        cartePointageMsg: '4'
-                    })
-
-                    setTimeout(() => window.location.href = "/voirclient/" + idClient,2500)
-                    break;   
-                case '#CLOTURATION#NONECESSAIRE':
-                    console.log(response)
-                    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=pointage&identreprise=' + this.state.idEntreprise 
-                    + '&idcarte=' + this.state.carteId
-                    + '&idclient=' + idClient
-                    + '&prestation=' + mysplitprestation[0]
-                    + '&prix=' + mysplitprestation[1].substring(0, mysplitprestation[1].length-1))
-                    .then((response) => response.json())
-                    .then((response) => {
-            
-                        switch (response) {
-                            case "#CARTEUPTCODE#SUCCESS":
-                                console.log(response)
-                                this.setState({
-                                    cartePointageMsg: '1'
-                                })
-            
-                                setTimeout(() => window.location.href = "/voirclient/" + idClient,2500)
-                                break;
-                            case "#CARTEUPTCODE#ECHEC":
-                                console.log(response)
-                                this.setState({
-                                    cartePointageMsg: '2'
-                                })
-                                break; 
-                            case "#ADDPOINTAGE#ECHEC":
-                                console.log(response)
-                                this.setState({
-                                    cartePointageMsg: '2'
-                                })
-                                break;     
-                            case "#DATACLT#ECHEC":
-                                console.log(response)
-                                this.setState({
-                                    cartePointageMsg: '2'
-                                })
-                                break; 
-                            case "#DATAENT#ECHEC":
-                                console.log(response)
-                                this.setState({
-                                    cartePointageMsg: '2'
-                                })
-                                break; 
-                            case "#CHECKPOINTAGE#EXISTE":
-                                console.log(response)
-                                this.setState({
-                                    cartePointageMsg: '3'
-                                })
-                                break; 
-                            default:
-                                break;
-                        }
-                
-            
-                    })
-                    .catch(err => console.error(err))
-                    break;            
-                default:
-                    break;
-            }
-
-
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + idClient)
+            .then((response) => response.json())
+            .then((response) => {
     
+                switch (response) {
+                    case '#CLOTURATION#SUCCESS':
+                        console.log(response)
+                        this.setState({
+                            cartePointageMsg: '4'
+                        })
+    
+                        setTimeout(() => window.location.href = "/voirclient/" + idClient,2500)
+                        break;   
+                    case '#CLOTURATION#NONECESSAIRE':
+                        console.log(response)
+                        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=pointage&identreprise=' + this.state.idEntreprise 
+                        + '&idcarte=' + this.state.carteId
+                        + '&idclient=' + idClient
+                        + '&prestation=Null'
+                        + '&prix=0'
+                        + '&qrcode=' + this.state.carteQrCode)
+                        .then((response) => response.json())
+                        .then((response) => {
+                
+                            switch (response) {
+                                case "#CARTEUPTCODE#SUCCESS":
+                                    console.log(response)
+                                    this.setState({
+                                        cartePointageMsg: '1'
+                                    })
+                
+                                    setTimeout(() => window.location.href = "/voirclient/" + idClient,2500)
+                                    break;
+                                case "#CARTEUPTCODE#ECHEC":
+                                    console.log(response)
+                                    this.setState({
+                                        cartePointageMsg: '2'
+                                    })
+                                    break; 
+                                case "#ADDPOINTAGE#ECHEC":
+                                    console.log(response)
+                                    this.setState({
+                                        cartePointageMsg: '2'
+                                    })
+                                    break;     
+                                case "#DATACLT#ECHEC":
+                                    console.log(response)
+                                    this.setState({
+                                        cartePointageMsg: '2'
+                                    })
+                                    break; 
+                                case "#DATAENT#ECHEC":
+                                    console.log(response)
+                                    this.setState({
+                                        cartePointageMsg: '2'
+                                    })
+                                    break; 
+                                case "#CHECKPOINTAGE#EXISTE":
+                                    console.log(response)
+                                    this.setState({
+                                        cartePointageMsg: '3'
+                                    })
+                                    break; 
+                                default:
+                                    break;
+                            }
+                    
+                
+                        })
+                        .catch(err => console.error(err))
+                        break;            
+                    default:
+                        break;
+                }
+    
+    
+        
+    
+            })
+            .catch(err => console.error(err))
 
-        })
-        .catch(err => console.error(err))
+        }
+        else
+        {
+
+            var myprestation = this.state.selectedOption.label
+
+            var mysplitprestation = myprestation.split(" - ");
+
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + idClient)
+            .then((response) => response.json())
+            .then((response) => {
+    
+                switch (response) {
+                    case '#CLOTURATION#SUCCESS':
+                        console.log(response)
+                        this.setState({
+                            cartePointageMsg: '4'
+                        })
+    
+                        setTimeout(() => window.location.href = "/voirclient/" + idClient,2500)
+                        break;   
+                    case '#CLOTURATION#NONECESSAIRE':
+                        console.log(response)
+                        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=pointage&identreprise=' + this.state.idEntreprise 
+                        + '&idcarte=' + this.state.carteId
+                        + '&idclient=' + idClient
+                        + '&prestation=' + mysplitprestation[0]
+                        + '&prix=' + mysplitprestation[1].substring(0, mysplitprestation[1].length-1)
+                        + '&qrcode=' + this.state.carteQrCode)
+                        .then((response) => response.json())
+                        .then((response) => {
+                
+                            switch (response) {
+                                case "#CARTEUPTCODE#SUCCESS":
+                                    console.log(response)
+                                    this.setState({
+                                        cartePointageMsg: '1'
+                                    })
+                
+                                    setTimeout(() => window.location.href = "/voirclient/" + idClient,2500)
+                                    break;
+                                case "#CARTEUPTCODE#ECHEC":
+                                    console.log(response)
+                                    this.setState({
+                                        cartePointageMsg: '2'
+                                    })
+                                    break; 
+                                case "#ADDPOINTAGE#ECHEC":
+                                    console.log(response)
+                                    this.setState({
+                                        cartePointageMsg: '2'
+                                    })
+                                    break;     
+                                case "#DATACLT#ECHEC":
+                                    console.log(response)
+                                    this.setState({
+                                        cartePointageMsg: '2'
+                                    })
+                                    break; 
+                                case "#DATAENT#ECHEC":
+                                    console.log(response)
+                                    this.setState({
+                                        cartePointageMsg: '2'
+                                    })
+                                    break; 
+                                case "#CHECKPOINTAGE#EXISTE":
+                                    console.log(response)
+                                    this.setState({
+                                        cartePointageMsg: '3'
+                                    })
+                                    break; 
+                                default:
+                                    break;
+                            }
+                    
+                
+                        })
+                        .catch(err => console.error(err))
+                        break;            
+                    default:
+                        break;
+                }
+    
+    
+        
+    
+            })
+            .catch(err => console.error(err))
+
+
+        }
+
+
+
 
 
 
@@ -404,8 +500,8 @@ class Voirclient extends Component {
         if(this.state.carteStatutMsg != '2')
         {
             
-            return <div><a href={'/listetypecarte?id=' + idClient}><button type="button" className="btn btn-primary btn-block"><i className="fas fa-hand-point-right"></i> Ajouter une carte de fidélité</button></a>
-            &nbsp;&nbsp;<a href={'/planning/' + idClient}><button type="button" className="btn btn-primary btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
+            return <div><a href={'/listetypecarte/' + idClient}><button type="button" className="btn btn-dark btn-block"><i className="fas fa-hand-point-right"></i> Ajouter une carte de fidélité</button></a>
+            &nbsp;&nbsp;<a href={'/planning/' + idClient}><button type="button" className="btn btn-dark btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
         }
         else if(this.state.carteStatutMsg === '2')
         {
@@ -418,9 +514,9 @@ class Voirclient extends Component {
                 options={options}
             /> 
             <br/>
-            <button className="btn btn-primary btn-block" onClick={this.addPointage.bind(this)} type="button"><i className="fas fa-hand-point-right"></i> Pointage</button>
+            <button className="btn btn-dark btn-block" onClick={this.addPointage.bind(this)} type="button"><i className="fas fa-hand-point-right"></i> Pointage</button>
             <br/>
-            <a href={'/planning/' + idClient}><button type="button" className="btn btn-primary btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
+            <a href={'/planning/' + idClient}><button type="button" className="btn btn-dark btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
 
         }
 

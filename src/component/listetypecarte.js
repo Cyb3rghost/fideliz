@@ -194,7 +194,7 @@ class Listetypecarte extends Component {
     confirmation()
     {
 
-        var idClient = window.location.search.substring(4);
+        var idClient = this.props.match.params.id
 
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkDatePointage&idclient=' + this.props.idUserRecupClient
@@ -334,7 +334,7 @@ class Listetypecarte extends Component {
 
     
   render() {
-    var idClient = window.location.search.substring(4);
+    var idClient = this.props.match.params.id
 
     return (
       <div>
@@ -374,7 +374,7 @@ class Listetypecarte extends Component {
 
                         {this.props.infoTypeCompte === "0" &&
                     
-                                <div><a href={'/ajoutcarte?id=' + idClient}><div class="card">
+                                <div><a href={'/ajoutcarte/' + idClient}><div class="card">
                                 <div class="card-body">
 
                                         <div className="row">
@@ -402,7 +402,7 @@ class Listetypecarte extends Component {
 
                         {this.props.infoTypeCompte === "1" &&
                         
-                            <div><a href={'/ajoutcarte?id=' + idClient}><div class="card">
+                            <div><a href={'/ajoutcarte/' + idClient}><div class="card">
                             <div class="card-body">
 
                                     <div className="row">
@@ -462,7 +462,7 @@ class Listetypecarte extends Component {
 
                     {this.props.infoTypeCompte === "2" &&
                         
-                        <div><a href={'/ajoutcarte?id=' + idClient}><div class="card">
+                        <div><a href={'/ajoutcarte/' + idClient}><div class="card">
                         <div class="card-body">
 
                                 <div className="row">

@@ -291,7 +291,18 @@ class Fichecoclient extends Component {
 
 
 
-        if (this.state.cartePointageMsg === '2') 
+        if (this.state.cartePointageMsg === '1') 
+        {
+            
+
+            return <div className="alert alert-warning">
+        
+                Votre pointage est en attente de validation...
+        
+            </div>
+
+        } 
+        else if (this.state.cartePointageMsg === '2') 
         {
             
 
@@ -331,8 +342,6 @@ class Fichecoclient extends Component {
     scannerPointage()
     {
 
-        if(this.state.cartePointageMsg === '1')
-        {
 
             if(navigator.getUserMedia){
                 navigator.getUserMedia(
@@ -348,16 +357,11 @@ class Fichecoclient extends Component {
               );
                 return <div className="row">
 
-                <div className="col-md-12">
-                <div className="card border-left-success border-right-success shadow h-100 py-2">
-                        <div className="card-body">
-                        <center>Votre pointage est en attente ! <br/>
-                              <button type="button" onClick={() => window.location.href='/qrcodeclient'} className="btn btn-dark"><i className="fas fa-qrcode"></i> QRCODE</button>
-                        </center>
-                        {/*<button onClick={this.confirmation.bind(this)} type="button" class="btn btn-dark">Veuillez confirmer !</button></center>*/}
-                        </div>
-                    </div>
-                </div>                           
+                    <div className="col-md-12">
+
+                        <button type="button" onClick={() => window.location.href='/qrcodeclient'} className="btn btn-dark btn-block"><i className="fas fa-qrcode"></i> QRCODE</button>
+
+                    </div>                           
                 </div>
 
               } else {
@@ -365,25 +369,14 @@ class Fichecoclient extends Component {
 
                 return <div className="row">
 
-                <div className="col-md-12">
-                <div className="card border-left-success border-right-success shadow h-100 py-2">
-                        <div className="card-body">
-                        <center>Votre pointage est en attente ! <br/>
-                            <button type="button" onClick={this.confirmation.bind(this)} className="btn btn-dark"><i className="fas fa-handshake"></i> Validation manuelle</button>
-                        </center>
-                        {/*<button onClick={this.confirmation.bind(this)} type="button" class="btn btn-dark">Veuillez confirmer !</button></center>*/}
-                        </div>
-                    </div>
-                </div>                           
+                    <div className="col-md-12">
+                    
+                        <button type="button" onClick={this.confirmation.bind(this)} className="btn btn-dark"><i className="fas fa-handshake"></i> Validation manuelle</button>
+
+                    </div>                           
                 </div>
 
               }
-
-
-            
-
-
-        }
 
     }
 
@@ -423,7 +416,6 @@ class Fichecoclient extends Component {
     }
 
   render() {
-    var idClient = window.location.search.substring(4);
 
     return (
       <div>

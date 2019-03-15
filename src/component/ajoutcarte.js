@@ -31,7 +31,7 @@ class Ajoutcarte extends Component {
 
         var d = new Date();
         var date = d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()
-        var idClient = window.location.search.substring(4);
+        var idClient = this.props.match.params.id
 
         this.setState({
             dateDuJour: date
@@ -72,7 +72,7 @@ class Ajoutcarte extends Component {
 
         const { limitPointage, cadeaux } = this.state;
         const { idUserRecup, infosCarte, infosCarteIcon } = this.props;
-        var idClient = window.location.search.substring(4);
+        var idClient = this.props.match.params.id
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=creationCarte&id=' + idClient
         + '&imgfondcarte=' + this.props.bkdgCarte
@@ -89,7 +89,7 @@ class Ajoutcarte extends Component {
                     statutMsg: '1'
                 })
 
-                setTimeout(() => window.location.href = "/voirclient?id=" + idClient,2500)
+                setTimeout(() => window.location.href = "/voirclient/" + idClient,2500)
                 //setTimeout(window.location.href = "/voirclient?id=" + idClient, 5000);
 
             }
@@ -183,7 +183,7 @@ class Ajoutcarte extends Component {
 
 
   render() {
-    var idClient = window.location.search.substring(4);
+    var idClient = this.props.match.params.id
     var QRCode = require('qrcode.react');
 
     return (
@@ -242,10 +242,6 @@ class Ajoutcarte extends Component {
                         
                                     
                     <label>Date : </label> {this.state.dateDuJour}
-                    <br/>
-                    <label>Image de fond : </label> {this.props.infosCarte}
-                    <br/>
-                    <label>Icône : </label> {this.props.infosCarteIcon} <br/>
                     <br/>
                     <div class="form-group">
                         <label>Limitation pointage : </label>
