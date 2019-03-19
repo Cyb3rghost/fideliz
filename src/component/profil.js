@@ -285,8 +285,6 @@ class Profil extends Component {
 
         loadingdata = <div>
 
-                    <Navbarup idEntreprise={this.props.idUserRecup} />
-
                     <div className="container-fluid">
 
                     <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -466,11 +464,13 @@ class Profil extends Component {
 
             <div id="wrapper">
 
-                <Menu />
+                
 
                 <div id="content-wrapper" className="d-flex flex-column">
 
                 <div id="content">
+
+                    <Menu />
 
                     {loadingdata}
                 

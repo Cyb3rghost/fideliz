@@ -282,8 +282,6 @@ class Planningclient extends Component {
 
         loadingdata = <div>
 
-                            <Navbarup idUser={this.props.idUserRecupClient} />
-
                             <div className="container-fluid">
 
                             <div className="row">
@@ -353,7 +351,7 @@ class Planningclient extends Component {
                                           }
                                         }
                                         events={this.state.events}
-                                        toolbar={true}
+                                        toolbar={false}
                                         step={60}
                                         timeslots={1}
                                         culture={this.state.culture}
@@ -391,11 +389,13 @@ class Planningclient extends Component {
 
             <div id="wrapper">
 
-                <Menu />
+                
 
                 <div id="content-wrapper" className="d-flex flex-column">
 
                 <div id="content">
+
+                    <Menu />
 
                     {loadingdata}
 

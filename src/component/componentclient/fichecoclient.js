@@ -22,6 +22,7 @@ class Fichecoclient extends Component {
             emailClient: '',
             telephoneClient: '',
             carteTotal: '',
+            nbpointage: '',
             pointageTotal: '',
             prestationsClients: '',
 
@@ -60,6 +61,7 @@ class Fichecoclient extends Component {
                         adresseClient: value.adresse,
                         emailClient: value.email,
                         telephoneClient: value.telephone,
+                        nbpointage: value.nbpointage,
                         carteTotal: value.nbcarteterminer,
                         pointageTotal: value.nbpointagetotal                     
                     })
@@ -139,25 +141,6 @@ class Fichecoclient extends Component {
 
         })
         .catch(err => console.error(err))
-
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkPointage&id=' + this.props.idUserRecupClient)
-        .then((response) => response.json())
-        .then((response) => {
-
-            switch (response) {
-                case '#CHKPOINTAGE#SUCCESS':
-                    this.setState({
-                        cartePointageMsg: '1'
-                    })
-                    break;          
-                default:
-                    break;
-            }
-
-
-        })
-        .catch(err => console.error(err))
-
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + this.props.idUserRecupClient)
         .then((response) => response.json())
@@ -291,18 +274,7 @@ class Fichecoclient extends Component {
 
 
 
-        if (this.state.cartePointageMsg === '1') 
-        {
-            
-
-            return <div className="alert alert-warning">
-        
-                Votre pointage est en attente de validation...
-        
-            </div>
-
-        } 
-        else if (this.state.cartePointageMsg === '2') 
+        if (this.state.cartePointageMsg === '2') 
         {
             
 
@@ -422,13 +394,13 @@ class Fichecoclient extends Component {
 
             <div id="wrapper">
 
-                <Menu />
+                
 
                 <div id="content-wrapper" className="d-flex flex-column">
 
                 <div id="content">
 
-                    <Navbarupclient idUser={this.props.idUserRecupClient} />
+                    <Menu />
 
                     <div className="container-fluid">
 
@@ -537,6 +509,10 @@ class Fichecoclient extends Component {
                                     <tr>
                                         <td>N° Téléphone : </td>
                                         <td>{this.state.telephoneClient}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nombre pointage : </td>
+                                        <td>{this.state.nbpointage}</td>
                                     </tr>
                                     <tr>
                                         <td>Carte total : </td>

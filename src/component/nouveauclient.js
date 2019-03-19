@@ -123,13 +123,13 @@ class Nouveauclient extends Component {
 
             <div id="wrapper">
 
-                <Menu />
+                
 
                 <div id="content-wrapper" className="d-flex flex-column">
 
                 <div id="content">
 
-                    <Navbarup idEntreprise={this.props.idUserRecup} />
+                    <Menu />
 
                     <div className="container-fluid">
 

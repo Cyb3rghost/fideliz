@@ -100,13 +100,8 @@ class Log extends Component {
     if(this.state.loading)
     {
 
-        loadingdata = <div><Navbarup idEntreprise={this.props.idUserRecup} />
+        loadingdata = <div>
         <div className="container-fluid">
-            <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 className="h3 mb-0 text-gray-800">Log des pointages</h1>
-            </div>
-
-            <hr/>
 
             <ToolkitProvider
                 keyField="id"
@@ -132,20 +127,23 @@ class Log extends Component {
                 {
                     props => (
                     <div>
-                        <div className="row">
-                        
-                            <div className="col-md-8">
-                            
-                            
-                            </div>
-                            <div className="col-md-4">
-                            
-                                <SearchBar { ...props.searchProps } />
 
+                        <div className="row">
+                                
+                                <div className="col-md-8">
+                                
+                                    <h1 className="h3 mb-0 text-gray-800">Log des pointages</h1>
+                                
+                                </div>
+                                <div className="col-md-4">
+                                
+                                    <SearchBar { ...props.searchProps } />
+
+                                </div>
+                            
                             </div>
-                        
-                        </div>
-                        <hr />
+
+                        <hr/>
                         <div className="bg-white">
                             <BootstrapTable 
                                 { ...props.baseProps }
@@ -187,11 +185,13 @@ class Log extends Component {
 
             <div id="wrapper">
 
-                    <Menu />
+
 
                     <div id="content-wrapper" className="d-flex flex-column">
 
                     <div id="content">
+
+                        <Menu />
 
                         {loadingdata}
 

@@ -205,14 +205,22 @@ class Dashboard extends Component {
     if(this.state.loading)
     {
 
-        loadingdata = <div><Navbarup idEntreprise={this.props.idUserRecup} />
+        loadingdata = <div>
+                    
                         <div className="container-fluid">
-                        <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 className="h3 mb-0 text-gray-800">Dashboard</h1>
-                            <a href="#" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i className="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                        <div className="row">
+                            <div className="col-md-11">
+                            
+                            
+                            </div>
+                            <div className="col-md-1">
+                            
+                                <a href="/productivite" className="btn btn-sm btn-primary btn-block"><i className="fas fa-briefcase"></i> Mode productivité</a>
+                            
+                            </div>
                         </div>
 
-                        
+                        <br/>           
 
                         <div className="row">
 
@@ -424,20 +432,20 @@ class Dashboard extends Component {
 
     return (
         <div>
-  
+            
              <div id="wrapper">
-  
-                      <Menu />
   
                       <div id="content-wrapper" className="d-flex flex-column">
   
                       <div id="content">
   
+                           <Menu title="Dashboard" />
+  
                           {loadingdata}
   
                       </div>
   
-                      <footer className="sticky-footer bg-white">
+                      <footer className="sticky-footer bg-dark text-white">
                           <div className="container my-auto">
                           <div className="copyright text-center my-auto">
                               <span>Copyright &copy; Your Website 2019</span>

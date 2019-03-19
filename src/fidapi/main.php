@@ -19,6 +19,7 @@ if(isset($_GET['action']))
             $protectmdp = md5("secureINS".$password."INSecure");
             $apikey = md5("secureAPI".rand(0, 99999)."APISecure");
             $debutAbonnement = date("Y-m-d");
+            $code = rand(0, 99).rand(0, 999).rand(0, 9999);
         
             $date_expire    =   $debutAbonnement;
             $nbre=30;
@@ -56,7 +57,7 @@ if(isset($_GET['action']))
             else
             {
 
-                $sqlinscription = "INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`) VALUES (NULL, '".$emailEnt."', '".$protectmdp."', '1', '', '', '', '".$nomEntreprise."', '', '2', '0', '10', '0', '15', '0000-00-00', '0000-00-00', '0', 'carddefault.jpg', 'logodefault.png', '".$apikey."')";
+                $sqlinscription = "INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`, `qrcode`, `prestation`, `prix`) VALUES (NULL, '".$emailEnt."', '".$protectmdp."', '1', '', '', '', '".$nomEntreprise."', '', '1', '0', '2', '0', '0', '0000-00-00', '0000-00-00', '0', 'carddefault.jpg', 'logodefault.png', '".$apikey."', '".$code."', '', '0')";
                 if(mysqli_query($connect, $sqlinscription))
                 {
 
@@ -2303,6 +2304,178 @@ if(isset($_GET['action']))
             
             echo $json;
             
+            mysqli_close($connect);
+
+            break;
+        case 'updatePrestationEntreprise':
+
+            $idEntreprise = $_GET['identreprise'];
+            $prestation = $_GET['prestation'];
+            $prix = $_GET['prix'];
+
+            $sql = "UPDATE `accsociete` SET `prestation` = '".$prestation."', `prix` = '".$prix."' WHERE `id` = '".$idEntreprise."'";
+            if(mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#UPENTPRESTA#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#UPENTPRESTA#FAILED");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'resetPointage':
+
+            $idEntreprise = $_GET['identreprise'];
+
+            $sql = "UPDATE `accsociete` SET `prestation` = 'Null', `prix` = '0' WHERE `id` = '".$idEntreprise."'";
+            if(mysqli_query($connect, $sql))
+            {
+
+                $json = json_encode("#RESETPRESTA#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#RESETPRESTA#FAILED");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'pointageProductivite':
+
+            $idClient = $_GET['id'];
+            $idEntreprise = $_GET['identreprise'];
+            $datepointage = date("Y-m-d H:i:s"); 
+            $date = date("Y-m-d");
+            $qrcode = $_GET['qrcode'];
+
+
+            $sql = "SELECT * FROM `accsociete` WHERE `id` = '".$idEntreprise."' AND `activation` = '1'";
+            $result = mysqli_query($connect, $sql);
+            if(mysqli_num_rows($result))
+            {
+
+                while($row = mysqli_fetch_assoc($result))
+                {
+
+                    $nomDeLaSociete = $row['nomsociete'];
+                    $prestation = $row['prestation'];
+                    $prix = $row['prix'];
+                    $limitationPointage = $row['limitpointage'];
+                    $backgroundCard = $row['imgfond'];
+                    $iconCard = $row['imgicon'];
+
+                }
+
+                $sqldeux = "SELECT * FROM `acctclient` WHERE `id` = '".$idClient."'";
+                if($resultdeux = mysqli_query($connect, $sqldeux))
+                {
+
+                    while($raw = mysqli_fetch_assoc($resultdeux))
+                    {
+
+                        $nom = $raw['nom'];
+                        $prenom = $raw['prenom'];
+                        $client = $nom." ".$prenom;
+                        $pointageTotal = $raw['nbpointagetotal'];
+                        $nombrePointage = $raw['nbpointage'];
+
+
+                    }
+
+                    if($nombrePointage === $limitationPointage)
+                    {
+
+                        // 1 - On crée la carte de fidélité avec statut 1
+                        mysqli_query($connect, "INSERT INTO `cartefidelite` (`id`, `idclient`, `datecreation`, `nom`, `prenom`, `nbpointage`, `limitpointage`, `statut`, `cadeaux`, `imgbackground`, `imgicon`, `qrcode`) VALUES (NULL, '".$idClient."', '".$date."', '".$nom."', '".$prenom."', '".$nombrePointage."', '".$limitationPointage."', '1', '".$prestation."', '".$backgroundCard."', '".$iconCard."', '".$qrcode."')");
+
+                        // 2 - On sélectionne l'ID de la carte concerner avec le statut 1 c'est à dire non confirmer.
+                        $resultsix = mysqli_query($connect, "SELECT * FROM `cartefidelite` WHERE `idclient` = '".$idClient."' AND `qrcode` = '".$qrcode."' AND `statut` = '1'");
+                        while($rcw = mysqli_fetch_assoc($resultsix))
+                        {
+
+                             $idCarte = $rcw['id'];   
+
+                            // 3 - On crée le cadeaux de fidélité.
+                            mysqli_query($connect, "INSERT INTO `fidcadeaux` (`id`, `idclient`, `idcarte`, `date`, `cadeaux`, `statut`, `datereceptioncadeaux`, `code`, `prix`) VALUES (NULL, '".$idClient."', '".$idCarte."', '".$datepointage."', '".$prestation."', '2', '".$datepointage."', '".$qrcode."', '".$prix."')");
+
+                            // 4 - On update tous les pointages en liaison de la carte de fidélité
+                            mysqli_query($connect, "UPDATE `pointage` SET `idcarte` = '".$idCarte."', `statut` = '2' WHERE `identreprise` = '".$idEntreprise."' AND `idclient` = '".$idClient."' AND `statut` = '1' AND `code` = '".$qrcode."'");
+
+                            // 5 - On met à jour la carte de fidélité en statut '2'
+                            mysqli_query($connect, "UPDATE `cartefidelite` SET `statut` = '2' WHERE `idclient` = '".$idClient."' AND `qrcode` = '".$qrcode."'");
+
+                        }
+
+                        // 5 - On remet à jour le nombre de pointage de l'utilisateur à zero
+                        mysqli_query($connect, "UPDATE `acctclient` SET `nbpointage` = '0' WHERE `id` = '".$idClient."'");
+
+                        $json = json_encode("#LIMITPOINTAGE#ATTEIND");
+
+
+                    }
+                    else
+                    {
+
+                        $sqltrois = "INSERT INTO `pointage` (`id`, `idcarte`, `identreprise`, `idclient`, `entreprise`, `departpointage`, `client`, `finpointage`, `statut`, `code`, `prestation`, `prix`) VALUES (NULL, '0', '".$idEntreprise."', '".$idClient."', '".$nomDeLaSociete."', '".$datepointage."', '".$client."', '".$datepointage."', '1', '".$qrcode."', '".$prestation."', '".$prix."')";
+                        if(mysqli_query($connect, $sqltrois))
+                        {
+    
+    
+    
+                                mysqli_query($connect, "UPDATE `accsociete` SET `prestation` = 'Null', `prix` = '0' WHERE `id` = '".$idEntreprise."'"); // RESET PRESTATION ENTREPRISE
+                                mysqli_query($connect, "UPDATE `acctclient` SET `nbpointagetotal` = $pointageTotal + 1, `nbpointage` = $nombrePointage + 1 WHERE `id` = '".$idClient."'"); // AJOUT +1 AU POINTAGE TOTAL DU CLIENT
+                                $json = json_encode("#PRODUCTPOINTAGE#SUCCESS");
+    
+    
+    
+                        }
+                        else
+                        {
+    
+                            $json = json_encode("#PRODUCTPOINTAGE#SUCCESS");
+    
+                        }
+
+
+                    }
+
+
+
+                }
+                else
+                {
+
+                    $json = json_encode("#FINDCLTPOINTAGE#FAILED");
+
+                }
+
+
+            }
+            else
+            {
+
+                $json = json_encode("#CARTEFIDENT#DESACTIVE");
+
+            }
+
+
+            echo $json;
+
             mysqli_close($connect);
 
             break;

@@ -33,7 +33,6 @@ class Editionclient extends Component {
     componentDidMount()
     {
 
-        var idClient = window.location.search.substring(4);
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
@@ -254,13 +253,13 @@ class Editionclient extends Component {
 
             <div id="wrapper">
 
-                <Menu />
+                
 
                 <div id="content-wrapper" className="d-flex flex-column">
 
                 <div id="content">
 
-                    <Navbarupclient idUser={this.props.idUserRecupClient} />
+                <Menu />
 
                     <div className="container-fluid">
 

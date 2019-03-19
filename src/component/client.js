@@ -219,8 +219,6 @@ class Client extends Component {
     
             loadingdata = <div>
     
-                        <Navbarup idEntreprise={this.props.idUserRecup} />
-    
                         <div className="container-fluid">
     
                         <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -255,10 +253,10 @@ class Client extends Component {
                                     
                                     />
                                     <div class="input-group-append">
-                                        <button class="btn btn-success" onClick={this.assocCompte.bind(this)} type="button" id="button-addon2">Association du compte</button>
+                                        <button class="btn btn-dark" onClick={this.assocCompte.bind(this)} type="button" id="button-addon2">Association du compte</button>
                                     </div>
                                 </div>
-                                <a href="/nouveauclient"><button class="btn btn-success btn-block" type="button" id="button-addon2">Nouveau client</button></a>  
+                                <a href="/nouveauclient"><button class="btn btn-dark btn-block" type="button" id="button-addon2">Nouveau client</button></a>  
                                 </div>                
     
                             }
@@ -324,12 +322,14 @@ class Client extends Component {
     
                 <div id="wrapper">
     
-                    <Menu />
+
     
                     <div id="content-wrapper" className="d-flex flex-column">
     
                     <div id="content">
     
+                        <Menu />
+
                         {loadingdata}
     
                     </div>

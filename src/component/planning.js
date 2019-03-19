@@ -266,8 +266,6 @@ class Planning extends Component {
 
         loadingdata = <div>
 
-                            <Navbarup idUser={this.props.idUserRecupClient} />
-
                             <div className="container-fluid">
 
                             <div className="row">
@@ -282,7 +280,6 @@ class Planning extends Component {
 
                             </div>
                             <div className="bg-white" style={{ height: 700 }}>
-                                      <button onClick={() => this.setState({ view: "month" })}><i class="fas fa-plus-square"></i></button>
                                       <button onClick={() => this.setState({ view: "day" })}>Day</button>
                                       <button onClick={() => this.setState({ view: "month" })}>Month</button>
                                       <button onClick={() => this.setState({ view: "week" })}>Week</button>
@@ -338,7 +335,7 @@ class Planning extends Component {
                                           }
                                         }
                                         events={this.state.events}
-                                        toolbar={true}
+                                        toolbar={false}
                                         step={15}
                                         timeslots={8}
                                         culture={this.state.culture}
@@ -376,13 +373,19 @@ class Planning extends Component {
 
             <div id="wrapper">
 
-                <Menu />
+                
 
                 <div id="content-wrapper" className="d-flex flex-column">
 
                 <div id="content">
 
+                    <Menu />
+
                     {loadingdata}
+
+                    <br/>
+                    <br/>
+                    <br/>
 
                 </div>
 

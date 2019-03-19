@@ -853,11 +853,6 @@ pre code {
 }
 
 @media (min-width: 576px) {
-  .sidebar {
-
-    display: none;
-
-  }
   .col-sm {
     -ms-flex-preferred-size: 0;
     flex-basis: 0;
@@ -4898,7 +4893,6 @@ input[type="button"].btn-block {
   background-color: #fff;
   background-clip: border-box;
   border: 1px solid #e3e6f0;
-  border-radius: 0.35rem;
 }
 
 .card > hr {
@@ -4950,10 +4944,6 @@ input[type="button"].btn-block {
   color: inherit;
   background-color: #f8f9fc;
   border-bottom: 1px solid #e3e6f0;
-}
-
-.card-header:first-child {
-  border-radius: calc(0.35rem - 1px) calc(0.35rem - 1px) 0 0;
 }
 
 .card-header + .list-group .list-group-item:first-child {
@@ -11416,19 +11406,19 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
+  background: url("../images/accbackground.jpg");
   background-position: center;
   background-size: cover;
 }
 
 .bg-register-image {
-  background: url("https://source.unsplash.com/Mv9hjnEUHR4/600x800");
+  background: url("../images/accbackground.jpg");
   background-position: center;
   background-size: cover;
 }
 
 .bg-password-image {
-  background: url("https://source.unsplash.com/oWTW-jNGl9I/600x800");
+  background: url("../images/accbackground.jpg");
   background-position: center;
   background-size: cover;
 }
@@ -11981,7 +11971,8 @@ body.sidebar-toggled footer.sticky-footer {
 .styleLoader
 {
 
-    padding-top: 20%;
+    padding-top: 10%;
+    padding-bottom: 15%;
 
 }
 
@@ -12012,3 +12003,22 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 /* 05/03/2019 */
+
+/* 18/03/2019 */ 
+
+.cadrePointage
+{
+
+    width: 100%;
+    min-height: 50px;
+    height: auto;
+    background-color: white;
+    border-bottom: 1px solid grey;
+    padding: 15px;
+    color: black;
+
+}
+
+
+
+/* 18/03/2019 */

@@ -4,7 +4,7 @@ var host = slashes.concat(window.location.hostname);
 
 var Configuration = {    
     hostnameServer: host,
-    hostnameManuelServer: 'http://127.0.0.1/'
+    hostnameManuelServer: 'http://192.168.1.3/'
 }
 
 export default Configuration

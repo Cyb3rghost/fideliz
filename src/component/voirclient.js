@@ -599,8 +599,6 @@ class Voirclient extends Component {
 
         loadingdata = <div>
 
-                        <Navbarup idEntreprise={this.props.idUserRecup} />
-
                         {this.verifieEtatPointage()}
 
                         <div className="container-fluid">
@@ -747,11 +745,13 @@ class Voirclient extends Component {
 
             <div id="wrapper">
 
-                <Menu />
+                
 
                 <div id="content-wrapper" className="d-flex flex-column">
 
                 <div id="content">
+
+                    <Menu />
 
                     {loadingdata}
 

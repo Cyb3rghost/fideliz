@@ -364,8 +364,6 @@ class Gestioncompte extends Component {
     
             loadingdata = <div>
     
-                                <Navbarup idEntreprise={this.props.idUserRecup} />
-    
                                 <div className="container-fluid">
     
     
@@ -544,11 +542,13 @@ class Gestioncompte extends Component {
     
                 <div id="wrapper">
     
-                    <Menu />
+                    
     
                     <div id="content-wrapper" className="d-flex flex-column">
     
                     <div id="content">
+
+                        <Menu />
     
                         {loadingdata}
     

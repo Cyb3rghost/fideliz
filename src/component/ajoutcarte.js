@@ -191,13 +191,13 @@ class Ajoutcarte extends Component {
 
             <div id="wrapper">
 
-                <Menu />
+                
 
                 <div id="content-wrapper" className="d-flex flex-column">
 
                 <div id="content">
 
-                    <Navbarup idEntreprise={this.props.idUserRecup} />
+                    <Menu />
 
                     <div className="container-fluid">
 
@@ -288,6 +288,8 @@ class Ajoutcarte extends Component {
                     </div>
 
                 </div>
+
+                <br/>
 
                 <footer className="sticky-footer bg-white">
                     <div className="container my-auto">

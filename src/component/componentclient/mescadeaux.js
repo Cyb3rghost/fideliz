@@ -273,7 +273,6 @@ class Mescadeaux extends Component {
 
 
   render() {
-    var idClient = window.location.search.substring(4);
     var QRCode = require('qrcode.react');
 
     return (
@@ -281,13 +280,13 @@ class Mescadeaux extends Component {
 
             <div id="wrapper">
 
-                <Menu />
+                
 
                 <div id="content-wrapper" className="d-flex flex-column">
 
                 <div id="content">
 
-                    <Navbarupclient idUser={this.props.idUserRecupClient} />
+                    <Menu />
 
                     <div className="container-fluid">
 

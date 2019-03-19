@@ -257,8 +257,6 @@ class Modifprofil extends Component {
 
         loadingdata = <div>
 
-                    <Navbarup idEntreprise={this.props.idUserRecup} />
-
                     {this.afficheStatutMaj()}
 
                     <div className="container-fluid">
@@ -434,11 +432,13 @@ class Modifprofil extends Component {
 
             <div id="wrapper">
 
-                <Menu />
+                
 
                 <div id="content-wrapper" className="d-flex flex-column">
 
                 <div id="content">
+
+                    <Menu />
 
                     {loadingdata}
 

@@ -27,7 +27,39 @@ class Qrcodeclient extends Component {
 
         audio.play()
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
+        /*console.log(Configuration.hostnameManuelServer + 'fidapi/main.php?action=pointageProductivite&id=' + this.props.idUserRecupClient 
+        + '&identreprise=' + this.props.idEntRecupClient
+        + '&qrcode=' + data)*/
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=pointageProductivite&id=' + this.props.idUserRecupClient 
+        + '&identreprise=' + this.props.idEntRecupClient
+        + '&qrcode=' + data)
+        .then((response) => response.json())
+        .then((response) => {
+
+            switch (response) {
+                case '#PRODUCTPOINTAGE#SUCCESS':
+                    console.log(response)
+                    setTimeout(() => window.location.href = "/fichecoclient",1500)
+                    break;   
+                case '#PRODUCTPOINTAGE#FAILED':
+                    console.log(response)
+                    break; 
+                case '#CARTEFIDENT#DESACTIVE':
+                    console.log(response)
+                    break; 
+                case '#LIMITPOINTAGE#ATTEIND':
+                    console.log(response)
+                    setTimeout(() => window.location.href = "/fichecoclient",1500)
+                    break; 
+                default:
+                    break;
+            }
+
+        })
+        .catch(err => console.error(err))
+
+        /*fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
         .then((response) => response.json())
         .then((response) => {
 
@@ -81,14 +113,13 @@ class Qrcodeclient extends Component {
                     break;
             }
 
-
-    
-
         })
-        .catch(err => console.error(err))  
+        .catch(err => console.error(err))  */
         
       }
     }
+
+
     handleError(err) {
       alert(err);
     }
