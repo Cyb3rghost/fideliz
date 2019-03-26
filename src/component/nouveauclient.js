@@ -18,6 +18,7 @@ class Nouveauclient extends Component {
             telephoneClient: '',
             emailClient: '',
             passwordClient: '',
+            dateNaissance: '',
             statutMsg: ''
         }
 
@@ -34,12 +35,15 @@ class Nouveauclient extends Component {
 
     }
 
-    ajoutClient()
+    ajoutClient(event)
     {
 
-        const { nomClient, prenomClient, adresseClient, telephoneClient, emailClient, passwordClient } = this.state;
+        const { nomClient, prenomClient, adresseClient, telephoneClient, emailClient, passwordClient, dateNaissance } = this.state;
+
+        event.preventDefault();
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=ajoutClient&id=' + this.props.idUserRecup
+        + '&naissance=' + dateNaissance
         + '&nomClient=' + nomClient 
         + '&prenomClient=' + prenomClient 
         + '&adresseClient=' + adresseClient
@@ -70,6 +74,14 @@ class Nouveauclient extends Component {
                     statutMsg: '2'
                 })
                 
+            }
+            else if(response === "#LIMITCLIENT#ATTEIND")
+            {
+
+                this.setState({
+                    statutMsg: '3'
+                })
+
             }
 
         })
@@ -113,7 +125,17 @@ class Nouveauclient extends Component {
             </div>
 
         }
+        else if (this.state.statutMsg === '3') 
+        {
+            
 
+            return <div className="alert alert-danger">
+        
+                Votre compte ne vous permet pas d'ajouter un client supplémentaire. Pensez à upgrader votre compte.
+
+            </div>
+
+        }
 
     }
 
@@ -142,6 +164,18 @@ class Nouveauclient extends Component {
                     {/* DEBUT CODE */}
                     {this.vrfInsertion()}
 
+                    <form onSubmit={this.ajoutClient.bind(this)} >
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Date de naissance</label>
+                        <div class="col-sm-10">
+                        <input 
+                            type="date" 
+                            value={this.state.dateNaissance}
+                            onChange={e => this.setState({dateNaissance: e.target.value})}
+                            className="form-control" 
+                         />
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Nom</label>
                         <div class="col-sm-10">
@@ -223,10 +257,10 @@ class Nouveauclient extends Component {
                     <div class="form-group row">
                         <div className="col-sm-8"></div>
                         <div class="col-sm-4">
-                        <button class="btn btn-success btn-block" onClick={this.ajoutClient.bind(this)} type="button" id="button-addon2">Ajouter</button>
+                        <button className="btn btn-success btn-block" type="submit" id="button-addon2">Ajouter</button>
                         </div>
                     </div>
-
+                    </form>
 
                     {/* FIN CODE */}
 

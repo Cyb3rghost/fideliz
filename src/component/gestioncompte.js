@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
 
-import Navbarup from './navbarup'
-import Wallet from '../images/walletabo.png'
-import Prestations from '../images/prestations.png'
-
 import Menu from './menu'
 
 class Gestioncompte extends Component {
@@ -15,23 +11,30 @@ class Gestioncompte extends Component {
         super(props)
         this.state = {
             gestionInterface: '1',
-            
-            /* Gestion partie abonnement */
-            statutAbonnement: '0',
+            starterPrix: '9.99',
+            starterStatut: 'Mensuel',
+            starterLimitClient: '75',
+            ProfessionalPrix: '19.99',
+            ProfessionalStatut: 'Mensuel',
+            ProfessionalLimitClient: '125',
+            ExpertPrix: '29.99',
+            ExpertStatut: 'Mensuel',
+            ExpertLimitClient: '225',
+            statutMode: '1',
             loading: true
-
-            /* Gestion partie abonnement */
         }
 
     }
 
-    commandeBronzeMensuel(statutabo)
+    commandeBronzeMensuel()
     {
 
-        if(statutabo === '1')
+        if(this.state.statutMode === '2')
         {
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandebronzeannuel&id=' + this.props.idUserRecup)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandebronzeannuel&id=' + this.props.idUserRecup
+            + '&limitationclient=' + this.state.starterLimitClient
+            + '&prix=' + this.state.starterPrix)
             .then((response) => response.json())
             .then((response) => {
     
@@ -41,7 +44,7 @@ class Gestioncompte extends Component {
                 {
     
                     this.setState({
-                        statutAbonnement: '7'
+                        statutAbonnement: '1'
                     })
     
                     setTimeout(() => window.location.href = "/dashboard",2500)
@@ -50,18 +53,22 @@ class Gestioncompte extends Component {
                 else if (response === "#ABOBRONZEANN#FAILED") {
                   
                     this.setState({
-                        statutAbonnement: '8'
+                        statutAbonnement: '2'
                     })  
     
                 }
             })
             .catch(err => console.error(err))
 
+
         }
-        else
+        else if(this.state.statutMode === '1')
         {
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandebronzemensuel&id=' + this.props.idUserRecup)
+
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandebronzemensuel&id=' + this.props.idUserRecup
+            + '&limitationclient=' + this.state.starterLimitClient
+            + '&prix=' + this.state.starterPrix)
             .then((response) => response.json())
             .then((response) => {
     
@@ -87,19 +94,24 @@ class Gestioncompte extends Component {
             })
             .catch(err => console.error(err))
 
+
         }
+
+
 
 
     }
 
     
-    commandeArgentMensuel(statutabo)
+    commandeArgentMensuel()
     {
 
-        if(statutabo === '1')
+        if(this.state.statutMode === '2')
         {
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeargentannuel&id=' + this.props.idUserRecup)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeargentannuel&id=' + this.props.idUserRecup
+            + '&limitationclient=' + this.state.ProfessionalLimitClient
+            + '&prix=' + this.state.ProfessionalPrix)
             .then((response) => response.json())
             .then((response) => {
     
@@ -109,7 +121,7 @@ class Gestioncompte extends Component {
                 {
     
                     this.setState({
-                        statutAbonnement: '9'
+                        statutAbonnement: '3'
                     })
     
                     setTimeout(() => window.location.href = "/dashboard",2500)
@@ -118,7 +130,7 @@ class Gestioncompte extends Component {
                 else if (response === "#ABOARGENTANN#FAILED") {
                   
                     this.setState({
-                        statutAbonnement: '10'
+                        statutAbonnement: '4'
                     })  
     
                 }
@@ -131,11 +143,13 @@ class Gestioncompte extends Component {
 
 
         }
-        else
+        else if(this.state.statutMode === '1')
         {
 
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeargentmensuel&id=' + this.props.idUserRecup)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeargentmensuel&id=' + this.props.idUserRecup
+            + '&limitationclient=' + this.state.ProfessionalLimitClient
+            + '&prix=' + this.state.ProfessionalPrix)
             .then((response) => response.json())
             .then((response) => {
     
@@ -173,13 +187,15 @@ class Gestioncompte extends Component {
 
     }
 
-    commandeOrMensuel(statutabo)
+    commandeOrMensuel()
     {
 
-        if(statutabo === '1')
+        if(this.state.statutMode === '2')
         {
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeorannuel&id=' + this.props.idUserRecup)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeorannuel&id=' + this.props.idUserRecup
+            + '&limitationclient=' + this.state.ExpertLimitClient
+            + '&prix=' + this.state.ExpertPrix)
             .then((response) => response.json())
             .then((response) => {
     
@@ -189,7 +205,7 @@ class Gestioncompte extends Component {
                 {
     
                     this.setState({
-                        statutAbonnement: '11'
+                        statutAbonnement: '5'
                     })
     
                     setTimeout(() => window.location.href = "/dashboard",2500)
@@ -198,23 +214,23 @@ class Gestioncompte extends Component {
                 else if (response === "#ABOORANN#FAILED") {
                   
                     this.setState({
-                        statutAbonnement: '12'
+                        statutAbonnement: '6'
                     })  
     
                 }
-    
-    
-    
     
             })
             .catch(err => console.error(err))
 
 
         }
-        else
+        else if(this.state.statutMode === '1')
         {
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeormensuel&id=' + this.props.idUserRecup)
+
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeormensuel&id=' + this.props.idUserRecup
+            + '&limitationclient=' + this.state.ExpertLimitClient
+            + '&prix=' + this.state.ExpertPrix)
             .then((response) => response.json())
             .then((response) => {
     
@@ -237,9 +253,6 @@ class Gestioncompte extends Component {
                     })  
     
                 }
-    
-    
-    
     
             })
             .catch(err => console.error(err))
@@ -280,14 +293,6 @@ class Gestioncompte extends Component {
             </div>
 
         }
-        else if (this.state.statutAbonnement === '4') 
-        {
-          
-            return <div className="alert alert-danger" role="alert">
-                L'achat du grade argent n'a pas été pris en compte. (30 Jours disponibles)
-            </div>
-
-        }
         else if (this.state.statutAbonnement === '5') 
         {
           
@@ -296,63 +301,93 @@ class Gestioncompte extends Component {
             </div>
 
         }
-        else if (this.state.statutAbonnement === '6') 
-        {
-          
-            return <div className="alert alert-danger" role="alert">
-                L'achat du grade Or n'a pas été pris en compte. (30 Jours disponibles)
-            </div>
 
-        }
-        else if (this.state.statutAbonnement === '7') 
-        {
-          
-            return <div className="alert alert-success" role="alert">
-                L'achat du grade Bronze a bien été pris en compte. (365 Jours disponibles)
-            </div>
+    }
 
-        }
-        else if (this.state.statutAbonnement === '8') 
-        {
-          
-            return <div className="alert alert-danger" role="alert">
-                L'achat du grade Bronze n'a pas été pris en compte. (365 Jours disponibles)
-            </div>
+    getModeStarter(event)
+    {
 
-        }
-        else if (this.state.statutAbonnement === '9') 
-        {
-          
-            return <div className="alert alert-success" role="alert">
-                L'achat du grade Argent a bien été pris en compte. (365 Jours disponibles)
-            </div>
-
-        }
-        else if (this.state.statutAbonnement === '10') 
-        {
-          
-            return <div className="alert alert-danger" role="alert">
-                L'achat du grade Argent n'a pas été pris en compte. (365 Jours disponibles)
-            </div>
-
-        }
-        else if (this.state.statutAbonnement === '11') 
-        {
-          
-            return <div className="alert alert-success" role="alert">
-                L'achat du grade Or a bien été pris en compte. (365 Jours disponibles)
-            </div>
-
-        }
-        else if (this.state.statutAbonnement === '12') 
-        {
-          
-            return <div className="alert alert-danger" role="alert">
-                L'achat du grade Or n'a pas été pris en compte. (365 Jours disponibles)
-            </div>
-
-        }
+        console.log(event.target.value)
         
+        if(event.target.value === 'Mensuel')
+        {
+
+            this.setState({
+                starterPrix: '9.99',
+                starterStatut: event.target.value,
+                starterLimitClient: '75'
+            })
+
+        }
+        else if(event.target.value === 'Annuel')
+        {
+
+            this.setState({
+                starterPrix: '9.99' * 11,
+                starterStatut: event.target.value,
+                starterLimitClient: '100',
+                statutMode: '2'
+            })
+
+        }
+
+    }
+
+    getModeProfessionnal(event)
+    {
+
+        console.log(event.target.value)
+        
+        if(event.target.value === 'Mensuel')
+        {
+
+            this.setState({
+                ProfessionalPrix: '19.99',
+                ProfessionalStatut: event.target.value,
+                ProfessionalLimitClient: '125'
+            })
+
+        }
+        else if(event.target.value === 'Annuel')
+        {
+
+            this.setState({
+                ProfessionalPrix: '19.99' * 11,
+                ProfessionalStatut: event.target.value,
+                ProfessionalLimitClient: '150',
+                statutMode: '2'
+            })
+
+        }
+
+    }
+
+    getModeExpert(event)
+    {
+
+        console.log(event.target.value)
+        
+        if(event.target.value === 'Mensuel')
+        {
+
+            this.setState({
+                ExpertPrix: '29.99',
+                ExpertStatut: event.target.value,
+                ExpertLimitClient: '225'
+            })
+
+        }
+        else if(event.target.value === 'Annuel')
+        {
+
+            this.setState({
+                ExpertPrix: '29.99' * 11,
+                ExpertStatut: event.target.value,
+                ExpertLimitClient: '250',
+                statutMode: '2'
+            })
+
+        }
 
     }
 
@@ -385,10 +420,16 @@ class Gestioncompte extends Component {
                                                                 <div className="card card-pricing text-center px-3 mb-4">
                                                                     <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Starter Royalty <br/> <i class="fas fa-star"></i> Bronze <i class="fas fa-star"></i></span>
                                                                     <div className="bg-transparent card-header pt-4 border-0">
-                                                                        <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="15">€<span className="price">9.99</span><span className="h6 text-muted ml-2">/ par mois</span></h1>
+                                                                        <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="15">€<span className="price">{this.state.starterPrix}</span><span className="h6 text-muted ml-2"> / <select onChange={this.getModeStarter.bind(this)} value={this.state.starterStatut} className="form-control-sm">
+                                                                                <option value="Mensuel">Mensuel</option>
+                                                                                <option value="Annuel">Annuel</option>
+                                                                            </select>
+                                                                            </span>
+                                                                        </h1>
                                                                     </div>
                                                                     <div className="card-body pt-0">
                                                                         <ul className="list-unstyled mb-4">
+                                                                            <li><i class="fas fa-check"></i> Limitation client : {this.state.starterLimitClient}</li>
                                                                             <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
                                                                             <li><i class="fas fa-check"></i> Gestion client</li>
                                                                             <li><i class="fas fa-check"></i> Gestion pointage</li>
@@ -401,12 +442,17 @@ class Gestioncompte extends Component {
                                                                 <div className="card card-pricing popular shadow text-center px-3 mb-4">
                                                                     <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Professional Royalty <br/> <i class="fas fa-star"></i> Argent <i class="fas fa-star"></i></span>
                                                                     <div className="bg-transparent card-header pt-4 border-0">
-                                                                        <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="30">€<span className="price">19.99</span><span className="h6 text-muted ml-2">/ par mois</span></h1>
+                                                                        <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="30">€<span className="price">{this.state.ProfessionalPrix}</span><span className="h6 text-muted ml-2"> / <select onChange={this.getModeProfessionnal.bind(this)} value={this.state.ProfessionalStatut} className="form-control-sm">
+                                                                                <option>Mensuel</option>
+                                                                                <option>Annuel</option>
+                                                                            </select>
+                                                                            </span>
+                                                                        </h1>
                                                                     </div>
                                                                     <div className="card-body pt-0">
                                                                         <ul className="list-unstyled mb-4">
+                                                                            <li><i class="fas fa-check"></i> Limitation client : {this.state.ProfessionalLimitClient}</li>
                                                                             <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
-                                                                            <li><i class="fas fa-check"></i> Accès carte de réduction</li>
                                                                             <li><i class="fas fa-check"></i> Gestion client</li>
                                                                             <li><i class="fas fa-check"></i> Gestion pointage</li>
                                                                             <li><i class="fas fa-check"></i> Gestion carte</li>
@@ -419,13 +465,17 @@ class Gestioncompte extends Component {
                                                                 <div className="card card-pricing text-center px-3 mb-4">
                                                                     <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Expert Royalty <br/> <i class="fas fa-star"></i> Or <i class="fas fa-star"></i></span>
                                                                     <div className="bg-transparent card-header pt-4 border-0">
-                                                                        <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="45">€<span className="price">29.99</span><span className="h6 text-muted ml-2">/ par mois</span></h1>
+                                                                        <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="45">€<span className="price">{this.state.ExpertPrix}</span><span className="h6 text-muted ml-2"> / <select onChange={this.getModeExpert.bind(this)} value={this.state.ExpertStatut} className="form-control-sm">
+                                                                                <option>Mensuel</option>
+                                                                                <option>Annuel</option>
+                                                                            </select>
+                                                                            </span>
+                                                                        </h1>
                                                                     </div>
                                                                     <div className="card-body pt-0">
                                                                         <ul className="list-unstyled mb-4">
+                                                                            <li><i class="fas fa-check"></i> Limitation client : {this.state.ExpertLimitClient}</li>
                                                                             <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
-                                                                            <li><i class="fas fa-check"></i> Accès carte de réduction</li>
-                                                                            <li><i class="fas fa-check"></i> Accès carte de cadeaux</li>
                                                                             <li><i class="fas fa-check"></i> Gestion client</li>
                                                                             <li><i class="fas fa-check"></i> Gestion pointage</li>
                                                                             <li><i class="fas fa-check"></i> Gestion carte</li>
@@ -439,73 +489,7 @@ class Gestioncompte extends Component {
                                                         </div>
     
                                                     </div>
-                                                    <div className="headerTitle">
-    
-                                                    FORMULE D'ABONNEMENT ANNUEL
-    
-                                                    </div>
-    
-                                                    <div class="card card-body bg-white">
-    
-                                                        <div className="mb-5 mt-5">
-                                                                <div className="pricing card-deck flex-column flex-md-row mb-3">
-                                                                    <div className="card card-pricing text-center px-3 mb-4">
-                                                                        <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Starter Royalty <br/> <i class="fas fa-star"></i> Bronze <i class="fas fa-star"></i></span>
-                                                                        <div className="bg-transparent card-header pt-4 border-0">
-                                                                            <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="15">€<span className="price">109.89</span><span className="h6 text-muted ml-2">/ par an</span></h1>
-                                                                        </div>
-                                                                        <div className="card-body pt-0">
-                                                                            <ul className="list-unstyled mb-4">
-                                                                                <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
-                                                                                <li><i class="fas fa-check"></i> Gestion client</li>
-                                                                                <li><i class="fas fa-check"></i> Gestion pointage</li>
-                                                                                <li><i class="fas fa-check"></i> Gestion carte</li>
-                                                                                <li><i class="fas fa-check"></i> Gestion planning</li>
-                                                                            </ul>
-                                                                            <button type="button" onClick={() => this.commandeBronzeMensuel('1')} className="btn btn-outline-secondary mb-3">Commandez maintenant</button>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="card card-pricing popular shadow text-center px-3 mb-4">
-                                                                        <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Professional Royalty <br/> <i class="fas fa-star"></i> Argent <i class="fas fa-star"></i></span>
-                                                                        <div className="bg-transparent card-header pt-4 border-0">
-                                                                            <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="30">€<span className="price">219.89</span><span className="h6 text-muted ml-2">/ par an</span></h1>
-                                                                        </div>
-                                                                        <div className="card-body pt-0">
-                                                                            <ul className="list-unstyled mb-4">
-                                                                                <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
-                                                                                <li><i class="fas fa-check"></i> Accès carte de réduction</li>
-                                                                                <li><i class="fas fa-check"></i> Gestion client</li>
-                                                                                <li><i class="fas fa-check"></i> Gestion pointage</li>
-                                                                                <li><i class="fas fa-check"></i> Gestion carte</li>
-                                                                                <li><i class="fas fa-check"></i> Gestion planning</li>
-                                                                                <li><i class="fas fa-check"></i> Support technique / client</li>
-                                                                            </ul>
-                                                                            <button type="button" onClick={() => this.commandeArgentMensuel('1')} className="btn btn-primary mb-3">Commandez maintenant</button>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="card card-pricing text-center px-3 mb-4">
-                                                                        <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Expert Royalty <br/> <i class="fas fa-star"></i> Or <i class="fas fa-star"></i></span>
-                                                                        <div className="bg-transparent card-header pt-4 border-0">
-                                                                            <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="45">€<span className="price">329.89</span><span className="h6 text-muted ml-2">/ par an</span></h1>
-                                                                        </div>
-                                                                        <div className="card-body pt-0">
-                                                                            <ul className="list-unstyled mb-4">
-                                                                                <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
-                                                                                <li><i class="fas fa-check"></i> Accès carte de réduction</li>
-                                                                                <li><i class="fas fa-check"></i> Accès carte de cadeaux</li>
-                                                                                <li><i class="fas fa-check"></i> Gestion client</li>
-                                                                                <li><i class="fas fa-check"></i> Gestion pointage</li>
-                                                                                <li><i class="fas fa-check"></i> Gestion carte</li>
-                                                                                <li><i class="fas fa-check"></i> Gestion planning</li>
-                                                                                <li><i class="fas fa-check"></i> Support technique / client</li>
-                                                                            </ul>
-                                                                            <button type="button" onClick={() => this.commandeOrMensuel('1')} className="btn btn-outline-secondary mb-3">Commandez maintenant</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-    
-                                                    </div>
+                                                    
     
     
                                                     </div>

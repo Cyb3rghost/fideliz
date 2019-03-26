@@ -109,10 +109,12 @@ class App extends Component {
   
     }
 
-    Connexion()
+    Connexion(event)
     {
   
       const {connexionEmail, connexionPassword, isLogged, idUser } = this.state;
+
+      event.preventDefault();
 
       fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=jourRestantMaj&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
       .then((response) => response.json())
@@ -170,11 +172,12 @@ class App extends Component {
   
     }
   
-    connexionClient()
+    connexionClient(event)
     {
   
         const { connexionEmailClient, connexionPasswordClient, isLoggedClient, idUserClient, selectedOption } = this.state;
   
+        event.preventDefault()
         //alert('Email : ' + emailClient + '\n Password : ' + passwordClient)
   
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=connexionClient&idEntreprise=' + selectedOption.value + '&cntemail=' + connexionEmailClient + '&cntpassword=' + connexionPasswordClient)
@@ -253,7 +256,7 @@ class App extends Component {
                             <div className="text-center form-control-user">
                                 <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/> <small>Espace entreprise</small></h1>
                             </div>
-                            <form className="user">
+                            <form onSubmit={this.Connexion.bind(this)} className="user">
                                 <div className="form-group">
                                 <input 
                                 type="email" 
@@ -274,7 +277,7 @@ class App extends Component {
                                 
                                 />
                                 </div>
-                                <button type="button" onClick={this.Connexion.bind(this)} class="btn btn-primary btn-user btn-block">Connexion</button>
+                                <button type="submit" className="btn btn-primary btn-user btn-block">Connexion</button>
                                 <hr/>
                                 <a href="/connexionclient" className="btn btn-google btn-user btn-block">
                                 Accès compte client
@@ -314,7 +317,7 @@ class App extends Component {
                         <div className="text-center">
                             <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/> <small>Espace client</small></h1>
                         </div>
-                        <form className="user">
+                        <form onSubmit={this.connexionClient.bind(this)} className="user">
                             <div className="form-group">
                                 <Select
                                     value={selectedOption}
@@ -340,7 +343,7 @@ class App extends Component {
                                 placeholder="Password" 
                             />
                             </div>
-                            <button type="button" onClick={this.connexionClient.bind(this)} class="btn btn-primary btn-user btn-block">Connexion</button>
+                            <button type="submit" className="btn btn-primary btn-user btn-block">Connexion</button>
                             <hr/>
                             <a href="/" className="btn btn-google btn-user btn-block">
                             Accès compte entreprise

@@ -11,10 +11,13 @@ class Productivite extends Component {
         super(props)
         this.state = {
             qrcode: '',
+            activation: '',
             selectedOption: null,
             afflisteCadeaux: [],
-            prestation: 'Null',
-            prix: '0 €'
+            prestation: '',
+            prix: '',
+            afficheDernierPointage: [],
+            statut: ''
 
         }
 
@@ -30,7 +33,10 @@ class Productivite extends Component {
             {response.map((value) => 
             (
                 this.setState({
-                    qrcode: value.qrcode                  
+                    qrcode: value.qrcode,
+                    activation: value.activation,
+                    prestation: value.prestation,
+                    prix: value.prix                  
                 })
             )
             )}
@@ -47,6 +53,18 @@ class Productivite extends Component {
                 afflisteCadeaux: response
             })
     
+
+        })
+        .catch(err => console.error(err))
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirDernierPointageCarte&id=' + this.props.idUserRecup)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+            this.setState({
+                afficheDernierPointage: response
+            })
 
         })
         .catch(err => console.error(err))
@@ -68,7 +86,7 @@ class Productivite extends Component {
             {
 
                 console.log(response)
-                this.setState({ selectedOption, prestation: separePrestation[0], prix: separePrestation[1] });
+                this.setState({ selectedOption, prestation: separePrestation[0], prix: separePrestation[1].substring(0, separePrestation[1].length-1) });
                 console.log(`Option selected:`, selectedOption);
 
             }
@@ -76,7 +94,7 @@ class Productivite extends Component {
             {
 
                 console.log(response)
-                this.setState({ selectedOption, prestation: separePrestation[0], prix: separePrestation[1] });
+                this.setState({ selectedOption, prestation: separePrestation[0], prix: separePrestation[1].substring(0, separePrestation[1].length-1) });
                 console.log(`Option selected:`, selectedOption);
 
             }
@@ -100,14 +118,14 @@ class Productivite extends Component {
             {
 
                 console.log(response)
-                this.setState({ selectedOption: null, prestation: 'Null', prix: '0 €' });
+                this.setState({ selectedOption: null, prestation: 'Vide', prix: '0' });
 
             }
             else if(response === "#RESETPRESTA#FAILED")
             {
 
                 console.log(response)
-                this.setState({ selectedOption: null, prestation: 'Null', prix: '0 €' });
+                this.setState({ selectedOption: null, prestation: 'Vide', prix: '0' });
 
             }
 
@@ -117,6 +135,124 @@ class Productivite extends Component {
 
     }
 
+    activeCarte()
+    {
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=activeCarte&id=' + this.props.idUserRecup)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+            if(response === "#ENABLEDCARD#UPGRADE")
+            {
+
+                    this.setState({
+                        statut: '1'
+                    })
+
+            }
+            else if(response === "#ENABLEDCARD#SUCCESS")
+            {
+
+                setTimeout(() => window.location.href = "/productivite",250)
+
+            }
+
+            
+
+        })
+        .catch(err => console.error(err))
+
+
+    }
+
+    desactiveCarte()
+    {
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=desactiveCarte&id=' + this.props.idUserRecup)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+            setTimeout(() => window.location.href = "/productivite",250)
+
+        })
+        .catch(err => console.error(err))
+
+
+    }
+
+    checkEtatCarte()
+    {
+
+        if(this.state.activation === '1')
+        {
+
+
+            return <div className="row">
+                                        
+                <div className="col-6">
+                
+                    
+                    <h6>Etat de la carte : <span className="badge badge-success">Activé</span></h6>
+                    
+                
+                </div>
+                <div className="col-6 text-right">
+                
+                    <button type="button" onClick={this.desactiveCarte.bind(this)} className="btn btn-danger btn-sm">Désactivé</button>
+
+                </div>
+        
+            </div>
+
+
+        }
+        else if(this.state.activation === '0')
+        {
+
+            return <div className="row">
+                                        
+                <div className="col-6">
+                
+                    
+                    <h6>Etat de la carte : <span className="badge badge-danger">Désactivé</span></h6>
+                    
+                
+                </div>
+                <div className="col-6 text-right">
+                
+                    <button type="button" onClick={this.activeCarte.bind(this)}  className="btn btn-success btn-sm">Activé</button>
+
+                </div>
+        
+            </div>
+
+
+        }
+
+
+
+
+
+    }
+
+    afficheStatut()
+    {
+
+        if(this.state.statut === '1')
+        {
+
+            return <div className="alert alert-warning">
+            
+            <center>Vous ne pouvez pas activé votre carte car votre compte n'est pas upgrader.</center>
+
+            </div>
+
+        }
+
+
+    }
 
   render() {
 
@@ -141,6 +277,8 @@ class Productivite extends Component {
 
                             <div className="container">
                             
+                                {this.afficheStatut()}
+
                                 <div className="row">
                                     
                                     <div className="col-md-6">
@@ -151,7 +289,7 @@ class Productivite extends Component {
                                             className="img-responsive"
                                         />
                                         <br/>
-                                        <b>Prestation :</b> {this.state.prestation} - {this.state.prix}</center>
+                                        <b>Prestation :</b> {this.state.prestation} - {this.state.prix} €</center>
                                         <br/>
                                         
                                     
@@ -160,8 +298,8 @@ class Productivite extends Component {
                                     
                                         <div className="panelCarte">
                                             <div id="personalizecarte">  
-                                                <img src={Configuration.hostnameManuelServer + 'fidapi/img/carddefault.jpg'} className="img-fluid" id="img1" alt="" />
-                                                <img src={Configuration.hostnameManuelServer + 'fidapi/img/logodefault.png'}  className="img-fluid" id="img2" alt="" /> 
+                                                <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.props.bkdgCarte} className="img-fluid" id="img1" alt="" />
+                                                <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.props.iconCarte}  className="img-fluid" id="img2" alt="" /> 
                                             
                                             </div>  
 
@@ -200,110 +338,34 @@ class Productivite extends Component {
 
                                 <div className="cadrePointage">
                                 
+                                    {this.checkEtatCarte()}
+
+                                </div>
+
+                                {this.state.afficheDernierPointage.map(function(value){
+
+                                    return <div className="cadrePointage">
+                                                                    
                                     <div className="row">
-                                    
+
                                         <div className="col-6">
                                         
-                                            <b>Ludovic LEVENEUR</b><br/>
-                                            <small>Prestation qslkjqdlqjksd lqskjdqslkdj</small>
+                                            <b>{value.client}</b><br/>
+                                            <small>{value.prestation}</small>
                                             
                                         
                                         </div>
                                         <div className="col-6 text-right">
                                         
-                                            <span className="badge badge-dark">30,50 €</span><br/>
-                                            <small>18/03/2019 - 11H58</small>
+                                            <span className="badge badge-dark">{value.prix} €</span><br/>
+                                            <small>{value.finpointage}</small>
 
                                         </div>
-                                    
+
                                     </div>
-                                </div>
-                                <div className="cadrePointage">
-                                
-                                    <div className="row">
-                                    
-                                        <div className="col-6">
-                                        
-                                            <b>Ludovic LEVENEUR</b><br/>
-                                            <small>Prestation qslkjqdlqjksd lqskjdqslkdj</small>
-                                            
-                                        
-                                        </div>
-                                        <div className="col-6 text-right">
-                                        
-                                            <span className="badge badge-dark">30,50 €</span><br/>
-                                            <small>18/03/2019 - 11H58</small>
+                                    </div> 
 
-                                        </div>
-                                    
-                                    </div>
-                                </div>
-                                <div className="cadrePointage">
-                                
-                                    <div className="row">
-                                    
-                                        <div className="col-6">
-                                        
-                                            <b>Ludovic LEVENEUR</b><br/>
-                                            <small>Prestation qslkjqdlqjksd lqskjdqslkdj</small>
-                                            
-                                        
-                                        </div>
-                                        <div className="col-6 text-right">
-                                        
-                                            <span className="badge badge-dark">30,50 €</span><br/>
-                                            <small>18/03/2019 - 11H58</small>
-
-                                        </div>
-                                    
-                                    </div>
-                                </div>
-                                <div className="cadrePointage">
-                                
-                                    <div className="row">
-                                    
-                                        <div className="col-6">
-                                        
-                                            <b>Ludovic LEVENEUR</b><br/>
-                                            <small>Prestation qslkjqdlqjksd lqskjdqslkdj</small>
-                                            
-                                        
-                                        </div>
-                                        <div className="col-6 text-right">
-                                        
-                                            <span className="badge badge-dark">30,50 €</span><br/>
-                                            <small>18/03/2019 - 11H58</small>
-
-                                        </div>
-                                    
-                                    </div>
-                                </div>
-                                <div className="cadrePointage">
-                                
-                                    <div className="row">
-                                    
-                                        <div className="col-6">
-                                        
-                                            <b>Ludovic LEVENEUR</b><br/>
-                                            <small>Prestation qslkjqdlqjksd lqskjdqslkdj</small>
-                                            
-                                        
-                                        </div>
-                                        <div className="col-6 text-right">
-                                        
-                                            <span className="badge badge-dark">30,50 €</span><br/>
-                                            <small>18/03/2019 - 11H58</small>
-
-                                        </div>
-                                    
-                                    </div>
-                                </div>
-
-
-
-
-
-
+                                })}
 
                                 <br/>
                                 <br/>

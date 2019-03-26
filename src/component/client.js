@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
 
-import Navbarup from './navbarup'
 import Menu from './menu'
 
 class Client extends Component {

@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import edition from '../../images/gestionCompteProfil.png'
 import Configuration from '../fidconfig'
 
-import Navbarupclient from './navbarupclient'
 import Menu from './menuclient'
-
+import Modal from 'react-responsive-modal';
+import Rating from 'react-rating'
 
 class Fichecoclient extends Component {
 
@@ -25,20 +25,9 @@ class Fichecoclient extends Component {
             nbpointage: '',
             pointageTotal: '',
             prestationsClients: '',
+            rating: '0',
+            open: false,
 
-            carteId: '',
-            carteDateCreation: '',
-            carteNom: '',
-            cartePrenom: '',
-            carteNbPointage: '',
-            carteLimitPointage: '',
-            carteStatut: '',
-            carteCadeaux: '',
-            carteImgBackground: '',
-            carteImgIcon: '',
-            carteQrCode: '',
-            carteStatutMsg: '',
-            cartePointageMsg: '',
             listePointage: []
 
         }
@@ -63,81 +52,18 @@ class Fichecoclient extends Component {
                         telephoneClient: value.telephone,
                         nbpointage: value.nbpointage,
                         carteTotal: value.nbcarteterminer,
-                        pointageTotal: value.nbpointagetotal                     
+                        pointageTotal: value.nbpointagetotal,
+                        rating: value.rating                     
                     })
                 )
               )}
     
+              if(this.state.rating === '1')
+              {
 
-        })
-        .catch(err => console.error(err))
+                this.setState({ open: true });
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirCarteClient&id=' + this.props.idUserRecupClient)
-        .then((response) => response.json())
-        .then((response) => {
-
-            if(response === "#VOIRCARTE#NOEXIST")
-            {
-
-                this.setState({
-                    carteStatutMsg: '1'                                      
-                })
-            }
-            else
-            {
-
-                
-                this.setState({
-                    carteStatutMsg: '2'
-                })
-
-                {response.map((valuedeux, index) => 
-                    (
-                        this.setState({
-                            carteId: valuedeux.id,
-                            carteDateCreation: valuedeux.datecreation,
-                            carteNom: valuedeux.nom,
-                            cartePrenom: valuedeux.prenom,
-                            carteNbPointage: valuedeux.nbpointage,
-                            carteLimitPointage: valuedeux.limitpointage,
-                            carteStatut: valuedeux.statut,
-                            carteCadeaux: valuedeux.cadeaux,
-                            carteImgBackground: valuedeux.imgbackground,
-                            carteImgIcon: valuedeux.imgicon,
-                            carteQrCode: valuedeux.qrcode                                            
-                        })
-                    )
-                  )}
-
-                  fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=listePointageClient&idfid=' + this.state.carteId
-                  + '&idclient=' + this.props.idUserRecupClient 
-                  + '&ident=' + this.props.idEntRecupClient)
-                  .then((response) => response.json())
-                  .then((response) => {
-          
-                      switch (response) {
-                          case '#POINTAGE#VIDE':
-                              console.log(response)
-                              this.setState({
-                                  cartePointageMsg: '5'
-                              })
-                              break;            
-                          default:
-                              console.log(response)
-                              this.setState({
-                                  listePointage: response
-                              })
-                              break;
-                      }
-          
-                  })
-                  .catch(err => console.error(err)) 
-
-
-            }
-
-
-    
+              }
 
         })
         .catch(err => console.error(err))
@@ -167,51 +93,54 @@ class Fichecoclient extends Component {
         })
         .catch(err => console.error(err))
 
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=listePointageClient'
+        + '&idclient=' + this.props.idUserRecupClient 
+        + '&ident=' + this.props.idEntRecupClient)
+        .then((response) => response.json())
+        .then((response) => {
 
-    }
+            switch (response) {
+                case '#POINTAGE#VIDE':
+                    console.log(response)
+                    this.setState({
+                        cartePointageMsg: '5'
+                    })
+                    break;            
+                default:
+                    console.log(response)
+                    this.setState({
+                        listePointage: response
+                    })
+                    break;
+            }
 
-    afficheCarte()
-    {
+        })
+        .catch(err => console.error(err)) 
 
-        var QRCode = require('qrcode.react');
-
-        if(this.state.carteStatutMsg === "1")
-        {
-
-
-            return <div className="msgErrorPerso">
         
-            <center>Vous ne possédez pas de carte de fidélité.</center>
-    
-            </div>
 
-
-        }
-        else
-        {
-
-            return <div>
-            <div className="container-perso">
-                <div className="panelCarte">
-                    <div id="personalizecarte">  
-                        <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.carteImgBackground} className="img-responsive" id="img1" alt="" /> 
-                        <h2 id="positionDonnee">{this.state.carteNom} {this.state.cartePrenom} <br/><small>{this.state.carteDateCreation} - {this.state.carteNbPointage} / {this.state.carteLimitPointage} Pointages</small></h2>
-                        <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.carteImgIcon}  width="100" height="100" id="img2" className="img-rounded" alt="" />
-                        <QRCode
-                            value={this.state.carteQrCode}
-                            size={100}
-                            id="img3"
-                        />
-                    </div> 
-                </div>  
-            </div>
-            <br/>
-            </div>
-
-        }
 
 
     }
+
+    onOpenModal = () => {
+        this.setState({ open: true });
+    };
+     
+    onCloseModal = () => {
+        this.setState({ open: false });
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=resetRatingClient'
+        + '&idclient=' + this.props.idUserRecupClient)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+            
+        })
+        .catch(err => console.error(err))
+
+    };
 
     confirmation()
     {
@@ -373,10 +302,9 @@ class Fichecoclient extends Component {
             (
                 <tr key={index}>
                     <td>{valuedeux.entreprise}</td>
-                    <td>{valuedeux.departpointage}</td>
                     <td>{valuedeux.finpointage}</td>
                     <td>{valuedeux.prestation}</td>
-                    <td>{valuedeux.prix}</td>
+                    <td>{valuedeux.prix} €</td>
                 </tr>
             )
             )
@@ -387,7 +315,72 @@ class Fichecoclient extends Component {
 
     }
 
+    getRating(value)
+    {
+
+        console.log('Note attribuée : ' + value)
+        var Note = '0'
+        var Today = new Date()
+
+        switch (value) {
+            case 1:
+                var Note = '0'
+                break;
+            case 2:
+                var Note = '2.5'
+                break;  
+            case 3:
+                var Note = '5'
+                break;  
+            case 4:
+                var Note = '7.5'
+                break;
+            case 5:
+                var Note = '10'
+                break;    
+            default:
+                break;             
+                
+        }
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=notationClient'
+        + '&identreprise=' + this.props.idEntRecupClient
+        + '&idclient=' + this.props.idUserRecupClient
+        + '&score=' + Note
+        + '&date=' + Today)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+            if(response === "#NOTATION#SUCCESS")
+            {
+
+                fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=resetRatingClient'
+                + '&idclient=' + this.props.idUserRecupClient)
+                .then((response) => response.json())
+                .then((response) => {
+        
+                    console.log(response)
+                    if(response === "#RESETRATING#SUCCESS")
+                    {
+        
+                        this.setState({ open: false })
+        
+                    }
+        
+                })
+                .catch(err => console.error(err))
+
+            }
+
+        })
+        .catch(err => console.error(err)) 
+
+
+    }
+
   render() {
+    const { open } = this.state;
 
     return (
       <div>
@@ -426,36 +419,79 @@ class Fichecoclient extends Component {
                     {this.verifieEtatPointage()}
                     <br/>
 
+                    {this.scannerPointage()}<br/>
+
                     <div className="row">
                     
                         <div className="col-md-6">
-                        
-                            {this.afficheCarte()}
-                        
+
+                                <div className="col-md-12">
+                                <div className="card border-left-primary shadow h-100 py-2">
+                                        <div className="card-body">
+                                        <div className="row no-gutters align-items-center">
+                                            <div className="col mr-2">
+                                            <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Economie réalisés sur les prestations</div>
+                                            <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.prestationsClients} €</div>
+                                            </div>
+                                            <div className="col-auto">
+                                            <i class="fas fa-exchange-alt fa-2x"></i>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>  <br/>
+
+                                <div className="col-md-12">
+
+                                <div className="card border-left-primary shadow h-100 py-2">
+                                        <div className="card-body">
+                                        <div className="row no-gutters align-items-center">
+                                            <div className="col mr-2">
+                                            <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Nombre de pointage</div>
+                                            <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.nbpointage}</div>
+                                            </div>
+                                            <div className="col-auto">
+                                            <i class="fas fa-exchange-alt fa-2x"></i>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>  <br/>
+
                         </div>
-                        <div className="col-md-6">
-
-                            {this.scannerPointage()}<br/>
-
-                            <div className="row">
-
-                            <div className="col-md-12">
-                            <div className="card border-left-primary shadow h-100 py-2">
-                                    <div className="card-body">
-                                    <div className="row no-gutters align-items-center">
-                                        <div className="col mr-2">
-                                        <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Economie réalisés sur les prestations</div>
-                                        <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.prestationsClients} €</div>
+                        <div className="col-md-6">    
+ 
+                                <div className="col-md-12">
+                                <div className="card border-left-primary shadow h-100 py-2">
+                                        <div className="card-body">
+                                        <div className="row no-gutters align-items-center">
+                                            <div className="col mr-2">
+                                            <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Carte total</div>
+                                            <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.carteTotal}</div>
+                                            </div>
+                                            <div className="col-auto">
+                                            <i class="fas fa-exchange-alt fa-2x"></i>
+                                            </div>
                                         </div>
-                                        <div className="col-auto">
-                                        <i class="fas fa-exchange-alt fa-2x"></i>
                                         </div>
                                     </div>
-                                    </div>
-                                </div>
-                            </div>                           
+                                </div>  <br/>
 
-                            </div>
+                                <div className="col-md-12">
+                                <div className="card border-left-primary shadow h-100 py-2">
+                                        <div className="card-body">
+                                        <div className="row no-gutters align-items-center">
+                                            <div className="col mr-2">
+                                            <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Pointage Total</div>
+                                            <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.pointageTotal}</div>
+                                            </div>
+                                            <div className="col-auto">
+                                            <i class="fas fa-exchange-alt fa-2x"></i>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>  
                         
                         </div>
                     
@@ -479,7 +515,7 @@ class Fichecoclient extends Component {
                         <div className="tab-pane fade show active" id="infos" role="tabpanel" aria-labelledby="home-tab">
                         
                                 <br/>
-                                <table className="table table-striped">
+                                <table className="table table-striped bg-white">
                                     <thead>
                                     <tr>
                                         
@@ -487,40 +523,28 @@ class Fichecoclient extends Component {
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>Date inscription : </td>
+                                        <td><b>Date inscription :</b> </td>
                                         <td>{this.state.dataInscription}</td>
                                     </tr>
                                     <tr>
-                                        <td>Nom : </td>
+                                        <td><b>Nom :</b> </td>
                                         <td>{this.state.nomClient}</td>
                                     </tr>
                                     <tr>
-                                        <td>Prénom : </td>
+                                        <td><b>Prénom :</b> </td>
                                         <td>{this.state.prenomClient}</td>
                                     </tr>
                                     <tr>
-                                        <td>Adresse : </td>
+                                        <td><b>Adresse :</b> </td>
                                         <td>{this.state.adresseClient}</td>
                                     </tr>
                                     <tr>
-                                        <td>Email : </td>
+                                        <td><b>Email :</b> </td>
                                         <td>{this.state.emailClient}</td>
                                     </tr>
                                     <tr>
-                                        <td>N° Téléphone : </td>
+                                        <td><b>N° Téléphone :</b> </td>
                                         <td>{this.state.telephoneClient}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Nombre pointage : </td>
-                                        <td>{this.state.nbpointage}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Carte total : </td>
-                                        <td>{this.state.carteTotal}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Pointage total : </td>
-                                        <td>{this.state.pointageTotal}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -532,7 +556,6 @@ class Fichecoclient extends Component {
                                     <thead>
                                     <tr>
                                         <td>Entreprise</td>
-                                        <td>Départ pointage</td>
                                         <td>Fin pointage</td>
                                         <td>Prestation</td>
                                         <td>Prix</td>
@@ -571,23 +594,22 @@ class Fichecoclient extends Component {
                 <i className="fas fa-angle-up"></i>
             </a>
 
-            <div className="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    </div>
-                    <div className="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div className="modal-footer">
-                    <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a className="btn btn-primary" href="login.html">Logout</a>
-                    </div>
-                </div>
-                </div>
-            </div>
+            <Modal open={open} onClose={this.onCloseModal} center>
+                        <h2>Système de notation</h2>
+                        <hr/>
+                        <p>Prenez quelques secondes afin d'évaluer la qualité du travail
+                            de votre prestataire. Cela lui permettra de s'améliorer et également
+                            d'obtenir une meilleure visibilité.
+                        </p>
+                        <br/>
+                        <center>        
+                            <Rating
+                                emptySymbol="far fa-star fa-2x"
+                                fullSymbol="fas fa-star fa-2x"
+                                onClick={this.getRating.bind(this)}
+                            />
+                        </center>
+            </Modal>
 
       </div>
     );

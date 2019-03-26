@@ -23,7 +23,10 @@ class Dashboard extends Component {
             finAbo: '', 
             jRestants: '',
             apikey: '',
-            totalGainsClient: ''
+            totalGainsClient: '',
+            scoreTotal: '',
+            notationTotal: ''
+
         }
 
     }
@@ -42,14 +45,18 @@ class Dashboard extends Component {
             var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup).then(function(response){
                         return response.json()
             });
+            var apiRequest4 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=calculScoreEntreprise&identreprise=' + this.props.idUserRecup).then(function(response){
+                return response.json()
+            });
 
-            var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{}};
+            var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{},"apiRequest4":{}};
 
-            Promise.all([apiRequest1,apiRequest2, apiRequest3])
+            Promise.all([apiRequest1,apiRequest2, apiRequest3, apiRequest4])
             .then(function(values){
                 combinedData["apiRequest1"] = values[0];
                 combinedData["apiRequest2"] = values[1];
                 combinedData["apiRequest3"] = values[2];
+                combinedData["apiRequest4"] = values[3];
                 
                 {combinedData["apiRequest1"].map((value) => 
                 (
@@ -62,8 +69,7 @@ class Dashboard extends Component {
                         debutAbo: value.debutabo,
                         finAbo: value.finabo, 
                         jRestants: value.jrestant,
-                        apikey: value.apikey,
-                        loading: true                         
+                        apikey: value.apikey,                      
                     })
                 )
                 )}
@@ -73,6 +79,16 @@ class Dashboard extends Component {
                     totalGainsClient: combinedData["apiRequest3"]            
                 })
 
+                {combinedData["apiRequest4"].map((value) => 
+                (
+                    this.setState({
+                        scoreTotal: value.score_total,
+                        notationTotal: value.note_total,
+                        loading: true                         
+                    })
+                )
+                )}
+
             }.bind(this));
 
         
@@ -80,6 +96,13 @@ class Dashboard extends Component {
 
     }
 
+    calculScoreClassement()
+    {
+
+        var obtenirScore = this.state.scoreTotal / this.state.notationTotal * 10
+        return obtenirScore.toFixed(1) + ' / 10'
+
+    }
 
   render() {
     var LineChart = require("react-chartjs").Line;
@@ -241,6 +264,60 @@ class Dashboard extends Component {
                             </div>
 
                             <div className="col-xl-3 col-md-6 mb-4">
+                            <div className="card border-left-primary shadow h-100 py-2">
+                                <div className="card-body">
+                                <div className="row no-gutters align-items-center">
+                                    <div className="col mr-2">
+                                    <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">LIMITATION CLIENTS</div>
+                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.limitClient}</div>
+                                    </div>
+                                    <div className="col-auto">
+                                    <i class="fas fa-hand-holding-usd fa-2x"></i>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>  
+
+                            <div className="col-xl-3 col-md-6 mb-4">
+                            <div className="card border-left-primary shadow h-100 py-2">
+                                <div className="card-body">
+                                <div className="row no-gutters align-items-center">
+                                    <div className="col mr-2">
+                                    <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Pointage total reçu</div>
+                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.nbPointage}</div>
+                                    </div>
+                                    <div className="col-auto">
+                                    <i class="fas fa-hand-holding-usd fa-2x"></i>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>  
+
+                            <div className="col-xl-3 col-md-6 mb-4">
+                            <div className="card border-left-primary shadow h-100 py-2">
+                                <div className="card-body">
+                                <div className="row no-gutters align-items-center">
+                                    <div className="col mr-2">
+                                    <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Limitation pointage</div>
+                                    <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">{this.state.limitPointage}</div>
+                                    </div>
+                                    <div className="col-auto">
+                                    <i className="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+
+
+                        </div>
+
+                        <div className="row">
+                        
+                        
+                        <div className="col-xl-3 col-md-6 mb-4">
                             <div className="card border-left-success shadow h-100 py-2">
                                 <div className="card-body">
                                 <div className="row no-gutters align-items-center">
@@ -280,9 +357,10 @@ class Dashboard extends Component {
                                     <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">Type de compte</div>
                                     <div className="h5 mb-0 font-weight-bold text-gray-800">
                                     {this.state.typeCompte === '0' && 'Normal'}
-                                    {this.state.typeCompte === '1' && 'Bronze'}
-                                    {this.state.typeCompte === '2' && 'Argent'}
-                                    {this.state.typeCompte === '3' && 'Or'}
+                                    {this.state.typeCompte === '1' && 'Essaie'}
+                                    {this.state.typeCompte === '2' && 'Bronze'}
+                                    {this.state.typeCompte === '3' && 'Argent'}
+                                    {this.state.typeCompte === '4' && 'Or'}
                                     </div>
                                     </div>
                                     <div className="col-auto">
@@ -292,11 +370,8 @@ class Dashboard extends Component {
                                 </div>
                             </div>
                             </div>
-                        </div>
-
-                        <div className="row">
-
-                        <div className="col-xl-3 col-md-6 mb-4">
+                        
+                            <div className="col-xl-3 col-md-6 mb-4">
                             <div className="card border-left-primary shadow h-100 py-2">
                                 <div className="card-body">
                                 <div className="row no-gutters align-items-center">
@@ -310,9 +385,48 @@ class Dashboard extends Component {
                                 </div>
                                 </div>
                             </div>
-                            </div>
+                            </div>                        
+                        
+                        
+                        
+                        </div>
 
-                            <div className="col-xl-9 mb-4">
+                        <div className="row">
+
+
+                        <div className="col-xl-3 col-md-6 mb-4">
+                            <div className="card border-left-primary shadow h-100 py-2">
+                                <div className="card-body">
+                                <div className="row no-gutters align-items-center">
+                                    <div className="col mr-2">
+                                    <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Gains sur totalité clientèle</div>
+                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.totalGainsClient} €</div>
+                                    </div>
+                                    <div className="col-auto">
+                                    <i class="fas fa-hand-holding-usd fa-2x"></i>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>  
+
+                        <div className="col-xl-3 col-md-6 mb-4">
+                            <div className="card border-left-primary shadow h-100 py-2">
+                                <div className="card-body">
+                                <div className="row no-gutters align-items-center">
+                                    <div className="col mr-2">
+                                    <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Score</div>
+                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{this.calculScoreClassement()}</div>
+                                    </div>
+                                    <div className="col-auto">
+                                    <i class="fas fa-hand-holding-usd fa-2x"></i>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>  
+
+                        <div className="col-xl-6 col-md-6 mb-4">
                             <div className="card border-left-success shadow h-100 py-2">
                                 <div className="card-body">
                                 <div className="row no-gutters align-items-center">
@@ -327,26 +441,6 @@ class Dashboard extends Component {
                                 </div>
                             </div>
                             </div>
-
-                        </div>
-
-                        <div className="row">
-
-                            <div className="col-xl-3 col-md-6 mb-4">
-                            <div className="card border-left-primary shadow h-100 py-2">
-                                <div className="card-body">
-                                <div className="row no-gutters align-items-center">
-                                    <div className="col mr-2">
-                                    <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Gains sur totalité clientèle</div>
-                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.totalGainsClient} €</div>
-                                    </div>
-                                    <div className="col-auto">
-                                    <i class="fas fa-hand-holding-usd fa-2x"></i>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>                           
                         
                         </div>
 

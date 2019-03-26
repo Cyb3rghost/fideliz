@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
+import Select from 'react-select';
 
 import Navbarup from './navbarup'
 import Menu from './menu'
+
 
 class Profil extends Component {
 
@@ -33,6 +35,10 @@ class Profil extends Component {
             selectedFileBKG : null,
             selectedFileLogo : null,
             statutUpload: '',
+            selectedOption: null,
+            afflisteCadeaux: [],
+            cadeaux: '',
+            prixcadeaux: '',
             loading: false
 
         }
@@ -67,10 +73,24 @@ class Profil extends Component {
                         apikey: value.apikey,   
                         imgFondCarte: value.imgfond,
                         imgIconCarte: value.imgicon,
+                        cadeaux: value.cadeaux,
+                        prixcadeaux: value.prixcadeaux,
                         loading: true                     
                     })
                 )
               )}
+    
+
+        })
+        .catch(err => console.error(err))
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup)
+        .then((response) => response.json())
+        .then((response) => {
+
+            this.setState({
+                afflisteCadeaux: response
+            })
     
 
         })
@@ -187,6 +207,51 @@ class Profil extends Component {
         
     }
 
+    enregistreCadeaux()
+    {
+        const { selectedOption } = this.state;
+        var separePrestation = selectedOption.label.split(' - ')
+
+        /*console.log(Configuration.hostnameManuelServer + 'fidapi/main.php?action=updateCadeauxEntreprise'
+        + '&identreprise=' + this.props.idUserRecup
+        + '&prestation=' + separePrestation[0]
+        + '&prix=' + separePrestation[1].substring(0, separePrestation[1].length-1))*/
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=updateCadeauxEntreprise'
+        + '&identreprise=' + this.props.idUserRecup
+        + '&prestation=' + separePrestation[0]
+        + '&prix=' + separePrestation[1].substring(0, separePrestation[1].length-1))
+        .then((response) => response.json())
+        .then((response) => {
+
+            if(response === "#UPENTGIFT#SUCCESS")
+            {
+
+                console.log(response)
+                this.setState({ selectedOption, cadeaux: separePrestation[0], prixcadeaux: separePrestation[1].substring(0, separePrestation[1].length-1)});
+
+            }
+            else if(response === "#UPENTGIFT#FAILED")
+            {
+
+                console.log(response)
+                this.setState({ selectedOption });
+                console.log(`Option selected:`, selectedOption);
+
+            }
+
+        })
+        .catch(err => console.error(err))
+
+
+    }
+
+    handleChange = (selectedOption) => {
+
+            console.log(selectedOption)
+            this.setState({ selectedOption })
+    }
+
     afficheStatutCarte()
     {
 
@@ -275,10 +340,17 @@ class Profil extends Component {
 
         }
 
-
     }
 
   render() {
+
+    const { selectedOption } = this.state;
+
+    let options = this.state.afflisteCadeaux.map(function (valux) {
+            return { value: valux.id, label: valux.prestation + ' - ' + valux.prix + '€' }
+    })
+
+
     let loadingdata;
     if(this.state.loading)
     {
@@ -287,12 +359,7 @@ class Profil extends Component {
 
                     <div className="container-fluid">
 
-                    <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 className="h3 mb-0 text-gray-800">Profil</h1>
-                    </div>
-
-                    <h2>{this.state.nom}</h2>
-                    <small>{this.state.prenom}</small>
+                    <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.imgIconCarte}  className="pousseIcone" width="75" height="75" align="left" alt="" /><h2> {this.state.nom} <br/><small>{this.state.prenom}</small></h2>
 
                     <hr/>
 
@@ -397,8 +464,8 @@ class Profil extends Component {
 
                                 <div className="panelCarte">
                                     <div id="personalizecarte">  
-                                    <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.imgFondCarte} className="img-responsive" id="img1" alt="" />
-                                    <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.imgIconCarte}  className="img-responsive img-rounded" id="img2" alt="" />
+                                    <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.imgFondCarte} className="img-fluid" id="img1" alt="" />
+                                    <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.imgIconCarte}  className="img-fluid" id="img2" alt="" />
                                     
                                     </div> 
                                 </div>   
@@ -417,7 +484,7 @@ class Profil extends Component {
                                         </tr>
                                         <tr>
                                             <td><input type="file" onChange = {this.fileSelect} /></td>
-                                            <td align="center"><button class="btn btn-greenbutton btn-block" onClick = {this.fileUpload} type="submit">J'upload</button></td>
+                                            <td align="center"><button class="btn btn-dark btn-block" onClick = {this.fileUpload} type="submit">J'upload</button></td>
                                         </tr>
                                         <tr>
                                             <td><b>Logo ( 100x100 )</b></td>
@@ -425,7 +492,7 @@ class Profil extends Component {
                                         </tr>
                                         <tr>
                                             <td><input type="file" onChange = {this.fileSelectLogo} /></td>
-                                            <td align="center"><button class="btn btn-greenbutton btn-block" onClick = {this.fileUploadLogo} type="submit">J'upload</button></td>
+                                            <td align="center"><button class="btn btn-dark btn-block" onClick = {this.fileUploadLogo} type="submit">J'upload</button></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -441,8 +508,46 @@ class Profil extends Component {
                                 </div>
                             </div>
 
+                            <div className="card shadow mb-4">
+                                <div className="card-header py-3">
+                                <h6 className="m-0 font-weight-bold text-primary">Gestion du cadeau</h6>
+                                </div>
+                                <div className="card-body">
+                                
+                                        <div className="container">
+                                        
+                                        <p className="text-justify">
+                                        <b>Cadeau :</b> {this.state.cadeaux} <br/>
+                                        <b>Valeur du cadeau :</b> <span className="badge badge-dark">{this.state.prixcadeaux} €</span>  <br/>
+                                        <hr/>
+                                        Cette partie vous permet d'effectuer le paramétrage des cadeaux sur votre carte de fidélité.
+                                        Les cadeaux sont délivrés lorsque votre client atteind la limitation des pointages
+                                        fixé sur votre carte.
+                                        </p>
+                                        
+                                        <Select
+                                            style={{ width: 300 }}
+                                            value={selectedOption}
+                                            onChange={this.handleChange}
+                                            options={options}
+                                        />  
+
+                                        <br/>
+
+                                        <button type="button" onClick={this.enregistreCadeaux.bind(this)} className="btn btn-success">Enregistrez</button>
+
+
+                                        </div>
+
+                                </div>
+                            
+                        </div>
+
+
 
                     </div>
+
+
 
         </div>
 
@@ -470,7 +575,7 @@ class Profil extends Component {
 
                 <div id="content">
 
-                    <Menu />
+                    <Menu title="Profil" />
 
                     {loadingdata}
                 

@@ -11871,6 +11871,10 @@ body.sidebar-toggled footer.sticky-footer {
 
 }
 
+#img4 {
+  z-index: 4;
+}
+
 #positionDonnee {
   position: absolute;
   padding-left: 12%;
@@ -12018,7 +12022,16 @@ body.sidebar-toggled footer.sticky-footer {
     color: black;
 
 }
-
-
-
 /* 18/03/2019 */
+
+/* 20/03/2019 */ 
+
+.pousseIcone 
+{
+
+  margin-right: 15px;
+
+}
+
+
+/* 20/03/2019 */

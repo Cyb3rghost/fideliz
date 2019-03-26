@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mar. 19 mars 2019 à 04:07
+-- Généré le :  mar. 26 mars 2019 à 11:55
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -52,22 +52,25 @@ CREATE TABLE `accsociete` (
   `qrcode` int(11) NOT NULL,
   `prestation` varchar(255) NOT NULL,
   `prix` float NOT NULL,
-  `activation` int(11) NOT NULL
+  `activation` int(11) NOT NULL,
+  `cadeaux` varchar(255) NOT NULL,
+  `prixcadeaux` float NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `accsociete`
 --
 
-INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`, `qrcode`, `prestation`, `prix`, `activation`) VALUES
-(1, 'ludovic.lvnr@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'PAYET', 'Eddy', '56 chemin des fleurs 97400', 'EddyCoiffure', '0692101112', 1, 0, 0, 0, 0, '0000-00-00', '0000-00-00', 0, 'backgroundCarte.jpg', 'logocarte.png', 'e6c14066a83d3416238afbc40a9f437a', 0, '', 0, 0),
-(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 2, 0, 10, 50, 10, '2019-02-18', '2019-03-20', 2, 'carddefault.jpg', 'logodefault.png', 'b3470a6aba7953782f54486b8cc28d02', 383485888, 'Hola', 100, 1),
-(3, 'blizzard@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'Blizzard', '', 2, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'null', 'null', 'fedd6393d9b9224fcba3c3ce0ba33b96', 0, '', 0, 0),
-(4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 1, 0, 10, 0, 15, '2019-02-09', '2019-03-11', 28, 'null', 'null', 'e3fe6a42aaf6a6f49760186c481afad6', 0, '', 0, 0),
-(5, 'cathy@gmail.com', 'af56310c080ab9d9f3d96be9f16edebf', 1, '', '', '', 'MenageParty', '', 1, 0, 10, 1, 15, '2019-02-10', '2019-03-12', 30, 'BCGC144501D09-02-2019.jpg', 'LOGO517944D09-02-2019.png', '2dd7b6dff53be1b24f1d9b967071778d', 0, '', 0, 0),
-(6, 'dbz@gmail.com', '9512406d8e0fdb1542ac665e39461f96', 1, 'LEVENEUR', 'Ludovic', '56 Bis Chemin du ruisseau', 'DragonBallZ', '0692102030', 0, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 'd31468015e450290d6698d91ec099b96', 0, '', 0, 0),
-(7, 'loniweb@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'Loni', 'Cedric', '56 chemin des oiseaux', 'Loniweb', '0692101213', 1, 0, 10, 1, 15, '2019-02-18', '2019-03-20', 30, 'BCGC713623D18-02-2019.jpg', 'logodefault.png', 'b5a0265cdaa6c4b952c3791c9b5dbca8', 0, '', 0, 0),
-(8, 'ploumouz@gmail.com', 'cd3661b88633fe744e85154464736546', 1, '', '', '', 'Ploumouz', '', 1, 0, 2, 0, 15, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 'f6139543f115da93cb27e9a752091bc2', 383485832, '', 0, 0);
+INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`, `qrcode`, `prestation`, `prix`, `activation`, `cadeaux`, `prixcadeaux`) VALUES
+(1, 'ludovic.lvnr@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'PAYET', 'Eddy', '56 chemin des fleurs 97400', 'EddyCoiffure', '0692101112', 1, 0, 0, 0, 0, '0000-00-00', '0000-00-00', 0, 'backgroundCarte.jpg', 'logocarte.png', 'e6c14066a83d3416238afbc40a9f437a', 0, '', 0, 0, '', 0),
+(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 1, 0, 10, 57, 10, '2019-03-25', '2019-03-27', 1, 'carddefault.jpg', 'logodefault.png', 'b3470a6aba7953782f54486b8cc28d02', 383485888, 'Null', 0, 1, 'Testo', 5.55),
+(3, 'blizzard@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'Blizzard', '', 2, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'null', 'null', 'fedd6393d9b9224fcba3c3ce0ba33b96', 0, '', 0, 0, '', 0),
+(4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 1, 0, 10, 0, 15, '2019-02-09', '2019-03-11', 28, 'null', 'null', 'e3fe6a42aaf6a6f49760186c481afad6', 0, '', 0, 0, '', 0),
+(5, 'cathy@gmail.com', 'af56310c080ab9d9f3d96be9f16edebf', 1, '', '', '', 'MenageParty', '', 1, 0, 10, 1, 15, '2019-02-10', '2019-03-12', 30, 'BCGC144501D09-02-2019.jpg', 'LOGO517944D09-02-2019.png', '2dd7b6dff53be1b24f1d9b967071778d', 0, '', 0, 0, '', 0),
+(6, 'dbz@gmail.com', '9512406d8e0fdb1542ac665e39461f96', 1, 'LEVENEUR', 'Ludovic', '56 Bis Chemin du ruisseau', 'DragonBallZ', '0692102030', 0, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 'd31468015e450290d6698d91ec099b96', 0, '', 0, 0, '', 0),
+(7, 'loniweb@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'Loni', 'Cedric', '56 chemin des oiseaux', 'Loniweb', '0692101213', 1, 0, 10, 1, 15, '2019-02-18', '2019-03-20', 30, 'BCGC713623D18-02-2019.jpg', 'logodefault.png', 'b5a0265cdaa6c4b952c3791c9b5dbca8', 0, '', 0, 0, '', 0),
+(8, 'ploumouz@gmail.com', 'cd3661b88633fe744e85154464736546', 1, '', '', '', 'Ploumouz', '', 1, 0, 2, 0, 15, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 'f6139543f115da93cb27e9a752091bc2', 383485832, '', 0, 0, '', 0),
+(9, '', 'da1fdd8296f5bf6790a56762b1266426', 1, '', '', '', '', '', 1, 0, 2, 0, 0, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', '09f857cfca327b37f5ef2cfc35d5881b', 93332499, '', 0, 0, '', 0);
 
 -- --------------------------------------------------------
 
@@ -80,6 +83,7 @@ CREATE TABLE `acctclient` (
   `identreprise` int(11) NOT NULL,
   `idsouche` int(11) NOT NULL,
   `dinscription` date NOT NULL,
+  `naissance` date NOT NULL,
   `nom` varchar(150) NOT NULL,
   `prenom` varchar(150) NOT NULL,
   `adresse` varchar(255) NOT NULL,
@@ -89,29 +93,31 @@ CREATE TABLE `acctclient` (
   `nbpointage` int(11) NOT NULL,
   `nbcarteterminer` int(11) NOT NULL,
   `nbpointagetotal` int(11) NOT NULL,
-  `pointboutique` int(11) NOT NULL
+  `pointboutique` int(11) NOT NULL,
+  `rating` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `acctclient`
 --
 
-INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `nom`, `prenom`, `adresse`, `telephone`, `email`, `password`, `nbpointage`, `nbcarteterminer`, `nbpointagetotal`, `pointboutique`) VALUES
-(1, 2, 0, '2018-11-15', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau 97421 La riviÃ¨re saint-louis', '0692729322', 'ludovic.lvnr@gmail.com', 'adf5fddd3058d38759d3f3859ecc695a', 0, 0, 0, 0),
-(2, 2, 0, '2018-11-15', 'LEVENEURa', 'Ludovica', '56 Bis chemin du ruisseau 97421 La riviÃ¨re saint-louisaz', '069272932233', 'ludovic.lvnr@gmail.coma', 'adf5fddd3058d38759d3f3859ecc695azz87', 0, 0, 0, 0),
-(3, 2, 0, '2018-11-15', 'LEVENEURazeaze', 'Ludovicaazeae', '56 Bis chemin du ruisseau 97421 La riviÃ¨re saint-louisaz4552741', '06927293223399', 'ludovic.lvnr@gmail.comaqsdq', 'adf5fddd3058d38759d3f3859ecc695azz87qsd', 0, 0, 0, 0),
-(4, 2, 0, '2019-01-04', 'RiviÃ¨re', 'Max', '56Bis', '0692659877', 'max@gmail.com', 'edff293d77fa6f0e2ccdfefe35ea2d84', 0, 1, 0, 0),
-(5, 2, 0, '2019-01-04', 'RiviÃ¨re', 'Max', '56 Rue des encombrants 97421 La riviÃ¨re Saint-Louis', '0692741255', 'max@gmail.com', 'edff293d77fa6f0e2ccdfefe35ea2d84', 0, 3, 0, 0),
-(6, 2, 0, '2019-01-04', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692102030', 'dbz@gmail.com', 'fac72322259f2d9ead77a4de15457582', 0, 0, 0, 0),
-(7, 2, 0, '2019-01-04', 'Titi', 'toto', '30 rue des titis', '0692101112', 'max@gmail.com', '503e3e3e9c7cfc2fff762adac089d2ea', 0, 0, 0, 0),
-(8, 2, 0, '2019-01-08', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 12, 52, 22),
-(15, 1, 8, '2019-01-28', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 22),
-(16, 3, 8, '2019-01-31', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 22),
-(17, 5, 8, '2019-02-09', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 1, 1, 22),
-(18, 5, 0, '2019-02-10', 'Test', 'Totoboc', '56 Chemin des tests', '0692101112', 'totoboc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0),
-(19, 5, 0, '2019-02-10', 'Lili', 'Boco', '56 chemin des liloboco', '0692222324', 'liliboco@gmail.com', 'a8c5587bf4dc90f79e065df3af8ebaa7', 0, 0, 0, 0),
-(20, 7, 0, '2019-02-18', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692729322', 'ludovic@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 1, 1, 0),
-(21, 2, 20, '2019-02-18', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692729322', 'ludovic@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0);
+INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `naissance`, `nom`, `prenom`, `adresse`, `telephone`, `email`, `password`, `nbpointage`, `nbcarteterminer`, `nbpointagetotal`, `pointboutique`, `rating`) VALUES
+(1, 2, 0, '2018-11-15', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau 97421 La riviÃ¨re saint-louis', '0692729322', 'ludovic.lvnr@gmail.com', 'adf5fddd3058d38759d3f3859ecc695a', 0, 0, 0, 0, 0),
+(2, 2, 0, '2018-11-15', '0000-00-00', 'LEVENEURa', 'Ludovica', '56 Bis chemin du ruisseau 97421 La riviÃ¨re saint-louisaz', '069272932233', 'ludovic.lvnr@gmail.coma', 'adf5fddd3058d38759d3f3859ecc695azz87', 0, 0, 0, 0, 0),
+(3, 2, 0, '2018-11-15', '0000-00-00', 'LEVENEURazeaze', 'Ludovicaazeae', '56 Bis chemin du ruisseau 97421 La riviÃ¨re saint-louisaz4552741', '06927293223399', 'ludovic.lvnr@gmail.comaqsdq', 'adf5fddd3058d38759d3f3859ecc695azz87qsd', 0, 0, 0, 0, 0),
+(4, 2, 0, '2019-01-04', '0000-00-00', 'RiviÃ¨re', 'Max', '56Bis', '0692659877', 'max@gmail.com', 'edff293d77fa6f0e2ccdfefe35ea2d84', 0, 1, 0, 0, 0),
+(5, 2, 0, '2019-01-04', '0000-00-00', 'RiviÃ¨re', 'Max', '56 Rue des encombrants 97421 La riviÃ¨re Saint-Louis', '0692741255', 'max@gmail.com', 'edff293d77fa6f0e2ccdfefe35ea2d84', 0, 3, 0, 0, 0),
+(6, 2, 0, '2019-01-04', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692102030', 'dbz@gmail.com', 'fac72322259f2d9ead77a4de15457582', 0, 0, 0, 0, 0),
+(7, 2, 0, '2019-01-04', '0000-00-00', 'Titi', 'toto', '30 rue des titis', '0692101112', 'max@gmail.com', '503e3e3e9c7cfc2fff762adac089d2ea', 0, 0, 0, 0, 0),
+(8, 2, 0, '2019-01-08', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 2, 16, 59, 24, 0),
+(15, 1, 8, '2019-01-28', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 24, 0),
+(16, 3, 8, '2019-01-31', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 24, 0),
+(17, 5, 8, '2019-02-09', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 1, 1, 24, 0),
+(18, 5, 0, '2019-02-10', '0000-00-00', 'Test', 'Totoboc', '56 Chemin des tests', '0692101112', 'totoboc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0, 0),
+(19, 5, 0, '2019-02-10', '0000-00-00', 'Lili', 'Boco', '56 chemin des liloboco', '0692222324', 'liliboco@gmail.com', 'a8c5587bf4dc90f79e065df3af8ebaa7', 0, 0, 0, 0, 0),
+(20, 7, 0, '2019-02-18', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692729322', 'ludovic@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 1, 1, 0, 0),
+(21, 2, 20, '2019-02-18', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692729322', 'ludovic@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0, 0),
+(22, 2, 0, '2019-03-26', '1993-02-24', 'Mata', 'Boulou', '10 Chemin des ananas', '0692988774', 'mataboulou@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -212,7 +218,11 @@ INSERT INTO `cartefidelite` (`id`, `idclient`, `datecreation`, `nom`, `prenom`, 
 (21, 8, '2019-03-18', 'Riviere', 'JeanMarc', 10, 10, 2, 'Hola', 'carddefault.jpg', 'logodefault.png', '383485888'),
 (22, 8, '2019-03-18', 'Riviere', 'JeanMarc', 10, 10, 2, 'Hola', 'carddefault.jpg', 'logodefault.png', '383485888'),
 (23, 8, '2019-03-18', 'Riviere', 'JeanMarc', 10, 10, 2, 'Hola', 'carddefault.jpg', 'logodefault.png', '383485888'),
-(24, 8, '2019-03-18', 'Riviere', 'JeanMarc', 10, 10, 2, 'Hola', 'carddefault.jpg', 'logodefault.png', '383485888');
+(24, 8, '2019-03-18', 'Riviere', 'JeanMarc', 10, 10, 2, 'Hola', 'carddefault.jpg', 'logodefault.png', '383485888'),
+(25, 8, '2019-03-20', 'Riviere', 'JeanMarc', 10, 10, 2, 'Coupe hommes', 'carddefault.jpg', 'logodefault.png', '383485888'),
+(26, 8, '2019-03-20', 'Riviere', 'JeanMarc', 10, 10, 2, 'Null', 'carddefault.jpg', 'logodefault.png', '383485888'),
+(27, 8, '2019-03-20', 'Riviere', 'JeanMarc', 10, 10, 2, 'Null', 'carddefault.jpg', 'logodefault.png', '383485888'),
+(28, 8, '2019-03-20', 'Riviere', 'JeanMarc', 10, 10, 2, 'Null', 'carddefault.jpg', 'logodefault.png', '383485888');
 
 -- --------------------------------------------------------
 
@@ -257,7 +267,40 @@ INSERT INTO `fidcadeaux` (`id`, `idclient`, `idcarte`, `date`, `cadeaux`, `statu
 (18, 8, 0, '2019-03-18 17:46:12', 'Hola', 2, '2019-03-18 17:46:12', 383485888, 100),
 (19, 8, 22, '2019-03-18 17:54:26', 'Hola', 2, '2019-03-18 17:54:26', 383485888, 100),
 (20, 8, 23, '2019-03-18 18:00:02', 'Hola', 2, '2019-03-18 18:00:02', 383485888, 100),
-(21, 8, 24, '2019-03-18 18:03:02', 'Hola', 2, '2019-03-18 18:03:02', 383485888, 100);
+(21, 8, 24, '2019-03-18 18:03:02', 'Hola', 2, '2019-03-18 18:03:02', 383485888, 100),
+(22, 8, 25, '2019-03-20 08:19:04', 'Coupe hommes', 2, '2019-03-20 08:19:04', 383485888, 110),
+(23, 8, 26, '2019-03-20 08:24:58', 'Null', 2, '2019-03-20 08:24:58', 383485888, 0),
+(24, 8, 27, '2019-03-20 12:00:44', 'Margarita', 2, '2019-03-20 12:00:44', 383485888, 60),
+(25, 8, 28, '2019-03-20 12:06:00', 'Testo', 2, '2019-03-20 12:06:00', 383485888, 5.55);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `notation`
+--
+
+CREATE TABLE `notation` (
+  `id` int(11) NOT NULL,
+  `identreprise` int(11) NOT NULL,
+  `idclient` int(11) NOT NULL,
+  `score` float NOT NULL,
+  `basenotation` float NOT NULL,
+  `date` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `notation`
+--
+
+INSERT INTO `notation` (`id`, `identreprise`, `idclient`, `score`, `basenotation`, `date`) VALUES
+(1, 2, 8, 5, 10, '0000-00-00 00:00:00'),
+(2, 2, 8, 5, 10, '0000-00-00 00:00:00'),
+(3, 2, 8, 5, 10, '0000-00-00 00:00:00'),
+(4, 2, 8, 7.5, 10, 'Thu Mar 21 2019 12:06:40 GMT 0400 (heure du Golfe)'),
+(5, 2, 8, 7.5, 10, 'Thu Mar 21 2019 12:45:16 GMT 0400 (heure du Golfe)'),
+(6, 2, 8, 5, 10, 'Thu Mar 21 2019 12:51:29 GMT 0400 (heure du Golfe)'),
+(7, 2, 8, 10, 10, 'Thu Mar 21 2019 21:49:18 GMT 0400 (heure du Golfe)'),
+(8, 2, 8, 7.5, 10, 'Thu Mar 21 2019 21:55:39 GMT 0400 (heure du Golfe)');
 
 -- --------------------------------------------------------
 
@@ -437,7 +480,14 @@ INSERT INTO `pointage` (`id`, `idcarte`, `identreprise`, `idclient`, `entreprise
 (88, 24, 2, 8, 'Fideliz', '2019-03-18 14:40:54', 'Riviere JeanMarc', '2019-03-18 14:40:54', 2, '383485888', 'Brushing', 50.55),
 (89, 24, 2, 8, 'Fideliz', '2019-03-18 16:34:18', 'Riviere JeanMarc', '2019-03-18 16:34:18', 2, '383485888', 'Coupe hommes', 110),
 (90, 24, 2, 8, 'Fideliz', '2019-03-18 16:37:14', 'Riviere JeanMarc', '2019-03-18 16:37:14', 2, '383485888', 'testingou', 110.91),
-(91, 24, 2, 8, 'Fideliz', '2019-03-18 16:41:06', 'Riviere JeanMarc', '2019-03-18 16:41:06', 2, '383485888', 'Null', 0);
+(91, 24, 2, 8, 'Fideliz', '2019-03-18 16:41:06', 'Riviere JeanMarc', '2019-03-18 16:41:06', 2, '383485888', 'Null', 0),
+(92, 25, 2, 8, 'Fideliz', '2019-03-20 08:16:30', 'Riviere JeanMarc', '2019-03-20 08:16:30', 2, '383485888', 'Divers', 74.16),
+(93, 26, 2, 8, 'Fideliz', '2019-03-20 08:23:25', 'Riviere JeanMarc', '2019-03-20 08:23:25', 2, '383485888', 'Checkbam', 150),
+(94, 27, 2, 8, 'Fideliz', '2019-03-20 11:59:30', 'Riviere JeanMarc', '2019-03-20 11:59:30', 2, '383485888', 'Tchuk', 20.2),
+(95, 28, 2, 8, 'Fideliz', '2019-03-20 12:04:43', 'Riviere JeanMarc', '2019-03-20 12:04:43', 2, '383485888', 'Brushing', 50.55),
+(96, 28, 2, 8, 'Fideliz', '2019-03-20 12:05:11', 'Riviere JeanMarc', '2019-03-20 12:05:11', 2, '383485888', 'Null', 0),
+(97, 0, 2, 8, 'Fideliz', '2019-03-21 18:49:10', 'Riviere JeanMarc', '2019-03-21 18:49:10', 1, '383485888', 'testingou', 110.91),
+(98, 0, 2, 8, 'Fideliz', '2019-03-21 18:55:34', 'Riviere JeanMarc', '2019-03-21 18:55:34', 1, '383485888', 'Checkbam', 150);
 
 --
 -- Index pour les tables déchargées
@@ -474,6 +524,12 @@ ALTER TABLE `fidcadeaux`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `notation`
+--
+ALTER TABLE `notation`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `parametres`
 --
 ALTER TABLE `parametres`
@@ -499,12 +555,12 @@ ALTER TABLE `pointage`
 -- AUTO_INCREMENT pour la table `accsociete`
 --
 ALTER TABLE `accsociete`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT pour la table `acctclient`
 --
 ALTER TABLE `acctclient`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT pour la table `cadeaux`
 --
@@ -514,12 +570,17 @@ ALTER TABLE `cadeaux`
 -- AUTO_INCREMENT pour la table `cartefidelite`
 --
 ALTER TABLE `cartefidelite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT pour la table `fidcadeaux`
 --
 ALTER TABLE `fidcadeaux`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+--
+-- AUTO_INCREMENT pour la table `notation`
+--
+ALTER TABLE `notation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT pour la table `parametres`
 --
@@ -534,7 +595,7 @@ ALTER TABLE `planning`
 -- AUTO_INCREMENT pour la table `pointage`
 --
 ALTER TABLE `pointage`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
