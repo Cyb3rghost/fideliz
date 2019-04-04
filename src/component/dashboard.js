@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Configuration from './fidconfig'
 
-import Navbarup from './navbarup'
+import Footer from './footer'
 import Menu from './menu'
 import Loader from 'react-loader-spinner'
 
@@ -22,10 +22,10 @@ class Dashboard extends Component {
             debutAbo: '',
             finAbo: '', 
             jRestants: '',
-            apikey: '',
             totalGainsClient: '',
             scoreTotal: '',
-            notationTotal: ''
+            notationTotal: '',
+            configuration: '',
 
         }
 
@@ -34,18 +34,25 @@ class Dashboard extends Component {
     componentDidMount()
     {
 
+
+
             console.log('AdresseTest : ' + Configuration.hostnameManuelServer)
 
-            var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup).then(function(response){ 
+            var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup
+            + '&apikey=' + this.props.apikey).then(function(response){ 
                 return response.json()
             });
-            var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup).then(function(response){
+
+            var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup
+            + '&apikey=' + this.props.apikey).then(function(response){
                         return response.json()
             });
-            var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup).then(function(response){
+            var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup
+            + '&apikey=' + this.props.apikey).then(function(response){
                         return response.json()
             });
-            var apiRequest4 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=calculScoreEntreprise&identreprise=' + this.props.idUserRecup).then(function(response){
+            var apiRequest4 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=calculScoreEntreprise&identreprise=' + this.props.idUserRecup
+            + '&apikey=' + this.props.apikey).then(function(response){
                 return response.json()
             });
 
@@ -58,7 +65,7 @@ class Dashboard extends Component {
                 combinedData["apiRequest3"] = values[2];
                 combinedData["apiRequest4"] = values[3];
                 
-                {combinedData["apiRequest1"].map((value) => 
+                combinedData["apiRequest1"].map((value) => 
                 (
                     this.setState({
                         nbClient: value.nbclient,
@@ -69,17 +76,17 @@ class Dashboard extends Component {
                         debutAbo: value.debutabo,
                         finAbo: value.finabo, 
                         jRestants: value.jrestant,
-                        apikey: value.apikey,                      
+                        configuration: value.configuration                      
                     })
                 )
-                )}
+                )
 
                 this.setState({
                     totalClient: combinedData["apiRequest2"],  
                     totalGainsClient: combinedData["apiRequest3"]            
                 })
 
-                {combinedData["apiRequest4"].map((value) => 
+                combinedData["apiRequest4"].map((value) => 
                 (
                     this.setState({
                         scoreTotal: value.score_total,
@@ -87,11 +94,10 @@ class Dashboard extends Component {
                         loading: true                         
                     })
                 )
-                )}
+                )
 
             }.bind(this));
 
-        
 
 
     }
@@ -105,7 +111,7 @@ class Dashboard extends Component {
     }
 
   render() {
-    var LineChart = require("react-chartjs").Line;
+    /*var LineChart = require("react-chartjs").Line;
     var DoughnutChart = require("react-chartjs").Doughnut;
     var chartData = {
         labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -222,7 +228,7 @@ class Dashboard extends Component {
     
         responsive: true
 
-    }
+    }*/
 
     let loadingdata;
     if(this.state.loading)
@@ -272,7 +278,7 @@ class Dashboard extends Component {
                                     <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.limitClient}</div>
                                     </div>
                                     <div className="col-auto">
-                                    <i class="fas fa-hand-holding-usd fa-2x"></i>
+                                    <i className="fas fa-hand-holding-usd fa-2x"></i>
                                     </div>
                                 </div>
                                 </div>
@@ -288,7 +294,7 @@ class Dashboard extends Component {
                                     <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.nbPointage}</div>
                                     </div>
                                     <div className="col-auto">
-                                    <i class="fas fa-hand-holding-usd fa-2x"></i>
+                                    <i className="fas fa-hand-holding-usd fa-2x"></i>
                                     </div>
                                 </div>
                                 </div>
@@ -403,7 +409,7 @@ class Dashboard extends Component {
                                     <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.totalGainsClient} €</div>
                                     </div>
                                     <div className="col-auto">
-                                    <i class="fas fa-hand-holding-usd fa-2x"></i>
+                                    <i className="fas fa-hand-holding-usd fa-2x"></i>
                                     </div>
                                 </div>
                                 </div>
@@ -419,32 +425,16 @@ class Dashboard extends Component {
                                     <div className="h5 mb-0 font-weight-bold text-gray-800">{this.calculScoreClassement()}</div>
                                     </div>
                                     <div className="col-auto">
-                                    <i class="fas fa-hand-holding-usd fa-2x"></i>
+                                    <i className="fas fa-hand-holding-usd fa-2x"></i>
                                     </div>
                                 </div>
                                 </div>
                             </div>
                         </div>  
 
-                        <div className="col-xl-6 col-md-6 mb-4">
-                            <div className="card border-left-success shadow h-100 py-2">
-                                <div className="card-body">
-                                <div className="row no-gutters align-items-center">
-                                    <div className="col mr-2">
-                                    <div className="text-xs font-weight-bold text-success text-uppercase mb-1">API KEY</div>
-                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.apikey}</div>
-                                    </div>
-                                    <div className="col-auto">
-                                    <i className="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                        
                         </div>
 
-                        <div className="row">
+                        {/*<div className="row">
 
                             <div className="col-xl-8 col-lg-7">
                             <div className="card shadow mb-4">
@@ -508,6 +498,7 @@ class Dashboard extends Component {
                             </div>
                         </div>
 
+                    </div>*/}
                     </div>
                     </div>
     }
@@ -539,13 +530,7 @@ class Dashboard extends Component {
   
                       </div>
   
-                      <footer className="sticky-footer bg-dark text-white">
-                          <div className="container my-auto">
-                          <div className="copyright text-center my-auto">
-                              <span>Copyright &copy; Your Website 2019</span>
-                          </div>
-                          </div>
-                      </footer>
+                      <Footer />
   
                       </div>
   

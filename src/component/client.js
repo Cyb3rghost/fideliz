@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
 
+import Footer from './footer'
 import Menu from './menu'
 
 class Client extends Component {
@@ -24,11 +25,13 @@ class Client extends Component {
     componentDidMount()
     {
 
-        var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup).then(function(response){ 
+        var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey).then(function(response){ 
             return response.json()
         });
 
-        var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=listeClient&id=' + this.props.idUserRecup).then(function(response){ 
+        var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=listeClient&id=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey).then(function(response){ 
             return response.json()
         });
 
@@ -47,7 +50,8 @@ class Client extends Component {
             {
 
                 this.setState({
-                    statutMsg: '1'
+                    statutMsg: '1',
+                    loading: true
                 })
 
             }
@@ -63,53 +67,14 @@ class Client extends Component {
 
         }.bind(this));
 
-        /*fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=compteNombreClient&id=' + this.props.idUserRecup)
-        .then((response) => response.json())
-        .then((response) => {
-
-            this.setState({
-                nombreClient: response                    
-            })
-
-        })
-        .catch(err => console.error(err))
-
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=listeClient&id=' + this.props.idUserRecup)
-        .then((response) => response.json())
-        .then((response) => {
-
-            if(response === "#LISTECLIENT#ECHEC")
-            {
-
-                this.setState({
-                    statutMsg: '1'
-                })
-
-            }
-            else
-            {
-
-                this.setState({
-                    dataClient: response,
-                    loading: true
-                })
-
-            }
-
-
-
-
-        })
-        .catch(err => console.error(err))*/
-
-
     }
 
     assocCompte()
     {
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=assoccompte&idEnt=' + this.props.idUserRecup
-        + '&idusr=' + this.state.identifiantCompte)
+        + '&idusr=' + this.state.identifiantCompte
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -240,7 +205,7 @@ class Client extends Component {
                             </div>
                             <div className="col-4">
                             
-                            {this.props.infoTypeCompte != "0" &&
+                            {this.props.infoTypeCompte !== "0" &&
     
                                     <div><div class="input-group mb-3">
                                     <input 
@@ -251,11 +216,11 @@ class Client extends Component {
                                         onChange={(e) => this.setState({identifiantCompte: e.target.value})}
                                     
                                     />
-                                    <div class="input-group-append">
-                                        <button class="btn btn-dark" onClick={this.assocCompte.bind(this)} type="button" id="button-addon2">Association du compte</button>
+                                    <div className="input-group-append">
+                                        <button className="btn btn-dark" onClick={this.assocCompte.bind(this)} type="button" id="button-addon2">Association du compte</button>
                                     </div>
                                 </div>
-                                <a href="/nouveauclient"><button class="btn btn-dark btn-block" type="button" id="button-addon2">Nouveau client</button></a>  
+                                <a href="/nouveauclient"><button className="btn btn-dark btn-block" type="button" id="button-addon2">Nouveau client</button></a>  
                                 </div>                
     
                             }
@@ -276,7 +241,7 @@ class Client extends Component {
     
                         {this.afficheStatut()}
     
-                        <table class="table table-striped">
+                        <table className="table table-striped">
                             <thead>
                             <tr>
                             </tr>
@@ -333,13 +298,7 @@ class Client extends Component {
     
                     </div>
     
-                    <footer className="sticky-footer bg-white">
-                        <div className="container my-auto">
-                        <div className="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2019</span>
-                        </div>
-                        </div>
-                    </footer>
+                    <Footer />
     
                     </div>
     
@@ -348,24 +307,7 @@ class Client extends Component {
                 <a className="scroll-to-top rounded" href="#page-top">
                     <i className="fas fa-angle-up"></i>
                 </a>
-    
-                <div className="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                        </div>
-                        <div className="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                        <div className="modal-footer">
-                        <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a className="btn btn-primary" href="login.html">Logout</a>
-                        </div>
-                    </div>
-                    </div>
-                </div>
+
     
           </div>
         );

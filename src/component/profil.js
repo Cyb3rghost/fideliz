@@ -4,7 +4,7 @@ import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
 import Select from 'react-select';
 
-import Navbarup from './navbarup'
+import Footer from './footer'
 import Menu from './menu'
 
 
@@ -36,9 +36,11 @@ class Profil extends Component {
             selectedFileLogo : null,
             statutUpload: '',
             selectedOption: null,
+            selectedOptionPrestation: null,
             afflisteCadeaux: [],
             cadeaux: '',
             prixcadeaux: '',
+            configuration: '',
             loading: false
 
         }
@@ -49,11 +51,12 @@ class Profil extends Component {
     {
 
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
-            {response.map((value, index) => 
+            response.map((value, index) => 
                 (
                     this.setState({
                         nom: value.nom,
@@ -75,22 +78,30 @@ class Profil extends Component {
                         imgIconCarte: value.imgicon,
                         cadeaux: value.cadeaux,
                         prixcadeaux: value.prixcadeaux,
+                        secteur: value.secteur,
+                        configuration: value.configuration,
                         loading: true                     
                     })
                 )
-              )}
+              )
     
 
         })
         .catch(err => console.error(err))
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
-            this.setState({
-                afflisteCadeaux: response
-            })
+            if(response !== "#SLCTLISTECADEAUX#ECHEC")
+            {
+
+                this.setState({
+                    afflisteCadeaux: response
+                })
+
+            }
     
 
         })
@@ -108,7 +119,7 @@ class Profil extends Component {
 
         const fd = new FormData();
         fd.append('image', this.state.selectedFileBKG, this.state.selectedFileBKG.name);
-        axios.post(Configuration.hostnameManuelServer + 'fidapi/main.php?action=uploadBackgroundImg&id=' + this.props.idUserRecup, fd
+        axios.post(Configuration.hostnameManuelServer + 'fidapi/main.php?action=uploadBackgroundImg&id=' + this.props.idUserRecup + '&apikey=' + this.props.apikey, fd
         ).then(res=>
         {
             console.log(res);
@@ -159,7 +170,7 @@ class Profil extends Component {
 
         const fd = new FormData();
         fd.append('image', this.state.selectedFileLogo, this.state.selectedFileLogo.name);
-        axios.post(Configuration.hostnameManuelServer + 'fidapi/main.php?action=uploadLogoImg&id=' + this.props.idUserRecup, fd
+        axios.post(Configuration.hostnameManuelServer + 'fidapi/main.php?action=uploadLogoImg&id=' + this.props.idUserRecup + '&apikey=' + this.props.apikey, fd
         ).then(res=>
         {
             console.log(res);
@@ -220,7 +231,8 @@ class Profil extends Component {
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=updateCadeauxEntreprise'
         + '&identreprise=' + this.props.idUserRecup
         + '&prestation=' + separePrestation[0]
-        + '&prix=' + separePrestation[1].substring(0, separePrestation[1].length-1))
+        + '&prix=' + separePrestation[1].substring(0, separePrestation[1].length-1)
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -246,10 +258,54 @@ class Profil extends Component {
 
     }
 
+    enregistrePrestation()
+    {
+        const { selectedOptionPrestation } = this.state;
+
+        /*console.log(Configuration.hostnameManuelServer + 'fidapi/main.php?action=updateCadeauxEntreprise'
+        + '&identreprise=' + this.props.idUserRecup
+        + '&prestation=' + separePrestation[0]
+        + '&prix=' + separePrestation[1].substring(0, separePrestation[1].length-1))*/
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=updateLimitationPrestationEntreprise'
+        + '&identreprise=' + this.props.idUserRecup
+        + '&prestation=' + selectedOptionPrestation.label
+        + '&apikey=' + this.props.apikey)
+        .then((response) => response.json())
+        .then((response) => {
+
+            if(response === "#UPENTPNT#SUCCESS")
+            {
+
+                console.log(response)
+                this.setState({ selectedOptionPrestation, limitPointage: selectedOptionPrestation.label});
+
+            }
+            else if(response === "#UPENTPNT#FAILED")
+            {
+
+                console.log(response)
+                this.setState({ selectedOptionPrestation });
+                console.log(`Option selected:`, selectedOptionPrestation);
+
+            }
+
+        })
+        .catch(err => console.error(err))
+
+
+    }
+
     handleChange = (selectedOption) => {
 
             console.log(selectedOption)
             this.setState({ selectedOption })
+    }
+
+    handleChangePrestation = (selectedOptionPrestation) => {
+
+        console.log(selectedOptionPrestation)
+        this.setState({ selectedOptionPrestation })
     }
 
     afficheStatutCarte()
@@ -342,13 +398,23 @@ class Profil extends Component {
 
     }
 
+
   render() {
 
-    const { selectedOption } = this.state;
+    const { selectedOption, selectedOptionPrestation } = this.state;
 
     let options = this.state.afflisteCadeaux.map(function (valux) {
             return { value: valux.id, label: valux.prestation + ' - ' + valux.prix + '€' }
     })
+
+    const optionsPrestation = [
+        { value: '10', label: '10' },
+        { value: '15', label: '15' },
+        { value: '20', label: '20' },
+        { value: '30', label: '30' },
+        { value: '40', label: '40' },
+        { value: '50', label: '50' }
+      ]
 
 
     let loadingdata;
@@ -363,7 +429,7 @@ class Profil extends Component {
 
                     <hr/>
 
-                    <div class="card shadow mb-4">
+                    <div className="card shadow mb-4">
                                 <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 className="m-0 font-weight-bold text-primary">Informations sur votre profil</h6>
                                     <div className="dropdown no-arrow">
@@ -377,9 +443,9 @@ class Profil extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-body">
+                                <div className="card-body">
 
-                                    <table class="table">
+                                    <table className="table">
                                         <thead>
                                             <tr>
                                             
@@ -402,6 +468,10 @@ class Profil extends Component {
                                             <th scope="row">Numéro de téléphone</th>
                                             <td  align="center">{this.state.telephone}</td>
                                             </tr>
+                                            <tr>
+                                            <th scope="row">Votre secteur d'activité</th>
+                                            <td  align="center">{this.state.secteur}</td>
+                                            </tr>
                                         </tbody>
                                         </table>
 
@@ -410,13 +480,13 @@ class Profil extends Component {
 
 
 
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Information sur le compte</h6>
+                        <div className="card shadow mb-4">
+                            <div className="card-header py-3">
+                            <h6 className="m-0 font-weight-bold text-primary">Information sur le compte</h6>
                             </div>
-                            <div class="card-body">
+                            <div className="card-body">
 
-                            <table class="table">
+                            <table className="table">
                         <thead>
                             <tr>
                             
@@ -455,11 +525,11 @@ class Profil extends Component {
                             </div>
                         </div>
 
-                        <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                <h6 class="m-0 font-weight-bold text-primary">Information sur votre carte</h6>
+                        <div className="card shadow mb-4">
+                                <div className="card-header py-3">
+                                <h6 className="m-0 font-weight-bold text-primary">Information sur votre carte</h6>
                                 </div>
-                                <div class="card-body">
+                                <div className="card-body">
                                 {this.afficheStatutCarte()}
 
                                 <div className="panelCarte">
@@ -471,8 +541,8 @@ class Profil extends Component {
                                 </div>   
 
                                 <br/>
-                                {this.props.infoTypeCompte != "0" &&
-                                    <div><table class="table table-striped">
+                                {this.props.infoTypeCompte !== "0" &&
+                                    <div><table className="table table-striped">
                                         <thead>
                                         <tr>
                                         </tr>
@@ -484,7 +554,7 @@ class Profil extends Component {
                                         </tr>
                                         <tr>
                                             <td><input type="file" onChange = {this.fileSelect} /></td>
-                                            <td align="center"><button class="btn btn-dark btn-block" onClick = {this.fileUpload} type="submit">J'upload</button></td>
+                                            <td align="center"><button className="btn btn-dark btn-block" onClick = {this.fileUpload} type="submit">J'upload</button></td>
                                         </tr>
                                         <tr>
                                             <td><b>Logo ( 100x100 )</b></td>
@@ -492,7 +562,7 @@ class Profil extends Component {
                                         </tr>
                                         <tr>
                                             <td><input type="file" onChange = {this.fileSelectLogo} /></td>
-                                            <td align="center"><button class="btn btn-dark btn-block" onClick = {this.fileUploadLogo} type="submit">J'upload</button></td>
+                                            <td align="center"><button className="btn btn-dark btn-block" onClick = {this.fileUploadLogo} type="submit">J'upload</button></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -500,14 +570,14 @@ class Profil extends Component {
                                 }
 
                                 {this.props.infoTypeCompte === "0" &&
-                                    <div class="alert alert-danger" role="alert">
+                                    <div className="alert alert-danger" role="alert">
                                         Vous devez upgrader votre compte pour pouvoir modifier votre carte.
                                     </div>          
                                 }
 
                                 </div>
                             </div>
-
+                            
                             <div className="card shadow mb-4">
                                 <div className="card-header py-3">
                                 <h6 className="m-0 font-weight-bold text-primary">Gestion du cadeau</h6>
@@ -516,11 +586,11 @@ class Profil extends Component {
                                 
                                         <div className="container">
                                         
-                                        <p className="text-justify">
+                                        
                                         <b>Cadeau :</b> {this.state.cadeaux} <br/>
                                         <b>Valeur du cadeau :</b> <span className="badge badge-dark">{this.state.prixcadeaux} €</span>  <br/>
                                         <hr/>
-                                        Cette partie vous permet d'effectuer le paramétrage des cadeaux sur votre carte de fidélité.
+                                        <p className="text-justify">Cette partie vous permet d'effectuer le paramétrage des cadeaux sur votre carte de fidélité.
                                         Les cadeaux sont délivrés lorsque votre client atteind la limitation des pointages
                                         fixé sur votre carte.
                                         </p>
@@ -543,7 +613,40 @@ class Profil extends Component {
                             
                         </div>
 
+                        <div className="card shadow mb-4">
+                                <div className="card-header py-3">
+                                <h6 className="m-0 font-weight-bold text-primary">Gestion des limitations de votre carte</h6>
+                                </div>
+                                <div className="card-body">
+                                
+                                        <div className="container">
+                                        
+                                        
+                                        <b>Limitation actuel :</b> {this.state.limitPointage} prestations<br/>
+                                        <hr/>
+                                        <p className="text-justify">
+                                        Cette partie vous permet d'effectuer un changement sur la limitation des prestations de votre carte. Cette limitation sera changer
+                                        pour tous vos clients. Utilisez cette fonctionnalité uniquement en cas de gros changements sur votre
+                                        fonctionnement.
+                                        </p>
+                                        
+                                        <Select
+                                            style={{ width: 300 }}
+                                            value={selectedOptionPrestation}
+                                            onChange={this.handleChangePrestation}
+                                            options={optionsPrestation}
+                                        />  
 
+                                        <br/>
+
+                                        <button type="button" onClick={this.enregistrePrestation.bind(this)} className="btn btn-success">Enregistrez</button>
+
+
+                                        </div>
+
+                                </div>
+                            
+                        </div>
 
                     </div>
 
@@ -581,13 +684,7 @@ class Profil extends Component {
                 
                 </div>
 
-                <footer className="sticky-footer bg-white">
-                    <div className="container my-auto">
-                    <div className="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2019</span>
-                    </div>
-                    </div>
-                </footer>
+                <Footer />
 
                 </div>
 
@@ -596,24 +693,6 @@ class Profil extends Component {
             <a className="scroll-to-top rounded" href="#page-top">
                 <i className="fas fa-angle-up"></i>
             </a>
-
-            <div className="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    </div>
-                    <div className="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div className="modal-footer">
-                    <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a className="btn btn-primary" href="login.html">Logout</a>
-                    </div>
-                </div>
-                </div>
-            </div>
 
       </div>
     );

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Configuration from '../fidconfig'
 
-import Navbarupclient from './navbarupclient'
 import Menu from './menuclient'
 
 class Mescadeaux extends Component {
@@ -22,7 +21,8 @@ class Mescadeaux extends Component {
     componentDidMount()
     {
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheCadeauxAttente&id=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheCadeauxAttente&id=' + this.props.idUserRecupClient
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -52,7 +52,8 @@ class Mescadeaux extends Component {
         })
         .catch(err => console.error(err))
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheCadeauxRecu&id=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheCadeauxRecu&id=' + this.props.idUserRecupClient
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -89,7 +90,8 @@ class Mescadeaux extends Component {
     envoieConfirmation(idCadeaux)
     {
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=confirmationCadeaux&id=' + idCadeaux)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=confirmationCadeaux&id=' + idCadeaux
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -273,7 +275,6 @@ class Mescadeaux extends Component {
 
 
   render() {
-    var QRCode = require('qrcode.react');
 
     return (
       <div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mar. 26 mars 2019 à 11:55
+-- Généré le :  jeu. 04 avr. 2019 à 11:11
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -48,29 +48,33 @@ CREATE TABLE `accsociete` (
   `jrestant` int(11) NOT NULL,
   `imgfond` varchar(255) NOT NULL,
   `imgicon` varchar(255) NOT NULL,
-  `apikey` varchar(255) NOT NULL,
   `qrcode` int(11) NOT NULL,
   `prestation` varchar(255) NOT NULL,
   `prix` float NOT NULL,
   `activation` int(11) NOT NULL,
   `cadeaux` varchar(255) NOT NULL,
-  `prixcadeaux` float NOT NULL
+  `prixcadeaux` float NOT NULL,
+  `secteur` varchar(255) NOT NULL,
+  `configuration` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `accsociete`
 --
 
-INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `apikey`, `qrcode`, `prestation`, `prix`, `activation`, `cadeaux`, `prixcadeaux`) VALUES
-(1, 'ludovic.lvnr@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'PAYET', 'Eddy', '56 chemin des fleurs 97400', 'EddyCoiffure', '0692101112', 1, 0, 0, 0, 0, '0000-00-00', '0000-00-00', 0, 'backgroundCarte.jpg', 'logocarte.png', 'e6c14066a83d3416238afbc40a9f437a', 0, '', 0, 0, '', 0),
-(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 1, 0, 10, 57, 10, '2019-03-25', '2019-03-27', 1, 'carddefault.jpg', 'logodefault.png', 'b3470a6aba7953782f54486b8cc28d02', 383485888, 'Null', 0, 1, 'Testo', 5.55),
-(3, 'blizzard@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'Blizzard', '', 2, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'null', 'null', 'fedd6393d9b9224fcba3c3ce0ba33b96', 0, '', 0, 0, '', 0),
-(4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 1, 0, 10, 0, 15, '2019-02-09', '2019-03-11', 28, 'null', 'null', 'e3fe6a42aaf6a6f49760186c481afad6', 0, '', 0, 0, '', 0),
-(5, 'cathy@gmail.com', 'af56310c080ab9d9f3d96be9f16edebf', 1, '', '', '', 'MenageParty', '', 1, 0, 10, 1, 15, '2019-02-10', '2019-03-12', 30, 'BCGC144501D09-02-2019.jpg', 'LOGO517944D09-02-2019.png', '2dd7b6dff53be1b24f1d9b967071778d', 0, '', 0, 0, '', 0),
-(6, 'dbz@gmail.com', '9512406d8e0fdb1542ac665e39461f96', 1, 'LEVENEUR', 'Ludovic', '56 Bis Chemin du ruisseau', 'DragonBallZ', '0692102030', 0, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 'd31468015e450290d6698d91ec099b96', 0, '', 0, 0, '', 0),
-(7, 'loniweb@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'Loni', 'Cedric', '56 chemin des oiseaux', 'Loniweb', '0692101213', 1, 0, 10, 1, 15, '2019-02-18', '2019-03-20', 30, 'BCGC713623D18-02-2019.jpg', 'logodefault.png', 'b5a0265cdaa6c4b952c3791c9b5dbca8', 0, '', 0, 0, '', 0),
-(8, 'ploumouz@gmail.com', 'cd3661b88633fe744e85154464736546', 1, '', '', '', 'Ploumouz', '', 1, 0, 2, 0, 15, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 'f6139543f115da93cb27e9a752091bc2', 383485832, '', 0, 0, '', 0),
-(9, '', 'da1fdd8296f5bf6790a56762b1266426', 1, '', '', '', '', '', 1, 0, 2, 0, 0, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', '09f857cfca327b37f5ef2cfc35d5881b', 93332499, '', 0, 0, '', 0);
+INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `qrcode`, `prestation`, `prix`, `activation`, `cadeaux`, `prixcadeaux`, `secteur`, `configuration`) VALUES
+(1, 'ludovic.lvnr@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'PAYET', 'Eddy', '56 chemin des fleurs 97400', 'EddyCoiffure', '0692101112', 1, 0, 0, 0, 0, '0000-00-00', '0000-00-00', 0, 'backgroundCarte.jpg', 'logocarte.png', 0, '', 0, 0, '', 0, '0', 0),
+(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 0, 0, 10, 57, 15, '2019-03-25', '2019-03-27', 0, 'carddefault.jpg', 'logodefault.png', 383485888, 'Null', 0, 0, 'Brushing', 50.55, '0', 1),
+(3, 'blizzard@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'Blizzard', '', 2, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'null', 'null', 0, '', 0, 0, '', 0, '0', 0),
+(4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 1, 0, 10, 0, 15, '2019-02-09', '2019-03-11', 28, 'null', 'null', 0, '', 0, 0, '', 0, '0', 0),
+(5, 'cathy@gmail.com', 'af56310c080ab9d9f3d96be9f16edebf', 1, '', '', '', 'MenageParty', '', 1, 0, 10, 1, 15, '2019-02-10', '2019-03-12', 30, 'BCGC144501D09-02-2019.jpg', 'LOGO517944D09-02-2019.png', 0, '', 0, 0, '', 0, '0', 0),
+(6, 'dbz@gmail.com', '9512406d8e0fdb1542ac665e39461f96', 1, 'LEVENEUR', 'Ludovic', '56 Bis Chemin du ruisseau', 'DragonBallZ', '0692102030', 0, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 0, '', 0, 0, '', 0, '0', 0),
+(7, 'loniweb@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'Loni', 'Cedric', '56 chemin des oiseaux', 'Loniweb', '0692101213', 1, 0, 10, 1, 15, '2019-02-18', '2019-03-20', 30, 'BCGC713623D18-02-2019.jpg', 'logodefault.png', 0, '', 0, 0, '', 0, '0', 0),
+(8, 'ploumouz@gmail.com', 'cd3661b88633fe744e85154464736546', 1, '', '', '', 'Ploumouz', '', 1, 0, 2, 0, 15, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 383485832, '', 0, 0, '', 0, '0', 0),
+(9, '', 'da1fdd8296f5bf6790a56762b1266426', 1, '', '', '', '', '', 1, 0, 2, 0, 0, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 93332499, '', 0, 0, '', 0, '0', 0),
+(17, 'test@gmail.com', 'da1fdd8296f5bf6790a56762b1266426', 1, 'TESTO', 'Testa', '56 chemin des tests', 'Test', '0692101112', 1, 0, 2, 0, 10, '2019-03-27', '2019-04-26', 30, 'carddefault.jpg', 'logodefault.png', 686899493, '', 0, 0, 'Test', 100, 'Coiffure', 0),
+(18, 'poulouk@gmail.com', 'da1fdd8296f5bf6790a56762b1266426', 1, 'TATZ', 'Toto', '55 Chemin des alamotos', 'Poulouk', '0692333435', 1, 0, 5, 0, 10, '2019-03-27', '2019-04-26', 30, 'carddefault.jpg', 'logodefault.png', 46171476, '', 0, 0, '', 0, 'Coiffure', 0),
+(19, 'kraken@gmail.com', 'da1fdd8296f5bf6790a56762b1266426', 1, 'TOTO', 'Tatz', '45 chemin des mangues batus', 'Kraken', '0692121311', 1, 0, 5, 0, 15, '2019-03-27', '2019-04-26', 29, 'carddefault.jpg', 'logodefault.png', 41788419, '', 0, 0, 'Produit de test', 10, 'Coiffure', 1);
 
 -- --------------------------------------------------------
 
@@ -108,7 +112,7 @@ INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `nai
 (4, 2, 0, '2019-01-04', '0000-00-00', 'RiviÃ¨re', 'Max', '56Bis', '0692659877', 'max@gmail.com', 'edff293d77fa6f0e2ccdfefe35ea2d84', 0, 1, 0, 0, 0),
 (5, 2, 0, '2019-01-04', '0000-00-00', 'RiviÃ¨re', 'Max', '56 Rue des encombrants 97421 La riviÃ¨re Saint-Louis', '0692741255', 'max@gmail.com', 'edff293d77fa6f0e2ccdfefe35ea2d84', 0, 3, 0, 0, 0),
 (6, 2, 0, '2019-01-04', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692102030', 'dbz@gmail.com', 'fac72322259f2d9ead77a4de15457582', 0, 0, 0, 0, 0),
-(7, 2, 0, '2019-01-04', '0000-00-00', 'Titi', 'toto', '30 rue des titis', '0692101112', 'max@gmail.com', '503e3e3e9c7cfc2fff762adac089d2ea', 0, 0, 0, 0, 0),
+(7, 2, 0, '2019-01-04', '0000-00-00', 'Titi', 'toto', '30 rue des titis', '0692101112', 'max@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0, 0),
 (8, 2, 0, '2019-01-08', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 2, 16, 59, 24, 0),
 (15, 1, 8, '2019-01-28', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 24, 0),
 (16, 3, 8, '2019-01-31', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 24, 0),
@@ -117,7 +121,39 @@ INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `nai
 (19, 5, 0, '2019-02-10', '0000-00-00', 'Lili', 'Boco', '56 chemin des liloboco', '0692222324', 'liliboco@gmail.com', 'a8c5587bf4dc90f79e065df3af8ebaa7', 0, 0, 0, 0, 0),
 (20, 7, 0, '2019-02-18', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692729322', 'ludovic@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 1, 1, 0, 0),
 (21, 2, 20, '2019-02-18', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692729322', 'ludovic@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0, 0),
-(22, 2, 0, '2019-03-26', '1993-02-24', 'Mata', 'Boulou', '10 Chemin des ananas', '0692988774', 'mataboulou@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0);
+(22, 2, 0, '2019-03-26', '1993-02-24', 'Mata', 'Boulou', '10 Chemin des ananas', '0692988774', 'mataboulou@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0),
+(23, 19, 0, '2019-03-28', '1993-02-20', 'Dag', 'Dodo', '20 Chemin des dodos', '0692101211', 'dagdodo@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0),
+(24, 19, 0, '2019-03-28', '1993-02-21', 'Dodo', 'Dagdag', '21 chemin des dagdags', '0693007007', 'dagsdags@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0),
+(25, 19, 0, '2019-03-28', '1993-02-22', 'Papa', 'popo', '23 chemin des popos', '0692323635', 'popo@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0),
+(26, 19, 0, '2019-03-28', '1993-02-23', 'Pala', 'polo', '24 chemin des polo', '0693325547', 'polo@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0),
+(27, 19, 0, '2019-03-28', '1993-02-25', 'Chama', 'Konix', '25 chemin des konix', '0692585754', 'konix@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `apikey`
+--
+
+CREATE TABLE `apikey` (
+  `id` int(11) NOT NULL,
+  `apikey` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `apikey`
+--
+
+INSERT INTO `apikey` (`id`, `apikey`) VALUES
+(1, 'dcc26b4ddc95589ea6b8bae1b2d093f4'),
+(2, '39bcc8094660893feeddc2807e4598a4'),
+(3, '6f8dadfa834e7469322aca6bed520275'),
+(4, '38541419c3709189380c6fc0b694d861'),
+(5, 'bc86a54251a97058ef830cfc27be3a18'),
+(6, '9d7d566946110e986b23403857192264'),
+(7, 'c956bf34bfb93327f435a2274701cb20'),
+(8, 'd625ef4114a852e8d53acf1e5ba8998f'),
+(9, '5605a2d989515419c85223261e9f9bfc'),
+(10, '38bda062c019514c6021b15a40cb9b81');
 
 -- --------------------------------------------------------
 
@@ -167,7 +203,12 @@ INSERT INTO `cadeaux` (`id`, `identreprise`, `idprestation`, `prestation`, `prix
 (37, 2, 0, 'PrestaUn', 10, 1, 0),
 (42, 2, 2, 'WhatYourName', 78.11, 1, 0),
 (43, 2, 2, 'Toctoc', 22.23, 1, 0),
-(44, 2, 2, 'Coucou', 10.57, 1, 0);
+(44, 2, 2, 'Coucou', 10.57, 1, 0),
+(45, 17, 0, 'Test', 100, 1, 0),
+(46, 19, 0, 'qsdqsdqs', 55.45, 1, 0),
+(48, 19, 0, 'Produit de test', 0, 1, 0),
+(49, 19, 0, 'Produit de test', 0, 1, 0),
+(50, 2, 0, 'Produit de test', 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -195,16 +236,16 @@ CREATE TABLE `cartefidelite` (
 --
 
 INSERT INTO `cartefidelite` (`id`, `idclient`, `datecreation`, `nom`, `prenom`, `nbpointage`, `limitpointage`, `statut`, `cadeaux`, `imgbackground`, `imgicon`, `qrcode`) VALUES
-(1, 1, '2019-01-07', 'LEVENEUR', 'Ludovic', 0, 15, 1, '1 shampooing', 'backgroundCarte.jpg', 'logocarte.png', '366251495'),
-(2, 8, '2019-01-08', 'Riviere', 'JeanMarc', 15, 15, 2, '1 coupe gratuite', 'backgroundCarte.jpg', 'logocarte.png', '589602382'),
-(3, 8, '2019-01-09', 'Riviere', 'JeanMarc', 10, 10, 2, '1 shampooing', 'backgroundCarte.jpg', 'logocarte.png', '852587963'),
-(4, 8, '2019-01-09', 'Riviere', 'JeanMarc', 10, 10, 2, '1 Brushing', 'backgroundCarte.jpg', 'logocarte.png', '945331638'),
-(5, 8, '2019-01-11', 'Riviere', 'JeanMarc', 10, 10, 2, '1 coupe gratuite', 'backgroundCarte.jpg', 'logocarte.png', '57868888'),
-(6, 8, '2019-01-11', 'Riviere', 'JeanMarc', 10, 10, 2, 'Brushing - 50.55 â‚¬', 'backgroundCarte.jpg', 'logocarte.png', '223241456'),
+(1, 1, '2019-01-07', 'LEVENEUR', 'Ludovic', 0, 15, 1, '1 shampooing', 'carddefault.jpg', 'logodefault.png', '366251495'),
+(2, 8, '2019-01-08', 'Riviere', 'JeanMarc', 15, 15, 2, '1 coupe gratuite', 'carddefault.jpg', 'logodefault.png', '589602382'),
+(3, 8, '2019-01-09', 'Riviere', 'JeanMarc', 10, 10, 2, '1 shampooing', 'carddefault.jpg', 'logodefault.png', '852587963'),
+(4, 8, '2019-01-09', 'Riviere', 'JeanMarc', 10, 10, 2, '1 Brushing', 'carddefault.jpg', 'logodefault.png', '945331638'),
+(5, 8, '2019-01-11', 'Riviere', 'JeanMarc', 10, 10, 2, '1 coupe gratuite', 'carddefault.jpg', 'logodefault.png', '57868888'),
+(6, 8, '2019-01-11', 'Riviere', 'JeanMarc', 10, 10, 2, 'Brushing - 50.55 â‚¬', 'carddefault.jpg', 'logodefault.png', '223241456'),
 (7, 8, '2019-01-21', 'Riviere', 'JeanMarc', 10, 10, 2, 'Brushing - 50.55 â‚¬', 'BCGC902130D24-01-2019.png', 'LOGO443298D24-01-2019.png', '289122476'),
-(8, 7, '2019-02-04', 'Titi', 'toto', 0, 10, 2, 'Brushing - 50.55 â‚¬', 'BCGC902130D24-01-2019.png', 'LOGO443298D24-01-2019.png', '125669880'),
-(9, 17, '2019-02-09', 'Riviere', 'JeanMarc', 10, 10, 2, 'Brushing - 20 â‚¬', 'undefined', 'undefined', '479918552'),
-(10, 17, '2019-02-09', 'Riviere', 'JeanMarc', 10, 10, 2, 'Brushing - 20 â‚¬', 'undefined', 'undefined', ''),
+(8, 8, '2019-02-04', 'Titi', 'toto', 0, 10, 2, 'Brushing - 50.55 â‚¬', 'BCGC902130D24-01-2019.png', 'LOGO443298D24-01-2019.png', '125669880'),
+(9, 17, '2019-02-09', 'Riviere', 'JeanMarc', 10, 10, 2, 'Brushing - 20 â‚¬', 'carddefault.jpg', 'undefined', '479918552'),
+(10, 17, '2019-02-09', 'Riviere', 'JeanMarc', 10, 10, 2, 'Brushing - 20 â‚¬', 'carddefault.jpg', 'undefined', ''),
 (11, 17, '2019-02-09', 'Riviere', 'JeanMarc', 0, 10, 1, 'Brushing - 20 â‚¬', 'BCGC144501D09-02-2019.jpg', 'LOGO517944D09-02-2019.png', ''),
 (12, 20, '2019-02-18', 'LEVENEUR', 'Ludovic', 10, 10, 2, 'Couleur - 50 â‚¬', 'carddefault.jpg', 'logodefault.png', '13390946'),
 (13, 20, '2019-02-18', 'LEVENEUR', 'Ludovic', 0, 10, 1, 'Brushing - 20 â‚¬', 'carddefault.jpg', 'logodefault.png', ''),
@@ -332,8 +373,8 @@ CREATE TABLE `planning` (
   `identreprise` int(11) NOT NULL,
   `idclient` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `start` varchar(255) NOT NULL,
-  `end` varchar(255) NOT NULL,
+  `start` date NOT NULL,
+  `end` date NOT NULL,
   `departheure` varchar(8) NOT NULL,
   `finheure` varchar(8) NOT NULL,
   `statut` int(11) NOT NULL,
@@ -347,24 +388,25 @@ CREATE TABLE `planning` (
 --
 
 INSERT INTO `planning` (`id`, `identreprise`, `idclient`, `title`, `start`, `end`, `departheure`, `finheure`, `statut`, `reelstart`, `reelend`, `idproposant`) VALUES
-(37, 2, 8, 'Coupe avec Eddy', '07/03/2019', '07/03/2019', '18:00:00', '19:00:00', 2, 'Thu, 07 Mar 2019 14:00:00 GMT', 'Thu, 07 Mar 2019 15:00:00 GMT', 8),
-(36, 2, 8, 'TchockQuatre', '04/03/2019', '04/03/2019', '14:00:00', '15:00:00', 2, 'Mon, 04 Mar 2019 10:00:00 GMT', 'Mon, 04 Mar 2019 11:00:00 GMT', 8),
-(35, 2, 8, 'TchockTrois', '04/03/2019', '04/03/2019', '13:00:00', '14:00:00', 1, 'Mon, 04 Mar 2019 09:00:00 GMT', 'Mon, 04 Mar 2019 10:00:00 GMT', 8),
-(34, 2, 8, 'TchockDeux', '04/03/2019', '04/03/2019', '12:00:00', '13:00:00', 1, 'Mon, 04 Mar 2019 08:00:00 GMT', 'Mon, 04 Mar 2019 09:00:00 GMT', 8),
-(33, 2, 8, 'Tchock', '04/03/2019', '04/03/2019', '11:00:00', '12:00:00', 1, 'Mon, 04 Mar 2019 07:00:00 GMT', 'Mon, 04 Mar 2019 08:00:00 GMT', 8),
-(45, 2, 8, 'TestRDVClient', '07/03/2019', '07/03/2019', '09:45:00', '10:45:00', 2, 'Thu, 07 Mar 2019 05:45:00 GMT', 'Thu, 07 Mar 2019 06:45:00 GMT', 8),
-(42, 2, 8, 'zfzfzefe', '04/03/2019', '04/03/2019', '15:15:00', '16:15:00', 2, 'Mon, 04 Mar 2019 11:15:00 GMT', 'Mon, 04 Mar 2019 12:15:00 GMT', 2),
-(49, 2, 8, 'MonRDV', '08/03/2019', '08/03/2019', '08:00:00', '09:00:00', 2, 'Fri, 08 Mar 2019 04:00:00 GMT', 'Fri, 08 Mar 2019 05:00:00 GMT', 2),
-(48, 2, 8, 'HolaJeCheckEncore', '07/03/2019', '07/03/2019', '12:00:00', '13:00:00', 2, 'Thu, 07 Mar 2019 08:00:00 GMT', 'Thu, 07 Mar 2019 09:00:00 GMT', 8),
-(50, 2, 8, 'JeVERDV', '09/03/2019', '09/03/2019', '07:45:00', '08:45:00', 2, 'Sat, 09 Mar 2019 03:45:00 GMT', 'Sat, 09 Mar 2019 04:45:00 GMT', 8),
-(54, 2, 7, 'Tchiakaa', '06/03/2019', '06/03/2019', '08:00:00', '09:00:00', 1, 'Wed, 06 Mar 2019 04:00:00 GMT', 'Wed, 06 Mar 2019 05:00:00 GMT', 2),
-(53, 2, 21, 'TestAutreClient', '05/03/2019', '05/03/2019', '06:00:00', '07:00:00', 2, 'Tue, 05 Mar 2019 02:00:00 GMT', 'Tue, 05 Mar 2019 03:00:00 GMT', 2),
-(55, 2, 7, 'Tchoukou', '06/03/2019', '06/03/2019', '14:00:00', '15:00:00', 1, 'Wed, 06 Mar 2019 10:00:00 GMT', 'Wed, 06 Mar 2019 11:00:00 GMT', 2),
-(56, 2, 7, 'Pouloukou', '06/03/2019', '06/03/2019', '16:00:00', '17:00:00', 1, 'Wed, 06 Mar 2019 12:00:00 GMT', 'Wed, 06 Mar 2019 13:00:00 GMT', 2),
-(61, 2, 8, 'qsdqsdqsd', '07/03/2019', '07/03/2019', '13:00:00', '14:00:00', 1, 'Thu, 07 Mar 2019 09:00:00 GMT', 'Thu, 07 Mar 2019 10:00:00 GMT', 8),
-(62, 2, 8, 'Ludovic LEVENEUR', '07/03/2019', '07/03/2019', '14:00:00', '15:00:00', 1, 'Thu, 07 Mar 2019 10:00:00 GMT', 'Thu, 07 Mar 2019 11:00:00 GMT', 8),
-(64, 2, 8, 'qsdqsdqsd', '07/03/2019', '07/03/2019', '08:00:00', '09:00:00', 1, 'Thu, 07 Mar 2019 04:00:00 GMT', 'Thu, 07 Mar 2019 05:00:00 GMT', 8),
-(66, 2, 8, '974', '08/03/2019', '08/03/2019', '12:00:00', '13:00:00', 2, 'Fri, 08 Mar 2019 08:00:00 GMT', 'Fri, 08 Mar 2019 09:00:00 GMT', 2);
+(37, 2, 8, 'Coupe avec Eddy', '2019-03-04', '2019-03-07', '18:00:00', '19:00:00', 2, 'Thu, 07 Mar 2019 14:00:00 GMT', 'Thu, 07 Mar 2019 15:00:00 GMT', 8),
+(36, 2, 8, 'TchockQuatre', '2019-03-04', '2019-03-04', '14:00:00', '15:00:00', 2, 'Mon, 04 Mar 2019 10:00:00 GMT', 'Mon, 04 Mar 2019 11:00:00 GMT', 8),
+(35, 2, 8, 'TchockTrois', '2019-03-04', '2019-03-04', '13:00:00', '14:00:00', 1, 'Mon, 04 Mar 2019 09:00:00 GMT', 'Mon, 04 Mar 2019 10:00:00 GMT', 8),
+(34, 2, 8, 'TchockDeux', '2019-03-04', '2019-03-04', '12:00:00', '13:00:00', 1, 'Mon, 04 Mar 2019 08:00:00 GMT', 'Mon, 04 Mar 2019 09:00:00 GMT', 8),
+(33, 2, 8, 'Tchock', '2019-03-04', '2019-03-04', '11:00:00', '12:00:00', 1, 'Mon, 04 Mar 2019 07:00:00 GMT', 'Mon, 04 Mar 2019 08:00:00 GMT', 8),
+(45, 2, 8, 'TestRDVClient', '2019-03-07', '2019-03-07', '09:45:00', '10:45:00', 2, 'Thu, 07 Mar 2019 05:45:00 GMT', 'Thu, 07 Mar 2019 06:45:00 GMT', 8),
+(42, 2, 8, 'zfzfzefe', '2019-03-04', '2019-03-04', '15:15:00', '16:15:00', 2, 'Mon, 04 Mar 2019 11:15:00 GMT', 'Mon, 04 Mar 2019 12:15:00 GMT', 2),
+(49, 2, 8, 'MonRDV', '2019-03-07', '2019-03-08', '08:00:00', '09:00:00', 2, 'Fri, 08 Mar 2019 04:00:00 GMT', 'Fri, 08 Mar 2019 05:00:00 GMT', 2),
+(48, 2, 8, 'HolaJeCheckEncore', '2019-03-07', '2019-03-07', '12:00:00', '13:00:00', 2, 'Thu, 07 Mar 2019 08:00:00 GMT', 'Thu, 07 Mar 2019 09:00:00 GMT', 8),
+(50, 2, 8, 'JeVERDV', '2019-03-09', '2019-03-09', '07:45:00', '08:45:00', 2, 'Sat, 09 Mar 2019 03:45:00 GMT', 'Sat, 09 Mar 2019 04:45:00 GMT', 8),
+(54, 2, 7, 'Tchiakaa', '2019-03-06', '2019-03-06', '08:00:00', '09:00:00', 1, 'Wed, 06 Mar 2019 04:00:00 GMT', 'Wed, 06 Mar 2019 05:00:00 GMT', 2),
+(53, 2, 21, 'TestAutreClient', '2019-03-05', '2019-03-05', '06:00:00', '07:00:00', 2, 'Tue, 05 Mar 2019 02:00:00 GMT', 'Tue, 05 Mar 2019 03:00:00 GMT', 2),
+(55, 2, 7, 'Tchoukou', '2019-03-06', '2019-03-06', '14:00:00', '15:00:00', 1, 'Wed, 06 Mar 2019 10:00:00 GMT', 'Wed, 06 Mar 2019 11:00:00 GMT', 2),
+(56, 2, 7, 'Pouloukou', '2019-03-06', '2019-03-06', '16:00:00', '17:00:00', 1, 'Wed, 06 Mar 2019 12:00:00 GMT', 'Wed, 06 Mar 2019 13:00:00 GMT', 2),
+(61, 2, 8, 'qsdqsdqsd', '2019-03-07', '2019-03-07', '13:00:00', '14:00:00', 1, 'Thu, 07 Mar 2019 09:00:00 GMT', 'Thu, 07 Mar 2019 10:00:00 GMT', 8),
+(62, 2, 8, 'Ludovic LEVENEUR', '2019-03-07', '2019-03-07', '14:00:00', '15:00:00', 1, 'Thu, 07 Mar 2019 10:00:00 GMT', 'Thu, 07 Mar 2019 11:00:00 GMT', 8),
+(64, 2, 8, 'qsdqsdqsd', '2019-03-07', '2019-03-07', '08:00:00', '09:00:00', 1, 'Thu, 07 Mar 2019 04:00:00 GMT', 'Thu, 07 Mar 2019 05:00:00 GMT', 8),
+(66, 2, 8, '974', '2019-03-07', '2019-03-07', '12:00:00', '13:00:00', 2, 'Fri, 07 Mar 2019 08:00:00 GMT', 'Fri, 07 Mar 2019 09:00:00 GMT', 2),
+(67, 2, 8, 'Hellow', '2019-04-01', '2019-04-01', '12:30:00', '13:30:00', 1, 'Mon, 01 Apr 2019 08:30:00 GMT', 'Mon, 01 Apr 2019 09:30:00 GMT', 2);
 
 -- --------------------------------------------------------
 
@@ -506,6 +548,12 @@ ALTER TABLE `acctclient`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `apikey`
+--
+ALTER TABLE `apikey`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `cadeaux`
 --
 ALTER TABLE `cadeaux`
@@ -555,17 +603,22 @@ ALTER TABLE `pointage`
 -- AUTO_INCREMENT pour la table `accsociete`
 --
 ALTER TABLE `accsociete`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT pour la table `acctclient`
 --
 ALTER TABLE `acctclient`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+--
+-- AUTO_INCREMENT pour la table `apikey`
+--
+ALTER TABLE `apikey`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT pour la table `cadeaux`
 --
 ALTER TABLE `cadeaux`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 --
 -- AUTO_INCREMENT pour la table `cartefidelite`
 --
@@ -590,7 +643,7 @@ ALTER TABLE `parametres`
 -- AUTO_INCREMENT pour la table `planning`
 --
 ALTER TABLE `planning`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 --
 -- AUTO_INCREMENT pour la table `pointage`
 --

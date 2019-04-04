@@ -12,11 +12,7 @@ import Modifprofil from './component/modifprofil'
 import Client from './component/client'
 import Nouveauclient from './component/nouveauclient'
 import Voirclient from './component/voirclient'
-import Planning from './component/planning'
-import Modifclient from './component/modifclient'
 import Gestioncompte from './component/gestioncompte'
-import Listetypecarte from './component/listetypecarte'
-import Ajoutcarte from './component/ajoutcarte'
 import Log from './component/log'
 import Prestations from './component/prestations'
 import Productivite from './component/productivite'
@@ -26,15 +22,14 @@ import Productivite from './component/productivite'
 import Fichecoclient from './component/componentclient/fichecoclient'
 import Editionclient from './component/componentclient/editionclient'
 import Mescadeaux from './component/componentclient/mescadeaux'
-import Planningclient from './component/componentclient/planningclient'
 import Qrcodeclient from './component/componentclient/qrcodeclient'
+import Archives from './component/componentclient/archivesclient'
 /* INTERFACE CLIENT */
 
 
 import Register from './component/register'
 import Error from './component/404'
 import Maintenance from './component/maintenance'
-import Table from './component/testcomposant/table'
 
 class App extends Component {
 
@@ -50,11 +45,13 @@ class App extends Component {
             infCarteBackground: '',
             infCarteIcon: '',
             infTypeCompte: '',
+            infAPIKEY: '',
             vrfLogged: cookie.load('#FID#CO#SUCCESS'),
             vrfIdUser: cookie.load('#FID#CO#IDUSER'),
             vrfInfosCarteBg: cookie.load('#FID#CO#CARTEBG'),
             vrfInfosCarteIcon: cookie.load('#FID#CO#CARTEICON'),
             vrfInfosTypeCompte: cookie.load('#FID#CO#TYPECPT'),
+            vrfInfosAPIKEY: cookie.load('#FID#CO#APIKEY'),
             // GESTION CONNEXION CLIENT
             connexionEmailClient: '',
             connexionPasswordClient: '',
@@ -64,6 +61,7 @@ class App extends Component {
             vrfIdUserClient: cookie.load('#FID#COCLIENT#IDUSER'),
             vrfIdEntrepriseClient: cookie.load('#FID#COCLIENT#IDENT'),
             idTransitionRedirection: '',
+            apikeyz: '',
 
             selectedOption: null,
             options: [],
@@ -77,36 +75,59 @@ class App extends Component {
     componentDidMount()
     {
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=maintenance')
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response)
-            
-            {response.map((value) => 
-              (
+        var idapikey = Math.floor(Math.random() * 10) + 1;
 
-                  this.setState({
-                    dataMaintenance: value.maintenance,
-                    dataVersion: value.version,
-                  })
+        var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=getApiKey'
+        + '&id=' + idapikey).then(function(response){ 
+            return response.json()
+        });
+        var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=maintenance').then(function(response){
+                    return response.json()
+        });
+        var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=selectionSociete').then(function(response){
+                    return response.json()
+        });
+
+        var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{}};
+
+        Promise.all([apiRequest1,apiRequest2, apiRequest3])
+        .then(function(values){
+            combinedData["apiRequest1"] = values[0];
+            combinedData["apiRequest2"] = values[1];
+            combinedData["apiRequest3"] = values[2];
+            
+            console.log(combinedData["apiRequest1"])
+            console.log(combinedData["apiRequest2"])
+            console.log(combinedData["apiRequest3"])
+            
+            combinedData["apiRequest1"].map((value) => 
+            (
+  
+              this.setState({
+                apikeyz: value.apikey
+              })
+  
+            ))
+
+            combinedData["apiRequest2"].map((value) => 
+            (
+
+                this.setState({
+                  dataMaintenance: value.maintenance,
+                  dataVersion: value.version,
+                })
 
               )
-            )}
+            )
+
+            this.setState({
+              options: combinedData["apiRequest3"]
+            })
 
 
-        })
-        .catch(err => console.error(err))
+        }.bind(this));
+        
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=selectionSociete')
-        .then((response) => response.json())
-        .then((response) => {
-          console.log(response)
-          this.setState({
-            options: response
-          })
-        })
-        .catch(err => console.error(err))
-  
     }
 
     Connexion(event)
@@ -120,50 +141,56 @@ class App extends Component {
       .then((response) => response.json())
       .then((response) => {
           console.log(response)
-          
-          fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=connexion&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
+
+          fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=configurationPremiereConnexion&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
           .then((response) => response.json())
           .then((response) => {
               console.log(response)
-              this.setState({ isLogged, idUser })
-              if(response === "#CO#ECHEC")
-              {
-                
-                this.setState({
-                  connexionEmail: '',
-                  connexionPassword: ''
-                })
-      
-              }
-              else {
-      
-                {response.map((value, index) => 
-                  (
+
+                fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=connexion&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
+                .then((response) => response.json())
+                .then((response) => {
+                    console.log(response)
+                    this.setState({ isLogged, idUser })
+                    if(response === "#CO#ECHEC")
+                    {
+                      
                       this.setState({
                         connexionEmail: '',
-                        connexionPassword: '',
-                        isLogged: cookie.save('#FID#CO#SUCCESS', true, { path: '/' }),
-                        idUser: cookie.save('#FID#CO#IDUSER', value.id, { path: '/' }),
-                        infCarteBackground: cookie.save('#FID#CO#CARTEBG', value.imgfond, { path: '/' }),
-                        infCarteIcon: cookie.save('#FID#CO#CARTEICON', value.imgicon, { path: '/' }),
-                        infTypeCompte: cookie.save('#FID#CO#TYPECPT', value.typecompte, { path: '/'})
+                        connexionPassword: ''
                       })
-                  )
-                )}
-      
-                //alert(this.state.isLogged)
-                //window.location.href = '/dashboard';
-                //return <Dashboard loggedIn={this.state.isLogged} />
-                //window.history.pushState(null, null, '/dashboard');
-                window.location.pathname = '/dashboard'
-      
-              }
+            
+                    }
+                    else {
+            
+                      response.map((value, index) => 
+                        (
+                            this.setState({
+                              connexionEmail: '',
+                              connexionPassword: '',
+                              isLogged: cookie.save('#FID#CO#SUCCESS', true, { path: '/' }),
+                              idUser: cookie.save('#FID#CO#IDUSER', value.id, { path: '/' }),
+                              infCarteBackground: cookie.save('#FID#CO#CARTEBG', value.imgfond, { path: '/' }),
+                              infCarteIcon: cookie.save('#FID#CO#CARTEICON', value.imgicon, { path: '/' }),
+                              infTypeCompte: cookie.save('#FID#CO#TYPECPT', value.typecompte, { path: '/'}),
+                              infAPIKEY: cookie.save('#FID#CO#APIKEY', this.state.apikeyz, { path: '/'})
+                            })
+                        )
+                      )
+            
+                      //alert(this.state.isLogged)
+                      //window.location.href = '/dashboard';
+                      //return <Dashboard loggedIn={this.state.isLogged} />
+                      //window.history.pushState(null, null, '/dashboard');
+                      window.location.pathname = '/dashboard'
+            
+                    }
+            
+                })
+                .catch(err => console.error(err))
       
           })
           .catch(err => console.error(err))
-
-
-
   
       })
       .catch(err => console.error(err))
@@ -196,7 +223,7 @@ class App extends Component {
           }
           else {
   
-            {response.map((value, index) => 
+            response.map((value, index) => 
               (
                   this.setState({
                     connexionEmailClient: '',
@@ -207,7 +234,7 @@ class App extends Component {
                     idTransitionRedirection: value.id
                   })
               )
-            )}
+            )
   
             //alert(this.state.isLogged)
             //window.location.href = '/dashboard';
@@ -229,7 +256,7 @@ class App extends Component {
     }
 
   render() {
-    const { vrfLogged, vrfLoggedClient, dataMaintenance } = this.state
+    const { vrfLogged, vrfLoggedClient, dataMaintenance, apikeyz } = this.state
     const { selectedOption } = this.state;
 
     let options = this.state.options.map(function (valux) {
@@ -360,28 +387,24 @@ class App extends Component {
             </div>
             </div>} />
 
-            <Route path="/register" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <Register /> } />
-            <Route path="/dashboard" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/profil" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/modifprofil" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Modifprofil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/client" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/nouveauclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/voirclient/:id" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Voirclient {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/planning/:id" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Planning {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.infTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/gestioncompte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/listetypecarte/:id" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Listetypecarte {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} /> : <Redirect to="/" />} />
-            <Route path="/ajoutcarte/:id" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Ajoutcarte {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
-            <Route path="/log" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Log loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
-            <Route path="/prestations" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Prestations loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
-            <Route path="/productivite" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Productivite loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} /> : <Redirect to="/" />} />
+            <Route path="/register" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <Register apikey={this.state.vrfInfosAPIKEY} /> } />
+            <Route path="/dashboard" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+            <Route path="/profil" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+            <Route path="/modifprofil" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Modifprofil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+            <Route path="/client" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+            <Route path="/nouveauclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+            <Route path="/voirclient/:id" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Voirclient {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+            <Route path="/gestioncompte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+            <Route path="/log" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Log loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+            <Route path="/prestations" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Prestations loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+            <Route path="/productivite" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Productivite loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
             <Route path="/maintenance" render={() => <Maintenance version={this.state.dataVersion} />} />
-            <Route path="/table" render={() => <Table />} />
 
             <Route path="/fichecoclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
             <Route path="/editionclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
             <Route path="/mescadeaux" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-            <Route path="/planningclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Planningclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
             <Route path="/qrcodeclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Qrcodeclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
+            <Route path="/archives" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Archives loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
             <Route render={() => <Error />}/>
 
 

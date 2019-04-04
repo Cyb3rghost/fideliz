@@ -3,17 +3,13 @@ import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
 
 import Menu from './menu'
-import Navbarup from './navbarup'
+import Footer from './footer'
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-
-var items = [
-
-];
 
 const { SearchBar } = Search;
 const columns = [{
@@ -64,7 +60,8 @@ class Log extends Component {
   componentDidMount()
   {
   
-    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=logpointages&ident=' + this.props.idUserRecup)
+    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=logpointages&ident=' + this.props.idUserRecup
+    + '&apikey=' + this.props.apikey)
     .then((response) => response.json())
     .then((response) => {
 
@@ -197,13 +194,7 @@ class Log extends Component {
 
                     </div>
 
-                    <footer className="sticky-footer bg-white">
-                        <div className="container my-auto">
-                        <div className="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2019</span>
-                        </div>
-                        </div>
-                    </footer>
+                    <Footer />
 
                     </div>
 

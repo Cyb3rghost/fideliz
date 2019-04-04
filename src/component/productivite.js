@@ -3,6 +3,8 @@ import Menu from './menu'
 import Configuration from './fidconfig'
 import Select from 'react-select';
 
+import Footer from './footer'
+
 class Productivite extends Component {
 
     constructor(props)
@@ -26,11 +28,12 @@ class Productivite extends Component {
     componentDidMount()
     {
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
-            {response.map((value) => 
+            response.map((value) => 
             (
                 this.setState({
                     qrcode: value.qrcode,
@@ -39,13 +42,14 @@ class Productivite extends Component {
                     prix: value.prix                  
                 })
             )
-            )}
+            )
     
 
         })
         .catch(err => console.error(err))
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -57,7 +61,8 @@ class Productivite extends Component {
         })
         .catch(err => console.error(err))
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirDernierPointageCarte&id=' + this.props.idUserRecup)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirDernierPointageCarte&id=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -78,7 +83,8 @@ class Productivite extends Component {
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=updatePrestationEntreprise'
         + '&identreprise=' + this.props.idUserRecup
         + '&prestation=' + separePrestation[0]
-        + '&prix=' + separePrestation[1].substring(0, separePrestation[1].length-1))
+        + '&prix=' + separePrestation[1].substring(0, separePrestation[1].length-1)
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -110,7 +116,8 @@ class Productivite extends Component {
     {
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=resetPointage'
-        + '&identreprise=' + this.props.idUserRecup)
+        + '&identreprise=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -138,7 +145,8 @@ class Productivite extends Component {
     activeCarte()
     {
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=activeCarte&id=' + this.props.idUserRecup)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=activeCarte&id=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -169,7 +177,8 @@ class Productivite extends Component {
     desactiveCarte()
     {
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=desactiveCarte&id=' + this.props.idUserRecup)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=desactiveCarte&id=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -376,13 +385,7 @@ class Productivite extends Component {
 
                       </div>
   
-                      <footer className="sticky-footer bg-dark text-white">
-                          <div className="container my-auto">
-                          <div className="copyright text-center my-auto">
-                              <span>Copyright &copy; Your Website 2019</span>
-                          </div>
-                          </div>
-                      </footer>
+                      <Footer />
   
                       </div>
   

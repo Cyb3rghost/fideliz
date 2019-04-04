@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { render } from "react-dom";
 import Loader from 'react-loader-spinner'
 import Configuration from '../fidconfig'
 
@@ -7,12 +6,10 @@ import BigCalendar from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import globalize from 'globalize'
 
-import Navbarup from './navbarupclient'
+
 import Menu from './menuclient'
 
 require('globalize/lib/cultures/globalize.culture.fr')
-
- const allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k]);
 
  const propTypes = {}
  const items = [
@@ -39,6 +36,8 @@ class Planningclient extends Component {
 
     componentDidMount() {
 
+      var txtmsg = '';
+
       fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=affichePlanning' 
       + '&idEntreprise=' + this.props.idEntRecupClient
       + '&idclt=' + this.props.idUserRecupClient)
@@ -53,13 +52,13 @@ class Planningclient extends Component {
               if(value.statut === '1')
               {
 
-                var txtmsg = "[ATT]"
+                txtmsg = "[ATT]"
 
               }
               else if(value.statut === "2")
               {
 
-                var txtmsg = "[CONF]"
+                txtmsg = "[CONF]"
 
               }
 
@@ -147,7 +146,7 @@ class Planningclient extends Component {
       {
 
 
-        if(pEvent.idproposant == this.props.idUserRecupClient)
+        if(pEvent.idproposant === this.props.idUserRecupClient)
         {
   
           const r = window.confirm(pEvent.title + '\nS: ' + pEvent.start + '\nE:' + pEvent.end + '\nStatut :' + pEvent.statut + '\n Id propo : ' + pEvent.idproposant + "\n Voulez-vous supprimer cette évènement ?")

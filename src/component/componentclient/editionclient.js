@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import Configuration from '../fidconfig'
 
-import userClient from '../../images/adduser.png';
-
-import Navbarupclient from './navbarupclient'
 import Menu from './menuclient'
 
 
@@ -33,11 +30,12 @@ class Editionclient extends Component {
     componentDidMount()
     {
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
-            {response.map((value, index) => 
+            response.map((value, index) => 
                 (
                     this.setState({
                         nomClient: value.nom,
@@ -47,7 +45,7 @@ class Editionclient extends Component {
                         telephoneClient: value.telephone,                    
                     })
                 )
-              )}
+              )
     
 
         })
@@ -65,7 +63,8 @@ class Editionclient extends Component {
         + '&prenom=' + this.state.prenomClient
         + '&email=' + this.state.emailClient
         + '&adresse=' + this.state.adresseClient
-        + '&telephone=' + this.state.telephoneClient)
+        + '&telephone=' + this.state.telephoneClient
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -111,7 +110,8 @@ class Editionclient extends Component {
 
             fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=changeMdp&idclient=' + this.props.idUserRecupClient
             + '&oldmdp=' + this.state.actuelMdp
-            + '&nouveaumdp=' + this.state.nouveauMdp)
+            + '&nouveaumdp=' + this.state.nouveauMdp
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -246,7 +246,6 @@ class Editionclient extends Component {
     }
 
   render() {
-    var idClient = window.location.search.substring(4);
 
     return (
       <div>

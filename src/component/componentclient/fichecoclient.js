@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import edition from '../../images/gestionCompteProfil.png'
 import Configuration from '../fidconfig'
 
 import Menu from './menuclient'
@@ -37,11 +36,12 @@ class Fichecoclient extends Component {
     componentDidMount()
     {
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
-            {response.map((value, index) => 
+            response.map((value, index) => 
                 (
                     this.setState({
                         dataInscription: value.dinscription,
@@ -56,7 +56,7 @@ class Fichecoclient extends Component {
                         rating: value.rating                     
                     })
                 )
-              )}
+              )
     
               if(this.state.rating === '1')
               {
@@ -68,7 +68,8 @@ class Fichecoclient extends Component {
         })
         .catch(err => console.error(err))
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + this.props.idUserRecupClient
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -95,7 +96,8 @@ class Fichecoclient extends Component {
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=listePointageClient'
         + '&idclient=' + this.props.idUserRecupClient 
-        + '&ident=' + this.props.idEntRecupClient)
+        + '&ident=' + this.props.idEntRecupClient
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -131,7 +133,8 @@ class Fichecoclient extends Component {
         this.setState({ open: false });
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=resetRatingClient'
-        + '&idclient=' + this.props.idUserRecupClient)
+        + '&idclient=' + this.props.idUserRecupClient
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -150,7 +153,8 @@ class Fichecoclient extends Component {
 
         audio.play()
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -160,7 +164,9 @@ class Fichecoclient extends Component {
                     break;   
                 case '#CLOTURATION#NONECESSAIRE':
                     console.log(response)
-                    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient + '&idEntreprise=' + this.props.idEntRecupClient)
+                    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient 
+                    + '&idEntreprise=' + this.props.idEntRecupClient
+                    + '&apikey=' + this.props.apikey)
                     .then((response) => response.json())
                     .then((response) => {
             
@@ -324,19 +330,19 @@ class Fichecoclient extends Component {
 
         switch (value) {
             case 1:
-                var Note = '0'
+                Note = '0'
                 break;
             case 2:
-                var Note = '2.5'
+                Note = '2.5'
                 break;  
             case 3:
-                var Note = '5'
+                Note = '5'
                 break;  
             case 4:
-                var Note = '7.5'
+                Note = '7.5'
                 break;
             case 5:
-                var Note = '10'
+                Note = '10'
                 break;    
             default:
                 break;             
@@ -347,7 +353,8 @@ class Fichecoclient extends Component {
         + '&identreprise=' + this.props.idEntRecupClient
         + '&idclient=' + this.props.idUserRecupClient
         + '&score=' + Note
-        + '&date=' + Today)
+        + '&date=' + Today
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -393,26 +400,15 @@ class Fichecoclient extends Component {
 
                 <div id="content">
 
-                    <Menu />
+                    <Menu title="Fiche client" />
 
                     <div className="container-fluid">
 
-                    <div className="row">
-
-                            <div className="col-8">
-                            
-                                <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                    <h1 className="h3 mb-0 text-gray-800">Fiche client</h1>
-                                </div>
-
-
-                            </div>
-                            <div className="col-4">
-                                                        
-                                <a href={'/editionclient'}><img src={edition} width="70" height="70" align="right" title="Editez votre profil" /></a>
-
-                            </div>
-
+                    <br/>
+                    <div align="right">
+                    <a className="btn btn-dark" href={'/archives'} role="button"><i title="Visualisation des archives de carte" className="fab fa-cc-discover fa-4x"></i></a>
+                    &nbsp;
+                    <a className="btn btn-dark" href={'/editionclient'} role="button"><i title="Modification du profil" className="fas fa-cogs fa-4x"></i></a>
                     </div>
 
                     <hr/>

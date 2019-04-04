@@ -8,12 +8,11 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import globalize from 'globalize'
 import moment from 'moment'
 
-import Navbarup from './navbarup'
+import Footer from './footer'
 import Menu from './menu'
 
 require('globalize/lib/cultures/globalize.culture.fr')
 
- const allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k]);
 
  const propTypes = {}
  const items = [
@@ -40,6 +39,8 @@ class Planning extends Component {
 
     componentDidMount() {
 
+      var txtmsg = ''
+
       fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=affichePlanning' 
       + '&idEntreprise=' + this.props.idUserRecup)
       .then((response) => response.json())
@@ -53,13 +54,13 @@ class Planning extends Component {
               if(value.statut === '1')
               {
 
-                var txtmsg = "[ATT]"
+                txtmsg = "[ATT]"
 
               }
               else if(value.statut === "2")
               {
 
-                var txtmsg = "[CONF]"
+                txtmsg = "[CONF]"
 
               }
 
@@ -68,9 +69,7 @@ class Planning extends Component {
                 title: value.title + ' - ' + txtmsg,
                 start: new Date(value.reelstart),
                 end: new Date(value.reelend),
-                idclient: value.idclient,
                 statut: value.statut,
-                idproposant: value.idproposant,
                                   }
               return addDataItems;
         });
@@ -88,12 +87,18 @@ class Planning extends Component {
       const title = window.prompt('New Event name')
       const idClient = this.props.match.params.id
       if (title)
-        console.log(title + ' / ' + start + ' / ' + end)
+        console.log(title + ' / ' + start + ' / ' + end + ' - ' + start.toLocaleDateString() + ' - ' + end.toLocaleDateString())
+
+        var refonteDateStart = start.toLocaleDateString().split('/')
+        var nouvelleDateStart = refonteDateStart[2] + '-' + refonteDateStart[1] + '-' + refonteDateStart[0]
+        var refonteEndStart = end.toLocaleDateString().split('/')
+        var nouvelleDateEnd = refonteEndStart[2] + '-' + refonteEndStart[1] + '-' + refonteEndStart[0]
+
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=ajoutPlanningEntreprise&idEntreprise=' + this.props.idUserRecup 
         + '&idclt=' + idClient
         + '&nom=' + title
-        + '&startdate=' + start.toLocaleDateString()
-        + '&endDate=' + end.toLocaleDateString()
+        + '&startdate=' + nouvelleDateStart
+        + '&endDate=' + nouvelleDateEnd
         + '&startheure=' + start.toLocaleTimeString()
         + '&endheure=' + end.toLocaleTimeString()
         + '&statut=1'
@@ -130,7 +135,7 @@ class Planning extends Component {
       if(pEvent.idclient === idClient)
       {
 
-          if(pEvent.idproposant == this.props.idUserRecup)
+          if(pEvent.idproposant === this.props.idUserRecup)
           {
     
             const r = window.confirm(pEvent.title + '\nS: ' + pEvent.start + '\nE:' + pEvent.end + '\nStatut :' + pEvent.statut + '\n Id propo : ' + pEvent.idproposant + "\n Voulez-vous supprimer cette évènement ?")
@@ -335,7 +340,7 @@ class Planning extends Component {
                                           }
                                         }
                                         events={this.state.events}
-                                        toolbar={false}
+                                        toolbar={true}
                                         step={15}
                                         timeslots={8}
                                         culture={this.state.culture}
@@ -345,6 +350,7 @@ class Planning extends Component {
                                         onNavigate={date => this.setState({ date })}
                                         onSelectEvent={event => this.onSelectEvent(event)}
                                         onSelectSlot={this.handleSelect}
+                                        
                                       /> 
                                       
                                     </div>   
@@ -389,13 +395,7 @@ class Planning extends Component {
 
                 </div>
 
-                <footer className="sticky-footer bg-white">
-                    <div className="container my-auto">
-                    <div className="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2019</span>
-                    </div>
-                    </div>
-                </footer>
+                <Footer />
 
                 </div>
 

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Redirect} from "react-router-dom";
 import Configuration from './fidconfig'
 
-import Navbarup from './navbarup'
+
 import Menu from './menu'
+import Footer from './footer'
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory from 'react-bootstrap-table2-filter';
@@ -71,15 +71,18 @@ class Prestations extends Component {
     componentDidMount()
     {
 
-        var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup).then(function(response){ 
+        var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey).then(function(response){ 
             return response.json()
           });
     
-        var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeauxInactive&id=' + this.props.idUserRecup).then(function(response){
+        var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeauxInactive&id=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey).then(function(response){
                     return response.json()
         });
 
-        var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=selectionPrestation&identreprise=' + this.props.idUserRecup).then(function(response){
+        var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=selectionPrestation&identreprise=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey).then(function(response){
             return response.json()
         });
 
@@ -179,7 +182,10 @@ class Prestations extends Component {
 
         alert('Prestation : ' + this.state.maprestation + '\nPrix : ' + this.state.prix)
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=ajoutCadeaux&id=' + this.props.idUserRecup + '&prestation=' + this.state.maprestation + '&prix=' + this.state.prix)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=ajoutCadeaux&id=' + this.props.idUserRecup 
+        + '&prestation=' + this.state.maprestation 
+        + '&prix=' + this.state.prix
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -355,7 +361,8 @@ class Prestations extends Component {
         else
         {
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=activePrestation&id=' + idcadeaux)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=activePrestation&id=' + idcadeaux
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -408,7 +415,8 @@ class Prestations extends Component {
         else
         {
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=desactivePrestation&id=' + idcadeaux)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=desactivePrestation&id=' + idcadeaux
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -460,7 +468,8 @@ class Prestations extends Component {
         else
         {
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=suppressionPrestation&id=' + idcadeaux)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=suppressionPrestation&id=' + idcadeaux
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -510,7 +519,8 @@ class Prestations extends Component {
     {
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeauxGroupe&id=' + this.props.idUserRecup
-        + '&idprestation=' + idcellule)
+        + '&idprestation=' + idcellule
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -541,7 +551,8 @@ class Prestations extends Component {
     {
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=dissolutionGroupage&id=' + this.props.idUserRecup
-        + '&idprestation=' + idproduitdegroupage)
+        + '&idprestation=' + idproduitdegroupage
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -577,7 +588,8 @@ class Prestations extends Component {
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=modificationProduit'
         + '&idprestation=' + idPrestation
         + '&nomprestation=' + this.state.celluleNomPrestation
-        + '&prixprestation=' + this.state.cellulePrixTotal)
+        + '&prixprestation=' + this.state.cellulePrixTotal
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -614,7 +626,7 @@ class Prestations extends Component {
         else
         {
 
-
+            var afficheMultiple = ''
             
             return <ToolkitProvider
                 keyField="id"
@@ -623,13 +635,13 @@ class Prestations extends Component {
                     if(value.prdtgrp === '1')
                     {
 
-                        var afficheMultiple = 'Produit groupé'
+                        afficheMultiple = 'Produit groupé'
 
                     }
                     else if(value.prdtgrp === '0')
                     {
 
-                        var afficheMultiple = ''
+                        afficheMultiple = ''
 
                     }
 
@@ -684,10 +696,11 @@ class Prestations extends Component {
                                 clickToSelect: true,
                                 onSelect: (row) => {
                                   console.log(row.prix);
+                                  var formatPrix = '';
                                   if(row.prdtgrp === '0')
                                   {
 
-                                    var formatPrix = row.prix.split(' ');
+                                    formatPrix = row.prix.split(' ');
 
                                     this.setState({
                                         celluleDesactivation: row.id,
@@ -701,7 +714,7 @@ class Prestations extends Component {
                                   else if(row.prdtgrp === '1')
                                   {
 
-                                    var formatPrix = row.prix.split(' ');
+                                    formatPrix = row.prix.split(' ');
 
                                     this.setState({
                                         celluleDesactivation: row.id,
@@ -869,7 +882,8 @@ class Prestations extends Component {
             + '&id=' + identreprise
             + '&idprincipalproduit=' + idProduitPrincipal
             + '&prestation=' + value.label 
-            + '&prix=' + value.prix)
+            + '&prix=' + value.prix
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -887,7 +901,8 @@ class Prestations extends Component {
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=majProduitTotal'
         + '&idprincipalproduit=' + idProduitPrincipal
-        + '&sommetotal=' + this.state.totalMultiplePrix)
+        + '&sommetotal=' + this.state.totalMultiplePrix
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -1002,7 +1017,7 @@ class Prestations extends Component {
                     
                     <div>
                                                         
-                        <div class="card card-body bg-white">
+                        <div className="card card-body bg-white">
 
                         <div className="row">
                         
@@ -1016,8 +1031,8 @@ class Prestations extends Component {
                         </div>
                         <div className="col-md-6">
                         
-                        <button type="submit" onClick={this.onOpenModal} className="btn btn-dark btn-block"><i class="fas fa-exchange-alt"></i> Prestation simple</button> 
-                        <button type="submit" onClick={this.onOpenModalDeux} className="btn btn-dark btn-block"><i class="fas fa-exchange-alt"></i> Prestations multiples</button>
+                        <button type="submit" onClick={this.onOpenModal} className="btn btn-dark btn-block"><i className="fas fa-exchange-alt"></i> Prestation simple</button> 
+                        <button type="submit" onClick={this.onOpenModalDeux} className="btn btn-dark btn-block"><i className="fas fa-exchange-alt"></i> Prestations multiples</button>
                         
                     </div>
 
@@ -1062,9 +1077,9 @@ class Prestations extends Component {
                     <Modal open={open} onClose={this.onCloseModal} center>
                         <h2>Prestation simple</h2>
                         <hr/>
-                        <div class="form-inline">
-                        <div class="form-group mb-2">
-                            <label for="staticEmail2" class="sr-only">Email</label>
+                        <div className="form-inline">
+                        <div className="form-group mb-2">
+                            <label for="staticEmail2" className="sr-only">Email</label>
                             <input 
                                 type="text" 
                                 className="form-control" 
@@ -1073,8 +1088,8 @@ class Prestations extends Component {
                                 onChange={e => this.setState({maprestation: e.target.value})}
                             
                             />                        </div>
-                        <div class="form-group mx-sm-3 mb-2">
-                            <label for="inputPassword2" class="sr-only">Password</label>
+                        <div className="form-group mx-sm-3 mb-2">
+                            <label for="inputPassword2" className="sr-only">Password</label>
                             <input 
                                 type="number" 
                                 className="form-control" 
@@ -1083,7 +1098,7 @@ class Prestations extends Component {
                                 onChange={e => this.setState({prix: e.target.value})}
                             
                             />                        </div>
-                            <button type="submit" onClick={this.ajoutPrestation.bind(this)} class="btn btn-primary">Ajouter</button>
+                            <button type="submit" onClick={this.ajoutPrestation.bind(this)} className="btn btn-primary">Ajouter</button>
                         </div>
                     </Modal>
 
@@ -1172,8 +1187,8 @@ class Prestations extends Component {
                     <Modal open={openQuatre} onClose={this.onCloseModalQuatre} center>
                         <h2>Modifier votre prestation</h2>
                         <hr/>
-                        <div class="form-inline">
-                        <div class="form-group mb-2">
+                        <div className="form-inline">
+                        <div className="form-group mb-2">
                             <label for="staticEmail2" className="sr-only">Email</label>
                             <input 
                                 type="text" 
@@ -1186,7 +1201,7 @@ class Prestations extends Component {
                         </div>
                         {this.testEtatGrouper()}
 
-                            <button type="submit" onClick={() => this.modifierPrestation(this.state.celluleDesactivation)} class="btn btn-primary">Modifier la prestation</button>
+                            <button type="submit" onClick={() => this.modifierPrestation(this.state.celluleDesactivation)} className="btn btn-primary">Modifier la prestation</button>
                         </div>
                     </Modal>
 
@@ -1194,13 +1209,7 @@ class Prestations extends Component {
 
                 </div>
 
-                <footer className="sticky-footer bg-white">
-                    <div className="container my-auto">
-                    <div className="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2019</span>
-                    </div>
-                    </div>
-                </footer>
+                <Footer />
 
                 </div>
 

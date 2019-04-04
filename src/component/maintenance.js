@@ -20,7 +20,7 @@ class Maintenance extends Component {
             <br/>
             <br/>
             <div className="text-center">
-                <p><h1><img src={rocket} height="50" width="50" /> MAINTENANCE <img src={rocketInverse} height="50" width="50" /></h1><span className="badge badge-dark">Prochaine version : {this.props.version}</span></p>
+                <p><h1><img src={rocket} height="50" width="50" alt="Fideliz en cours de maintenance" /> MAINTENANCE <img src={rocketInverse} height="50" width="50" alt="Fideliz en cours de maintenance" /></h1><span className="badge badge-dark">Prochaine version : {this.props.version}</span></p>
                 <p className="text-justify"><span className="badge badge-dark">Objet de la maintenance :</span> lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
                 lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum <br/></p>
                 <p>Veuillez nous excuser pour le désagrément.</p>

@@ -3,6 +3,7 @@ import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
 
 import Menu from './menu'
+import Footer from './footer'
 
 class Gestioncompte extends Component {
 
@@ -34,7 +35,8 @@ class Gestioncompte extends Component {
 
             fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandebronzeannuel&id=' + this.props.idUserRecup
             + '&limitationclient=' + this.state.starterLimitClient
-            + '&prix=' + this.state.starterPrix)
+            + '&prix=' + this.state.starterPrix
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -68,7 +70,8 @@ class Gestioncompte extends Component {
 
             fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandebronzemensuel&id=' + this.props.idUserRecup
             + '&limitationclient=' + this.state.starterLimitClient
-            + '&prix=' + this.state.starterPrix)
+            + '&prix=' + this.state.starterPrix
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -111,7 +114,8 @@ class Gestioncompte extends Component {
 
             fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeargentannuel&id=' + this.props.idUserRecup
             + '&limitationclient=' + this.state.ProfessionalLimitClient
-            + '&prix=' + this.state.ProfessionalPrix)
+            + '&prix=' + this.state.ProfessionalPrix
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -149,7 +153,8 @@ class Gestioncompte extends Component {
 
             fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeargentmensuel&id=' + this.props.idUserRecup
             + '&limitationclient=' + this.state.ProfessionalLimitClient
-            + '&prix=' + this.state.ProfessionalPrix)
+            + '&prix=' + this.state.ProfessionalPrix
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -195,7 +200,8 @@ class Gestioncompte extends Component {
 
             fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeorannuel&id=' + this.props.idUserRecup
             + '&limitationclient=' + this.state.ExpertLimitClient
-            + '&prix=' + this.state.ExpertPrix)
+            + '&prix=' + this.state.ExpertPrix
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -230,7 +236,8 @@ class Gestioncompte extends Component {
 
             fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeormensuel&id=' + this.props.idUserRecup
             + '&limitationclient=' + this.state.ExpertLimitClient
-            + '&prix=' + this.state.ExpertPrix)
+            + '&prix=' + this.state.ExpertPrix
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -413,12 +420,12 @@ class Gestioncompte extends Component {
     
                                                         </div>
                                                         {this.afficheStatutAbonnement()}
-                                                        <div class="card card-body bg-white">
+                                                        <div className="card card-body bg-white">
     
                                                         <div className="mb-5 mt-5">
                                                             <div className="pricing card-deck flex-column flex-md-row mb-3">
                                                                 <div className="card card-pricing text-center px-3 mb-4">
-                                                                    <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Starter Royalty <br/> <i class="fas fa-star"></i> Bronze <i class="fas fa-star"></i></span>
+                                                                    <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Starter Royalty <br/> <i className="fas fa-star"></i> Bronze <i className="fas fa-star"></i></span>
                                                                     <div className="bg-transparent card-header pt-4 border-0">
                                                                         <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="15">€<span className="price">{this.state.starterPrix}</span><span className="h6 text-muted ml-2"> / <select onChange={this.getModeStarter.bind(this)} value={this.state.starterStatut} className="form-control-sm">
                                                                                 <option value="Mensuel">Mensuel</option>
@@ -429,18 +436,18 @@ class Gestioncompte extends Component {
                                                                     </div>
                                                                     <div className="card-body pt-0">
                                                                         <ul className="list-unstyled mb-4">
-                                                                            <li><i class="fas fa-check"></i> Limitation client : {this.state.starterLimitClient}</li>
-                                                                            <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
-                                                                            <li><i class="fas fa-check"></i> Gestion client</li>
-                                                                            <li><i class="fas fa-check"></i> Gestion pointage</li>
-                                                                            <li><i class="fas fa-check"></i> Gestion carte</li>
-                                                                            <li><i class="fas fa-check"></i> Gestion planning</li>
+                                                                            <li><i className="fas fa-check"></i> Limitation client : {this.state.starterLimitClient}</li>
+                                                                            <li><i className="fas fa-check"></i> Accès carte de fidélisation</li>
+                                                                            <li><i className="fas fa-check"></i> Gestion client</li>
+                                                                            <li><i className="fas fa-check"></i> Gestion pointage</li>
+                                                                            <li><i className="fas fa-check"></i> Gestion carte</li>
+                                                                            <li><i className="fas fa-check"></i> Gestion planning</li>
                                                                         </ul>
                                                                         <button type="button" onClick={this.commandeBronzeMensuel.bind(this)} className="btn btn-outline-secondary mb-3">Commandez maintenant</button>
                                                                     </div>
                                                                 </div>
                                                                 <div className="card card-pricing popular shadow text-center px-3 mb-4">
-                                                                    <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Professional Royalty <br/> <i class="fas fa-star"></i> Argent <i class="fas fa-star"></i></span>
+                                                                    <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Professional Royalty <br/> <i className="fas fa-star"></i> Argent <i className="fas fa-star"></i></span>
                                                                     <div className="bg-transparent card-header pt-4 border-0">
                                                                         <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="30">€<span className="price">{this.state.ProfessionalPrix}</span><span className="h6 text-muted ml-2"> / <select onChange={this.getModeProfessionnal.bind(this)} value={this.state.ProfessionalStatut} className="form-control-sm">
                                                                                 <option>Mensuel</option>
@@ -451,19 +458,19 @@ class Gestioncompte extends Component {
                                                                     </div>
                                                                     <div className="card-body pt-0">
                                                                         <ul className="list-unstyled mb-4">
-                                                                            <li><i class="fas fa-check"></i> Limitation client : {this.state.ProfessionalLimitClient}</li>
-                                                                            <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
-                                                                            <li><i class="fas fa-check"></i> Gestion client</li>
-                                                                            <li><i class="fas fa-check"></i> Gestion pointage</li>
-                                                                            <li><i class="fas fa-check"></i> Gestion carte</li>
-                                                                            <li><i class="fas fa-check"></i> Gestion planning</li>
-                                                                            <li><i class="fas fa-check"></i> Support technique / client</li>
+                                                                            <li><i className="fas fa-check"></i> Limitation client : {this.state.ProfessionalLimitClient}</li>
+                                                                            <li><i className="fas fa-check"></i> Accès carte de fidélisation</li>
+                                                                            <li><i className="fas fa-check"></i> Gestion client</li>
+                                                                            <li><i className="fas fa-check"></i> Gestion pointage</li>
+                                                                            <li><i className="fas fa-check"></i> Gestion carte</li>
+                                                                            <li><i className="fas fa-check"></i> Gestion planning</li>
+                                                                            <li><i className="fas fa-check"></i> Support technique / client</li>
                                                                         </ul>
                                                                         <button type="button" onClick={this.commandeArgentMensuel.bind(this)} className="btn btn-primary mb-3">Commandez maintenant</button>
                                                                     </div>
                                                                 </div>
                                                                 <div className="card card-pricing text-center px-3 mb-4">
-                                                                    <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Expert Royalty <br/> <i class="fas fa-star"></i> Or <i class="fas fa-star"></i></span>
+                                                                    <span className="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">Expert Royalty <br/> <i className="fas fa-star"></i> Or <i className="fas fa-star"></i></span>
                                                                     <div className="bg-transparent card-header pt-4 border-0">
                                                                         <h1 className="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="45">€<span className="price">{this.state.ExpertPrix}</span><span className="h6 text-muted ml-2"> / <select onChange={this.getModeExpert.bind(this)} value={this.state.ExpertStatut} className="form-control-sm">
                                                                                 <option>Mensuel</option>
@@ -474,13 +481,13 @@ class Gestioncompte extends Component {
                                                                     </div>
                                                                     <div className="card-body pt-0">
                                                                         <ul className="list-unstyled mb-4">
-                                                                            <li><i class="fas fa-check"></i> Limitation client : {this.state.ExpertLimitClient}</li>
-                                                                            <li><i class="fas fa-check"></i> Accès carte de fidélisation</li>
-                                                                            <li><i class="fas fa-check"></i> Gestion client</li>
-                                                                            <li><i class="fas fa-check"></i> Gestion pointage</li>
-                                                                            <li><i class="fas fa-check"></i> Gestion carte</li>
-                                                                            <li><i class="fas fa-check"></i> Gestion planning</li>
-                                                                            <li><i class="fas fa-check"></i> Support technique / client</li>
+                                                                            <li><i className="fas fa-check"></i> Limitation client : {this.state.ExpertLimitClient}</li>
+                                                                            <li><i className="fas fa-check"></i> Accès carte de fidélisation</li>
+                                                                            <li><i className="fas fa-check"></i> Gestion client</li>
+                                                                            <li><i className="fas fa-check"></i> Gestion pointage</li>
+                                                                            <li><i className="fas fa-check"></i> Gestion carte</li>
+                                                                            <li><i className="fas fa-check"></i> Gestion planning</li>
+                                                                            <li><i className="fas fa-check"></i> Support technique / client</li>
                                                                         </ul>
                                                                         <button type="button" onClick={this.commandeOrMensuel.bind(this)} className="btn btn-outline-secondary mb-3">Commandez maintenant</button>
                                                                     </div>
@@ -538,13 +545,7 @@ class Gestioncompte extends Component {
     
                     </div>
     
-                    <footer className="sticky-footer bg-white">
-                        <div className="container my-auto">
-                        <div className="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2019</span>
-                        </div>
-                        </div>
-                    </footer>
+                    <Footer />
     
                     </div>
     
@@ -553,24 +554,6 @@ class Gestioncompte extends Component {
                 <a className="scroll-to-top rounded" href="#page-top">
                     <i className="fas fa-angle-up"></i>
                 </a>
-    
-                <div className="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                        </div>
-                        <div className="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                        <div className="modal-footer">
-                        <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a className="btn btn-primary" href="login.html">Logout</a>
-                        </div>
-                    </div>
-                    </div>
-                </div>
     
           </div>
         );

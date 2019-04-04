@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
 
-import Navbarup from './navbarup'
+import Footer from './footer'
 import Menu from './menu'
 import Select from 'react-select';
 
@@ -54,29 +54,35 @@ class Voirclient extends Component {
 
             var idClient = this.props.match.params.id
 
-            var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirCarteClient&id=' + idClient).then(function(response){ 
+            var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirCarteClient&id=' + idClient
+            + '&apikey=' + this.props.apikey).then(function(response){ 
                 return response.json()
             });
 
             var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup
-            + '&idclt=' + idClient).then(function(response){ 
+            + '&idclt=' + idClient
+            + '&apikey=' + this.props.apikey).then(function(response){ 
                 return response.json()
             });
 
-            var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + idClient).then(function(response){ 
+            var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + idClient
+            + '&apikey=' + this.props.apikey).then(function(response){ 
                 return response.json()
             });
 
-            var apiRequest4 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + idClient).then(function(response){ 
+            var apiRequest4 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + idClient
+            + '&apikey=' + this.props.apikey).then(function(response){ 
                 return response.json()
             });
 
-            var apiRequest5 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup).then(function(response){ 
+            var apiRequest5 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=afficheListeCadeaux&id=' + this.props.idUserRecup
+            + '&apikey=' + this.props.apikey).then(function(response){ 
                 return response.json()
             });
 
             var apiRequest6 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=prestationsCadeauxClients&idcarte=' + this.state.carteId
-            + '&idclt=' + idClient).then(function(response){ 
+            + '&idclt=' + idClient
+            + '&apikey=' + this.props.apikey).then(function(response){ 
                 return response.json()
             });
 
@@ -112,7 +118,7 @@ class Voirclient extends Component {
                             prestationsClients: combinedData["apiRequest3"]                
                         })
 
-                        {combinedData["apiRequest4"].map((value) => 
+                        combinedData["apiRequest4"].map((value) => 
                             (
                                 this.setState({
                                     dataInscription: value.dinscription,
@@ -125,7 +131,7 @@ class Voirclient extends Component {
                                     pointageTotal: value.nbpointagetotal                     
                                 })
                             )
-                          )}
+                          )
 
                           if(combinedData["apiRequest5"] === "#SLCTLISTECADEAUX#ECHEC")
                           {
@@ -157,7 +163,7 @@ class Voirclient extends Component {
                         carteStatutMsg: '2'
                     })
     
-                    {combinedData["apiRequest1"].map((valuedeux, index) => 
+                    combinedData["apiRequest1"].map((valuedeux, index) => 
                         (
                             this.setState({
                                 carteId: valuedeux.id,
@@ -173,9 +179,9 @@ class Voirclient extends Component {
                                 carteQrCode: valuedeux.qrcode                                            
                             })
                         )
-                      )}
+                      )
 
-                      {combinedData["apiRequest4"].map((value, index) => 
+                      combinedData["apiRequest4"].map((value, index) => 
                         (
                             this.setState({
                                 dataInscription: value.dinscription,
@@ -188,7 +194,7 @@ class Voirclient extends Component {
                                 pointageTotal: value.nbpointagetotal                     
                             })
                         )
-                      )}  
+                      ) 
                       
                       if(combinedData["apiRequest5"] === "#SLCTLISTECADEAUX#ECHEC")
                       {
@@ -230,7 +236,8 @@ class Voirclient extends Component {
 
                       /* Refaire le check du pointage en attente (stateMessage = 5) */
 
-                      fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=verificationPointage&id=' + idClient)
+                      fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=verificationPointage&id=' + idClient
+                      + '&apikey=' + this.props.apikey)
                       .then((response) => response.json())
                       .then((response) => {
               
@@ -256,48 +263,6 @@ class Voirclient extends Component {
 
     }
 
-    afficheCarte()
-    {
-
-        var QRCode = require('qrcode.react');
-
-        if(this.state.carteStatutMsg === "1")
-        {
-
-
-            return <div className="msgErrorPerso">
-        
-            <center>Ce client ne possède pas de carte de fidélité.</center>
-    
-            </div>
-
-
-        }
-        else
-        {
-
-            return <div>
-            <div className="container-perso"><div className="panelCarte">
-                <div id="personalizecarte">  
-                    <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.carteImgBackground} className="img-responsive" id="img1" alt="" /> 
-                    <h2 id="positionDonnee">{this.state.carteNom} {this.state.cartePrenom} <br/><small>{this.state.carteDateCreation} - {this.state.carteNbPointage} / {this.state.carteLimitPointage} Pointages</small></h2>
-                    <img src={Configuration.hostnameManuelServer + 'fidapi/img/' + this.state.carteImgIcon}  width="100" height="100" id="img2" className="img-rounded" alt="" />
-                    <QRCode
-                        value={this.state.carteQrCode}
-                        size={100}
-                        id="img3"
-                    />
-                </div> 
-            </div>  
-            </div>
-            <br/>
-            </div>
-
-        }
-
-
-    }
-
     addPointage()
     {
 
@@ -306,7 +271,8 @@ class Voirclient extends Component {
         if(this.state.selectedOption === null)
         {
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + idClient)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + idClient
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -326,7 +292,8 @@ class Voirclient extends Component {
                         + '&idclient=' + idClient
                         + '&prestation=Null'
                         + '&prix=0'
-                        + '&qrcode=' + this.state.carteQrCode)
+                        + '&qrcode=' + this.state.carteQrCode
+                        + '&apikey=' + this.props.apikey)
                         .then((response) => response.json())
                         .then((response) => {
                 
@@ -395,7 +362,8 @@ class Voirclient extends Component {
 
             var mysplitprestation = myprestation.split(" - ");
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + idClient)
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + idClient
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -415,7 +383,8 @@ class Voirclient extends Component {
                         + '&idclient=' + idClient
                         + '&prestation=' + mysplitprestation[0]
                         + '&prix=' + mysplitprestation[1].substring(0, mysplitprestation[1].length-1)
-                        + '&qrcode=' + this.state.carteQrCode)
+                        + '&qrcode=' + this.state.carteQrCode
+                        + '&apikey=' + this.props.apikey)
                         .then((response) => response.json())
                         .then((response) => {
                 
@@ -483,42 +452,6 @@ class Voirclient extends Component {
 
 
 
-
-
-    }
-
-    afficheActBouton()
-    {
-
-        var idClient = this.props.match.params.id
-        const { selectedOption } = this.state;
-
-        let options = this.state.afflisteCadeaux.map(function (valux) {
-                return { value: valux.id, label: valux.prestation + ' - ' + valux.prix + '€' }
-        })
-
-        if(this.state.carteStatutMsg != '2')
-        {
-            
-            return <div><a href={'/listetypecarte/' + idClient}><button type="button" className="btn btn-dark btn-block"><i className="fas fa-hand-point-right"></i> Ajouter une carte de fidélité</button></a>
-            &nbsp;&nbsp;<a href={'/planning/' + idClient}><button type="button" className="btn btn-dark btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
-        }
-        else if(this.state.carteStatutMsg === '2')
-        {
-
-            return <div>
-            <Select
-                style={{ width: 300 }}
-                value={selectedOption}
-                onChange={this.handleChange}
-                options={options}
-            /> 
-            <br/>
-            <button className="btn btn-dark btn-block" onClick={this.addPointage.bind(this)} type="button"><i className="fas fa-hand-point-right"></i> Pointage</button>
-            <br/>
-            <a href={'/planning/' + idClient}><button type="button" className="btn btn-dark btn-block"><i className="fas fa-calendar-alt"></i> Gestion du planning</button></a></div>
-
-        }
 
 
     }
@@ -593,6 +526,8 @@ class Voirclient extends Component {
 
     render() {
 
+    var idClient = this.props.match.params.id
+
     let loadingdata;
     if(this.state.loading)
     {
@@ -619,12 +554,7 @@ class Voirclient extends Component {
 
                         <div className="row">
 
-                            <div className="col-md-6">
-                            
-                                {this.afficheCarte()}                        
-                            
-                            </div>
-                            <div className="col-md-6">
+                            <div className="col-md-12">
                             
                                 <div className="row">
                                 
@@ -637,7 +567,7 @@ class Voirclient extends Component {
                                             <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.gainsClient} €</div>
                                             </div>
                                             <div className="col-auto">
-                                            <i class="fas fa-hand-holding-usd fa-2x"></i>
+                                            <i className="fas fa-hand-holding-usd fa-2x"></i>
                                             </div>
                                         </div>
                                         </div>
@@ -653,7 +583,7 @@ class Voirclient extends Component {
                                             <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.prestationsClients} €</div>
                                             </div>
                                             <div className="col-auto">
-                                            <i class="fas fa-exchange-alt fa-2x"></i>
+                                            <i className="fas fa-exchange-alt fa-2x"></i>
                                             </div>
                                         </div>
                                         </div>
@@ -662,10 +592,6 @@ class Voirclient extends Component {
                                 
                                 </div>
 
-
-
-                                {this.afficheActBouton()}
-
                                 <br/>
                             
                             </div>
@@ -673,7 +599,7 @@ class Voirclient extends Component {
                         </div>
 
                         <br/>
-                        <table class="table table-striped">
+                        <table className="table table-striped">
                             <thead>
                             <tr>
                                 
@@ -757,13 +683,7 @@ class Voirclient extends Component {
 
                 </div>
 
-                <footer className="sticky-footer bg-white">
-                    <div className="container my-auto">
-                    <div className="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2019</span>
-                    </div>
-                    </div>
-                </footer>
+                <Footer />
 
                 </div>
 
@@ -772,24 +692,6 @@ class Voirclient extends Component {
             <a className="scroll-to-top rounded" href="#page-top">
                 <i className="fas fa-angle-up"></i>
             </a>
-
-            <div className="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    </div>
-                    <div className="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div className="modal-footer">
-                    <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a className="btn btn-primary" href="login.html">Logout</a>
-                    </div>
-                </div>
-                </div>
-            </div>
 
         </div>
     );

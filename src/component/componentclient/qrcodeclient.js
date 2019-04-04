@@ -33,7 +33,8 @@ class Qrcodeclient extends Component {
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=pointageProductivite&id=' + this.props.idUserRecupClient 
         + '&identreprise=' + this.props.idEntRecupClient
-        + '&qrcode=' + data)
+        + '&qrcode=' + data
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -58,63 +59,6 @@ class Qrcodeclient extends Component {
 
         })
         .catch(err => console.error(err))
-
-        /*fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkCloturation&id=' + this.props.idUserRecupClient)
-        .then((response) => response.json())
-        .then((response) => {
-
-            switch (response) {
-                case '#CLOTURATION#SUCCESS':
-                    console.log(response)
-                    break;   
-                case '#CLOTURATION#NONECESSAIRE':
-                    console.log(response)
-                    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=validationPointage&id=' + this.props.idUserRecupClient 
-                    + '&idEntreprise=' + this.props.idEntRecupClient
-                    + '&qrcode=' + data)
-                    .then((response) => response.json())
-                    .then((response) => {
-            
-                        switch (response) {
-                            case '#UPTENTREPRISE#SUCCESS':
-                                console.log(response)
-                                this.setState({
-                                    cartePointageMsg: '3'
-                                })
-                                setTimeout(() => window.location.href = "/fichecoclient",1500)
-                                break;   
-                            case '#VALIDATIONDIRECT#SUCCESS':
-                                console.log(response)
-                                this.setState({
-                                    cartePointageMsg: '3'
-                                })
-                                setTimeout(() => window.location.href = "/fichecoclient",1500)
-                                break; 
-                            case '#UPTENTREPRISE#ECHEC':
-                                console.log(response)
-                                this.setState({
-                                    cartePointageMsg: '4'
-                                })
-                                break;   
-                            case '#VALIDATIONDIRECT#ECHEC':
-                                console.log(response)
-                                this.setState({
-                                    cartePointageMsg: '4'
-                                })
-                                break;          
-                            default:
-                                break;
-                        }
-            
-                    })
-                    .catch(err => console.error(err))
-                    break;            
-                default:
-                    break;
-            }
-
-        })
-        .catch(err => console.error(err))  */
         
       }
     }

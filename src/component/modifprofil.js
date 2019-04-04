@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
 
-import Navbarup from './navbarup'
+import Footer from './footer'
 import Menu from './menu'
 
 class Modifprofil extends Component {
@@ -33,11 +32,12 @@ class Modifprofil extends Component {
     {
 
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup)
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
-            {response.map((value, index) => 
+            response.map((value, index) => 
                 (
                     this.setState({
                         nom: value.nom,
@@ -49,7 +49,7 @@ class Modifprofil extends Component {
                         loading: true                   
                     })
                 )
-              )}
+              )
     
 
         })
@@ -68,7 +68,8 @@ class Modifprofil extends Component {
         + '&email=' + this.state.email
         + '&adresse=' + this.state.adresse
         + '&telephone=' + this.state.telephone
-        + '&societe=' + this.state.nomSociete)
+        + '&societe=' + this.state.nomSociete
+        + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
 
@@ -114,7 +115,8 @@ class Modifprofil extends Component {
 
             fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=changeMdpEnt&ident=' + this.props.idUserRecup
             + '&oldmdp=' + this.state.actuelMdp
-            + '&nouveaumdp=' + this.state.nouveauMdp)
+            + '&nouveaumdp=' + this.state.nouveauMdp
+            + '&apikey=' + this.props.apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -444,13 +446,7 @@ class Modifprofil extends Component {
 
                 </div>
 
-                <footer className="sticky-footer bg-white">
-                    <div className="container my-auto">
-                    <div className="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2019</span>
-                    </div>
-                    </div>
-                </footer>
+                <Footer />
 
                 </div>
 
@@ -459,24 +455,6 @@ class Modifprofil extends Component {
             <a className="scroll-to-top rounded" href="#page-top">
                 <i className="fas fa-angle-up"></i>
             </a>
-
-            <div className="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    </div>
-                    <div className="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div className="modal-footer">
-                    <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a className="btn btn-primary" href="login.html">Logout</a>
-                    </div>
-                </div>
-                </div>
-            </div>
 
       </div>
     );
