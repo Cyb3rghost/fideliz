@@ -1,7 +1,9 @@
 <?php
 
+require_once('payplug-php/lib/init.php');
 
 include('connections.php');
+//Payplug::setSecretKey('sk_test_3PsF4YszVw1lT3VjS7s9tm');
 
 header('Access-Control-Allow-Origin: *');
 
@@ -4638,6 +4640,55 @@ if(isset($_GET['action']))
             }
 
             echo $json;
+
+            break;
+        case 'paiementPayPlug':
+
+                $idEntreprise = $_GET['identreprise'];
+                $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                $mode = $_GET['mode'];
+                $abonnement = $_GET['abonnement'];
+                $prix = $_GET['prix'];
+                $prix = mysqli_real_escape_string($connect, $prix);
+
+                $sql = "SELECT * FROM `accsociete` WHERE `id` = '".$idEntreprise."'";
+                $result = mysqli_query($connect, $sql);
+
+                while($row = mysqli_fetch_assoc($result))
+                {
+
+                    $email = $row['email'];
+                    $nom = $row['nom'];
+                    $prenom = $row['prenom'];
+
+                }
+
+
+                //var_dump(extension_loaded('curl'));
+                Payplug\Payplug::setSecretKey('sk_test_3PsF4YszVw1lT3VjS7s9tm');
+
+                $payment = Payplug\Payment::create(array(
+                    'amount'            => $prix * 100,
+                    'currency'          => 'EUR',
+                    'customer'          => array(
+                        'email'             => $email,
+                        'first_name'        => $nom,
+                        'last_name'         => $prenom
+                    ),
+                    'hosted_payment'    => array(
+                        'return_url'        => 'http://localhost:3000/gestionCompte/success/'.$idEntreprise.'/'.$mode.'/'.$abonnement.'/'.$prix,
+                        'cancel_url'        => 'http://localhost:3000/gestionCompte/annulation'
+                    ),
+                    'notification_url'      => 'http://www.example.com/callbackURL'
+            ));
+            
+            // You will be able to find how the payment object is built in the documentation.
+            // For instance, if you want to get an URL to the payment page, you get do:
+            $paymentUrl = $payment->hosted_payment->payment_url;
+            
+            // Then, you can redirect the user to the payment page
+            header("Location: $paymentUrl");
+            exit();
 
             break;
         default:

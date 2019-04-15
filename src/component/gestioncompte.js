@@ -27,81 +27,260 @@ class Gestioncompte extends Component {
 
     }
 
+    checkPaiement()
+    {
+
+        if(this.props.match.params.eventpaiement === "success")
+        {
+
+            if(this.props.match.params.mode === "2")
+            {
+
+                switch (this.props.match.params.abonnement) {
+                    case 'bronze':
+                        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandebronzeannuel&id=' + this.props.idUserRecup
+                        + '&limitationclient=' + this.state.starterLimitClient
+                        + '&prix=' + this.state.starterPrix
+                        + '&apikey=' + this.props.apikey)
+                        .then((response) => response.json())
+                        .then((response) => {
+                
+                            console.log(response)
+                            
+                            if(response === "#ABOBRONZEANN#SUCCESS")
+                            {
+                
+                                this.setState({
+                                    statutAbonnement: '1'
+                                })
+                
+                                setTimeout(() => window.location.href = "/dashboard",2500)
+                
+                            }
+                            else if (response === "#ABOBRONZEANN#FAILED") {
+                            
+                                this.setState({
+                                    statutAbonnement: '2'
+                                })  
+                
+                            }
+                        })
+                        .catch(err => console.error(err))
+                        break;
+                    case 'argent':
+                        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeargentannuel&id=' + this.props.idUserRecup
+                        + '&limitationclient=' + this.state.ProfessionalLimitClient
+                        + '&prix=' + this.state.ProfessionalPrix
+                        + '&apikey=' + this.props.apikey)
+                        .then((response) => response.json())
+                        .then((response) => {
+                
+                            console.log(response)
+                            
+                            if(response === "#ABOARGENTANN#SUCCESS")
+                            {
+                
+                                this.setState({
+                                    statutAbonnement: '4'
+                                })
+                
+                                setTimeout(() => window.location.href = "/dashboard",2500)
+                
+                            }
+                            else if (response === "#ABOARGENTANN#FAILED") {
+                            
+                                this.setState({
+                                    statutAbonnement: '7'
+                                })  
+                
+                            }
+                
+                
+                
+                
+                        })
+                        .catch(err => console.error(err))
+                        break;
+                    case 'or':
+                        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeorannuel&id=' + this.props.idUserRecup
+                        + '&limitationclient=' + this.state.ExpertLimitClient
+                        + '&prix=' + this.state.ExpertPrix
+                        + '&apikey=' + this.props.apikey)
+                        .then((response) => response.json())
+                        .then((response) => {
+                
+                            console.log(response)
+                            
+                            if(response === "#ABOORANN#SUCCESS")
+                            {
+                
+                                this.setState({
+                                    statutAbonnement: '6'
+                                })
+                
+                                setTimeout(() => window.location.href = "/dashboard",2500)
+                
+                            }
+                            else if (response === "#ABOORANN#FAILED") {
+                            
+                                this.setState({
+                                    statutAbonnement: '8'
+                                })  
+                
+                            }
+                
+                        })
+                        .catch(err => console.error(err))
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            else if(this.props.match.params.mode === "1")
+            {
+
+                switch (this.props.match.params.abonnement) {
+                    case 'bronze':
+                        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandebronzemensuel&id=' + this.props.idUserRecup
+                        + '&limitationclient=' + this.state.starterLimitClient
+                        + '&prix=' + this.state.starterPrix
+                        + '&apikey=' + this.props.apikey)
+                        .then((response) => response.json())
+                        .then((response) => {
+                
+                            console.log(response)
+                            
+                            if(response === "#ABOBRONZE#SUCCESS")
+                            {
+                
+                                this.setState({
+                                    statutAbonnement: '1'
+                                })
+                
+                                setTimeout(() => window.location.href = "/dashboard",2500)
+                
+                            }
+                            else if (response === "#ABOBRONZE#FAILED") {
+                            
+                                this.setState({
+                                    statutAbonnement: '2'
+                                })  
+                
+                            }
+                        })
+                        .catch(err => console.error(err))
+                        break;
+                    case 'argent':
+                        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeargentmensuel&id=' + this.props.idUserRecup
+                        + '&limitationclient=' + this.state.ProfessionalLimitClient
+                        + '&prix=' + this.state.ProfessionalPrix
+                        + '&apikey=' + this.props.apikey)
+                        .then((response) => response.json())
+                        .then((response) => {
+                
+                            console.log(response)
+                            
+                            if(response === "#ABOARGENT#SUCCESS")
+                            {
+                
+                                this.setState({
+                                    statutAbonnement: '3'
+                                })
+                
+                                setTimeout(() => window.location.href = "/dashboard",2500)
+                
+                            }
+                            else if (response === "#ABOARGENT#FAILED") {
+                            
+                                this.setState({
+                                    statutAbonnement: '4'
+                                })  
+                
+                            }
+                
+                
+                
+                
+                        })
+                        .catch(err => console.error(err))
+                        break;
+                    case 'or':
+                        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeormensuel&id=' + this.props.idUserRecup
+                        + '&limitationclient=' + this.state.ExpertLimitClient
+                        + '&prix=' + this.state.ExpertPrix
+                        + '&apikey=' + this.props.apikey)
+                        .then((response) => response.json())
+                        .then((response) => {
+                
+                            console.log(response)
+                            
+                            if(response === "#ABOOR#SUCCESS")
+                            {
+                
+                                this.setState({
+                                    statutAbonnement: '5'
+                                })
+                
+                                setTimeout(() => window.location.href = "/dashboard",2500)
+                
+                            }
+                            else if (response === "#ABOOR#FAILED") {
+                            
+                                this.setState({
+                                    statutAbonnement: '6'
+                                })  
+                
+                            }
+                
+                        })
+                        .catch(err => console.error(err))
+                        break;
+                    default:
+                        break;
+                }
+
+
+            }
+
+
+        }
+        else if(this.props.match.params.eventpaiement === "annulation")
+        {
+
+
+            return <div className="alert alert-danger">
+
+                <center>Votre paiement a été annuler.</center>
+
+            </div>
+
+
+        }
+                                                        
+
+    }
+
     commandeBronzeMensuel()
     {
 
         if(this.state.statutMode === '2')
         {
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandebronzeannuel&id=' + this.props.idUserRecup
-            + '&limitationclient=' + this.state.starterLimitClient
-            + '&prix=' + this.state.starterPrix
-            + '&apikey=' + this.props.apikey)
-            .then((response) => response.json())
-            .then((response) => {
-    
-                console.log(response)
-                
-                if(response === "#ABOBRONZEANN#SUCCESS")
-                {
-    
-                    this.setState({
-                        statutAbonnement: '1'
-                    })
-    
-                    setTimeout(() => window.location.href = "/dashboard",2500)
-    
-                }
-                else if (response === "#ABOBRONZEANN#FAILED") {
-                  
-                    this.setState({
-                        statutAbonnement: '2'
-                    })  
-    
-                }
-            })
-            .catch(err => console.error(err))
-
+            window.open("https://www.lvnweb.re/fideliz/fidapi/main.php?action=paiementPayPlug&identreprise=" + this.props.idUserRecup 
+            + "&mode=2&abonnement=bronze"
+            + "&prix=" + this.state.starterPrix)
 
         }
         else if(this.state.statutMode === '1')
         {
 
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandebronzemensuel&id=' + this.props.idUserRecup
-            + '&limitationclient=' + this.state.starterLimitClient
-            + '&prix=' + this.state.starterPrix
-            + '&apikey=' + this.props.apikey)
-            .then((response) => response.json())
-            .then((response) => {
-    
-                console.log(response)
-                
-                if(response === "#ABOBRONZE#SUCCESS")
-                {
-    
-                    this.setState({
-                        statutAbonnement: '1'
-                    })
-    
-                    setTimeout(() => window.location.href = "/dashboard",2500)
-    
-                }
-                else if (response === "#ABOBRONZE#FAILED") {
-                  
-                    this.setState({
-                        statutAbonnement: '2'
-                    })  
-    
-                }
-            })
-            .catch(err => console.error(err))
-
+            window.open("https://www.lvnweb.re/fideliz/fidapi/main.php?action=paiementPayPlug&identreprise=" + this.props.idUserRecup 
+            + "&mode=1&abonnement=bronze"
+            + "&prix=" + this.state.starterPrix)
 
         }
-
-
-
 
     }
 
@@ -112,83 +291,19 @@ class Gestioncompte extends Component {
         if(this.state.statutMode === '2')
         {
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeargentannuel&id=' + this.props.idUserRecup
-            + '&limitationclient=' + this.state.ProfessionalLimitClient
-            + '&prix=' + this.state.ProfessionalPrix
-            + '&apikey=' + this.props.apikey)
-            .then((response) => response.json())
-            .then((response) => {
-    
-                console.log(response)
-                
-                if(response === "#ABOARGENTANN#SUCCESS")
-                {
-    
-                    this.setState({
-                        statutAbonnement: '3'
-                    })
-    
-                    setTimeout(() => window.location.href = "/dashboard",2500)
-    
-                }
-                else if (response === "#ABOARGENTANN#FAILED") {
-                  
-                    this.setState({
-                        statutAbonnement: '4'
-                    })  
-    
-                }
-    
-    
-    
-    
-            })
-            .catch(err => console.error(err))
-
+            window.open("https://www.lvnweb.re/fideliz/fidapi/main.php?action=paiementPayPlug&identreprise=" + this.props.idUserRecup 
+            + "&mode=2&abonnement=argent"
+            + "&prix=" + this.state.ProfessionalPrix)
 
         }
         else if(this.state.statutMode === '1')
         {
 
-
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeargentmensuel&id=' + this.props.idUserRecup
-            + '&limitationclient=' + this.state.ProfessionalLimitClient
-            + '&prix=' + this.state.ProfessionalPrix
-            + '&apikey=' + this.props.apikey)
-            .then((response) => response.json())
-            .then((response) => {
-    
-                console.log(response)
-                
-                if(response === "#ABOARGENT#SUCCESS")
-                {
-    
-                    this.setState({
-                        statutAbonnement: '3'
-                    })
-    
-                    setTimeout(() => window.location.href = "/dashboard",2500)
-    
-                }
-                else if (response === "#ABOARGENT#FAILED") {
-                  
-                    this.setState({
-                        statutAbonnement: '4'
-                    })  
-    
-                }
-    
-    
-    
-    
-            })
-            .catch(err => console.error(err))
-
+            window.open("https://www.lvnweb.re/fideliz/fidapi/main.php?action=paiementPayPlug&identreprise=" + this.props.idUserRecup 
+            + "&mode=1&abonnement=argent"
+            + "&prix=" + this.state.ProfessionalPrix)
 
         }
-
-
-
 
     }
 
@@ -198,77 +313,19 @@ class Gestioncompte extends Component {
         if(this.state.statutMode === '2')
         {
 
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeorannuel&id=' + this.props.idUserRecup
-            + '&limitationclient=' + this.state.ExpertLimitClient
-            + '&prix=' + this.state.ExpertPrix
-            + '&apikey=' + this.props.apikey)
-            .then((response) => response.json())
-            .then((response) => {
-    
-                console.log(response)
-                
-                if(response === "#ABOORANN#SUCCESS")
-                {
-    
-                    this.setState({
-                        statutAbonnement: '5'
-                    })
-    
-                    setTimeout(() => window.location.href = "/dashboard",2500)
-    
-                }
-                else if (response === "#ABOORANN#FAILED") {
-                  
-                    this.setState({
-                        statutAbonnement: '6'
-                    })  
-    
-                }
-    
-            })
-            .catch(err => console.error(err))
-
+            window.open("https://www.lvnweb.re/fideliz/fidapi/main.php?action=paiementPayPlug&identreprise=" + this.props.idUserRecup 
+            + "&mode=2&abonnement=or"
+            + "&prix=" + this.state.ExpertPrix)
 
         }
         else if(this.state.statutMode === '1')
         {
 
-
-            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=commandeormensuel&id=' + this.props.idUserRecup
-            + '&limitationclient=' + this.state.ExpertLimitClient
-            + '&prix=' + this.state.ExpertPrix
-            + '&apikey=' + this.props.apikey)
-            .then((response) => response.json())
-            .then((response) => {
-    
-                console.log(response)
-                
-                if(response === "#ABOOR#SUCCESS")
-                {
-    
-                    this.setState({
-                        statutAbonnement: '5'
-                    })
-    
-                    setTimeout(() => window.location.href = "/dashboard",2500)
-    
-                }
-                else if (response === "#ABOOR#FAILED") {
-                  
-                    this.setState({
-                        statutAbonnement: '6'
-                    })  
-    
-                }
-    
-            })
-            .catch(err => console.error(err))
-
-
+            window.open("https://www.lvnweb.re/fideliz/fidapi/main.php?action=paiementPayPlug&identreprise=" + this.props.idUserRecup 
+            + "&mode=1&abonnement=or"
+            + "&prix=" + this.state.ExpertPrix)
 
         }
-
-
 
     }
 
@@ -280,7 +337,7 @@ class Gestioncompte extends Component {
         {
 
             return <div className="alert alert-success" role="alert">
-                L'achat du grade bronze a bien été pris en compte. (30 Jours disponibles)
+                L'achat du grade bronze a bien été pris en compte. Patientez... (30 Jours disponibles)
             </div>
 
         }
@@ -288,7 +345,7 @@ class Gestioncompte extends Component {
         {
           
             return <div className="alert alert-danger" role="alert">
-                L'achat du grade bronze n'a pas été pris en compte. (30 Jours disponibles)
+                L'achat du grade bronze n'a pas été pris en compte. Patientez... (365 Jours disponibles)
             </div>
 
         }
@@ -296,7 +353,15 @@ class Gestioncompte extends Component {
         {
           
             return <div className="alert alert-success" role="alert">
-                L'achat du grade argent a bien été pris en compte. (30 Jours disponibles)
+                L'achat du grade argent a bien été pris en compte. Patientez... (30 Jours disponibles)
+            </div>
+
+        }
+        else if (this.state.statutAbonnement === '4') 
+        {
+          
+            return <div className="alert alert-success" role="alert">
+                L'achat du grade argent a bien été pris en compte. Patientez... (365 Jours disponibles)
             </div>
 
         }
@@ -304,10 +369,19 @@ class Gestioncompte extends Component {
         {
           
             return <div className="alert alert-success" role="alert">
-                L'achat du grade Or a bien été pris en compte. (30 Jours disponibles)
+                L'achat du grade Or a bien été pris en compte. Patientez... (30 Jours disponibles)
             </div>
 
         }
+        else if (this.state.statutAbonnement === '6') 
+        {
+          
+            return <div className="alert alert-success" role="alert">
+                L'achat du grade Or a bien été pris en compte. Patientez... (365 Jours disponibles)
+            </div>
+
+        }
+
 
     }
 
@@ -416,9 +490,11 @@ class Gestioncompte extends Component {
                                                     <div>
                                                         <div className="headerTitle">
     
-                                                            FORMULE D'ABONNEMENT MENSUEL
+                                                            FORMULE D'ABONNEMENT
     
                                                         </div>
+                                                        {this.checkPaiement()}
+                                                        
                                                         {this.afficheStatutAbonnement()}
                                                         <div className="card card-body bg-white">
     
@@ -441,7 +517,6 @@ class Gestioncompte extends Component {
                                                                             <li><i className="fas fa-check"></i> Gestion client</li>
                                                                             <li><i className="fas fa-check"></i> Gestion pointage</li>
                                                                             <li><i className="fas fa-check"></i> Gestion carte</li>
-                                                                            <li><i className="fas fa-check"></i> Gestion planning</li>
                                                                         </ul>
                                                                         <button type="button" onClick={this.commandeBronzeMensuel.bind(this)} className="btn btn-outline-secondary mb-3">Commandez maintenant</button>
                                                                     </div>
@@ -463,7 +538,6 @@ class Gestioncompte extends Component {
                                                                             <li><i className="fas fa-check"></i> Gestion client</li>
                                                                             <li><i className="fas fa-check"></i> Gestion pointage</li>
                                                                             <li><i className="fas fa-check"></i> Gestion carte</li>
-                                                                            <li><i className="fas fa-check"></i> Gestion planning</li>
                                                                             <li><i className="fas fa-check"></i> Support technique / client</li>
                                                                         </ul>
                                                                         <button type="button" onClick={this.commandeArgentMensuel.bind(this)} className="btn btn-primary mb-3">Commandez maintenant</button>
@@ -486,7 +560,6 @@ class Gestioncompte extends Component {
                                                                             <li><i className="fas fa-check"></i> Gestion client</li>
                                                                             <li><i className="fas fa-check"></i> Gestion pointage</li>
                                                                             <li><i className="fas fa-check"></i> Gestion carte</li>
-                                                                            <li><i className="fas fa-check"></i> Gestion planning</li>
                                                                             <li><i className="fas fa-check"></i> Support technique / client</li>
                                                                         </ul>
                                                                         <button type="button" onClick={this.commandeOrMensuel.bind(this)} className="btn btn-outline-secondary mb-3">Commandez maintenant</button>

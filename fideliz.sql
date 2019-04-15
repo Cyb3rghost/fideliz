@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  lun. 15 avr. 2019 à 15:04
+-- Généré le :  lun. 15 avr. 2019 à 22:14
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -66,7 +66,7 @@ CREATE TABLE `accsociete` (
 
 INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `qrcode`, `prestation`, `prix`, `activation`, `cadeaux`, `prixcadeaux`, `secteur`, `configuration`, `codepostal`, `ville`) VALUES
 (1, 'ludovic.lvnr@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'PAYET', 'Eddy', '56 chemin des fleurs 97400', 'EddyCoiffure', '0692101112', 1, 0, 0, 0, 0, '0000-00-00', '0000-00-00', 0, 'backgroundCarte.jpg', 'logocarte.png', 0, '', 0, 0, '', 0, '0', 0, 0, ''),
-(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEURS', 'Ludovics', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 2, 0, 75, 57, 15, '2019-04-06', '2019-05-06', 21, 'carddefault.jpg', 'logodefault.png', 383485888, 'Null', 0, 0, 'testingou', 110.91, '0', 1, 0, ''),
+(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 4, 0, 225, 57, 15, '2019-04-15', '2020-04-14', 365, 'carddefault.jpg', 'logodefault.png', 383485888, 'Null', 0, 0, 'testingou', 110.91, '0', 1, 97410, ' SAINT-PIERRE'),
 (3, 'blizzard@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'Blizzard', '', 2, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'null', 'null', 0, '', 0, 0, '', 0, '0', 0, 0, ''),
 (4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 1, 0, 10, 0, 15, '2019-02-09', '2019-03-11', 28, 'null', 'null', 0, '', 0, 0, '', 0, '0', 0, 0, ''),
 (5, 'cathy@gmail.com', 'af56310c080ab9d9f3d96be9f16edebf', 1, '', '', '', 'MenageParty', '', 1, 0, 10, 1, 15, '2019-02-10', '2019-03-12', 30, 'BCGC144501D09-02-2019.jpg', 'LOGO517944D09-02-2019.png', 0, '', 0, 0, '', 0, '0', 0, 0, ''),
@@ -681,7 +681,99 @@ INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjso
 (501, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
 (502, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
 (503, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
-(504, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS');
+(504, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(505, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(506, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(507, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(508, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(509, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(510, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(511, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(512, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(513, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(514, 2, 0, '2019-04-15', 'UPTJRST-SUCCESS'),
+(515, 2, 0, '2019-04-15', 'CONFIGURATIONDEPART-FAILED'),
+(516, 0, 0, '2019-04-15', 'CO-SUCCESS'),
+(517, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(518, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(519, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(520, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(521, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(522, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(523, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(524, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(525, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(526, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(527, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(528, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(529, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(530, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(531, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(532, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(533, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(534, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(535, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(536, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(537, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(538, 2, 0, '2019-04-15', 'MAJENT-SUCCESS'),
+(539, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(540, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(541, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(542, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(543, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(544, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(545, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(546, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(547, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(548, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(549, 2, 0, '2019-04-15', 'ABOBRONZE-SUCCESS'),
+(550, 2, 0, '2019-04-15', 'ABOBRONZE-SUCCESS'),
+(551, 2, 0, '2019-04-15', 'ABOBRONZE-SUCCESS'),
+(552, 2, 0, '2019-04-15', 'ABOBRONZE-SUCCESS'),
+(553, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(554, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(555, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(556, 2, 0, '2019-04-15', 'ABOBRONZEANN-SUCCESS'),
+(557, 2, 0, '2019-04-15', 'ABOBRONZEANN-SUCCESS'),
+(558, 2, 0, '2019-04-15', 'ABOBRONZEANN-SUCCESS'),
+(559, 2, 0, '2019-04-15', 'ABOBRONZEANN-SUCCESS'),
+(560, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(561, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(562, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(563, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(564, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(565, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(566, 2, 0, '2019-04-15', 'ABOARGENTANN-SUCCESS'),
+(567, 2, 0, '2019-04-15', 'ABOARGENTANN-SUCCESS'),
+(568, 2, 0, '2019-04-15', 'ABOARGENTANN-SUCCESS'),
+(569, 2, 0, '2019-04-15', 'ABOARGENTANN-SUCCESS'),
+(570, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(571, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(572, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(573, 2, 0, '2019-04-15', 'ABOOR-SUCCESS'),
+(574, 2, 0, '2019-04-15', 'ABOOR-SUCCESS'),
+(575, 2, 0, '2019-04-15', 'ABOOR-SUCCESS'),
+(576, 2, 0, '2019-04-15', 'ABOOR-SUCCESS'),
+(577, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(578, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(579, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(580, 2, 0, '2019-04-15', 'ABOORANN-SUCCESS'),
+(581, 2, 0, '2019-04-15', 'ABOORANN-SUCCESS'),
+(582, 2, 0, '2019-04-15', 'ABOORANN-SUCCESS'),
+(583, 2, 0, '2019-04-15', 'ABOORANN-SUCCESS'),
+(584, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(585, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(586, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(587, 2, 0, '2019-04-15', 'ABOORANN-SUCCESS'),
+(588, 2, 0, '2019-04-15', 'ABOORANN-SUCCESS'),
+(589, 2, 0, '2019-04-15', 'ABOORANN-SUCCESS'),
+(590, 2, 0, '2019-04-15', 'ABOORANN-SUCCESS'),
+(591, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(592, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(593, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(594, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(595, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(596, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS');
 
 -- --------------------------------------------------------
 
@@ -1224,7 +1316,7 @@ ALTER TABLE `adm_acc`
 -- AUTO_INCREMENT pour la table `adm_apievents`
 --
 ALTER TABLE `adm_apievents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=505;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=597;
 --
 -- AUTO_INCREMENT pour la table `adm_zone`
 --
