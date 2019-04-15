@@ -89,7 +89,7 @@ class Qrcodeclient extends Component {
                       delay={500}
                       onError={this.handleError}
                       onScan={this.handleScan}
-                      style={{ width: "50%" }}
+                      style={{ width: "100%", margin: '0 auto' }}
                       ref={(stream)=> {this.videoStream = stream}}
                     /></center>
                     {/* FIN CODE */}

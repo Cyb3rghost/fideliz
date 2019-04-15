@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cookie from 'react-cookies'
 import Select from 'react-select';
+import { Offline, Online } from "react-detect-offline";
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import Configuration from './component/fidconfig'
 import './App.css';
@@ -11,6 +12,7 @@ import Profil from './component/profil'
 import Modifprofil from './component/modifprofil'
 import Client from './component/client'
 import Nouveauclient from './component/nouveauclient'
+import Inscriptionclient from './component/inscriptionclient'
 import Voirclient from './component/voirclient'
 import Gestioncompte from './component/gestioncompte'
 import Log from './component/log'
@@ -66,7 +68,9 @@ class App extends Component {
             selectedOption: null,
             options: [],
             dataMaintenance: '',
-            dataVersion: ''
+            dataVersion: '',
+            objetMaintenance: ''
+
 
         }
 
@@ -75,57 +79,61 @@ class App extends Component {
     componentDidMount()
     {
 
-        var idapikey = Math.floor(Math.random() * 10) + 1;
 
-        var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=getApiKey'
-        + '&id=' + idapikey).then(function(response){ 
-            return response.json()
-        });
-        var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=maintenance').then(function(response){
-                    return response.json()
-        });
-        var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=selectionSociete').then(function(response){
-                    return response.json()
-        });
+          var idapikey = Math.floor(Math.random() * 10) + 1;
 
-        var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{}};
-
-        Promise.all([apiRequest1,apiRequest2, apiRequest3])
-        .then(function(values){
-            combinedData["apiRequest1"] = values[0];
-            combinedData["apiRequest2"] = values[1];
-            combinedData["apiRequest3"] = values[2];
-            
-            console.log(combinedData["apiRequest1"])
-            console.log(combinedData["apiRequest2"])
-            console.log(combinedData["apiRequest3"])
-            
-            combinedData["apiRequest1"].map((value) => 
-            (
+          console.log("APIKEY ID : " + idapikey)
+          var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=getApiKey'
+          + '&id=' + idapikey).then(function(response){ 
+              return response.json()
+          });
+          var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=maintenance').then(function(response){
+                      return response.json()
+          });
+          var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=selectionSociete').then(function(response){
+                      return response.json()
+          });
+  
+          var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{}};
+  
+          Promise.all([apiRequest1,apiRequest2, apiRequest3])
+          .then(function(values){
+              combinedData["apiRequest1"] = values[0];
+              combinedData["apiRequest2"] = values[1];
+              combinedData["apiRequest3"] = values[2];
+              
+              console.log(combinedData["apiRequest1"])
+              console.log(combinedData["apiRequest2"])
+              console.log(combinedData["apiRequest3"])
+              
+              combinedData["apiRequest1"].map((value) => 
+              (
+    
+                this.setState({
+                  apikeyz: value.apikey
+                })
+    
+              ))
+  
+              combinedData["apiRequest2"].map((value) => 
+              (
+  
+                  this.setState({
+                    dataMaintenance: value.maintenance,
+                    dataVersion: value.version,
+                    objetMaintenance: value.objet
+                  })
+  
+                )
+              )
   
               this.setState({
-                apikeyz: value.apikey
+                options: combinedData["apiRequest3"]
               })
   
-            ))
+  
+          }.bind(this));
 
-            combinedData["apiRequest2"].map((value) => 
-            (
-
-                this.setState({
-                  dataMaintenance: value.maintenance,
-                  dataVersion: value.version,
-                })
-
-              )
-            )
-
-            this.setState({
-              options: combinedData["apiRequest3"]
-            })
-
-
-        }.bind(this));
         
 
     }
@@ -231,6 +239,7 @@ class App extends Component {
                     isLoggedClient: cookie.save('#FID#COCLIENT#SUCCESS', true, { path: '/' }),
                     idUserClient: cookie.save('#FID#COCLIENT#IDUSER', value.id, { path: '/' }),
                     idEntrepriseClient: cookie.save('#FID#COCLIENT#IDENT', value.identreprise, { path: '/' }),
+                    infAPIKEY: cookie.save('#FID#CO#APIKEY', this.state.apikeyz, { path: '/'}),
                     idTransitionRedirection: value.id
                   })
               )
@@ -256,7 +265,7 @@ class App extends Component {
     }
 
   render() {
-    const { vrfLogged, vrfLoggedClient, dataMaintenance, apikeyz } = this.state
+    const { vrfLogged, vrfLoggedClient, dataMaintenance } = this.state
     const { selectedOption } = this.state;
 
     let options = this.state.options.map(function (valux) {
@@ -265,9 +274,72 @@ class App extends Component {
 
 
     return (
+      <div>
+      <Online>
       <Router>
             <Switch>
-                <Route exact path="/" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <div className="container">
+                    <Route exact path="/" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <div className="container">
+
+                    <div className="row justify-content-center">
+
+                    <div className="col-xl-10 col-lg-12 col-md-9">
+
+                        <div className="card o-hidden border-0 shadow-lg my-5">
+                        <div className="card-body p-0">
+                            
+                            <div className="row">
+                            <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div className="col-lg-6">
+                                <div className="p-5">
+                                <div className="text-center form-control-user">
+                                    <h1 className="h4 text-gray-900 mb-4">FIDLIZ <br/> <small>Espace entreprise</small></h1>
+                                </div>
+                                <form onSubmit={this.Connexion.bind(this)} className="user">
+                                    <div className="form-group">
+                                    <input 
+                                    type="email" 
+                                    value={this.state.connexionEmail}
+                                    onChange={e => this.setState({connexionEmail: e.target.value})}
+                                    className="form-control" 
+                                    placeholder="Enter Email Address..." 
+                                    
+                                    />
+                                    </div>
+                                    <div className="form-group">
+                                    <input 
+                                    type="password" 
+                                    value={this.state.connexionPassword}
+                                    onChange={e => this.setState({connexionPassword: e.target.value})}
+                                    className="form-control" 
+                                    placeholder="Password" 
+                                    
+                                    />
+                                    </div>
+                                    <button type="submit" className="btn btn-primary btn-block">Connexion</button>
+                                    <hr/>
+                                    <a href="/connexionclient" className="btn btn-google btn-block">
+                                    Accès compte client
+                                    </a>
+                                </form>
+                                <hr/>
+                                <div className="text-center">
+                                    <a className="small" href="forgot-password.html">Mot de passe oublié ?</a>
+                                </div>
+                                <div className="text-center">
+                                    <a className="small" href="/register">Pas de compte entreprise ? Cliquez-ici !</a>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
+
+                    </div>
+                    </div>} /> 
+
+                <Route path="/connexionclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <div className="container">
 
                 <div className="row justify-content-center">
 
@@ -280,43 +352,41 @@ class App extends Component {
                         <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
                         <div className="col-lg-6">
                             <div className="p-5">
-                            <div className="text-center form-control-user">
-                                <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/> <small>Espace entreprise</small></h1>
+                            <div className="text-center">
+                                <h1 className="h4 text-gray-900 mb-4">FIDLIZ <br/> <small>Espace client</small></h1>
                             </div>
-                            <form onSubmit={this.Connexion.bind(this)} className="user">
+                            <form onSubmit={this.connexionClient.bind(this)} className="user">
+                                <div className="form-group">
+                                    <Select
+                                        value={selectedOption}
+                                        onChange={this.handleChange}
+                                        options={options}
+                                    /> 
+                                </div>
                                 <div className="form-group">
                                 <input 
-                                type="email" 
-                                value={this.state.connexionEmail}
-                                onChange={e => this.setState({connexionEmail: e.target.value})}
-                                className="form-control form-control-user" 
-                                placeholder="Enter Email Address..." 
-                                
+                                    value={this.state.connexionEmailClient}
+                                    onChange={e => this.setState({connexionEmailClient: e.target.value})}
+                                    type="email" 
+                                    className="form-control" 
+                                    placeholder="Email"  
                                 />
                                 </div>
                                 <div className="form-group">
                                 <input 
-                                type="password" 
-                                value={this.state.connexionPassword}
-                                onChange={e => this.setState({connexionPassword: e.target.value})}
-                                className="form-control form-control-user" 
-                                placeholder="Password" 
-                                
+                                    value={this.state.connexionPasswordClient}
+                                    onChange={e => this.setState({connexionPasswordClient: e.target.value})}
+                                    type="password" 
+                                    className="form-control" 
+                                    placeholder="Password" 
                                 />
                                 </div>
-                                <button type="submit" className="btn btn-primary btn-user btn-block">Connexion</button>
+                                <button type="submit" className="btn btn-primary btn-block">Connexion</button>
                                 <hr/>
-                                <a href="/connexionclient" className="btn btn-google btn-user btn-block">
-                                Accès compte client
+                                <a href="/" className="btn btn-google btn-block">
+                                Accès compte entreprise
                                 </a>
                             </form>
-                            <hr/>
-                            <div className="text-center">
-                                <a className="small" href="forgot-password.html">Mot de passe oublié ?</a>
-                            </div>
-                            <div className="text-center">
-                                <a className="small" href="/register">Pas de compte entreprise ? Cliquez-ici !</a>
-                            </div>
                             </div>
                         </div>
                         </div>
@@ -326,90 +396,33 @@ class App extends Component {
                 </div>
 
                 </div>
-                </div>} /> 
+                </div>} />
 
-            <Route path="/connexionclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <div className="container">
+                <Route path="/register" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <Register apikey={this.state.vrfInfosAPIKEY} /> } />
+                <Route path="/dashboard" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+                <Route path="/profil" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+                <Route path="/modifprofil" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Modifprofil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+                <Route path="/client" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+                <Route path="/nouveauclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+                <Route path="/inscriptionclient/:identreprise/:emailclt" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <Inscriptionclient {...props} />} />
+                <Route path="/voirclient/:id" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Voirclient {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+                <Route path="/gestioncompte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+                <Route path="/log" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Log loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+                <Route path="/prestations" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Prestations loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+                <Route path="/productivite" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Productivite loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+                <Route path="/maintenance" render={() => <Maintenance etatmaintenance={this.state.dataMaintenance} version={this.state.dataVersion} objet={this.state.objetMaintenance} />} />
 
-            <div className="row justify-content-center">
-
-            <div className="col-xl-10 col-lg-12 col-md-9">
-
-                <div className="card o-hidden border-0 shadow-lg my-5">
-                <div className="card-body p-0">
-                    
-                    <div className="row">
-                    <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                    <div className="col-lg-6">
-                        <div className="p-5">
-                        <div className="text-center">
-                            <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/> <small>Espace client</small></h1>
-                        </div>
-                        <form onSubmit={this.connexionClient.bind(this)} className="user">
-                            <div className="form-group">
-                                <Select
-                                    value={selectedOption}
-                                    onChange={this.handleChange}
-                                    options={options}
-                                /> 
-                            </div>
-                            <div className="form-group">
-                            <input 
-                                value={this.state.connexionEmailClient}
-                                onChange={e => this.setState({connexionEmailClient: e.target.value})}
-                                type="email" 
-                                className="form-control" 
-                                placeholder="Email"  
-                            />
-                            </div>
-                            <div className="form-group">
-                            <input 
-                                value={this.state.connexionPasswordClient}
-                                onChange={e => this.setState({connexionPasswordClient: e.target.value})}
-                                type="password" 
-                                className="form-control" 
-                                placeholder="Password" 
-                            />
-                            </div>
-                            <button type="submit" className="btn btn-primary btn-user btn-block">Connexion</button>
-                            <hr/>
-                            <a href="/" className="btn btn-google btn-user btn-block">
-                            Accès compte entreprise
-                            </a>
-                        </form>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                </div>
-
-            </div>
-
-            </div>
-            </div>} />
-
-            <Route path="/register" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <Register apikey={this.state.vrfInfosAPIKEY} /> } />
-            <Route path="/dashboard" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
-            <Route path="/profil" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
-            <Route path="/modifprofil" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Modifprofil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
-            <Route path="/client" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
-            <Route path="/nouveauclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
-            <Route path="/voirclient/:id" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Voirclient {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
-            <Route path="/gestioncompte" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
-            <Route path="/log" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Log loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
-            <Route path="/prestations" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Prestations loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
-            <Route path="/productivite" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Productivite loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
-            <Route path="/maintenance" render={() => <Maintenance version={this.state.dataVersion} />} />
-
-            <Route path="/fichecoclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-            <Route path="/editionclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-            <Route path="/mescadeaux" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-            <Route path="/qrcodeclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Qrcodeclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-            <Route path="/archives" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Archives loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} /> : <Redirect to="/connexionclient" />} />
-            <Route render={() => <Error />}/>
-
-
+                <Route path="/fichecoclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/connexionclient" />} />
+                <Route path="/editionclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient}  apikey={this.state.vrfInfosAPIKEY}/> : <Redirect to="/connexionclient" />} />
+                <Route path="/mescadeaux" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/connexionclient" />} />
+                <Route path="/qrcodeclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Qrcodeclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/connexionclient" />} />
+                <Route path="/archives" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Archives loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/connexionclient" />} />
+                <Route render={() => <Error />}/>
             </Switch>
       </Router>
+      </Online>
+      <Offline>Déconnecté du web !</Offline>
+      </div>
     );
   }
 }

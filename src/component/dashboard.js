@@ -244,7 +244,7 @@ class Dashboard extends Component {
                             </div>
                             <div className="col-md-1">
                             
-                                <a href="/productivite" className="btn btn-sm btn-primary btn-block"><i className="fas fa-briefcase"></i> Mode productivité</a>
+                                <a href="/productivite" className="btn btn-sm btn-primary btn-block"><i className="fas fa-briefcase"></i> Mode fidélité</a>
                             
                             </div>
                         </div>

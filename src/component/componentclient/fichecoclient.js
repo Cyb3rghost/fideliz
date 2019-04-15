@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Configuration from '../fidconfig'
 
 import Menu from './menuclient'
+import Footer from '../footer'
 import Modal from 'react-responsive-modal';
 import Rating from 'react-rating'
 
@@ -37,6 +38,7 @@ class Fichecoclient extends Component {
     {
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient
+        + '&identreprise=' + this.props.idEntRecupClient
         + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
@@ -44,6 +46,7 @@ class Fichecoclient extends Component {
             response.map((value, index) => 
                 (
                     this.setState({
+                        identifiantclient: value.id,
                         dataInscription: value.dinscription,
                         nomClient: value.nom,
                         prenomClient: value.prenom,
@@ -53,7 +56,9 @@ class Fichecoclient extends Component {
                         nbpointage: value.nbpointage,
                         carteTotal: value.nbcarteterminer,
                         pointageTotal: value.nbpointagetotal,
-                        rating: value.rating                     
+                        rating: value.rating,
+                        codepostal: value.codepostal,
+                        ville: value.ville                     
                     })
                 )
               )
@@ -69,6 +74,7 @@ class Fichecoclient extends Component {
         .catch(err => console.error(err))
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + this.props.idUserRecupClient
+        + '&identreprise=' + this.props.idEntRecupClient
         + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
@@ -117,7 +123,7 @@ class Fichecoclient extends Component {
             }
 
         })
-        .catch(err => console.error(err)) 
+        .catch(err => console.error(err))
 
         
 
@@ -403,13 +409,33 @@ class Fichecoclient extends Component {
                     <Menu title="Fiche client" />
 
                     <div className="container-fluid">
+                    
+                    
 
-                    <br/>
-                    <div align="right">
-                    <a className="btn btn-dark" href={'/archives'} role="button"><i title="Visualisation des archives de carte" className="fab fa-cc-discover fa-4x"></i></a>
-                    &nbsp;
-                    <a className="btn btn-dark" href={'/editionclient'} role="button"><i title="Modification du profil" className="fas fa-cogs fa-4x"></i></a>
+                    <div className="row">
+                    
+                        <div className="col-md-6">
+
+                            <br/>
+                            <h2>BIENVENUE, {this.state.nomClient} {this.state.prenomClient}</h2>
+
+                        </div>
+                        <div className="col-md-6">
+
+                            <br/>
+                            <div align="right">
+                            <a className="btn btn-dark" href={'/archives'} role="button"><i title="Visualisation des archives de carte" className="fab fa-cc-discover fa-4x"></i></a>
+                            &nbsp;
+                            <a className="btn btn-dark" href={'/editionclient'} role="button"><i title="Modification du profil" className="fas fa-cogs fa-4x"></i></a>
+                            </div>                        
+
+                        
+                        </div>
+                    
+                    
                     </div>
+
+
 
                     <hr/>
                     {this.verifieEtatPointage()}
@@ -519,6 +545,10 @@ class Fichecoclient extends Component {
                                     </thead>
                                     <tbody>
                                     <tr>
+                                        <td><b>Identifiant client :</b> </td>
+                                        <td>{this.state.identifiantclient}</td>
+                                    </tr>
+                                    <tr>
                                         <td><b>Date inscription :</b> </td>
                                         <td>{this.state.dataInscription}</td>
                                     </tr>
@@ -533,6 +563,14 @@ class Fichecoclient extends Component {
                                     <tr>
                                         <td><b>Adresse :</b> </td>
                                         <td>{this.state.adresseClient}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Code postal:</b> </td>
+                                        <td>{this.state.codepostal}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Ville :</b> </td>
+                                        <td>{this.state.ville}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Email :</b> </td>
@@ -574,14 +612,8 @@ class Fichecoclient extends Component {
 
                 </div>
 
-                <footer className="sticky-footer bg-white">
-                    <div className="container my-auto">
-                    <div className="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2019</span>
-                    </div>
-                    </div>
-                </footer>
-
+                <Footer />
+                
                 </div>
 
             </div>

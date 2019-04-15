@@ -4,8 +4,6 @@ import Configuration from './fidconfig'
 
 import Footer from './footer'
 import Menu from './menu'
-import Select from 'react-select';
-
 
 class Voirclient extends Component {
 
@@ -59,7 +57,7 @@ class Voirclient extends Component {
                 return response.json()
             });
 
-            var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=gainsTotalClient&ident=' + this.props.idUserRecup
+            var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=gainsClient&ident=' + this.props.idUserRecup
             + '&idclt=' + idClient
             + '&apikey=' + this.props.apikey).then(function(response){ 
                 return response.json()
@@ -525,8 +523,6 @@ class Voirclient extends Component {
       }
 
     render() {
-
-    var idClient = this.props.match.params.id
 
     let loadingdata;
     if(this.state.loading)

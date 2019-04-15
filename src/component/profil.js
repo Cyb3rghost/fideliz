@@ -31,6 +31,8 @@ class Profil extends Component {
             jRestants: '',
             imgFondCarte: '',
             imgIconCarte: '',
+            codepostal: '',
+            ville: '',
 
             selectedFileBKG : null,
             selectedFileLogo : null,
@@ -80,6 +82,8 @@ class Profil extends Component {
                         prixcadeaux: value.prixcadeaux,
                         secteur: value.secteur,
                         configuration: value.configuration,
+                        codepostal: value.codepostal,
+                        ville: value.ville,
                         loading: true                     
                     })
                 )
@@ -289,6 +293,14 @@ class Profil extends Component {
                 console.log(`Option selected:`, selectedOptionPrestation);
 
             }
+            else if(response === "#CHGPRESTATION#FAILED")
+            {
+
+                console.log(response)
+                this.setState({selectedOptionPrestation, statutUpload: '10'})
+
+            }
+
 
         })
         .catch(err => console.error(err))
@@ -315,7 +327,7 @@ class Profil extends Component {
         {
 
 
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
         
             <center>Le design de votre carte a bien été changer. Patientez...</center>
     
@@ -325,7 +337,7 @@ class Profil extends Component {
         }
         else if (this.state.statutUpload === "2") {
             
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
             <center>Le design de votre carte n'a pas été changer. Patientez...</center>
     
@@ -334,7 +346,7 @@ class Profil extends Component {
         }
         else if (this.state.statutUpload === "3") {
             
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
             <center>Les dimensions de votre image ne sont pas bonne. (Dimensions requises : 600 x 300)</center>
     
@@ -343,7 +355,7 @@ class Profil extends Component {
         }
         else if (this.state.statutUpload === "4") {
             
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
             <center>Les dimensions de votre image ne sont pas bonne. (Dimensions requises : 600 x 300)</center>
     
@@ -352,7 +364,7 @@ class Profil extends Component {
         }
         else if (this.state.statutUpload === "5") {
             
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
             <center>L'extension du logo n'est pas correct. Extension autorisée : PNG.</center>
     
@@ -361,7 +373,7 @@ class Profil extends Component {
         }
         else if (this.state.statutUpload === "6") {
             
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
         
             <center>La mise à jour du logo a bien été effectuer.</center>
     
@@ -370,7 +382,7 @@ class Profil extends Component {
         }
         else if (this.state.statutUpload === "7") {
             
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
         
             <center>La mise à jour du logo n'a pas été effectuer.</center>
     
@@ -379,7 +391,7 @@ class Profil extends Component {
         }
         else if (this.state.statutUpload === "8") {
             
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
         
             <center>L'upload du logo a bien été effectuer.</center>
     
@@ -388,7 +400,7 @@ class Profil extends Component {
         }
         else if (this.state.statutUpload === "9") {
             
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
             <center>Les dimensions du logo ne sont pas bonne. Dimensions autorisée : 100X100.</center>
     
@@ -459,6 +471,14 @@ class Profil extends Component {
                                             <tr>
                                             <th scope="row">Adresse</th>
                                             <td  align="center">{this.state.adresse}</td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">Code postal</th>
+                                            <td  align="center">{this.state.codepostal}</td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">Ville</th>
+                                            <td  align="center">{this.state.ville}</td>
                                             </tr>
                                             <tr>
                                             <th scope="row">Nom de la société</th>
@@ -620,7 +640,16 @@ class Profil extends Component {
                                 <div className="card-body">
                                 
                                         <div className="container">
-                                        
+
+                                        {this.state.statutUpload === '10' &&
+
+                                            <div className="alert alert-danger">
+                                                                    
+                                            <center>Vous ne pouvez pas définir une nouvelle limite de prestation, il y a déjà des cartes non cloturés sur l'ensemble de vos clients. Vous devez attendre que l'ensemble des cartes en cours soit cloturés pour pouvoir changer la limite de prestation.</center>
+
+                                            </div>
+
+                                        }
                                         
                                         <b>Limitation actuel :</b> {this.state.limitPointage} prestations<br/>
                                         <hr/>

@@ -5,33 +5,13 @@ import Configuration from './fidconfig'
 import Menu from './menu'
 import Footer from './footer'
 
-import BootstrapTable from 'react-bootstrap-table-next';
-import filterFactory from 'react-bootstrap-table2-filter';
-import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-import paginationFactory from 'react-bootstrap-table2-paginator';
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import MaterialTable from 'material-table'
 import Modal from 'react-responsive-modal';
 import Select from 'react-select';
 
 var ItemMultiple = [
 
 ];
-
-const { SearchBar } = Search;
-const columns = [{
-    dataField: 'id',
-    text: 'Identifiant',
-    sort: true
-  }, {
-    dataField: 'prestation',
-    text: 'Prestation',
-  },{
-    dataField: 'prix',
-    text: 'Prix',
-  },{
-    dataField: 'multiple',
-    text: 'Prestation multiples',
-  }];
 
 class Prestations extends Component {
 
@@ -234,7 +214,7 @@ class Prestations extends Component {
         if(this.state.statutAjtCadeaux === '1')
         {
 
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
                 
                 Votre prestation a bien été ajouter !
     
@@ -246,7 +226,7 @@ class Prestations extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
                 
                 Votre prestation n'a pas pu être ajouter ! Veuillez recommencer s'il vous plait.
         
@@ -257,7 +237,7 @@ class Prestations extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
                 
                 Votre prestation existe déjà sous ce nom. 
         
@@ -268,7 +248,7 @@ class Prestations extends Component {
         {
             
 
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
                 
                  Votre prestation a bien été désactiver.
         
@@ -279,7 +259,7 @@ class Prestations extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
                 
                  Votre prestation n'a pas été désactiver.
         
@@ -290,7 +270,7 @@ class Prestations extends Component {
         {
             
 
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
                 
                  Votre prestation a bien été activer.
         
@@ -301,7 +281,7 @@ class Prestations extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
                 
                  Votre prestation n'a pas été activer.
         
@@ -312,7 +292,7 @@ class Prestations extends Component {
         {
             
 
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
                 
                  Votre prestation a bien été supprimer.
         
@@ -323,7 +303,7 @@ class Prestations extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
                 
                  Votre prestation n'a pas été supprimer.
         
@@ -375,7 +355,7 @@ class Prestations extends Component {
                         statutAjtCadeaux: '6'
                     })
     
-                    setTimeout(() => window.location.href = "/gestioncompte",1000)
+                    setTimeout(() => window.location.href = "/prestations",1000)
     
                 }
                 else if (response === "#ENABLEGIFT#ECHEC") {
@@ -429,7 +409,7 @@ class Prestations extends Component {
                         statutAjtCadeaux: '4'
                     })
     
-                    setTimeout(() => window.location.href = "/gestioncompte",1000)
+                    setTimeout(() => window.location.href = "/prestations",1000)
     
                 }
                 else if (response === "#DISABLEGIFT#ECHEC") {
@@ -482,7 +462,7 @@ class Prestations extends Component {
                         statutAjtCadeaux: '8'
                     })
     
-                    setTimeout(() => window.location.href = "/gestioncompte",1000)
+                    setTimeout(() => window.location.href = "/prestations",1000)
     
                 }
                 else if (response === "#DELETE#ECHEC") {
@@ -509,7 +489,7 @@ class Prestations extends Component {
         if(this.state.activeDegroupage === true)
         {
 
-            return <button type="button" onClick={this.onOpenModalTrois} title="Voir ou dégroupage du produit" className="btn btn-dark"><i class="fas fa-unlink"></i></button>
+            return <button type="button" onClick={this.onOpenModalTrois} title="Voir ou dégroupage du produit" className="btn btn-dark"><i className="fas fa-unlink"></i></button>
 
         }
         
@@ -578,7 +558,7 @@ class Prestations extends Component {
         this.onOpenModalQuatre()
     }
 
-    modifierPrestation(idPrestation)
+    modifierPrestation(idPrestation, nomPrestation)
     {
 
         /*console.log(Configuration.hostnameManuelServer + 'fidapi/main.php?action=modificationProduit'
@@ -587,7 +567,7 @@ class Prestations extends Component {
         + '&prixprestation=' + this.state.cellulePrixTotal)*/
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=modificationProduit'
         + '&idprestation=' + idPrestation
-        + '&nomprestation=' + this.state.celluleNomPrestation
+        + '&nomprestation=' + nomPrestation
         + '&prixprestation=' + this.state.cellulePrixTotal
         + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
@@ -605,248 +585,6 @@ class Prestations extends Component {
         })
         .catch(err => console.error(err))   
 
-    }
-
-    
-    afficheListePrestation()
-    {
-
-
-        if(this.state.statutListeCadeaux === '1')
-        {
-
-            return <div className="msgErrorPerso">
-                
-                Vous n'avez enregistrer aucun cadeaux.
-    
-            </div>
-
-
-        }
-        else
-        {
-
-            var afficheMultiple = ''
-            
-            return <ToolkitProvider
-                keyField="id"
-                data={ this.state.cadeaux.map( function(value) {
-            
-                    if(value.prdtgrp === '1')
-                    {
-
-                        afficheMultiple = 'Produit groupé'
-
-                    }
-                    else if(value.prdtgrp === '0')
-                    {
-
-                        afficheMultiple = ''
-
-                    }
-
-                    if(value.idprestation === '0')
-                    {
-
-                            var addDataItems = { 
-                            id: value.id,
-                            identreprise: value.identreprise,
-                            prdtgrp: value.prdtgrp,
-                            prestation: value.prestation, 
-                            prix: value.prix + ' €',
-                            multiple: afficheMultiple
-                                                }
-                            return addDataItems;
-
-                    }
-
-                }) }
-                columns={ columns }
-                search
-                >
-                {
-                    props => (
-                    <div>
-                        <div className="row">
-                        
-                            <div className="col-md-10">
-                            
-                                <SearchBar { ...props.searchProps } />
-
-                            </div>
-                            <div className="col-md-2">
-
-                                {this.afficheDegroupage()}
-                                &nbsp;<button type="button" onClick={() => this.desactiveCadeaux(this.state.celluleDesactivation)} title="Désactivation du produit" className="btn btn-dark"><i className="fas fa-times"></i></button>
-                                &nbsp;<button type="button" onClick={() => this.appelModifierPrestation(this.state.celluleDesactivation, this.state.celluleNomPrestation, this.state.cellulePrixTotal)} title="Modification du produit" className="btn btn-dark"><i className="fas fa-edit"></i></button>
-
-                            </div>
-                        
-                        </div>
-
-                        
-                        <hr />
-                        <div className="bg-white">
-                            <BootstrapTable 
-                                { ...props.baseProps }
-                                ref={ n => this.node = n }
-                                filter={ filterFactory() }
-                                pagination={ paginationFactory() }
-                                selectRow={ {   mode: 'radio',
-                                clickToSelect: true,
-                                onSelect: (row) => {
-                                  console.log(row.prix);
-                                  var formatPrix = '';
-                                  if(row.prdtgrp === '0')
-                                  {
-
-                                    formatPrix = row.prix.split(' ');
-
-                                    this.setState({
-                                        celluleDesactivation: row.id,
-                                        celluleNomPrestation: row.prestation,
-                                        cellulePrixTotal: formatPrix[0],
-                                        celluleGrp: row.prdtgrp,
-                                        activeDegroupage: false
-                                    })
-
-                                  }
-                                  else if(row.prdtgrp === '1')
-                                  {
-
-                                    formatPrix = row.prix.split(' ');
-
-                                    this.setState({
-                                        celluleDesactivation: row.id,
-                                        celluleNomPrestation: row.prestation,
-                                        cellulePrixTotal: formatPrix[0],
-                                        celluleGrp: row.prdtgrp,
-                                        activeDegroupage: true
-                                    })
-
-                                    this.appelDataGroupage(row.id, formatPrix[0])
-
-                                  }
-
-                                  /*console.log(isSelect);
-                                  console.log(rowIndex);
-                                  console.log(e);*/
-                                },
-                                } }
-                                
-                                striped
-                                hover
-                                condensed
-                            />
-                        </div>
-                    </div>
-                    )
-                }
-            </ToolkitProvider>
-            
-
-        }
-
-
-
-        
-    }
-
-    afficheListePrestationInactive()
-    {
-
-
-        if(this.state.statutListeCadeauxInactive === '1')
-        {
-
-            return <div className="msgErrorPerso">
-                
-                Vous n'avez enregistrer aucun cadeaux.
-    
-            </div>
-
-
-        }
-        else
-        {
-            
-            return <ToolkitProvider
-            keyField="id"
-            data={ this.state.cadeauxInactive.map( function(value) {
-        
-                var addDataItems = { 
-                id: value.id,
-                prestation: value.prestation, 
-                prix: value.prix + ' €'
-                                    }
-                return addDataItems;
-            }) }
-            columns={ columns }
-            search
-            >
-            {
-                props => (
-                <div>
-                    <div className="row">
-                    
-                        <div className="col-md-1">
-                        
-                            <button type="button" onClick={() => this.activeCadeaux(this.state.celluleDesactivation)} title="Activation du produit" className="btn btn-dark"><i className="fas fa-check"></i></button>
-
-                        </div>
-                        <div className="col-md-1">
-                        
-                            <button type="button" onClick={() => this.suppressionCadeaux(this.state.celluleDesactivation)} title="Suppression du produit" className="btn btn-dark"><i className="fas fa-trash-alt"></i></button>
-                        
-                        </div>
-                        <div className="col-md-10">
-                        
-                                <SearchBar { ...props.searchProps } />
-                        
-                        </div>
-                    
-                    </div>
-
-                    
-                    <hr />
-                    <div className="bg-white">
-                        <BootstrapTable 
-                            { ...props.baseProps }
-                            ref={ n => this.node = n }
-                            filter={ filterFactory() }
-                            pagination={ paginationFactory() }
-                            selectRow={ {   mode: 'checkbox',
-                            clickToSelect: true,
-                            onSelect: (row) => {
-                              console.log(row.id);
-                              this.setState({
-                                  celluleDesactivation: row.id
-                              })
-                              /*console.log(isSelect);
-                              console.log(rowIndex);
-                              console.log(e);*/
-                            },
-                            onSelectAll: (isSelect, rows, e) => {
-                              console.log(isSelect);
-                              console.log(rows);
-                              console.log(e);
-                            }} }
-                            striped
-                            hover
-                            condensed
-                        />
-                    </div>
-                </div>
-                )
-            }
-        </ToolkitProvider>        
-            
-
-        }
-
-
-
-        
     }
 
     ajoutMultiple()
@@ -873,7 +611,7 @@ class Prestations extends Component {
 
     }
 
-    addGroupement(idProduitPrincipal, identreprise)
+    addGroupement(idProduitPrincipal, identreprise, apikey)
     {
 
         ItemMultiple.map( function(value) {
@@ -883,7 +621,7 @@ class Prestations extends Component {
             + '&idprincipalproduit=' + idProduitPrincipal
             + '&prestation=' + value.label 
             + '&prix=' + value.prix
-            + '&apikey=' + this.props.apikey)
+            + '&apikey=' + apikey)
             .then((response) => response.json())
             .then((response) => {
     
@@ -938,51 +676,9 @@ class Prestations extends Component {
            totalMultiple += parseFloat(ItemMultiple[i].prix);
         }
 
-        return totalMultiple;
-
         this.setState({
             totalMultiplePrix: totalMultiple
         })
-
-    }
-
-    testEtatGrouper()
-    {
-
-        if(this.state.celluleGrp === '0')
-        {
-
-            return <div className="form-group mx-sm-3 mb-2">
-                <label for="inputPassword2" className="sr-only">Password</label>
-                <input 
-                    type="number" 
-                    className="form-control" 
-                    placeholder="Prix" 
-                    value={this.state.cellulePrixTotal}
-                    onChange={e => this.setState({cellulePrixTotal: e.target.value})}
-                />                        
-            </div>   
-
-        }
-        else if(this.state.celluleGrp === '1')
-        {
-
-            return <div className="form-group mx-sm-3 mb-2">
-                <label for="inputPassword2" className="sr-only">Password</label>
-                <input 
-                    type="number" 
-                    className="form-control" 
-                    placeholder="Prix" 
-                    value={this.state.cellulePrixTotal}
-                    onChange={e => this.setState({cellulePrixTotal: e.target.value})}
-                    readOnly
-                />                        
-            </div>  
-
-        }
-
-      
-
 
     }
 
@@ -1058,14 +754,152 @@ class Prestations extends Component {
                         <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         
 
-                            {this.afficheListePrestation()}
+                        <MaterialTable
+                            columns={[
+                            { title: 'Identifiant', field: 'id' },
+                            { title: 'Prestation', field: 'prestation' },
+                            { title: 'Prix', field: 'prix' },
+                            { title: 'Prestation multiples', field: 'prdtgrp' },
+                            ]}
+                            data={ this.state.cadeaux.map( function(value) {
+                        
+                                if(value.prdtgrp === "0")
+                                {
+
+                                    var afficheProduitGrouper = ""
+
+                                }
+                                else if(value.prdtgrp === "1")
+                                {
+
+                                    var afficheProduitGrouper = "Produit groupé"
+
+                                }
+
+                                var addDataItems = { 
+                                    id: value.id,
+                                    prestation: value.prestation,
+                                    prix: value.prix + ' €',
+                                    prdtgrp: afficheProduitGrouper
+                                }
+                                
+                                return addDataItems;
+
+
+                            }) }
+                            title="Prestations actives"
+                            actions={[
+                                {
+                                  icon: 'file_copy',
+                                  tooltip: 'Consultation du groupage de produits',
+                                  onClick: (event, rowData) => {
+                                    if(rowData.prdtgrp === "Produit groupé")
+                                    {
+
+                                        this.appelDataGroupage(rowData.id, rowData.prix)
+                                        this.onOpenModalTrois()
+                                        this.setState({ celluleDesactivation: rowData.id });
+
+                                    }
+                                    //alert('You clicked user ' + rowData.prdtgrp)
+                                  },
+                                  iconProps: {
+                                    style: {
+                                      fontSize: 30,
+                                      color: 'green',
+                                    },
+                                  },
+                                },
+                                {
+                                    icon: 'edit',
+                                    tooltip: 'Edition du produit',
+                                    onClick: (event, rowData) => {
+                                        var prixe = rowData.prix.split(" ")
+                                        console.log(prixe[0])
+                                        this.setState({celluleNomPrestation: rowData.prestation, celluleGrp: rowData.prdtgrp, celluleDesactivation: rowData.id, cellulePrixTotal: prixe[0]})
+                                        this.appelModifierPrestation()
+                                    },
+                                    iconProps: {
+                                        style: {
+                                          fontSize: 30,
+                                          color: 'green',
+                                        },
+                                      },
+                                },
+                                {
+                                    icon: 'clear',
+                                    tooltip: 'Désactivation du produit',
+                                    onClick: (event, rowData) => {
+                                        this.desactiveCadeaux(rowData.id)
+                                    },
+                                    iconProps: {
+                                        style: {
+                                          fontSize: 30,
+                                          color: 'orange',
+                                        },
+                                      },
+                                },
+                              ]}
+                              options={{
+                                actionsColumnIndex: -1,
+                              }}
+                        />
                         
                         
                         </div>
                         <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         
+                        <MaterialTable
+                            columns={[
+                            { title: 'Identifiant', field: 'id' },
+                            { title: 'Prestation', field: 'prestation' },
+                            { title: 'Prix', field: 'prix' },
+                            ]}
+                            data={ this.state.cadeauxInactive.map( function(value) {
+        
+                                var addDataItems = { 
+                                id: value.id,
+                                prestation: value.prestation, 
+                                prix: value.prix + ' €'
+                                                    }
+                                return addDataItems;
+                            }) }
 
-                            {this.afficheListePrestationInactive()}
+                            title="Prestations inactives"
+                            actions={[
+                                {
+                                    icon: 'check',
+                                    tooltip: 'Activation du produit',
+                                    onClick: (event, rowData) => {
+                                        this.activeCadeaux(rowData.id)
+                                    },
+                                    iconProps: {
+                                        style: {
+                                          fontSize: 30,
+                                          color: 'green',
+                                        },
+                                      },
+                                },
+                                {
+                                    icon: 'clear',
+                                    tooltip: 'Suppression du produit',
+                                    onClick: (event, rowData) => {
+                                        this.suppressionCadeaux(rowData.id)
+                                    },
+                                    iconProps: {
+                                        style: {
+                                          fontSize: 30,
+                                          color: 'red',
+                                        },
+                                      },
+                                }
+                            ]}
+                            options={{
+                               actionsColumnIndex: -1,
+                            }}
+                        />
+
+                            {/*this.afficheListePrestationInactive()*/}
                         
                         </div>
                     </div>
@@ -1079,7 +913,7 @@ class Prestations extends Component {
                         <hr/>
                         <div className="form-inline">
                         <div className="form-group mb-2">
-                            <label for="staticEmail2" className="sr-only">Email</label>
+                            <label className="sr-only">Email</label>
                             <input 
                                 type="text" 
                                 className="form-control" 
@@ -1089,7 +923,7 @@ class Prestations extends Component {
                             
                             />                        </div>
                         <div className="form-group mx-sm-3 mb-2">
-                            <label for="inputPassword2" className="sr-only">Password</label>
+                            <label className="sr-only">Password</label>
                             <input 
                                 type="number" 
                                 className="form-control" 
@@ -1120,7 +954,7 @@ class Prestations extends Component {
 
                             <div className="form-inline">
                                 <div className="form-group mb-4">
-                                    <label for="staticEmail2" className="sr-only">Email</label>
+                                    <label className="sr-only">Email</label>
                                     <input 
                                         type="text" 
                                         className="form-control" 
@@ -1131,7 +965,7 @@ class Prestations extends Component {
                                     />                        
                                 </div>
                                 <div className="form-group mx-sm-3 mb-4">
-                                    <label for="inputPassword2" className="sr-only">Password</label>
+                                    <label className="sr-only">Password</label>
                                     <input 
                                         type="number" 
                                         className="form-control" 
@@ -1166,7 +1000,7 @@ class Prestations extends Component {
                         </p>
                         <p className="text-right">Nouvelle valeur total : {this.state.totalMultiplePrix} €</p>
                         <hr/>
-                        <button type="button" align="center" onClick={() => this.addGroupement(this.state.selectedOption.value, this.props.idUserRecup)} className="btn btn-success">Création du groupement de produit</button>
+                        <button type="button" align="center" onClick={() => this.addGroupement(this.state.selectedOption.value, this.props.idUserRecup, this.props.apikey)} className="btn btn-success">Création du groupement de produit</button>
                     </Modal>
 
                     <Modal open={openTrois} onClose={this.onCloseModalTrois} center>
@@ -1189,7 +1023,7 @@ class Prestations extends Component {
                         <hr/>
                         <div className="form-inline">
                         <div className="form-group mb-2">
-                            <label for="staticEmail2" className="sr-only">Email</label>
+                            <label className="sr-only">Email</label>
                             <input 
                                 type="text" 
                                 className="form-control" 
@@ -1199,9 +1033,35 @@ class Prestations extends Component {
                             
                             />                        
                         </div>
-                        {this.testEtatGrouper()}
+                        {this.state.celluleGrp === '' &&
+                        
+                            <div className="form-group mx-sm-3 mb-2">
+                                <input 
+                                    type="number" 
+                                    className="form-control" 
+                                    placeholder="Prix" 
+                                    value={this.state.cellulePrixTotal}
+                                    onChange={e => this.setState({cellulePrixTotal: e.target.value})}
+                                />                        
+                            </div>   
 
-                            <button type="submit" onClick={() => this.modifierPrestation(this.state.celluleDesactivation)} className="btn btn-primary">Modifier la prestation</button>
+                        }
+                        {this.state.celluleGrp === 'Produit groupé' &&
+                        
+                        <div className="form-group mx-sm-3 mb-2">
+                            <input 
+                                type="number" 
+                                className="form-control" 
+                                placeholder="Prix" 
+                                value={this.state.cellulePrixTotal}
+                                onChange={e => this.setState({cellulePrixTotal: e.target.value})}
+                                disabled
+                            />                        
+                        </div>   
+
+                    }
+
+                            <button type="submit" onClick={() => this.modifierPrestation(this.state.celluleDesactivation, this.state.celluleNomPrestation)} className="btn btn-primary">Modifier la prestation</button>
                         </div>
                     </Modal>
 

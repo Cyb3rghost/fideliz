@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Configuration from '../fidconfig'
+import Select from 'react-select';
 
 import Menu from './menuclient'
+import Footer from '../footer'
 
 
 class Editionclient extends Component {
@@ -20,6 +22,8 @@ class Editionclient extends Component {
             actuelMdp: '',
             nouveauMdp: '',
             retapeMdp: '',
+            selectedOption: null,
+            options: [],
             statutMsgMaj: ''
 
         }
@@ -31,6 +35,7 @@ class Editionclient extends Component {
     {
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient
+        + '&identreprise=' + this.props.idEntRecupClient
         + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
@@ -42,11 +47,26 @@ class Editionclient extends Component {
                         prenomClient: value.prenom,
                         adresseClient: value.adresse,
                         emailClient: value.email,
-                        telephoneClient: value.telephone,                    
+                        telephoneClient: value.telephone,     
+                        ville: value.ville,
+                        codepostal: value.codepostal               
                     })
                 )
               )
     
+
+        })
+        .catch(err => console.error(err))
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=selectZonage'
+        + '&apikey=' + this.props.apikey)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+            this.setState({
+                options: response
+            })
 
         })
         .catch(err => console.error(err))
@@ -57,6 +77,9 @@ class Editionclient extends Component {
     majClient()
     {
 
+        var separeInfos = this.state.selectedOption.label.split("/")
+        var codepostal = separeInfos[0];
+        var ville = separeInfos[1];
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=majClient&idclient=' + this.props.idUserRecupClient
         + '&nom=' + this.state.nomClient
@@ -64,6 +87,8 @@ class Editionclient extends Component {
         + '&email=' + this.state.emailClient
         + '&adresse=' + this.state.adresseClient
         + '&telephone=' + this.state.telephoneClient
+        + '&codepostal=' + codepostal
+        + '&ville=' + ville
         + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
@@ -245,7 +270,18 @@ class Editionclient extends Component {
 
     }
 
+    handleChange = (selectedOption) => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
+      }
+
   render() {
+
+    const { selectedOption } = this.state;
+
+    let options = this.state.options.map(function (valux) {
+            return { value: valux.codepostal, label: valux.codepostal + ' / ' + valux.ville }
+    })
 
     return (
       <div>
@@ -258,29 +294,10 @@ class Editionclient extends Component {
 
                 <div id="content">
 
-                <Menu />
+                <Menu title="Editez votre profil" />
 
                     <div className="container-fluid">
 
-                    <div className="row">
-
-                            <div className="col-8">
-                            
-                                <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                    <h1 className="h3 mb-0 text-gray-800">Editez votre profil</h1>
-                                </div>
-
-
-                            </div>
-                            <div className="col-4">
-                                                        
-                                
-
-                            </div>
-
-                    </div>
-
-                    <hr/>
                     {this.afficheStatutMaj()}
 
                     {/* DEBUT CODE */}
@@ -319,6 +336,29 @@ class Editionclient extends Component {
                             onChange={(e) => this.setState({adresseClient: e.target.value})}
                             /></td>
                         </tr>
+                        <tr>
+                            <td>Code postal</td>
+                            <td align="center">
+                                {this.state.codepostal}
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>Ville</td>
+                            <td align="center">
+                                {this.state.ville}
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>Nouvelle localisation</td>
+                            <td align="center">
+                                <Select
+                                    value={selectedOption}
+                                    onChange={this.handleChange}
+                                    options={options}
+                                    placeholder="Code postal"
+                                /> 
+                            </td>
+                            </tr>
                         <tr>
                             <td>Email : </td>
                             <td><input 
@@ -393,13 +433,7 @@ class Editionclient extends Component {
 
                 </div>
 
-                <footer className="sticky-footer bg-white">
-                    <div className="container my-auto">
-                    <div className="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2019</span>
-                    </div>
-                    </div>
-                </footer>
+                <Footer />
 
                 </div>
 
@@ -408,24 +442,6 @@ class Editionclient extends Component {
             <a className="scroll-to-top rounded" href="#page-top">
                 <i className="fas fa-angle-up"></i>
             </a>
-
-            <div className="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button className="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    </div>
-                    <div className="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div className="modal-footer">
-                    <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a className="btn btn-primary" href="login.html">Logout</a>
-                    </div>
-                </div>
-                </div>
-            </div>
 
       </div>
     );

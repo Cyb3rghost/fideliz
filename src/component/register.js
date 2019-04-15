@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Configuration from './fidconfig'
+import Select from 'react-select';
 
 class Register extends Component {
 
@@ -19,8 +20,29 @@ class Register extends Component {
             retape: '',
             isCheckedRGPD: false,
             statueIns: '0',
+            selectedOption: null,
+            options: [],
             getApiKey: ''
         }
+
+    }
+
+    componentDidMount()
+    {
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=selectZonage'
+        + '&apikey=' + this.props.apikey)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+            this.setState({
+                options: response
+            })
+
+        })
+        .catch(err => console.error(err))
+
 
     }
 
@@ -37,6 +59,10 @@ class Register extends Component {
             if(passwordEntreprise === retape)
             {
     
+                var separeInfos = this.state.selectedOption.label.split("/")
+                var codepostal = separeInfos[0];
+                var ville = separeInfos[1];
+
                 fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=inscription&nEntreprise=' + nomEntreprise 
                 + '&mailEntreprise=' + emailEntreprise 
                 + '&nom=' + nom 
@@ -45,6 +71,8 @@ class Register extends Component {
                 + '&telephone=' + telephone
                 + '&secteur=' + sector
                 + '&password=' + passwordEntreprise
+                + '&codepostal=' + codepostal
+                + '&ville=' + ville
                 + '&apikey=' + this.props.apikey)
                 .then((response) => response.json())
                 .then((response) => {
@@ -142,7 +170,18 @@ class Register extends Component {
 
     }
 
+    handleChangeSelect = (selectedOption) => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
+      }
+
   render() {
+    const { selectedOption } = this.state;
+
+    let options = this.state.options.map(function (valux) {
+            return { value: valux.codepostal, label: valux.codepostal + ' / ' + valux.ville }
+    })
+    
     return (
       <div>
 
@@ -154,7 +193,7 @@ class Register extends Component {
             <div className="col-lg-12">
                 <div className="p-5">
                 <div className="text-center">
-                    <h1 className="h4 text-gray-900 mb-4">FIDELIZ <br/><small>Création d'un compte entreprise</small></h1>
+                    <h1 className="h4 text-gray-900 mb-4">FIDLIZ <br/><small>Création d'un compte entreprise</small></h1>
                 </div>
                 {this.checkmsg()}
                 <form onSubmit={this.addInscription.bind(this)} className="user">
@@ -218,6 +257,14 @@ class Register extends Component {
                             placeholder="Votre adresse" 
                         
                         />
+                    </div>
+                    <div className="form-group">
+                        <Select
+                            value={selectedOption}
+                            onChange={this.handleChangeSelect}
+                            options={options}
+                            placeholder="Code postal"
+                        /> 
                     </div>
                     <div className="form-group">
                         <input 

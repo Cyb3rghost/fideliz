@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  jeu. 04 avr. 2019 à 11:11
+-- Généré le :  lun. 15 avr. 2019 à 15:04
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -55,26 +55,29 @@ CREATE TABLE `accsociete` (
   `cadeaux` varchar(255) NOT NULL,
   `prixcadeaux` float NOT NULL,
   `secteur` varchar(255) NOT NULL,
-  `configuration` int(11) NOT NULL
+  `configuration` int(11) NOT NULL,
+  `codepostal` int(11) NOT NULL,
+  `ville` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `accsociete`
 --
 
-INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `qrcode`, `prestation`, `prix`, `activation`, `cadeaux`, `prixcadeaux`, `secteur`, `configuration`) VALUES
-(1, 'ludovic.lvnr@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'PAYET', 'Eddy', '56 chemin des fleurs 97400', 'EddyCoiffure', '0692101112', 1, 0, 0, 0, 0, '0000-00-00', '0000-00-00', 0, 'backgroundCarte.jpg', 'logocarte.png', 0, '', 0, 0, '', 0, '0', 0),
-(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEUR', 'Ludovic', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 0, 0, 10, 57, 15, '2019-03-25', '2019-03-27', 0, 'carddefault.jpg', 'logodefault.png', 383485888, 'Null', 0, 0, 'Brushing', 50.55, '0', 1),
-(3, 'blizzard@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'Blizzard', '', 2, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'null', 'null', 0, '', 0, 0, '', 0, '0', 0),
-(4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 1, 0, 10, 0, 15, '2019-02-09', '2019-03-11', 28, 'null', 'null', 0, '', 0, 0, '', 0, '0', 0),
-(5, 'cathy@gmail.com', 'af56310c080ab9d9f3d96be9f16edebf', 1, '', '', '', 'MenageParty', '', 1, 0, 10, 1, 15, '2019-02-10', '2019-03-12', 30, 'BCGC144501D09-02-2019.jpg', 'LOGO517944D09-02-2019.png', 0, '', 0, 0, '', 0, '0', 0),
-(6, 'dbz@gmail.com', '9512406d8e0fdb1542ac665e39461f96', 1, 'LEVENEUR', 'Ludovic', '56 Bis Chemin du ruisseau', 'DragonBallZ', '0692102030', 0, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 0, '', 0, 0, '', 0, '0', 0),
-(7, 'loniweb@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'Loni', 'Cedric', '56 chemin des oiseaux', 'Loniweb', '0692101213', 1, 0, 10, 1, 15, '2019-02-18', '2019-03-20', 30, 'BCGC713623D18-02-2019.jpg', 'logodefault.png', 0, '', 0, 0, '', 0, '0', 0),
-(8, 'ploumouz@gmail.com', 'cd3661b88633fe744e85154464736546', 1, '', '', '', 'Ploumouz', '', 1, 0, 2, 0, 15, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 383485832, '', 0, 0, '', 0, '0', 0),
-(9, '', 'da1fdd8296f5bf6790a56762b1266426', 1, '', '', '', '', '', 1, 0, 2, 0, 0, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 93332499, '', 0, 0, '', 0, '0', 0),
-(17, 'test@gmail.com', 'da1fdd8296f5bf6790a56762b1266426', 1, 'TESTO', 'Testa', '56 chemin des tests', 'Test', '0692101112', 1, 0, 2, 0, 10, '2019-03-27', '2019-04-26', 30, 'carddefault.jpg', 'logodefault.png', 686899493, '', 0, 0, 'Test', 100, 'Coiffure', 0),
-(18, 'poulouk@gmail.com', 'da1fdd8296f5bf6790a56762b1266426', 1, 'TATZ', 'Toto', '55 Chemin des alamotos', 'Poulouk', '0692333435', 1, 0, 5, 0, 10, '2019-03-27', '2019-04-26', 30, 'carddefault.jpg', 'logodefault.png', 46171476, '', 0, 0, '', 0, 'Coiffure', 0),
-(19, 'kraken@gmail.com', 'da1fdd8296f5bf6790a56762b1266426', 1, 'TOTO', 'Tatz', '45 chemin des mangues batus', 'Kraken', '0692121311', 1, 0, 5, 0, 15, '2019-03-27', '2019-04-26', 29, 'carddefault.jpg', 'logodefault.png', 41788419, '', 0, 0, 'Produit de test', 10, 'Coiffure', 1);
+INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `qrcode`, `prestation`, `prix`, `activation`, `cadeaux`, `prixcadeaux`, `secteur`, `configuration`, `codepostal`, `ville`) VALUES
+(1, 'ludovic.lvnr@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'PAYET', 'Eddy', '56 chemin des fleurs 97400', 'EddyCoiffure', '0692101112', 1, 0, 0, 0, 0, '0000-00-00', '0000-00-00', 0, 'backgroundCarte.jpg', 'logocarte.png', 0, '', 0, 0, '', 0, '0', 0, 0, ''),
+(2, 'fideliz@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'LEVENEURS', 'Ludovics', '56 chemin des fleurs 97400', 'Fideliz', '0692113344', 2, 0, 75, 57, 15, '2019-04-06', '2019-05-06', 21, 'carddefault.jpg', 'logodefault.png', 383485888, 'Null', 0, 0, 'testingou', 110.91, '0', 1, 0, ''),
+(3, 'blizzard@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'Blizzard', '', 2, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'null', 'null', 0, '', 0, 0, '', 0, '0', 0, 0, ''),
+(4, 'brawl@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, '', '', '', 'BrawlStudio', '', 1, 0, 10, 0, 15, '2019-02-09', '2019-03-11', 28, 'null', 'null', 0, '', 0, 0, '', 0, '0', 0, 0, ''),
+(5, 'cathy@gmail.com', 'af56310c080ab9d9f3d96be9f16edebf', 1, '', '', '', 'MenageParty', '', 1, 0, 10, 1, 15, '2019-02-10', '2019-03-12', 30, 'BCGC144501D09-02-2019.jpg', 'LOGO517944D09-02-2019.png', 0, '', 0, 0, '', 0, '0', 0, 0, ''),
+(6, 'dbz@gmail.com', '9512406d8e0fdb1542ac665e39461f96', 1, 'LEVENEUR', 'Ludovic', '56 Bis Chemin du ruisseau', 'DragonBallZ', '0692102030', 0, 0, 10, 0, 15, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 0, '', 0, 0, '', 0, '0', 0, 0, ''),
+(7, 'loniweb@gmail.com', 'dc8aaea07a9ebbc3af3fa62145997e38', 1, 'Loni', 'Cedric', '56 chemin des oiseaux', 'Loniweb', '0692101213', 1, 0, 10, 1, 15, '2019-02-18', '2019-03-20', 30, 'BCGC713623D18-02-2019.jpg', 'logodefault.png', 0, '', 0, 0, '', 0, '0', 0, 0, ''),
+(8, 'ploumouz@gmail.com', 'cd3661b88633fe744e85154464736546', 1, '', '', '', 'Ploumouz', '', 1, 0, 2, 0, 15, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 383485832, '', 0, 0, '', 0, '0', 0, 0, ''),
+(9, '', 'da1fdd8296f5bf6790a56762b1266426', 1, '', '', '', '', '', 1, 0, 2, 0, 0, '0000-00-00', '0000-00-00', 0, 'carddefault.jpg', 'logodefault.png', 93332499, '', 0, 0, '', 0, '0', 0, 0, ''),
+(17, 'test@gmail.com', 'da1fdd8296f5bf6790a56762b1266426', 1, 'TESTO', 'Testa', '56 chemin des tests', 'Test', '0692101112', 1, 0, 2, 0, 10, '2019-03-27', '2019-04-26', 30, 'carddefault.jpg', 'logodefault.png', 686899493, '', 0, 0, 'Test', 100, 'Coiffure', 0, 0, ''),
+(18, 'poulouk@gmail.com', 'da1fdd8296f5bf6790a56762b1266426', 1, 'TATZ', 'Toto', '55 Chemin des alamotos', 'Poulouk', '0692333435', 1, 0, 5, 0, 10, '2019-03-27', '2019-04-26', 30, 'carddefault.jpg', 'logodefault.png', 46171476, '', 0, 0, '', 0, 'Coiffure', 0, 0, ''),
+(19, 'kraken@gmail.com', 'da1fdd8296f5bf6790a56762b1266426', 1, 'TOTO', 'Tatz', '45 chemin des mangues batus', 'Kraken', '0692121311', 1, 0, 5, 0, 15, '2019-03-27', '2019-04-26', 29, 'carddefault.jpg', 'logodefault.png', 41788419, '', 0, 0, 'Produit de test', 10, 'Coiffure', 1, 0, ''),
+(20, 'chacko@gmail.com', 'da1fdd8296f5bf6790a56762b1266426', 1, 'Mala', 'Picko', '41 Chemin des prunes', 'Chacko', '0692548798', 1, 0, 5, 0, 10, '2019-04-10', '2019-05-10', 28, 'carddefault.jpg', 'logodefault.png', 6014626, '', 0, 0, 'Produit de test', 10, 'Coiffure', 1, 97430, ' TAMPON');
 
 -- --------------------------------------------------------
 
@@ -98,35 +101,607 @@ CREATE TABLE `acctclient` (
   `nbcarteterminer` int(11) NOT NULL,
   `nbpointagetotal` int(11) NOT NULL,
   `pointboutique` int(11) NOT NULL,
-  `rating` int(11) NOT NULL
+  `rating` int(11) NOT NULL,
+  `codepostal` int(11) NOT NULL,
+  `ville` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `acctclient`
 --
 
-INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `naissance`, `nom`, `prenom`, `adresse`, `telephone`, `email`, `password`, `nbpointage`, `nbcarteterminer`, `nbpointagetotal`, `pointboutique`, `rating`) VALUES
-(1, 2, 0, '2018-11-15', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau 97421 La riviÃ¨re saint-louis', '0692729322', 'ludovic.lvnr@gmail.com', 'adf5fddd3058d38759d3f3859ecc695a', 0, 0, 0, 0, 0),
-(2, 2, 0, '2018-11-15', '0000-00-00', 'LEVENEURa', 'Ludovica', '56 Bis chemin du ruisseau 97421 La riviÃ¨re saint-louisaz', '069272932233', 'ludovic.lvnr@gmail.coma', 'adf5fddd3058d38759d3f3859ecc695azz87', 0, 0, 0, 0, 0),
-(3, 2, 0, '2018-11-15', '0000-00-00', 'LEVENEURazeaze', 'Ludovicaazeae', '56 Bis chemin du ruisseau 97421 La riviÃ¨re saint-louisaz4552741', '06927293223399', 'ludovic.lvnr@gmail.comaqsdq', 'adf5fddd3058d38759d3f3859ecc695azz87qsd', 0, 0, 0, 0, 0),
-(4, 2, 0, '2019-01-04', '0000-00-00', 'RiviÃ¨re', 'Max', '56Bis', '0692659877', 'max@gmail.com', 'edff293d77fa6f0e2ccdfefe35ea2d84', 0, 1, 0, 0, 0),
-(5, 2, 0, '2019-01-04', '0000-00-00', 'RiviÃ¨re', 'Max', '56 Rue des encombrants 97421 La riviÃ¨re Saint-Louis', '0692741255', 'max@gmail.com', 'edff293d77fa6f0e2ccdfefe35ea2d84', 0, 3, 0, 0, 0),
-(6, 2, 0, '2019-01-04', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692102030', 'dbz@gmail.com', 'fac72322259f2d9ead77a4de15457582', 0, 0, 0, 0, 0),
-(7, 2, 0, '2019-01-04', '0000-00-00', 'Titi', 'toto', '30 rue des titis', '0692101112', 'max@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0, 0),
-(8, 2, 0, '2019-01-08', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 2, 16, 59, 24, 0),
-(15, 1, 8, '2019-01-28', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 24, 0),
-(16, 3, 8, '2019-01-31', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 24, 0),
-(17, 5, 8, '2019-02-09', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 1, 1, 24, 0),
-(18, 5, 0, '2019-02-10', '0000-00-00', 'Test', 'Totoboc', '56 Chemin des tests', '0692101112', 'totoboc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0, 0),
-(19, 5, 0, '2019-02-10', '0000-00-00', 'Lili', 'Boco', '56 chemin des liloboco', '0692222324', 'liliboco@gmail.com', 'a8c5587bf4dc90f79e065df3af8ebaa7', 0, 0, 0, 0, 0),
-(20, 7, 0, '2019-02-18', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692729322', 'ludovic@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 1, 1, 0, 0),
-(21, 2, 20, '2019-02-18', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692729322', 'ludovic@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0, 0),
-(22, 2, 0, '2019-03-26', '1993-02-24', 'Mata', 'Boulou', '10 Chemin des ananas', '0692988774', 'mataboulou@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0),
-(23, 19, 0, '2019-03-28', '1993-02-20', 'Dag', 'Dodo', '20 Chemin des dodos', '0692101211', 'dagdodo@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0),
-(24, 19, 0, '2019-03-28', '1993-02-21', 'Dodo', 'Dagdag', '21 chemin des dagdags', '0693007007', 'dagsdags@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0),
-(25, 19, 0, '2019-03-28', '1993-02-22', 'Papa', 'popo', '23 chemin des popos', '0692323635', 'popo@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0),
-(26, 19, 0, '2019-03-28', '1993-02-23', 'Pala', 'polo', '24 chemin des polo', '0693325547', 'polo@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0),
-(27, 19, 0, '2019-03-28', '1993-02-25', 'Chama', 'Konix', '25 chemin des konix', '0692585754', 'konix@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0);
+INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `naissance`, `nom`, `prenom`, `adresse`, `telephone`, `email`, `password`, `nbpointage`, `nbcarteterminer`, `nbpointagetotal`, `pointboutique`, `rating`, `codepostal`, `ville`) VALUES
+(1, 2, 0, '2018-11-15', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau 97421 La riviÃ¨re saint-louis', '0692729322', 'ludovic.lvnr@gmail.com', 'adf5fddd3058d38759d3f3859ecc695a', 0, 0, 0, 0, 0, 0, ''),
+(2, 2, 0, '2018-11-15', '0000-00-00', 'LEVENEURa', 'Ludovica', '56 Bis chemin du ruisseau 97421 La riviÃ¨re saint-louisaz', '069272932233', 'ludovic.lvnr@gmail.coma', 'adf5fddd3058d38759d3f3859ecc695azz87', 0, 0, 0, 0, 0, 0, ''),
+(3, 2, 0, '2018-11-15', '0000-00-00', 'LEVENEURazeaze', 'Ludovicaazeae', '56 Bis chemin du ruisseau 97421 La riviÃ¨re saint-louisaz4552741', '06927293223399', 'ludovic.lvnr@gmail.comaqsdq', 'adf5fddd3058d38759d3f3859ecc695azz87qsd', 0, 0, 0, 0, 0, 0, ''),
+(4, 2, 0, '2019-01-04', '0000-00-00', 'RiviÃ¨re', 'Max', '56Bis', '0692659877', 'max@gmail.com', 'edff293d77fa6f0e2ccdfefe35ea2d84', 0, 1, 0, 0, 0, 0, ''),
+(5, 2, 0, '2019-01-04', '0000-00-00', 'RiviÃ¨re', 'Max', '56 Rue des encombrants 97421 La riviÃ¨re Saint-Louis', '0692741255', 'max@gmail.com', 'edff293d77fa6f0e2ccdfefe35ea2d84', 0, 3, 0, 0, 0, 0, ''),
+(6, 2, 0, '2019-01-04', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692102030', 'dbz@gmail.com', 'fac72322259f2d9ead77a4de15457582', 0, 0, 0, 0, 0, 0, ''),
+(7, 2, 0, '2019-01-04', '0000-00-00', 'Titi', 'toto', '30 rue des titis', '0692101112', 'max@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0, 0, 0, ''),
+(8, 2, 0, '2019-01-08', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 2, 16, 59, 24, 0, 97410, ' SAINT-PIERRE'),
+(15, 1, 8, '2019-01-28', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 24, 0, 97410, ' SAINT-PIERRE'),
+(16, 3, 8, '2019-01-31', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 24, 0, 97410, ' SAINT-PIERRE'),
+(17, 5, 8, '2019-02-09', '0000-00-00', 'Riviere', 'JeanMarc', '56 Rue des oignons 97430 Tampon', '0692101266', 'jeanmarc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 1, 1, 24, 0, 97410, ' SAINT-PIERRE'),
+(18, 5, 0, '2019-02-10', '0000-00-00', 'Test', 'Totoboc', '56 Chemin des tests', '0692101112', 'totoboc@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0, 0, 0, ''),
+(19, 5, 0, '2019-02-10', '0000-00-00', 'Lili', 'Boco', '56 chemin des liloboco', '0692222324', 'liliboco@gmail.com', 'a8c5587bf4dc90f79e065df3af8ebaa7', 0, 0, 0, 0, 0, 0, ''),
+(20, 7, 0, '2019-02-18', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692729322', 'ludovic@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 1, 1, 0, 0, 0, ''),
+(21, 2, 20, '2019-02-18', '0000-00-00', 'LEVENEUR', 'Ludovic', '56 Bis chemin du ruisseau', '0692729322', 'ludovic@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0, 0, 0, ''),
+(22, 2, 0, '2019-03-26', '1993-02-24', 'Mata', 'Boulou', '10 Chemin des ananas', '0692988774', 'mataboulou@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0, 0, ''),
+(23, 19, 0, '2019-03-28', '1993-02-20', 'Dag', 'Dodo', '20 Chemin des dodos', '0692101211', 'dagdodo@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0, 0, ''),
+(24, 19, 0, '2019-03-28', '1993-02-21', 'Dodo', 'Dagdag', '21 chemin des dagdags', '0693007007', 'dagsdags@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0, 0, ''),
+(25, 19, 0, '2019-03-28', '1993-02-22', 'Papa', 'popo', '23 chemin des popos', '0692323635', 'popo@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0, 0, ''),
+(26, 19, 0, '2019-03-28', '1993-02-23', 'Pala', 'polo', '24 chemin des polo', '0693325547', 'polo@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0, 0, ''),
+(27, 19, 0, '2019-03-28', '1993-02-25', 'Chama', 'Konix', '25 chemin des konix', '0692585754', 'konix@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0, 0, ''),
+(28, 2, 0, '2019-04-08', '1990-02-25', 'PAYET', 'FranÃ§ois', '30 Chemin des ananas gatÃ©s 97430 Tampon', '0692303334', 'cyb3rghostxxxx@gmail.com', '1ed370d10db02d9b9b637b681ceab550', 0, 0, 0, 0, 0, 0, ''),
+(29, 2, 0, '2019-04-08', '1990-03-15', 'POIVRON', 'Maxi', '41 Rue des frangipaniers 97410 SAINT-PIERRE', '0692565758', 'cyb3rghostx@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0, 0, 0, ''),
+(30, 2, 0, '2019-04-09', '1989-03-10', 'PAYET', 'Jasmine', '30 Rue des binjoins 97410 SAINT-PIERRE', '0692366898', 'payetjasmine@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0, 0, ''),
+(31, 2, 19, '2019-04-10', '0000-00-00', 'Lili', 'Boco', '56 chemin des liloboco', '0692222324', 'liliboco@gmail.com', 'a8c5587bf4dc90f79e065df3af8ebaa7', 0, 0, 0, 0, 0, 0, ''),
+(32, 2, 0, '2019-04-11', '1990-04-14', 'Tok', 'Tak', '14 Chemin des thyroides', '0692548747', 'toktak@gmail.com', 'f07fba82aa77441697dfe31d33ea05b3', 0, 0, 0, 0, 0, 97430, ' TAMPON'),
+(33, 2, 7, '2019-04-11', '0000-00-00', 'Titi', 'toto', '30 rue des titis', '0692101112', 'max@gmail.com', '7b95106216e42644047cfb133b09d6b6', 0, 0, 0, 0, 0, 0, ''),
+(34, 2, 0, '2019-04-11', '1990-01-23', 'POLOMA', 'Nickita', '10 chemin des hibiscus', '0692121447', 'poloma@gmail.com', '7b27b49413bdc4f27dd4828b9520bea2', 0, 0, 0, 0, 0, 97410, ' SAINT-PIERRE');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `adm_acc`
+--
+
+CREATE TABLE `adm_acc` (
+  `id` int(11) NOT NULL,
+  `pseudo` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `adm_acc`
+--
+
+INSERT INTO `adm_acc` (`id`, `pseudo`, `password`) VALUES
+(1, 'Cyberghost', '2ae7f20512a3908d3b31d9a0f45b123d');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `adm_apievents`
+--
+
+CREATE TABLE `adm_apievents` (
+  `id` int(11) NOT NULL,
+  `identreprise` int(11) NOT NULL,
+  `idclient` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `eventjson` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `adm_apievents`
+--
+
+INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES
+(1, 2, 8, '2019-04-12', 'LSTPOINTAGE-SUCCESS'),
+(2, 2, 8, '2019-04-12', 'FICHECLIENT-SUCCESS'),
+(3, 2, 8, '2019-04-12', 'GTTPRSTATION-SUCCESS'),
+(4, 2, 8, '2019-04-12', 'LSTPOINTAGE-SUCCESS'),
+(5, 0, 8, '2019-04-12', 'AFFCADEAUXRECU-SUCCESS'),
+(6, 2, 8, '2019-04-12', 'AFFCADEAUXRECU-SUCCESS'),
+(7, 2, 8, '2019-04-12', 'GTTPRSTATION-SUCCESS'),
+(8, 2, 8, '2019-04-12', 'LSTPOINTAGE-SUCCESS'),
+(9, 2, 8, '2019-04-12', 'FICHECLIENT-SUCCESS'),
+(10, 2, 8, '2019-04-12', 'FICHECLIENT-SUCCESS'),
+(11, 2, 0, '2019-04-12', 'UPTJRST-SUCCESS'),
+(12, 2, 0, '2019-04-12', 'CONFIGURATIONDEPART-FAILED'),
+(13, 0, 0, '2019-04-12', 'CO-SUCCESS'),
+(14, 2, 0, '2019-04-12', 'DATARECUPDASH-SUCCESS'),
+(15, 2, 0, '2019-04-12', 'GTOTALCLT-SUCCESS'),
+(16, 2, 0, '2019-04-12', 'ENTSCORE-SUCCESS'),
+(17, 2, 0, '2019-04-12', 'DATARECUPDASH-SUCCESS'),
+(18, 2, 0, '2019-04-12', 'LASTPOINTAGE-SUCCESS'),
+(19, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(20, 2, 0, '2019-04-12', 'DATARECUPDASH-SUCCESS'),
+(21, 2, 0, '2019-04-12', 'ENTSCORE-SUCCESS'),
+(22, 2, 0, '2019-04-12', 'GTOTALCLT-SUCCESS'),
+(23, 2, 0, '2019-04-12', 'DATARECUPDASH-SUCCESS'),
+(24, 2, 0, '2019-04-12', 'GTOTALCLT-SUCCESS'),
+(25, 2, 0, '2019-04-12', 'ENTSCORE-SUCCESS'),
+(26, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(27, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(28, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(29, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(30, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(31, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(32, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(33, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(34, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(35, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(36, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(37, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(38, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(39, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(40, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(41, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(42, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(43, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(44, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(45, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(46, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(47, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(48, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(49, 20, 0, '2019-04-12', 'UPTJRST-SUCCESS'),
+(50, 20, 0, '2019-04-12', 'CONFIGURATIONDEPART-FAILED'),
+(51, 0, 0, '2019-04-12', 'CO-SUCCESS'),
+(52, 20, 0, '2019-04-12', 'DATARECUPDASH-SUCCESS'),
+(53, 20, 0, '2019-04-12', 'GTOTALCLT-SUCCESS'),
+(54, 20, 0, '2019-04-12', 'ENTSCORE-SUCCESS'),
+(55, 20, 0, '2019-04-12', 'LOGPOINTAGE-VIDE'),
+(56, 20, 0, '2019-04-12', 'LOGPOINTAGE-VIDE'),
+(57, 20, 0, '2019-04-12', 'LOGPOINTAGE-VIDE'),
+(58, 20, 0, '2019-04-12', 'LOGPOINTAGE-VIDE'),
+(59, 20, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(60, 20, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(61, 20, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(62, 20, 0, '2019-04-12', 'LOGPOINTAGE-VIDE'),
+(63, 20, 0, '2019-04-12', 'LOGPOINTAGE-VIDE'),
+(64, 20, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(65, 20, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(66, 20, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(67, 2, 0, '2019-04-12', 'UPTJRST-SUCCESS'),
+(68, 2, 0, '2019-04-12', 'CONFIGURATIONDEPART-FAILED'),
+(69, 0, 0, '2019-04-12', 'CO-SUCCESS'),
+(70, 2, 0, '2019-04-12', 'GTOTALCLT-SUCCESS'),
+(71, 2, 0, '2019-04-12', 'ENTSCORE-SUCCESS'),
+(72, 2, 0, '2019-04-12', 'DATARECUPDASH-SUCCESS'),
+(73, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(74, 2, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(75, 2, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(76, 2, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(77, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(78, 2, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(79, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(80, 2, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(81, 2, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(82, 2, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(83, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(84, 2, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(85, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(86, 2, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(87, 2, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(88, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(89, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(90, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(91, 2, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(92, 2, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(93, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(94, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(95, 2, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(96, 2, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(97, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(98, 2, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(99, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(100, 2, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(101, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(102, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(103, 2, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(104, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(105, 2, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(106, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(107, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(108, 2, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(109, 2, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(110, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(111, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(112, 2, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(113, 2, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(114, 2, 0, '2019-04-12', 'LOGPOINTAGE-SUCCESS'),
+(115, 2, 0, '2019-04-12', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(116, 2, 0, '2019-04-12', 'SLCTLISTECADEAUX-SUCCESS'),
+(117, 2, 0, '2019-04-12', 'LISTENT-SUCCESS'),
+(118, 2, 0, '2019-04-13', 'UPTJRST-SUCCESS'),
+(119, 2, 0, '2019-04-13', 'CONFIGURATIONDEPART-FAILED'),
+(120, 0, 0, '2019-04-13', 'CO-SUCCESS'),
+(121, 2, 0, '2019-04-13', 'GTOTALCLT-SUCCESS'),
+(122, 2, 0, '2019-04-13', 'ENTSCORE-SUCCESS'),
+(123, 2, 0, '2019-04-13', 'DATARECUPDASH-SUCCESS'),
+(124, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(125, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(126, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(127, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(128, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(129, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(130, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(131, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(132, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(133, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(134, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(135, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(136, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(137, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(138, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(139, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(140, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(141, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(142, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(143, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(144, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(145, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(146, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(147, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(148, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(149, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(150, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(151, 2, 0, '2019-04-13', 'LISTECADEAUXGRP-SUCCESS'),
+(152, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(153, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(154, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(155, 2, 0, '2019-04-13', 'LISTECADEAUXGRP-SUCCESS'),
+(156, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(157, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(158, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(159, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(160, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(161, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(162, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(163, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(164, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(165, 2, 0, '2019-04-13', 'LISTECADEAUXGRP-SUCCESS'),
+(166, 2, 0, '2019-04-13', 'LISTECADEAUXGRP-SUCCESS'),
+(167, 2, 0, '2019-04-13', 'DISSOLUTION-SUCCESS'),
+(168, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(169, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(170, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(171, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(172, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(173, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(174, 2, 0, '2019-04-13', 'LISTECADEAUXGRP-SUCCESS'),
+(175, 2, 0, '2019-04-13', 'DISSOLUTION-SUCCESS'),
+(176, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(177, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(178, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(179, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(180, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(181, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(182, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(183, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(184, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(185, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(186, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(187, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(188, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(189, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(190, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(191, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(192, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(193, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(194, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(195, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(196, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(197, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(198, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(199, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(200, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(201, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(202, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(203, 0, 0, '2019-04-13', 'DISABLEGIFT-SUCCESS'),
+(204, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(205, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(206, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(207, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(208, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(209, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(210, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(211, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(212, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(213, 0, 0, '2019-04-13', 'DISABLEGIFT-SUCCESS'),
+(214, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(215, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(216, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(217, 2, 0, '2019-04-13', 'LISTECADEAUXGRP-SUCCESS'),
+(218, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(219, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(220, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(221, 2, 0, '2019-04-13', 'LISTECADEAUXGRP-SUCCESS'),
+(222, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(223, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(224, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(225, 2, 0, '2019-04-13', 'LISTECADEAUXGRP-SUCCESS'),
+(226, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(227, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(228, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(229, 2, 0, '2019-04-13', 'LISTECADEAUXGRP-SUCCESS'),
+(230, 2, 0, '2019-04-13', 'LISTECADEAUXGRP-SUCCESS'),
+(231, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(232, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(233, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(234, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(235, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(236, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(237, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(238, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(239, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(240, 0, 0, '2019-04-13', 'DELETEGIFT-SUCCESS'),
+(241, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(242, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(243, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(244, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(245, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(246, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(247, 0, 0, '2019-04-13', 'ENABLEGIFT-SUCCESS'),
+(248, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(249, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(250, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(251, 0, 0, '2019-04-13', 'DISABLEGIFT-SUCCESS'),
+(252, 0, 0, '2019-04-13', 'DISABLEGIFT-SUCCESS'),
+(253, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(254, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-SUCCESS'),
+(255, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(256, 0, 0, '2019-04-13', 'ENABLEGIFT-SUCCESS'),
+(257, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(258, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(259, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(260, 2, 0, '2019-04-13', 'AJTCADEAUX-SUCCESS'),
+(261, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(262, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(263, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(264, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(265, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(266, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(267, 2, 0, '2019-04-13', 'AJTCADEAUX-EXISTE'),
+(268, 2, 0, '2019-04-13', 'AJTCADEAUX-SUCCESS'),
+(269, 0, 0, '2019-04-13', 'MAJPRDTOTAL-SUCCESS'),
+(270, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(271, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(272, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(273, 2, 0, '2019-04-13', 'LISTECADEAUXGRP-SUCCESS'),
+(274, 2, 0, '2019-04-13', 'DISSOLUTION-SUCCESS'),
+(275, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(276, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(277, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(278, 2, 0, '2019-04-13', 'AJTCADEAUX-SUCCESS'),
+(279, 2, 0, '2019-04-13', 'AJTCADEAUX-SUCCESS'),
+(280, 2, 0, '2019-04-13', 'AJTCADEAUX-SUCCESS'),
+(281, 2, 0, '2019-04-13', 'AJTCADEAUX-SUCCESS'),
+(282, 0, 0, '2019-04-13', 'MAJPRDTOTAL-SUCCESS'),
+(283, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(284, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(285, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(286, 2, 0, '2019-04-13', 'LISTECADEAUXGRP-SUCCESS'),
+(287, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(288, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(289, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(290, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(291, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(292, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(293, 0, 0, '2019-04-13', 'MDFPRODUIT-SUCCESS'),
+(294, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(295, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(296, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(297, 0, 0, '2019-04-13', 'MDFPRODUIT-SUCCESS'),
+(298, 2, 0, '2019-04-13', 'SLCTLISTECADEAUX-SUCCESS'),
+(299, 2, 0, '2019-04-13', 'LISTENT-SUCCESS'),
+(300, 2, 0, '2019-04-13', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(301, 2, 0, '2019-04-15', 'UPTJRST-SUCCESS'),
+(302, 2, 0, '2019-04-15', 'CONFIGURATIONDEPART-FAILED'),
+(303, 0, 0, '2019-04-15', 'CO-SUCCESS'),
+(304, 2, 0, '2019-04-15', 'UPTJRST-SUCCESS'),
+(305, 2, 0, '2019-04-15', 'CONFIGURATIONDEPART-FAILED'),
+(306, 0, 0, '2019-04-15', 'CO-SUCCESS'),
+(307, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(308, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(309, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(310, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(311, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(312, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(313, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(314, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(315, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(316, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(317, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(318, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(319, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(320, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(321, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(322, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(323, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(324, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(325, 0, 0, '2019-04-15', 'MDFPRODUIT-SUCCESS'),
+(326, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(327, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(328, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(329, 2, 0, '2019-04-15', 'LISTECADEAUXGRP-SUCCESS'),
+(330, 0, 0, '2019-04-15', 'MDFPRODUIT-FAILED'),
+(331, 0, 0, '2019-04-15', 'MDFPRODUIT-FAILED'),
+(332, 0, 0, '2019-04-15', 'MDFPRODUIT-FAILED'),
+(333, 0, 0, '2019-04-15', 'MDFPRODUIT-FAILED'),
+(334, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(335, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(336, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(337, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(338, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(339, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(340, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(341, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(342, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(343, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(344, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(345, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(346, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(347, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(348, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(349, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(350, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(351, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(352, 0, 0, '2019-04-15', 'MDFPRODUIT-SUCCESS'),
+(353, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(354, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(355, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(356, 0, 0, '2019-04-15', 'MDFPRODUIT-SUCCESS'),
+(357, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(358, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(359, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(360, 2, 0, '2019-04-15', 'LISTECADEAUXGRP-SUCCESS'),
+(361, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(362, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(363, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(364, 2, 0, '2019-04-15', 'LISTECADEAUXGRP-SUCCESS'),
+(365, 0, 0, '2019-04-15', 'MDFPRODUIT-FAILED'),
+(366, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(367, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(368, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(369, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(370, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(371, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(372, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(373, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(374, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(375, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(376, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(377, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(378, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(379, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(380, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(381, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(382, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(383, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(384, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(385, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(386, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(387, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(388, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(389, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(390, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(391, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(392, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(393, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(394, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(395, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(396, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(397, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(398, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(399, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(400, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(401, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(402, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(403, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(404, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(405, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(406, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(407, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(408, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(409, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(410, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(411, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(412, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(413, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(414, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(415, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(416, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(417, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(418, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(419, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(420, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(421, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(422, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(423, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(424, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(425, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(426, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(427, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(428, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(429, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(430, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(431, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(432, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(433, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(434, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(435, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(436, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(437, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(438, 0, 0, '2019-04-15', 'MDFPRODUIT-SUCCESS'),
+(439, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(440, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(441, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(442, 0, 0, '2019-04-15', 'MDFPRODUIT-SUCCESS'),
+(443, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(444, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(445, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(446, 2, 0, '2019-04-15', 'LISTECADEAUXGRP-SUCCESS'),
+(447, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(448, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(449, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(450, 2, 0, '2019-04-15', 'LOGPOINTAGE-SUCCESS'),
+(451, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(452, 2, 0, '2019-04-15', 'GTOTALCLT-SUCCESS'),
+(453, 2, 0, '2019-04-15', 'ENTSCORE-SUCCESS'),
+(454, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(455, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(456, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(457, 2, 0, '2019-04-15', 'SLCTLISTECADEAUXINACTIF-FAILED'),
+(458, 2, 0, '2019-04-15', 'LISTENT-SUCCESS'),
+(459, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(460, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(461, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(462, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(463, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(464, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(465, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(466, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(467, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(468, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(469, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(470, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(471, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(472, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(473, 2, 0, '2019-04-15', 'UPENTPNT-SUCCESS'),
+(474, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(475, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(476, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(477, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(478, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(479, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(480, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(481, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(482, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(483, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(484, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(485, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(486, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(487, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(488, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(489, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(490, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(491, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(492, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(493, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(494, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(495, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(496, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(497, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(498, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(499, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(500, 2, 0, '2019-04-15', 'CHGPRESTATION-FAILED'),
+(501, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(502, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS'),
+(503, 2, 0, '2019-04-15', 'SLCTLISTECADEAUX-SUCCESS'),
+(504, 2, 0, '2019-04-15', 'DATARECUPDASH-SUCCESS');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `adm_zone`
+--
+
+CREATE TABLE `adm_zone` (
+  `id` int(11) NOT NULL,
+  `ville` varchar(255) NOT NULL,
+  `codepostal` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `adm_zone`
+--
+
+INSERT INTO `adm_zone` (`id`, `ville`, `codepostal`) VALUES
+(1, 'SAINT-PIERRE', 97410),
+(2, 'TAMPON', 97430);
 
 -- --------------------------------------------------------
 
@@ -176,17 +751,17 @@ CREATE TABLE `cadeaux` (
 --
 
 INSERT INTO `cadeaux` (`id`, `identreprise`, `idprestation`, `prestation`, `prix`, `activation`, `prdtgrp`) VALUES
-(1, 2, 0, 'Brushing', 50.55, 1, 0),
-(2, 2, 0, 'testingou', 110.91, 1, 1),
+(1, 2, 0, 'Brushings', 100, 1, 0),
+(2, 2, 0, 'testingouz', 0, 1, 1),
 (3, 2, 0, 'Coupe hommes', 110, 1, 0),
-(8, 2, 0, 'Margarita', 60, 1, 0),
+(8, 2, 0, 'Margarita', 305.6, 1, 0),
 (9, 5, 0, 'Brushing', 20, 1, 0),
 (10, 7, 0, 'Brushing', 20, 1, 0),
 (11, 7, 0, 'Couleur', 50, 1, 0),
 (12, 2, 1, 'TestUn', 90, 1, 0),
-(13, 2, 0, 'Hola', 100, 1, 0),
+(13, 2, 0, 'Holax', 100, 1, 1),
 (14, 2, 0, 'Checkbam', 150, 1, 0),
-(15, 2, 0, 'Tchuk', 20.2, 1, 0),
+(15, 2, 0, 'Tchuk', 20.2, 1, 1),
 (16, 2, 0, 'Blam', 10.88, 1, 0),
 (17, 2, 0, 'Testo', 5.55, 1, 0),
 (26, 2, 0, 'ProduitDeux', 20, 1, 0),
@@ -208,7 +783,18 @@ INSERT INTO `cadeaux` (`id`, `identreprise`, `idprestation`, `prestation`, `prix
 (46, 19, 0, 'qsdqsdqs', 55.45, 1, 0),
 (48, 19, 0, 'Produit de test', 0, 1, 0),
 (49, 19, 0, 'Produit de test', 0, 1, 0),
-(50, 2, 0, 'Produit de test', 0, 1, 0);
+(50, 2, 0, 'Produit de test', 0, 1, 0),
+(51, 2, 0, 'Coco', 10000, 1, 0),
+(55, 20, 0, 'Produit de test', 0, 1, 0),
+(56, 2, 13, 'Gogo', 25, 1, 0),
+(57, 2, 13, 'Pingo', 25, 1, 0),
+(58, 2, 13, 'Pago', 25, 1, 0),
+(59, 2, 13, 'Pologo', 25, 1, 0),
+(62, 2, 0, 'Examplo', 178, 1, 1),
+(64, 2, 62, 'azeaze', 50, 1, 0),
+(65, 2, 62, 'pouikuyk', 28, 1, 0),
+(66, 2, 62, 'rtergegrg', 50, 1, 0),
+(67, 2, 62, 'dhtyhrtg', 50, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -352,15 +938,17 @@ INSERT INTO `notation` (`id`, `identreprise`, `idclient`, `score`, `basenotation
 CREATE TABLE `parametres` (
   `id` int(11) NOT NULL,
   `maintenance` int(11) NOT NULL,
-  `version` varchar(10) NOT NULL
+  `version` varchar(10) NOT NULL,
+  `oldversion` varchar(7) NOT NULL,
+  `objet` text NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `parametres`
 --
 
-INSERT INTO `parametres` (`id`, `maintenance`, `version`) VALUES
-(1, 0, '1.0.1.5');
+INSERT INTO `parametres` (`id`, `maintenance`, `version`, `oldversion`, `objet`) VALUES
+(1, 0, '1.0.1.7', '1.0.1.8', 'Maintenance terminÃ©');
 
 -- --------------------------------------------------------
 
@@ -548,6 +1136,24 @@ ALTER TABLE `acctclient`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `adm_acc`
+--
+ALTER TABLE `adm_acc`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `adm_apievents`
+--
+ALTER TABLE `adm_apievents`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `adm_zone`
+--
+ALTER TABLE `adm_zone`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `apikey`
 --
 ALTER TABLE `apikey`
@@ -603,12 +1209,27 @@ ALTER TABLE `pointage`
 -- AUTO_INCREMENT pour la table `accsociete`
 --
 ALTER TABLE `accsociete`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT pour la table `acctclient`
 --
 ALTER TABLE `acctclient`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+--
+-- AUTO_INCREMENT pour la table `adm_acc`
+--
+ALTER TABLE `adm_acc`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT pour la table `adm_apievents`
+--
+ALTER TABLE `adm_apievents`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=505;
+--
+-- AUTO_INCREMENT pour la table `adm_zone`
+--
+ALTER TABLE `adm_zone`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `apikey`
 --
@@ -618,7 +1239,7 @@ ALTER TABLE `apikey`
 -- AUTO_INCREMENT pour la table `cadeaux`
 --
 ALTER TABLE `cadeaux`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 --
 -- AUTO_INCREMENT pour la table `cartefidelite`
 --

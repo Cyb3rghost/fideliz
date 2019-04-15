@@ -63,6 +63,11 @@ if(isset($_GET['action']))
             $protectmdp = mysqli_real_escape_string($connect, $protectmdp);
             $debutAbonnement = date("Y-m-d");
             $code = rand(0, 99).rand(0, 999).rand(0, 9999);
+            $codepostal = $_GET['codepostal'];
+            $codepostal = mysqli_real_escape_string($connect, $codepostal);
+            $ville = $_GET['ville'];
+            $ville = mysqli_real_escape_string($connect, $ville);
+            $date = date("Y-m-d");
         
             $date_expire    =   $debutAbonnement;
             $nbre=30;
@@ -94,22 +99,25 @@ if(isset($_GET['action']))
             if($json === 1)
             {
 
+                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'INS-EXISTE')");
                 echo json_encode('#INS#EXISTE');
 
             }
             else
             {
 
-                $sqlinscription = "INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `qrcode`, `prestation`, `prix`, `activation`, `cadeaux`, `prixcadeaux`, `secteur`, `configuration`) VALUES (NULL, '".$emailEnt."', '".$protectmdp."', '1', '".$nom."', '".$prenom."', '".$adresse."', '".$nomEntreprise."', '".$telephone."', '1', '0', '5', '0', '10', '".$debutAbonnement."', '".$finaldate_expiration."', '".$jourRestant."', 'carddefault.jpg', 'logodefault.png', '".$code."', '', '0', '0', '', '0', '".$secteur."', '0')";
+                $sqlinscription = "INSERT INTO `accsociete` (`id`, `email`, `password`, `confirmation`, `nom`, `prenom`, `adresse`, `nomsociete`, `telephone`, `typecompte`, `nbclient`, `limitclient`, `nbpointage`, `limitpointage`, `debutabo`, `finabo`, `jrestant`, `imgfond`, `imgicon`, `qrcode`, `prestation`, `prix`, `activation`, `cadeaux`, `prixcadeaux`, `secteur`, `configuration`, `codepostal`, `ville`) VALUES (NULL, '".$emailEnt."', '".$protectmdp."', '1', '".$nom."', '".$prenom."', '".$adresse."', '".$nomEntreprise."', '".$telephone."', '1', '0', '5', '0', '10', '".$debutAbonnement."', '".$finaldate_expiration."', '".$jourRestant."', 'carddefault.jpg', 'logodefault.png', '".$code."', '', '0', '0', '', '0', '".$secteur."', '0', '".$codepostal."', '".$ville."')";
                 if(mysqli_query($connect, $sqlinscription))
                 {
 
+                    mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'INS-SUCCESS')");
                     echo json_encode("#INS#SUCCESS");
 
                 }
                 else
                 {
 
+                    mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'INS-ERROR')");
                     echo json_encode("#INS#ERROR");
 
                 }
@@ -125,6 +133,7 @@ if(isset($_GET['action']))
             $connexionPassword = mysqli_real_escape_string($connect, $connexionPassword);
             $protectcomdp = md5("secureINS".$connexionPassword."INSecure");
             $protectcomdp = mysqli_real_escape_string($connect, $protectcomdp);
+            $date = date("Y-m-d");
 
             $sql = "SELECT * FROM `accsociete` WHERE `email` = '".$connexionEmail."' AND `password` = '".$protectcomdp."' AND `confirmation` = '1'";
             $result = mysqli_query($connect, $sql);
@@ -150,12 +159,14 @@ if(isset($_GET['action']))
                     if($statutCompte != "0" && mysqli_query($connect, $sqldeux))
                     {
     
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'UPTYPECPT-SUCCESS')");
                             $json = json_encode('#UPTYPECPT#SUCCESS');
     
                     }
                     else
                     {
-    
+
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'UPTYPECPT-ECHEC')");
                             $json = json_encode('#UPTYPECPT#ECHEC');
     
                     }
@@ -181,12 +192,14 @@ if(isset($_GET['action']))
                     if(mysqli_query($connect, $sqltrois))
                     {
     
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'UPTJRST-SUCCESS')");
                             $json = json_encode('#UPTJRST#SUCCESS');
     
                     }
                     else
                     {
     
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'UPTJRST-ECHEC')");
                             $json = json_encode('#UPTJRST#ECHEC');
     
                     }
@@ -195,6 +208,7 @@ if(isset($_GET['action']))
             
             }else{
             
+                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ENT-NOEXIST')");
                 $json = json_encode('#ENT#NOEXIST');
             
                 
@@ -211,6 +225,7 @@ if(isset($_GET['action']))
             $connexionPassword = mysqli_real_escape_string($connect, $connexionPassword);
             $protectcomdp = md5("secureINS".$connexionPassword."INSecure");
             $protectcomdp = mysqli_real_escape_string($connect, $protectcomdp);
+            $date = date("Y-m-d");
 
             $sql = "SELECT * FROM `accsociete` WHERE `email` = '".$connexionEmail."' AND `password` = '".$protectcomdp."' AND `confirmation` = '1'";
             $result = mysqli_query($connect, $sql);
@@ -229,6 +244,7 @@ if(isset($_GET['action']))
 
                 mysqli_query($connect, "INSERT INTO `cadeaux` (`id`, `identreprise`, `idprestation`, `prestation`, `prix`, `activation`, `prdtgrp`) VALUES (NULL, '".$id."', '0', 'Produit de test', '0', '1', '0')");
                 mysqli_query($connect, "UPDATE `accsociete` SET `cadeaux` = 'Produit de test', `prixcadeaux` = '10', `configuration` = '1' WHERE `id` = '".$id."'");
+                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'CONFIGURATIONDEPART-SUCCESS')");
 
                 $json = json_encode("#CONFIGURATIONDEPART#SUCCESS");
 
@@ -236,6 +252,7 @@ if(isset($_GET['action']))
             else
             {
 
+                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'CONFIGURATIONDEPART-FAILED')");
                 $json = json_encode("#CONFIGURATIONDEPART#FAILED");
 
             }
@@ -254,6 +271,7 @@ if(isset($_GET['action']))
 
             $protectcomdp = md5("secureINS".$connexionPassword."INSecure");
             $protectcomdp = mysqli_real_escape_string($connect, $protectcomdp);
+            $date = date("Y-m-d");
 
             $sql = "SELECT * FROM `accsociete` WHERE `email` = '".$connexionEmail."' AND `password` = '".$protectcomdp."' AND `confirmation` = '1'";
             $result = mysqli_query($connect, $sql);
@@ -268,6 +286,8 @@ if(isset($_GET['action']))
 
                 }*/
 
+                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'CO-SUCCESS')");
+
                 while($row[] = mysqli_fetch_assoc($result))
                 {
             
@@ -276,7 +296,8 @@ if(isset($_GET['action']))
                 }
             
             }else{
-            
+    
+                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'CO-ECHEC')");
                 $json = json_encode('#CO#ECHEC');
             
             }
@@ -302,11 +323,13 @@ if(isset($_GET['action']))
 
                     $id = $_GET['id'];
                     $id = mysqli_real_escape_string($connect, $id);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `accsociete` WHERE `id` = '".$id."'";
                     $result = mysqli_query($connect, $sql);
                     if(mysqli_num_rows($result)){
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'DATARECUPDASH-SUCCESS')");
                         while($row[] = mysqli_fetch_assoc($result))
                         {
                     
@@ -316,6 +339,7 @@ if(isset($_GET['action']))
                     
                     }else{
                     
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'DATARECUPDASH-ECHEC')");
                         $json = json_encode('#DATARECUPDASH#ECHEC');
                     
                     }
@@ -351,6 +375,7 @@ if(isset($_GET['action']))
 
                     $id = $_GET['id'];
                     $id = mysqli_real_escape_string($connect, $id);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT COUNT(*) FROM `acctclient` WHERE `identreprise` = '".$id."'";
                     $result = mysqli_query($connect, $sql);
@@ -398,11 +423,13 @@ if(isset($_GET['action']))
 
                     $id = $_GET['id'];
                     $id = mysqli_real_escape_string($connect, $id);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `acctclient` WHERE `identreprise` = '".$id."'";
                     $result = mysqli_query($connect, $sql);
                     if(mysqli_num_rows($result)){
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'LISTECLIENT-SUCCESS')");
                         while($row[] = mysqli_fetch_assoc($result))
                         {
                     
@@ -412,6 +439,7 @@ if(isset($_GET['action']))
                     
                     }else{
                     
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'LISTECLIENT-ECHEC')");
                         $json = json_encode('#LISTECLIENT#ECHEC');
                     
                     }
@@ -447,12 +475,15 @@ if(isset($_GET['action']))
                 {
 
                     $id = $_GET['id'];
+                    $idEntreprise = $_GET['identreprise'];
                     $id = mysqli_real_escape_string($connect, $id);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `acctclient` WHERE `id` = '".$id."'";
                     $result = mysqli_query($connect, $sql);
                     if(mysqli_num_rows($result)){
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$id."', '".$date."', 'FICHECLIENT-SUCCESS')");
                         while($row[] = mysqli_fetch_assoc($result))
                         {
                     
@@ -462,6 +493,7 @@ if(isset($_GET['action']))
                     
                     }else{
                     
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$id."', '".$date."', 'FICHECLIENT-ECHEC')");
                         $json = json_encode('#FICHECLIENT#ECHEC');
                     
                     }
@@ -511,10 +543,15 @@ if(isset($_GET['action']))
                     $telephoneClient = mysqli_real_escape_string($connect, $telephoneClient);
                     $emailClient = $_GET['emailClient'];
                     $emailClient = mysqli_real_escape_string($connect, $emailClient);
+                    $ville = $_GET['ville'];
+                    $ville = mysqli_real_escape_string($connect, $ville);
+                    $codepostal = $_GET['codepostal'];
+                    $codepostal = mysqli_real_escape_string($connect, $codepostal);
                     $passwordClient = $_GET['passwordClient'];
                     $passwordClient = mysqli_real_escape_string($connect, $passwordClient);
                     $passwordCryptClient = md5("secureClient".$passwordClient."Clientsecure");
                     $passwordCryptClient = mysqli_real_escape_string($connect, $passwordCryptClient);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT COUNT(*) FROM `acctclient` WHERE `identreprise` = '".$idEntreprise."'";
                     $result = mysqli_query($connect, $sql);
@@ -540,6 +577,7 @@ if(isset($_GET['action']))
                     if($totalClient === $limitationClient)
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'LIMITCLIENT-ATTEIND')");
                         $json = json_encode("#LIMITCLIENT#ATTEIND");
         
                     }
@@ -551,6 +589,7 @@ if(isset($_GET['action']))
                         if(mysqli_num_rows($resultrois))
                         {
             
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'AJTCLIENT-EXIST')");
                             $json = json_encode("#AJTCLIENT#EXISTE");
             
                         }
@@ -558,21 +597,21 @@ if(isset($_GET['action']))
                         {
             
             
-                            $sqlquatre = "INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `naissance`, `nom`, `prenom`, `adresse`, `telephone`, `email`, `password`, `nbpointage`, `nbcarteterminer`, `nbpointagetotal`, `pointboutique`, `rating`) VALUES (NULL, '".$idEntreprise."', '0', '".$dateInscription."', '".$dateDeNaissance."', '".$nomClient."', '".$prenomClient."', '".$adresseClient."', '".$telephoneClient."', '".$emailClient."', '".$passwordCryptClient."', '0', '0', '0', '0', '0')";
+                            $sqlquatre = "INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `naissance`, `nom`, `prenom`, `adresse`, `telephone`, `email`, `password`, `nbpointage`, `nbcarteterminer`, `nbpointagetotal`, `pointboutique`, `rating`, `codepostal`, `ville`) VALUES (NULL, '".$idEntreprise."', '0', '".$dateInscription."', '".$dateDeNaissance."', '".$nomClient."', '".$prenomClient."', '".$adresseClient."', '".$telephoneClient."', '".$emailClient."', '".$passwordCryptClient."', '0', '0', '0', '0', '0', '".$codepostal."', '".$ville."')";
                             if(mysqli_query($connect, $sqlquatre))
                             {
                 
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'AJTCLIENT-SUCCESS')");
                                 $json = json_encode("#AJTCLIENT#SUCCESS");
                 
                             }
                             else
                             {
                 
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'AJTCLIENT-ERROR')");
                                 $json = json_encode("#AJTCLIENT#ERROR");
                 
-                            }
-                            
-                            
+                            }      
             
             
                         }
@@ -593,6 +632,105 @@ if(isset($_GET['action']))
 
 
             }
+
+            mysqli_close($connect);
+            break;
+        case 'ajoutInvitationClient':
+
+            $idEntreprise = $_GET['id'];
+            $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+            $dateInscription = date("Y-m-d");
+            $dateInscription = mysqli_real_escape_string($connect, $dateInscription);
+            $dateDeNaissance = $_GET['naissance'];
+            $dateDeNaissance = mysqli_real_escape_string($connect, $dateDeNaissance);
+            $nomClient = $_GET['nomClient'];
+            $nomClient = mysqli_real_escape_string($connect, $nomClient);
+            $prenomClient = $_GET['prenomClient'];
+            $prenomClient = mysqli_real_escape_string($connect, $prenomClient);
+            $adresseClient = $_GET['adresseClient'];
+            $adresseClient = mysqli_real_escape_string($connect, $adresseClient);
+            $telephoneClient = $_GET['telephoneClient'];
+            $telephoneClient = mysqli_real_escape_string($connect, $telephoneClient);
+            $emailClient = $_GET['emailClient'];
+            $emailClient = mysqli_real_escape_string($connect, $emailClient);
+            $passwordClient = $_GET['passwordClient'];
+            $passwordClient = mysqli_real_escape_string($connect, $passwordClient);
+            $ville = $_GET['ville'];
+            $ville = mysqli_real_escape_string($connect, $ville);
+            $codepostal = $_GET['codepostal'];
+            $codepostal = mysqli_real_escape_string($connect, $codepostal);
+            $passwordCryptClient = md5("secureClient".$passwordClient."Clientsecure");
+            $passwordCryptClient = mysqli_real_escape_string($connect, $passwordCryptClient);
+            $date = date("Y-m-d");
+
+            $sql = "SELECT COUNT(*) FROM `acctclient` WHERE `identreprise` = '".$idEntreprise."'";
+            $result = mysqli_query($connect, $sql);
+
+            while($row = mysqli_fetch_row($result))
+            {
+
+                $totalClient = $row[0];
+
+
+            }
+
+            $sqldeux = "SELECT * FROM `accsociete` WHERE `id` = '".$idEntreprise."'";
+            $resultdeux = mysqli_query($connect, $sqldeux );
+
+            while($row = mysqli_fetch_assoc($resultdeux))
+            {
+
+                $limitationClient = $row['limitclient'];
+
+            }
+
+            if($totalClient === $limitationClient)
+            {
+
+                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'LIMITCLIENT-ATTEIND')");
+                $json = json_encode("#LIMITCLIENT#ATTEIND");
+
+            }
+            else
+            {
+
+                $sqltrois = "SELECT * FROM `acctclient` WHERE `email` = '".$emailClient."'";
+                $resultrois = mysqli_query($connect, $sqltrois);
+                if(mysqli_num_rows($resultrois))
+                {
+    
+                    mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'AJTCLIENT-EXIST')");
+                    $json = json_encode("#AJTCLIENT#EXISTE");
+    
+                }
+                else
+                {
+    
+    
+                    $sqlquatre = "INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `naissance`, `nom`, `prenom`, `adresse`, `telephone`, `email`, `password`, `nbpointage`, `nbcarteterminer`, `nbpointagetotal`, `pointboutique`, `rating`, `codepostal`, `ville`) VALUES (NULL, '".$idEntreprise."', '0', '".$dateInscription."', '".$dateDeNaissance."', '".$nomClient."', '".$prenomClient."', '".$adresseClient."', '".$telephoneClient."', '".$emailClient."', '".$passwordCryptClient."', '0', '0', '0', '0', '0', '".$codepostal."', '".$ville."')";
+                    if(mysqli_query($connect, $sqlquatre))
+                    {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'AJTCLIENT-SUCCESS')");        
+                        $json = json_encode("#AJTCLIENT#SUCCESS");
+        
+                    }
+                    else
+                    {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'AJTCLIENT-ERROR')");        
+                        $json = json_encode("#AJTCLIENT#ERROR");
+        
+                    }
+                    
+                    
+    
+    
+                }
+
+            }
+
+            echo $json;
 
             mysqli_close($connect);
             break;
@@ -688,6 +826,11 @@ if(isset($_GET['action']))
                     $nomSociete = mysqli_real_escape_string($connect, $nomSociete);
                     $telephone = $_GET['telephone'];
                     $telephone = mysqli_real_escape_string($connect, $telephone);
+                    $codepostal = $_GET['codepostal'];
+                    $codepostal = mysqli_real_escape_string($connect, $codepostal);
+                    $ville = $_GET['ville'];
+                    $ville = mysqli_real_escape_string($connect, $ville);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `accsociete` WHERE `id` = $id";
                     $result = mysqli_query($connect, $sql);
@@ -696,16 +839,18 @@ if(isset($_GET['action']))
                     {
         
         
-                        $sqldeux = "UPDATE `accsociete` SET `nom` = '".$nom."', `prenom` = '".$prenom."', `adresse` = '".$adresse."', `telephone` = '".$telephone."', `email` = '".$email."' WHERE `id` = $id";
+                        $sqldeux = "UPDATE `accsociete` SET `nom` = '".$nom."', `prenom` = '".$prenom."', `adresse` = '".$adresse."', `telephone` = '".$telephone."', `email` = '".$email."', `codepostal` = '".$codepostal."', `ville` = '".$ville."' WHERE `id` = $id";
                         if(mysqli_query($connect, $sqldeux))
                         {
             
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'MAJENT-SUCCESS')");        
                             $json = json_encode("#MAJENT#SUCCESS");
             
                         }
                         else
                         {
-            
+
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'MAJENT-FAILED')");                    
                             $json = json_encode("#MAJENT#FAILED");
             
                         }
@@ -716,7 +861,7 @@ if(isset($_GET['action']))
                     else
                     {
         
-        
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ENT-NOEXIST')");        
                         $json = json_encode("#ENT#NOEXIST");
         
         
@@ -765,6 +910,11 @@ if(isset($_GET['action']))
                     $email = mysqli_real_escape_string($connect, $email);
                     $telephone = $_GET['telephone'];
                     $telephone = mysqli_real_escape_string($connect, $telephone);
+                    $ville = $_GET['ville'];
+                    $ville = mysqli_real_escape_string($connect, $ville);
+                    $codepostal = $_GET['codepostal'];
+                    $codepostal = mysqli_real_escape_string($connect, $codepostal);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `acctclient` WHERE `id` = $id AND `idsouche` = '0'";
                     $result = mysqli_query($connect, $sql);
@@ -773,16 +923,18 @@ if(isset($_GET['action']))
                     {
         
         
-                        $sqldeux = "UPDATE `acctclient` SET `nom` = '".$nom."', `prenom` = '".$prenom."', `adresse` = '".$adresse."', `telephone` = '".$telephone."', `email` = '".$email."' WHERE `id` = $id OR `idsouche` = $id";
+                        $sqldeux = "UPDATE `acctclient` SET `nom` = '".$nom."', `prenom` = '".$prenom."', `adresse` = '".$adresse."', `telephone` = '".$telephone."', `email` = '".$email."', `codepostal` = '".$codepostal."', `ville` = '".$ville."' WHERE `id` = $id OR `idsouche` = $id";
                         if(mysqli_query($connect, $sqldeux))
                         {
             
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '".$id."', '".$date."', 'MAJCLIENT-SUCCESS')");        
                             $json = json_encode("#MAJCLIENT#SUCCESS");
             
                         }
                         else
                         {
-            
+
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '".$id."', '".$date."', 'MAJCLIENT-FAILED')");        
                             $json = json_encode("#MAJCLIENT#FAILED");
             
                         }
@@ -793,7 +945,7 @@ if(isset($_GET['action']))
                     else
                     {
         
-        
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '".$id."', '".$date."', 'MAJCLIENT-NOSOUCHE')");        
                         $json = json_encode("#MAJCLIENT#NOSOUCHE");
         
         
@@ -839,6 +991,7 @@ if(isset($_GET['action']))
                     $nouveauMDP = mysqli_real_escape_string($connect, $nouveauMDP);
                     $cryptNewMDP = md5("secureINS".$nouveauMDP."INSecure");
                     $cryptNewMDP = mysqli_real_escape_string($connect, $cryptNewMDP);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `accsociete` WHERE `id` = $id AND `password` = '".$cryptPassword."'";
                     $result = mysqli_query($connect, $sql);
@@ -849,13 +1002,15 @@ if(isset($_GET['action']))
                         $sqldeux = "UPDATE `accsociete` SET `password` = '".$cryptNewMDP."' WHERE `id` = $id";
                         if(mysqli_query($connect, $sqldeux))
                         {
-        
+
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'MDFMDP-SUCCESS')");     
                             $json = json_encode("#MDFMDP#SUCCESS");
         
                         }
                         else
                         {
         
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'MDFMDP-FAILED')");     
                             $json = json_encode("#MDFMDP#FAILED");
         
                         }
@@ -863,7 +1018,8 @@ if(isset($_GET['action']))
                     }
                     else
                     {
-        
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'MDFMDP-NOSOUCHE')");     
                         $json = json_encode("#MDFMDP#NOSOUCHE");
         
                     }
@@ -908,6 +1064,7 @@ if(isset($_GET['action']))
                     $nouveauMDP = mysqli_real_escape_string($connect, $nouveauMDP);
                     $cryptNewMDP = md5("secureClient".$nouveauMDP."Clientsecure");
                     $cryptNewMDP = mysqli_real_escape_string($connect, $cryptNewMDP);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `acctclient` WHERE `id` = $id AND `password` = '".$cryptPassword."' AND `idsouche` = '0'";
                     $result = mysqli_query($connect, $sql);
@@ -919,12 +1076,14 @@ if(isset($_GET['action']))
                         if(mysqli_query($connect, $sqldeux))
                         {
         
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '".$id."', '".$date."', 'MDFMDPCLIENT-SUCCESS')");     
                             $json = json_encode("#MDFMDP#SUCCESS");
         
                         }
                         else
                         {
         
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '".$id."', '".$date."', 'MDFMDPCLIENT-FAILED')");     
                             $json = json_encode("#MDFMDP#FAILED");
         
                         }
@@ -933,6 +1092,7 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '".$id."', '".$date."', 'MDFMDPCLIENT-NOSOUCHE')");    
                         $json = json_encode("#MDFMDP#NOSOUCHE");
         
                     }
@@ -969,6 +1129,7 @@ if(isset($_GET['action']))
             $cadeaux = mysqli_real_escape_string($connect, $cadeaux);
             $code = rand(1, 99).rand(2, 999).rand(3, 9999);
             $code = mysqli_real_escape_string($connect, $code);
+            
 
             $sql = "SELECT * FROM `acctclient` WHERE `id` = '$id'";
             $result = mysqli_query($connect, $sql);
@@ -1161,10 +1322,13 @@ if(isset($_GET['action']))
             $connexionPassword = mysqli_real_escape_string($connect, $connexionPassword);
             $protectcomdp = md5("secureClient".$connexionPassword."Clientsecure");
             $protectcomdp = mysqli_real_escape_string($connect, $protectcomdp);
+            $date = date("Y-m-d");
 
             $sql = "SELECT * FROM `acctclient` WHERE `identreprise` = '".$idEntreprise."' AND `email` = '".$connexionEmail."' AND `password` = '".$protectcomdp."'";
             $result = mysqli_query($connect, $sql);
             if(mysqli_num_rows($result)){
+
+                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'COCLIENT-SUCCESS')");     
 
                 while($row[] = mysqli_fetch_assoc($result))
                 {
@@ -1174,6 +1338,8 @@ if(isset($_GET['action']))
                 }
             
             }else{
+
+                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, ''".$idEntreprise."'', '0', '".$date."', 'COCLIENT-FAILED')");     
             
                 $json = json_encode('#COCLIENT#ECHEC');
             
@@ -1183,114 +1349,6 @@ if(isset($_GET['action']))
 
             mysqli_close($connect);
 
-
-            break;
-        case 'afficheCadeauxAttente':
-
-            if(isset($_GET['apikey']))
-            {
-
-                $apikey = $_GET['apikey'];
-
-                $globalSql = "SELECT * FROM `apikey` WHERE `apikey` = '".$apikey."'";
-                $resultSql = mysqli_query($connect, $globalSql);
-            
-                if(mysqli_num_rows($resultSql))
-                {
-
-                    $idClient = $_GET['id'];
-                    $idClient = mysqli_real_escape_string($connect, $idClient);
-        
-                    $sql = "SELECT * FROM `fidcadeaux` WHERE `idclient` = $idClient AND `statut` = '1' ORDER BY `date` DESC";
-                    $result = mysqli_query($connect, $sql);
-        
-                    if(mysqli_num_rows($result))
-                    {
-        
-                        while($row[] = mysqli_fetch_assoc($result))
-                        {
-                    
-                            $json = json_encode($row);
-                    
-                        }
-        
-        
-                    }
-                    else
-                    {
-        
-                        $json = json_encode("#AFFCADEAUX#ECHEC");
-        
-                    }
-        
-                    echo $json;
-
-                }
-                else
-                {
-
-                    $jsonKey = json_encode("#APIKEY#NOEXIST");
-                    echo $jsonKey;
-
-                }
-
-
-            }
-
-            mysqli_close($connect);
-
-            break;
-        case 'confirmationCadeaux':
-
-            if(isset($_GET['apikey']))
-            {
-
-                $apikey = $_GET['apikey'];
-
-                $globalSql = "SELECT * FROM `apikey` WHERE `apikey` = '".$apikey."'";
-                $resultSql = mysqli_query($connect, $globalSql);
-            
-                if(mysqli_num_rows($resultSql))
-                {
-
-                    $idCadeaux = $_GET['id'];
-                    $idCadeaux = mysqli_real_escape_string($connect, $idCadeaux);
-                    $dateReception = date("Y-m-d H:i:s");
-                    $dateReception = mysqli_real_escape_string($connect, $dateReception);
-        
-                    $sql = "UPDATE `fidcadeaux` SET `statut` = '2', `datereceptioncadeaux` = '".$dateReception."' WHERE `id` = $idCadeaux AND `statut` = '1'";
-                    
-                    $result = mysqli_query($connect, $sql);
-        
-                    if($result)
-                    {
-        
-                        $json = json_encode("#CONFIRMCADEAUX#SUCCESS");
-        
-                    }
-                    else
-                    {
-        
-                        $json = json_encode("#CONFIRMCADEAUX#ECHEC");
-        
-                    }
-        
-                    echo $json;
-
-                }
-                else
-                {
-
-                    $jsonKey = json_encode("#APIKEY#NOEXIST");
-                    echo $jsonKey;
-
-                }
-
-
-            }
-
-            mysqli_close($connect);
-            
             break;
         case 'afficheCadeauxRecu':
 
@@ -1307,6 +1365,9 @@ if(isset($_GET['action']))
 
                     $idClient = $_GET['id'];
                     $idClient = mysqli_real_escape_string($connect, $idClient);
+                    $idEntreprise = $_GET['identreprise'];
+                    $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `fidcadeaux` WHERE `idclient` = $idClient AND `statut` = '2' ORDER BY `datereceptioncadeaux` DESC";
                     $result = mysqli_query($connect, $sql);
@@ -1314,6 +1375,8 @@ if(isset($_GET['action']))
                     if(mysqli_num_rows($result))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'AFFCADEAUXRECU-SUCCESS')");     
+
                         while($row[] = mysqli_fetch_assoc($result))
                         {
                     
@@ -1326,6 +1389,8 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'AFFCADEAUXRECU-ECHEC')");     
+
                         $json = json_encode("#AFFCADEAUXRECU#ECHEC");
         
                     }
@@ -1366,6 +1431,7 @@ if(isset($_GET['action']))
                     $prestation = mysqli_real_escape_string($connect, $prestation);
                     $prix = $_GET['prix'];
                     $prix = mysqli_real_escape_string($connect, $prix);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `accsociete` WHERE `id` = $idEntreprise";
                     $result = mysqli_query($connect, $sql);
@@ -1376,6 +1442,8 @@ if(isset($_GET['action']))
                     if(mysqli_num_rows($result))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'AJTCADEAUX-EXISTE')");     
+
                         $json = json_encode("#AJTCADEAUX#EXISTE");
         
                     }
@@ -1386,11 +1454,14 @@ if(isset($_GET['action']))
                         if(mysqli_query($connect, $sqldeux))
                         {
         
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'AJTCADEAUX-SUCCESS')");     
+
                             $json = json_encode("#AJTCADEAUX#SUCCESS");
         
                         }
                         else
                         {
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'AJTCADEAUX-FAILED')");     
         
                             $json = json_encode("#AJTCADEAUX#ECHEC");
         
@@ -1438,12 +1509,15 @@ if(isset($_GET['action']))
                     $prestation = mysqli_real_escape_string($connect, $prestation);
                     $prix = $_GET['prix'];
                     $prix = mysqli_real_escape_string($connect, $prix);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise AND `prestation` = '".$prestation."'";
                     $result = mysqli_query($connect, $sql);
         
                     if(mysqli_num_rows($result))
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'AJTCADEAUX-EXISTE')");     
         
                         $json = json_encode("#AJTCADEAUX#EXISTE");
         
@@ -1455,11 +1529,15 @@ if(isset($_GET['action']))
                         if(mysqli_query($connect, $sqldeux))
                         {
         
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'AJTCADEAUX-SUCCESS')");     
+
                             $json = json_encode("#AJTCADEAUX#SUCCESS");
         
                         }
                         else
                         {
+
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'AJTCADEAUX-FAILED')");     
         
                             $json = json_encode("#AJTCADEAUX#ECHEC");
         
@@ -1503,16 +1581,20 @@ if(isset($_GET['action']))
                     $idProduitPrincipale = mysqli_real_escape_string($connect, $idProduitPrincipale);
                     $sommeTotal = $_GET['sommetotal'];
                     $sommeTotal = mysqli_real_escape_string($connect, $sommeTotal);
+                    $date = date("Y-m-d");
         
                     $sql = "UPDATE `cadeaux` SET `prix` = '".$sommeTotal."', `prdtgrp` = '1' WHERE `id` = $idProduitPrincipale;";
                     if(mysqli_query($connect, $sql))
                     {
-        
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'MAJPRDTOTAL-SUCCESS')");     
+
                         $json = json_encode("#MAJPRDTOTAL#SUCCESS");
         
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'MAJPRDTOTAL-FAILED')");     
         
                         $json = json_encode("#MAJPRDTOTAL#FAILED");
         
@@ -1550,6 +1632,7 @@ if(isset($_GET['action']))
 
                     $idEntreprise = $_GET['id'];
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
                     
                     $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise AND `activation` = '1'";
                     $result = mysqli_query($connect, $sql);
@@ -1557,6 +1640,8 @@ if(isset($_GET['action']))
                     if(mysqli_num_rows($result))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'SLCTLISTECADEAUX-SUCCESS')");     
+
                         while($row[] = mysqli_fetch_assoc($result))
                         {
         
@@ -1569,7 +1654,8 @@ if(isset($_GET['action']))
                     else
                     {
         
-        
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'SLCTLISTECADEAUX-FAILED')");     
+
                         $json = json_encode("#SLCTLISTECADEAUX#ECHEC");
         
         
@@ -1610,6 +1696,7 @@ if(isset($_GET['action']))
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
                     $idPrestation = $_GET['idprestation'];
                     $idPrestation = mysqli_real_escape_string($connect, $idPrestation);
+                    $date = date("Y-m-d");
                     
                     $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise AND `idprestation` = '".$idPrestation."' AND `activation` = '1'";
                     $result = mysqli_query($connect, $sql);
@@ -1617,6 +1704,8 @@ if(isset($_GET['action']))
                     if(mysqli_num_rows($result))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'LISTECADEAUXGRP-SUCCESS')");     
+
                         while($row[] = mysqli_fetch_assoc($result))
                         {
         
@@ -1629,6 +1718,7 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'LISTECADEAUXGRP-FAILED')");     
         
                         $json = json_encode("#LISTECADEAUXGRP#ECHEC");
         
@@ -1669,6 +1759,7 @@ if(isset($_GET['action']))
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
                     $idPrestation = $_GET['idprestation'];
                     $idPrestation = mysqli_real_escape_string($connect, $idPrestation);
+                    $date = date("Y-m-d");
                     
                     $sql = "DELETE FROM `cadeaux` WHERE `idprestation` = '".$idPrestation."'";
                     $sqldeux = "UPDATE `cadeaux` SET `prdtgrp` = '0' WHERE `id` = '".$idPrestation."'";
@@ -1677,7 +1768,9 @@ if(isset($_GET['action']))
         
                         if(mysqli_query($connect, $sqldeux))
                         {
-        
+
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'DISSOLUTION-SUCCESS')");     
+
                             $json = json_encode("#DISSOLUTION#SUCCESS");
         
                         }
@@ -1686,6 +1779,8 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'DISSOLUTION-FAILED')");     
+
                         $json = json_encode("#DISSOLUTION#FAILED");
         
         
@@ -1723,13 +1818,16 @@ if(isset($_GET['action']))
 
                     $idEntreprise = $_GET['id'];
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
                     
                     $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = $idEntreprise AND `activation` = '0'";
                     $result = mysqli_query($connect, $sql);
         
                     if(mysqli_num_rows($result))
                     {
-        
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'SLCTLISTECADEAUXINACTIF-SUCCESS')");     
+
                         while($row[] = mysqli_fetch_assoc($result))
                         {
         
@@ -1742,6 +1840,7 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'SLCTLISTECADEAUXINACTIF-FAILED')");     
         
                         $json = json_encode("#SLCTLISTECADEAUXINACTIF#ECHEC");
         
@@ -1780,17 +1879,22 @@ if(isset($_GET['action']))
 
                     $id = $_GET['id'];
                     $id = mysqli_real_escape_string($connect, $id);
+                    $date = date("Y-m-d");
         
                     $sql = "UPDATE `cadeaux` SET `activation` = '1' WHERE `id` = $id";
                     if(mysqli_query($connect, $sql))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'ENABLEGIFT-SUCCESS')");     
+
                         $json = json_encode("#ENABLEGIFT#SUCCESS");
         
         
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'ENABLEGIFT-FAILED')");     
         
                         $json = json_encode("#ENABLEGIFT#ECHEC");
         
@@ -1828,10 +1932,13 @@ if(isset($_GET['action']))
 
                     $id = $_GET['id'];
                     $id = mysqli_real_escape_string($connect, $id);
+                    $date = date("Y-m-d");
         
                     $sql = "UPDATE `cadeaux` SET `activation` = '0' WHERE `id` = $id";
                     if(mysqli_query($connect, $sql))
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'DISABLEGIFT-SUCCESS')");     
         
                         $json = json_encode("#DISABLEGIFT#SUCCESS");
         
@@ -1840,6 +1947,8 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'DISABLEGIFT-FAILED')");     
+
                         $json = json_encode("#DISABLEGIFT#ECHEC");
         
                     }
@@ -1880,18 +1989,23 @@ if(isset($_GET['action']))
                     $nomPrestation = mysqli_real_escape_string($connect, $nomPrestation);
                     $prixPrestation = $_GET['prixprestation'];
                     $prixPrestation = mysqli_real_escape_string($connect, $prixPrestation);
+                    $date = date("Y-m-d");
         
         
                     $sql = "UPDATE `cadeaux` SET `prestation` = '".$nomPrestation."', prix = '".$prixPrestation."' WHERE `id` = $idprestation";
                     if(mysqli_query($connect, $sql))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'MDFPRODUIT-SUCCESS')");     
+
                         $json = json_encode("#MDFPRODUIT#SUCCESS");
         
         
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'MDFPRODUIT-FAILED')");     
         
                         $json = json_encode("#MDFPRODUIT#FAILED");
         
@@ -1929,17 +2043,22 @@ if(isset($_GET['action']))
 
                     $id = $_GET['id'];
                     $id = mysqli_real_escape_string($connect, $id);
+                    $date = date("Y-m-d");
         
                     $sql = "DELETE FROM `cadeaux` WHERE `id` = $id";
                     if(mysqli_query($connect, $sql))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'DELETEGIFT-SUCCESS')");     
+
                         $json = json_encode("#DELETEGIFT#SUCCESS");
         
         
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '0', '".$date."', 'DELETEGIFT-FAILED')");     
         
                         $json = json_encode("#DELETEGIFT#ECHEC");
         
@@ -1982,6 +2101,7 @@ if(isset($_GET['action']))
                     $fileinfo = getimagesize($_FILES["image"]["tmp_name"]);
                     $width = $fileinfo[0];
                     $height = $fileinfo[1];
+                    $date = date("Y-m-d");
         
                     
         
@@ -2003,6 +2123,8 @@ if(isset($_GET['action']))
             
                                 $json = json_encode($response);*/
         
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'MAJBKGCARTE-SUCCESS')");     
+
                                 $json = json_encode("#MAJBKGCARTE#SUCCESS");
         
         
@@ -2010,6 +2132,8 @@ if(isset($_GET['action']))
                             else
                             {
         
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'MAJBKGCARTE-FAILED')");     
+
                                 $json = json_encode("#MAJBKGCARTE#FAILED");
         
                             }
@@ -2024,6 +2148,8 @@ if(isset($_GET['action']))
                             );
         
                             $json = json_encode($response);*/
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'UPLOADCARTE-FAILED')");     
+
                             $json = json_encode("#UPLOADCARTE#FAILED");
             
                         } 
@@ -2038,6 +2164,8 @@ if(isset($_GET['action']))
                         );
         
                         $json = json_encode($response);*/
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'UPLOADIMENSION-FAILED')");     
         
                         $json = json_encode("#UPLOADIMENSION#FAILED");
         
@@ -2080,6 +2208,7 @@ if(isset($_GET['action']))
                     $fileinfo = getimagesize($_FILES["image"]["tmp_name"]);
                     $width = $fileinfo[0];
                     $height = $fileinfo[1];
+                    $date = date("Y-m-d");
         
                     
         
@@ -2097,6 +2226,8 @@ if(isset($_GET['action']))
                             );
         
                             $json = json_encode($response);*/
+
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'EXTLOGOUPLOAD-FAILED')");     
         
                             $json = json_encode("#EXTLOGOUPLOAD#FAILED");
         
@@ -2117,6 +2248,8 @@ if(isset($_GET['action']))
                                     );
                 
                                     $json = json_encode($response);*/
+
+                                    mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'MAJLOGOCARTE-SUCCESS')");     
         
                                     $json = json_encode("#MAJLOGOCARTE#SUCCESS");
             
@@ -2125,6 +2258,8 @@ if(isset($_GET['action']))
                                 else
                                 {
             
+                                    mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'MAJLOGOCARTE-FAILED')");     
+
                                     $json = json_encode("#MAJLOGOCARTE#FAILED");
             
                                 }
@@ -2139,8 +2274,10 @@ if(isset($_GET['action']))
                                 );
             
                                 $json = json_encode($response);*/
+
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'UPLOADLOGOCARTE-FAILED')");     
         
-                                $json = json_encode("#UPLOADLOGOCARTE#SUCCESS");
+                                $json = json_encode("#UPLOADLOGOCARTE#FAILED");
                 
                             } 
         
@@ -2159,6 +2296,8 @@ if(isset($_GET['action']))
                         );
         
                         $json = json_encode($response);*/
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'UPLOADIMENSIONLOGO-FAILED')");     
         
                         $json = json_encode("#UPLOADIMENSIONLOGO#FAILED");
         
@@ -2181,12 +2320,36 @@ if(isset($_GET['action']))
             mysqli_close($connect);
             break;
         case 'selectionSociete':
-
             $sql = "SELECT * FROM `accsociete`";
             $test = array();
             if($result = mysqli_query($connect, $sql))
             {
+                
+                while($row[] = mysqli_fetch_assoc($result))
+                {
 
+                    $json=json_encode($row);
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#LISTENT#FAILED");
+                
+            }
+
+            echo $json;
+            mysqli_close($connect);
+
+            break;
+        case 'selectZonage':
+            $sql = "SELECT * FROM `adm_zone`";
+            $test = array();
+            if($result = mysqli_query($connect, $sql))
+            {
+                
                 while($row[] = mysqli_fetch_assoc($result))
                 {
 
@@ -2221,11 +2384,14 @@ if(isset($_GET['action']))
 
                     $idEntreprise = $_GET['identreprise'];
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `cadeaux` WHERE `identreprise` = '".$idEntreprise."' AND `activation` = '1'";
                     if($result = mysqli_query($connect, $sql))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'LISTENT-SUCCESS')");     
+
                         while($row[] = mysqli_fetch_assoc($result))
                         {
         
@@ -2237,6 +2403,8 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'LISTENT-FAILED')");     
+
                         $json = json_encode("#LISTENT#FAILED");
                         
                     }
@@ -2287,12 +2455,15 @@ if(isset($_GET['action']))
         
                             $idSouche = $row['id'];
                             $dateInscription = $row['dinscription'];
+                            $naissance = $row['naissance'];
                             $nom = $row['nom'];
                             $prenom = $row['prenom'];
                             $adresse = $row['adresse'];
                             $telephone = $row['telephone'];
                             $email = $row['email'];
                             $password = $row['password'];  
+                            $codepostal = $row['codepostal'];
+                            $ville = $row['ville'];
         
                         }
         
@@ -2302,22 +2473,28 @@ if(isset($_GET['action']))
                         if(mysqli_num_rows($resultdeux))
                         {
         
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'ASSOCIATION-EXIST')");     
+
                             $json = json_encode("#ASSOC#EXIST");
         
                         }
                         else
                         {
         
-                            $sqltrois = "INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `nom`, `prenom`, `adresse`, `telephone`, `email`, `password`, `nbcartetotal`, `nbcarteterminer`, `nbpointagetotal`) VALUES (NULL, '".$idEntreprise."', '".$idSouche."', '".$date."', '".$nom."', '".$prenom."', '".$adresse."', '".$telephone."', '".$email."', '".$password."', '0', '0', '0')";
+                            $sqltrois = "INSERT INTO `acctclient` (`id`, `identreprise`, `idsouche`, `dinscription`, `naissance`, `nom`, `prenom`, `adresse`, `telephone`, `email`, `password`, `nbpointage`, `nbcarteterminer`, `nbpointagetotal`, `pointboutique`, `rating`, `codepostal`, `ville`) VALUES (NULL, '".$idEntreprise."', '".$idSouche."', '".$date."', '".$naissance."', '".$nom."', '".$prenom."', '".$adresse."', '".$telephone."', '".$email."', '".$password."', '0', '0', '0', '0', '0', '".$codepostal."', '".$ville."')";
                             if($resultrois = mysqli_query($connect, $sqltrois))
                             {
             
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'ASSOCIATION-SUCCESS')");     
+
                                 $json = json_encode("#ASSOC#SUCCESS");
             
                             }
                             else
                             {
             
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'ASSOCIATION-FAILED')");     
+
                                 $json = json_encode("#ASSOC#FAILED");
             
                             }
@@ -2327,6 +2504,8 @@ if(isset($_GET['action']))
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'ASSOCIATION-NOEXIST')");     
         
                         $json = json_encode("#ASSOC#NOEXIST");
         
@@ -2372,6 +2551,7 @@ if(isset($_GET['action']))
                     $jour = $tmp[2]; // on récupère le jour
                     $mois = $tmp[1]; // puis le mois
                     $annee = $tmp[0]; // l'annee ...
+                    $date = date("Y-m-d");
         
                     $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
                     $finaldate_expiration = date("Y-m-d", $date_expiration);
@@ -2391,12 +2571,16 @@ if(isset($_GET['action']))
                         if(mysqli_query($connect, $update))
                         {
         
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ABOBRONZE-SUCCESS')");     
+
                                 $json = json_encode("#ABOBRONZE#SUCCESS");
         
                         }
                         else
                         {
         
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ABOBRONZE-FAILED')");     
+
                                 $json = json_encode("#ABOBRONZE#FAILED");
         
                         }
@@ -2445,6 +2629,7 @@ if(isset($_GET['action']))
                     $jour = $tmp[2]; // on récupère le jour
                     $mois = $tmp[1]; // puis le mois
                     $annee = $tmp[0]; // l'annee ...
+                    $date = date("Y-m-d");
         
                     $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
                     $finaldate_expiration = date("Y-m-d", $date_expiration);
@@ -2464,11 +2649,15 @@ if(isset($_GET['action']))
                         if(mysqli_query($connect, $update))
                         {
         
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ABOBRONZEANN-SUCCESS')");     
+
                                 $json = json_encode("#ABOBRONZEANN#SUCCESS");
         
                         }
                         else
                         {
+
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ABOBRONZEANN-FAILED')");     
         
                                 $json = json_encode("#ABOBRONZEANN#FAILED");
         
@@ -2518,6 +2707,7 @@ if(isset($_GET['action']))
                     $jour = $tmp[2]; // on récupère le jour
                     $mois = $tmp[1]; // puis le mois
                     $annee = $tmp[0]; // l'annee ...
+                    $date = date("Y-m-d");
         
                     $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
                     $finaldate_expiration = date("Y-m-d", $date_expiration);
@@ -2537,12 +2727,16 @@ if(isset($_GET['action']))
                         if(mysqli_query($connect, $update))
                         {
         
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ABOARGENT-SUCCESS')");     
+
                                 $json = json_encode("#ABOARGENT#SUCCESS");
         
                         }
                         else
                         {
         
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ABOARGENT-FAILED')");     
+
                                 $json = json_encode("#ABOARGENT#FAILED");
         
                         }
@@ -2591,6 +2785,7 @@ if(isset($_GET['action']))
                     $jour = $tmp[2]; // on récupère le jour
                     $mois = $tmp[1]; // puis le mois
                     $annee = $tmp[0]; // l'annee ...
+                    $date = date("Y-m-d");
         
                     $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
                     $finaldate_expiration = date("Y-m-d", $date_expiration);
@@ -2610,11 +2805,15 @@ if(isset($_GET['action']))
                         if(mysqli_query($connect, $update))
                         {
         
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ABOARGENTANN-SUCCESS')");     
+
                                 $json = json_encode("#ABOARGENTANN#SUCCESS");
         
                         }
                         else
                         {
+
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ABOARGENTANN-FAILED')");     
         
                                 $json = json_encode("#ABOARGENTANN#FAILED");
         
@@ -2664,6 +2863,7 @@ if(isset($_GET['action']))
                     $jour = $tmp[2]; // on récupère le jour
                     $mois = $tmp[1]; // puis le mois
                     $annee = $tmp[0]; // l'annee ...
+                    $date = date("Y-m-d");
         
                     $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
                     $finaldate_expiration = date("Y-m-d", $date_expiration);
@@ -2683,11 +2883,15 @@ if(isset($_GET['action']))
                         if(mysqli_query($connect, $update))
                         {
         
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ABOOR-SUCCESS')");     
+
                                 $json = json_encode("#ABOOR#SUCCESS");
         
                         }
                         else
                         {
+
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ABOOR-FAILED')");     
         
                                 $json = json_encode("#ABOOR#FAILED");
         
@@ -2737,6 +2941,7 @@ if(isset($_GET['action']))
                     $jour = $tmp[2]; // on récupère le jour
                     $mois = $tmp[1]; // puis le mois
                     $annee = $tmp[0]; // l'annee ...
+                    $date = date("Y-m-d");
         
                     $date_expiration = mktime($mois, $jour, $annee)+ 24*3600*$nbre;
                     $finaldate_expiration = date("Y-m-d", $date_expiration);
@@ -2756,12 +2961,16 @@ if(isset($_GET['action']))
                         if(mysqli_query($connect, $update))
                         {
         
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ABOORANN-SUCCESS')");     
+
                                 $json = json_encode("#ABOORANN#SUCCESS");
         
                         }
                         else
                         {
         
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$id."', '0', '".$date."', 'ABOORANN-FAILED')");     
+
                                 $json = json_encode("#ABOORANN#FAILED");
         
                         }
@@ -2803,6 +3012,7 @@ if(isset($_GET['action']))
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
                     $idClient = $_GET['idclient'];
                     $idClient = mysqli_real_escape_string($connect, $idClient);
+                    $date = date("Y-m-d");
                     
                     $sql = "SELECT * FROM `pointage` WHERE `identreprise` = '".$idEntreprise."' AND `idclient` = '".$idClient."' ORDER BY `id` DESC";
                     $result = mysqli_query($connect, $sql);
@@ -2810,6 +3020,8 @@ if(isset($_GET['action']))
                     if(mysqli_num_rows($result))
                     {
         
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'LSTPOINTAGE-SUCCESS')");     
+
                             while($row[] = mysqli_fetch_assoc($result))
                             {
         
@@ -2821,6 +3033,8 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'LSTPOINTAGE-VIDE')");     
+
                         $json = json_encode("#POINTAGE#VIDE");
         
         
@@ -2858,12 +3072,15 @@ if(isset($_GET['action']))
 
                     $idEntreprise = $_GET['ident'];
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
         
         
                     $sql = "SELECT ROUND(SUM(prix), 2) AS `sommeTotal` FROM `pointage` WHERE `identreprise` = $idEntreprise";
         
                     if($result = mysqli_query($connect, $sql))
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'GTOTALCLT-SUCCESS')");     
         
                         while($row = mysqli_fetch_assoc($result))
                         {
@@ -2876,6 +3093,8 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'GTOTALCLT-FAILED')");     
+
                         $json = json_encode("#GTOTALCLT#FAILED");
         
                     }
@@ -2914,12 +3133,15 @@ if(isset($_GET['action']))
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
                     $idClient = $_GET['idclt'];
                     $idClient = mysqli_real_escape_string($connect, $idClient);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT ROUND(SUM(prix), 2) AS `sommeTotal` FROM `pointage` WHERE `identreprise` = $idEntreprise AND `idclient` = $idClient AND `statut` = '2'";
         
                     if($result = mysqli_query($connect, $sql))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'GTOTALCLT-SUCCESS')");     
+
                         while($row = mysqli_fetch_assoc($result))
                         {
         
@@ -2930,6 +3152,8 @@ if(isset($_GET['action']))
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'GTOTALCLT-FAILED')");     
         
                         $json = json_encode("#GTOTALCLT#FAILED");
         
@@ -2967,12 +3191,17 @@ if(isset($_GET['action']))
 
                     $idClient = $_GET['idclt'];
                     $idClient = mysqli_real_escape_string($connect, $idClient);
+                    $idEntreprise = $_GET['identreprise'];
+                    $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT ROUND(SUM(prix), 2) AS `sommeTotal` FROM `fidcadeaux` WHERE `idclient` = $idClient AND `statut` = '2'";
         
                     if($result = mysqli_query($connect, $sql))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'GTTPRSTATION-SUCCESS')");     
+
                         while($row = mysqli_fetch_assoc($result))
                         {
         
@@ -2983,6 +3212,8 @@ if(isset($_GET['action']))
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'GTTPRSTATION-FAILED')");     
         
                         $json = json_encode("#GTTPRSTATION#FAILED");
         
@@ -3022,12 +3253,15 @@ if(isset($_GET['action']))
                     $idCarte = mysqli_real_escape_string($connect, $idCarte);
                     $idClient = $_GET['idclt'];
                     $idClient = mysqli_real_escape_string($connect, $idClient);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT ROUND(SUM(prix), 2) AS `sommeTotal` FROM `fidcadeaux` WHERE `idclient` = $idClient AND `idcarte` = '".$idCarte."' AND `statut` = '2'";
         
                     if($result = mysqli_query($connect, $sql))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '".$idClient."', '".$date."', 'GTTPRSTATION-SUCCESS')");     
+
                         while($row = mysqli_fetch_assoc($result))
                         {
         
@@ -3039,6 +3273,8 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '".$idClient."', '".$date."', 'GTTPRSTATION-FAILED')");     
+
                         $json = json_encode("#GTTPRSTATION#FAILED");
         
                     }
@@ -3061,7 +3297,7 @@ if(isset($_GET['action']))
 
             break;
         case 'maintenance':
-
+            $date = date("Y-m-d");
             $sql = "SELECT * FROM `parametres` WHERE `id` = '1'";
             if($result = mysqli_query($connect, $sql))
             {
@@ -3101,6 +3337,7 @@ if(isset($_GET['action']))
 
                     $idEntreprise = $_GET['ident'];
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `pointage` WHERE `identreprise` = '$idEntreprise'";
                     $result = mysqli_query($connect, $sql);
@@ -3108,6 +3345,8 @@ if(isset($_GET['action']))
                     if(mysqli_num_rows($result))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'LOGPOINTAGE-SUCCESS')");     
+
                         while($row[] = mysqli_fetch_assoc($result))
                         {
         
@@ -3119,7 +3358,9 @@ if(isset($_GET['action']))
                     else
                     {
         
-                        $json = json_encode("#LSTPOINTAGE#VIDE");
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'LOGPOINTAGE-VIDE')");     
+
+                        $json = json_encode("#LOGPOINTAGE#VIDE");
         
                     }
         
@@ -3155,6 +3396,7 @@ if(isset($_GET['action']))
 
                     $idEntreprise = $_GET['idEntreprise'];
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
                     //$idClient = $_GET['idclt'];
         
                     $sql = "SELECT * FROM `planning` WHERE `identreprise` = '".$idEntreprise."'";
@@ -3231,6 +3473,7 @@ if(isset($_GET['action']))
                     $reelend = mysqli_real_escape_string($connect, $reelend);
                     $idpropo = $_GET['idpropo'];
                     $idpropo = mysqli_real_escape_string($connect, $idpropo);
+                    $date = date("Y-m-d");
                     
                     $sql = "SELECT * FROM `planning` WHERE `identreprise` = '".$idEntreprise."' AND `reelstart` BETWEEN '".$reelstart."' AND '".$reelend."'";
                     $result = mysqli_query($connect, $sql);
@@ -3310,6 +3553,7 @@ if(isset($_GET['action']))
                     $uid = mysqli_real_escape_string($connect, $uid);
                     $color = $_GET['color'];
                     $color = mysqli_real_escape_string($connect, $color);
+                    $date = date("Y-m-d");
         
                     $sql = "UPDATE `planning` SET `nom` = '".$nom."', `startdatetime` = '".$starDate."', `enddatetime` = '".$endDate."', `departheure` = '".$startHeure."', `finheure` = '".$endHeure."', `classes` = '".$color."' WHERE `uid` = '".$uid."'";
                     if($result = mysqli_query($connect, $sql))
@@ -3357,6 +3601,7 @@ if(isset($_GET['action']))
 
                     $uid = $_GET['id'];
                     $uid = mysqli_real_escape_string($connect, $uid);
+                    
         
                     $sql = "UPDATE `planning` SET `statut` = '2' WHERE `id` = $uid";
                     if(mysqli_query($connect, $sql))
@@ -3509,17 +3754,22 @@ if(isset($_GET['action']))
                     $prestation = mysqli_real_escape_string($connect, $prestation);
                     $prix = $_GET['prix'];
                     $prix = mysqli_real_escape_string($connect, $prix);
+                    $date = date("Y-m-d");
         
                     $sql = "UPDATE `accsociete` SET `cadeaux` = '".$prestation."', `prixcadeaux` = '".$prix."' WHERE `id` = '".$idEntreprise."'";
                     if(mysqli_query($connect, $sql))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'UPENTGIFT-SUCCESS')");     
+
                         $json = json_encode("#UPENTGIFT#SUCCESS");
         
                     }
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'UPENTGIFT-FAILED')");     
+
                         $json = json_encode("#UPENTGIFT#FAILED");
         
                     }
@@ -3558,22 +3808,51 @@ if(isset($_GET['action']))
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
                     $prestation = $_GET['prestation'];
                     $prestation = mysqli_real_escape_string($connect, $prestation);
+                    $date = date("Y-m-d");
         
-                    $sql = "UPDATE `accsociete` SET `limitpointage` = '".$prestation."' WHERE `id` = '".$idEntreprise."'";
-                    if(mysqli_query($connect, $sql))
+                    $sqlVerifPresta = "SELECT COUNT(*) FROM `acctclient` WHERE `identreprise` = '".$idEntreprise."' AND `nbpointage` != '0'";
+                    $resultVerif = mysqli_query($connect, $sqlVerifPresta);
+                    while($row = mysqli_fetch_row($resultVerif))
                     {
-        
-                        $json = json_encode("#UPENTPNT#SUCCESS");
-        
+
+                        $checkPointageGlobal = $row[0];
+
+                    }
+
+                    if($checkPointageGlobal === "0")
+                    {
+
+                        $sql = "UPDATE `accsociete` SET `limitpointage` = '".$prestation."' WHERE `id` = '".$idEntreprise."'";
+                        if(mysqli_query($connect, $sql))
+                        {
+            
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'UPENTPNT-SUCCESS')");     
+    
+                            $json = json_encode("#UPENTPNT#SUCCESS");
+            
+                        }
+                        else
+                        {
+    
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'UPENTPNT-FAILED')");     
+            
+                            $json = json_encode("#UPENTPNT#FAILED");
+            
+                        }
+            
+                        echo $json;
+
                     }
                     else
                     {
-        
-                        $json = json_encode("#UPENTPNT#FAILED");
-        
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'CHGPRESTATION-FAILED')");     
+
+                        $json = json_encode("#CHGPRESTATION#FAILED");
+
+                        echo $json;
+
                     }
-        
-                    echo $json;
 
                 }
                 else
@@ -3605,10 +3884,13 @@ if(isset($_GET['action']))
 
                     $idEntreprise = $_GET['identreprise'];
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
         
                     $sql = "UPDATE `accsociete` SET `prestation` = 'Vide', `prix` = '0' WHERE `id` = '".$idEntreprise."'";
                     if(mysqli_query($connect, $sql))
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'RESETPRESTA-SUCCESS')");     
         
                         $json = json_encode("#RESETPRESTA#SUCCESS");
         
@@ -3616,6 +3898,8 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'RESETPRESTA-FAILED')");     
+
                         $json = json_encode("#RESETPRESTA#FAILED");
         
                     }
@@ -3729,6 +4013,10 @@ if(isset($_GET['action']))
         
                                 mysqli_query($connect, "UPDATE `accsociete` SET `prestation` = 'Vide', `prix` = '0' WHERE `id` = '".$idEntreprise."'"); // RESET PRESTATION ENTREPRISE + AJOUT SCORE POINTAGE
         
+                                // 7 - ON TRACE L'EVENT API 
+
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'LIMITPOINTAGE-ATTEIND')");     
+
                                 $json = json_encode("#LIMITPOINTAGE#ATTEIND");
         
         
@@ -3743,6 +4031,8 @@ if(isset($_GET['action']))
                                         mysqli_query($connect, "UPDATE `accsociete` SET `nbpointage` = $nombrePointageSociete + 1, `prestation` = 'Null', `prix` = '0' WHERE `id` = '".$idEntreprise."'"); // RESET PRESTATION ENTREPRISE + AJOUT SCORE POINTAGE
                                         mysqli_query($connect, "UPDATE `acctclient` SET `nbpointagetotal` = $pointageTotal + 1, `nbpointage` = $nombrePointage + 1, `rating` = '1' WHERE `id` = '".$idClient."'"); // AJOUT +1 AU POINTAGE TOTAL DU CLIENT
                                         mysqli_query($connect, "UPDATE `acctclient` SET `pointboutique` = $pointBoutique + 1 WHERE `id` = $idClient OR `idsouche` = $idClient");
+                                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'PRODUCTPOINTAGE-SUCCESS')");     
+
                                         $json = json_encode("#PRODUCTPOINTAGE#SUCCESS");
             
             
@@ -3750,6 +4040,8 @@ if(isset($_GET['action']))
                                 else
                                 {
         
+                                    mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'PRODUCTPOINTAGE-FAILED')");     
+
                                     $json = json_encode("#PRODUCTPOINTAGE#FAILED");
             
                                 }
@@ -3762,6 +4054,8 @@ if(isset($_GET['action']))
                         }
                         else
                         {
+
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'FINDCLTPOINTAGE-FAILED')");     
         
                             $json = json_encode("#FINDCLTPOINTAGE#FAILED");
         
@@ -3771,6 +4065,8 @@ if(isset($_GET['action']))
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$date."', 'CARTEFIDENT-DESACTIVE')");     
         
                         $json = json_encode("#CARTEFIDENT#DESACTIVE");
         
@@ -3809,6 +4105,7 @@ if(isset($_GET['action']))
 
                     $idEntreprise = $_GET['id'];
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `accsociete` WHERE `id` = '".$idEntreprise."'";
                     
@@ -3825,6 +4122,7 @@ if(isset($_GET['action']))
                         if($typeDeCompte === '0')
                         {
         
+                            mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'ENABLEDCARD-UPGRADE')");     
         
                             $json = json_encode("#ENABLEDCARD#UPGRADE");
         
@@ -3837,6 +4135,8 @@ if(isset($_GET['action']))
         
                             if(mysqli_query($connect, $sqldeux))
                             {
+
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'ENABLEDCARD-SUCCESS')");     
                 
                                 $json = json_encode("#ENABLEDCARD#SUCCESS");
                 
@@ -3844,6 +4144,8 @@ if(isset($_GET['action']))
                             }
                             else
                             {
+
+                                mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'ENABLEDCARD-FAILED')");     
                 
                                 $json = json_encode("#ENABLEDCARD#FAILED");
                 
@@ -3858,6 +4160,8 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'ENTREPRISE-NOEXIST')");     
+
                         $json = json_encode("#ENTREPRISE#NOEXIST");
         
                     }
@@ -3894,11 +4198,14 @@ if(isset($_GET['action']))
 
                     $idEntreprise = $_GET['id'];
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
         
                     $sql = "UPDATE `accsociete` SET `activation` = '0' WHERE `id` = '".$idEntreprise."'";
         
                     if(mysqli_query($connect, $sql))
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'DISABLEDCARD-SUCCESS')");     
         
                         $json = json_encode("#DISABLEDCARD#SUCCESS");
         
@@ -3906,6 +4213,8 @@ if(isset($_GET['action']))
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'DISABLEDCARD-FAILED')");     
         
                         $json = json_encode("#DISABLEDCARD#FAILED");
         
@@ -3944,12 +4253,15 @@ if(isset($_GET['action']))
 
                     $idEntreprise = $_GET['id'];
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT * FROM `pointage` WHERE `identreprise` = '".$idEntreprise."' ORDER BY `id` DESC LIMIT 0, 10";
                     $result = mysqli_query($connect, $sql);
         
                     if(mysqli_num_rows($result))
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'LASTPOINTAGE-SUCCESS')");     
         
                         while($row[] = mysqli_fetch_assoc($result))
                         {
@@ -3961,6 +4273,8 @@ if(isset($_GET['action']))
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'LASTPOINTAGE-VIDE')");     
             
                         $json = json_encode("#LASTPOINTAGE#VIDE");
         
@@ -4004,10 +4318,13 @@ if(isset($_GET['action']))
                     $score = mysqli_real_escape_string($connect, $score);
                     $date = $_GET['date'];
                     $date = mysqli_real_escape_string($connect, $date);
+                    $dateAPI = date("Y-m-d");
         
                     $sql = "INSERT INTO `notation` (`id`, `identreprise`, `idclient`, `score`, `basenotation`, `date`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$score."', '10', '".$date."')";
                     if(mysqli_query($connect, $sql))
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$dateAPI."', 'NOTATION-SUCCESS')");     
         
                         $json = json_encode("#NOTATION#SUCCESS");
         
@@ -4015,6 +4332,8 @@ if(isset($_GET['action']))
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '".$idClient."', '".$dateAPI."', 'NOTATION-FAILED')");     
         
                         $json = json_encode("#NOTATION#FAILED");
         
@@ -4052,11 +4371,13 @@ if(isset($_GET['action']))
 
                     $idClient = $_GET['idclient'];
                     $idClient = mysqli_real_escape_string($connect, $idClient);
+                    $date = date("Y-m-d");
         
                     $sql = "UPDATE `acctclient` SET `rating` = '0' WHERE `id` = '".$idClient."'";
                     if(mysqli_query($connect, $sql))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '".$idClient."', '".$date."', 'RESETRATING-SUCCESS')");     
         
                         $json = json_encode("#RESETRATING#SUCCESS");
         
@@ -4064,6 +4385,8 @@ if(isset($_GET['action']))
                     else
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '".$idClient."', '".$date."', 'RESETRATING-FAILED')");     
+
                         $json = json_encode("#RESETRATING#FAILED");
         
         
@@ -4101,6 +4424,7 @@ if(isset($_GET['action']))
 
                     $idEntreprise = $_GET['identreprise'];
                     $idEntreprise = mysqli_real_escape_string($connect, $idEntreprise);
+                    $date = date("Y-m-d");
         
                     $sql = "SELECT SUM(`score`) AS score_total, SUM(`basenotation`) AS note_total
                     FROM `notation`
@@ -4111,6 +4435,8 @@ if(isset($_GET['action']))
                     if(mysqli_num_rows($result))
                     {
         
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'ENTSCORE-SUCCESS')");     
+
                         while($row[] = mysqli_fetch_assoc($result))
                         {
         
@@ -4121,6 +4447,8 @@ if(isset($_GET['action']))
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'ENTSCORE-VIDE')");     
         
                         $json = json_encode("#ENTSCORE#VIDE");
         
@@ -4158,12 +4486,15 @@ if(isset($_GET['action']))
                     
                     $idClient = $_GET['idclient'];
                     $idClient = mysqli_real_escape_string($connect, $idClient);
+                    $date = date("Y-m-d");
 
                     $sql = "SELECT * FROM `cartefidelite` WHERE `idclient` = '".$idClient."' ORDER BY `id` DESC";
                     $result = mysqli_query($connect, $sql);
 
                     if(mysqli_num_rows($result))
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '".$idClient."', '".$date."', 'LSTCARDFIDELITE-SUCCESS')");     
 
                         while($row[] = mysqli_fetch_assoc($result))
                         {
@@ -4175,6 +4506,8 @@ if(isset($_GET['action']))
                     }
                     else
                     {
+
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '0', '".$idClient."', '".$date."', 'LSTCARDFIDELITE-VIDE')");     
 
                         $json = json_encode("#LSTCARDFIDELITE#VIDE");
 
@@ -4195,6 +4528,116 @@ if(isset($_GET['action']))
             }
 
             mysqli_close($connect);
+
+            break;
+        case 'invitationClient':
+
+            if(isset($_GET['apikey']))
+            {
+
+                $apikey = $_GET['apikey'];
+
+                $globalSql = "SELECT * FROM `apikey` WHERE `apikey` = '".$apikey."'";
+                $resultSql = mysqli_query($connect, $globalSql);
+            
+                if(mysqli_num_rows($resultSql))
+                {
+                    
+                    $idEntreprise = $_GET['ident'];
+                    $date = date("Y-m-d");
+                    $to = $_GET['getemail'];
+                    $subject = "Inscrivez-vous sur FidiZ !";
+        
+                    $message = "
+                    <html>
+                    <head>
+                    <title>Inscrivez-vous sur FidiZ !</title>
+                    </head>
+                    <body>
+                    <p>Bonjour, <br> Pour vous inscrire sur FidiZ, <a href='http://127.0.0.1:3000/inscriptionclient/".$idEntreprise."/".$to."'>cliquez sur ce lien.</a> <br/>
+                    Ce lien expirera dans une semaine après l’envoi. Si le lien a expiré, l'entreprise devra renvoyer une invitation depuis l’appli FidiZ.</p>
+                    </body>
+                    </html>
+                    ";
+        
+                    // Always set content-type when sending HTML email
+                    $headers = "MIME-Version: 1.0" . "\r\n";
+                    $headers .= "Content-type:text/html; charset=iso-8859-1" . "\r\n";
+        
+                    // More headers
+                    $headers .= 'From: <support@lvnweb.re>' . "\r\n";
+        
+                    try {
+                        //code...
+                        mail($to,$subject,$message,$headers);
+        
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'SENDINVIT-SUCCESS')");     
+
+                        $json = json_encode("#SENDINVIT#SUCCESS");
+        
+                    } catch (\Throwable $th) {
+                        //throw $th;
+        
+                        mysqli_query($connect, "INSERT INTO `adm_apievents` (`id`, `identreprise`, `idclient`, `date`, `eventjson`) VALUES (NULL, '".$idEntreprise."', '0', '".$date."', 'SENDINVIT-FAILED')");     
+
+                        $json = json_encode("#SENDINVIT#FAILED");
+                    }
+
+
+                }
+                else
+                {
+
+                    $jsonKey = json_encode("#APIKEY#NOEXIST");
+                    echo $jsonKey;
+
+                }
+
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
+
+            break;
+        case 'testmail':
+
+            $to = "cyb3rghostx@gmail.com";
+            $subject = "Inscrivez-vous sur FidiZ !";
+
+            $message = "
+            <html>
+            <head>
+            <title>Inscrivez-vous sur FidiZ !</title>
+            </head>
+            <body>
+            <p>Bonjour, <br> Pour vous inscrire sur FidiZ, <a href='http://127.0.0.1:3000/inscriptionclient/".$to."'>cliquez sur ce lien.</a> <br/>
+            Ce lien expirera dans une semaine après l’envoi. Si le lien a expiré, l'entreprise devra renvoyer une invitation depuis l’appli FidiZ.</p>
+            </body>
+            </html>
+            ";
+
+            // Always set content-type when sending HTML email
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html; charset=iso-8859-1" . "\r\n";
+
+            // More headers
+            $headers .= 'From: <support@lvnweb.re>' . "\r\n";
+
+            try {
+                //code...
+                mail($to,$subject,$message,$headers);
+
+                $json = json_encode("#SENDINVIT#SUCCESS");
+
+            } catch (\Throwable $th) {
+                //throw $th;
+
+                $json = json_encode("#SENDINVIT#FAILED");
+            }
+
+            echo $json;
 
             break;
         default:

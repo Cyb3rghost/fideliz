@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Menu from './menuclient'
+import Footer from '../footer'
 import Configuration from '../fidconfig'
 
 class Archives extends Component {
@@ -122,13 +123,7 @@ class Archives extends Component {
     
                     </div>
     
-                    <footer className="sticky-footer bg-white">
-                        <div className="container my-auto">
-                        <div className="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2019</span>
-                        </div>
-                        </div>
-                    </footer>
+                    <Footer />
     
                     </div>
     

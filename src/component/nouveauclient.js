@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Configuration from './fidconfig'
+import Select from 'react-select';
 
 import Footer from './footer'
 import Menu from './menu'
@@ -18,7 +19,9 @@ class Nouveauclient extends Component {
             emailClient: '',
             passwordClient: '',
             dateNaissance: '',
-            statutMsg: ''
+            statutMsg: '',
+            selectedOption: null,
+            options: []
         }
 
 
@@ -32,6 +35,19 @@ class Nouveauclient extends Component {
             window.location.href = "/dashboard"
         }
 
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=selectZonage'
+        + '&apikey=' + this.props.apikey)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+            this.setState({
+                options: response
+            })
+
+        })
+        .catch(err => console.error(err))
+
     }
 
     ajoutClient(event)
@@ -41,6 +57,10 @@ class Nouveauclient extends Component {
 
         event.preventDefault();
 
+        var separeInfos = this.state.selectedOption.label.split("/")
+        var codepostal = separeInfos[0];
+        var ville = separeInfos[1];
+
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=ajoutClient&id=' + this.props.idUserRecup
         + '&naissance=' + dateNaissance
         + '&nomClient=' + nomClient 
@@ -49,6 +69,8 @@ class Nouveauclient extends Component {
         + '&telephoneClient=' + telephoneClient
         + '&emailClient=' + emailClient
         + '&passwordClient=' + passwordClient
+        + '&codepostal=' + codepostal
+        + '&ville=' + ville
         + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
@@ -139,7 +161,19 @@ class Nouveauclient extends Component {
 
     }
 
+    handleChange = (selectedOption) => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
+      }
+
   render() {
+    const { selectedOption } = this.state;
+
+    let options = this.state.options.map(function (valux) {
+            return { value: valux.codepostal, label: valux.codepostal + ' / ' + valux.ville }
+    })
+    
+
     return (
       <div>
 
@@ -213,6 +247,17 @@ class Nouveauclient extends Component {
                             placeholder="Adresse"
                         
                         />
+                        </div>
+                    </div>
+                    <div className="form-group row">
+                        <label for="inputPassword" className="col-sm-2 col-form-label">CodePostal / Ville</label>
+                        <div className="col-sm-10">
+                            <Select
+                                value={selectedOption}
+                                onChange={this.handleChange}
+                                options={options}
+                                placeholder="Code postal"
+                            />
                         </div>
                     </div>
                     <div class="form-group row">

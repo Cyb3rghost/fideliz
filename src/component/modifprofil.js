@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
+import Select from 'react-select';
 
 import Footer from './footer'
 import Menu from './menu'
@@ -22,6 +23,10 @@ class Modifprofil extends Component {
             retapeMdp: '',
             nouveauMdp: '',
             statutMsgMaj: '',
+            codepostal: '',
+            ville: '',
+            selectedOption: null,
+            options: [],
             loading: false
 
         }
@@ -45,12 +50,27 @@ class Modifprofil extends Component {
                         email: value.email,
                         adresse: value.adresse,
                         nomSociete: value.nomsociete,
-                        telephone: value.telephone,  
+                        telephone: value.telephone, 
+                        codepostal: value.codepostal,
+                        ville: value.ville, 
                         loading: true                   
                     })
                 )
               )
     
+
+        })
+        .catch(err => console.error(err))
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=selectZonage'
+        + '&apikey=' + this.props.apikey)
+        .then((response) => response.json())
+        .then((response) => {
+
+            console.log(response)
+            this.setState({
+                options: response
+            })
 
         })
         .catch(err => console.error(err))
@@ -61,6 +81,9 @@ class Modifprofil extends Component {
     majEntreprise()
     {
 
+        var separeInfos = this.state.selectedOption.label.split("/")
+        var codepostal = separeInfos[0];
+        var ville = separeInfos[1];
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=majEntreprise&ident=' + this.props.idUserRecup
         + '&nom=' + this.state.nom
@@ -69,6 +92,8 @@ class Modifprofil extends Component {
         + '&adresse=' + this.state.adresse
         + '&telephone=' + this.state.telephone
         + '&societe=' + this.state.nomSociete
+        + '&codepostal=' + codepostal
+        + '&ville=' + ville
         + '&apikey=' + this.props.apikey)
         .then((response) => response.json())
         .then((response) => {
@@ -251,9 +276,19 @@ class Modifprofil extends Component {
 
     }
 
+    handleChangeSelect = (selectedOption) => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
+      }
 
   render() {
     let loadingdata;
+    const { selectedOption } = this.state;
+
+    let options = this.state.options.map(function (valux) {
+            return { value: valux.codepostal, label: valux.codepostal + ' / ' + valux.ville }
+    })
+
     if(this.state.loading)
     {
 
@@ -332,6 +367,29 @@ class Modifprofil extends Component {
                                                 className="form-control" 
                                             />
                                             
+                                            </td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">Code postal</th>
+                                            <td align="center">
+                                                {this.state.codepostal}
+                                            </td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">Ville</th>
+                                            <td align="center">
+                                                {this.state.ville}
+                                            </td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">Nouvelle localisation</th>
+                                            <td align="center">
+                                                <Select
+                                                    value={selectedOption}
+                                                    onChange={this.handleChangeSelect}
+                                                    options={options}
+                                                    placeholder="Code postal"
+                                                /> 
                                             </td>
                                             </tr>
                                             <tr>
