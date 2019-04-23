@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
 import Select from 'react-select';
+import validator from 'validator';
 
 import Footer from './footer'
 import Menu from './menu'
@@ -26,6 +27,7 @@ class Modifprofil extends Component {
             codepostal: '',
             ville: '',
             selectedOption: null,
+            checkSelectedOption: '',
             options: [],
             loading: false
 
@@ -35,7 +37,6 @@ class Modifprofil extends Component {
 
     componentDidMount()
     {
-
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup
         + '&apikey=' + this.props.apikey)
@@ -78,62 +79,66 @@ class Modifprofil extends Component {
 
     }
 
-    majEntreprise()
+    majEntreprise(event)
     {
 
-        var separeInfos = this.state.selectedOption.label.split("/")
-        var codepostal = separeInfos[0];
-        var ville = separeInfos[1];
+        event.preventDefault()
 
-        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=majEntreprise&ident=' + this.props.idUserRecup
-        + '&nom=' + this.state.nom
-        + '&prenom=' + this.state.prenom
-        + '&email=' + this.state.email
-        + '&adresse=' + this.state.adresse
-        + '&telephone=' + this.state.telephone
-        + '&societe=' + this.state.nomSociete
-        + '&codepostal=' + codepostal
-        + '&ville=' + ville
-        + '&apikey=' + this.props.apikey)
-        .then((response) => response.json())
-        .then((response) => {
-
-            if(response === "#MAJENT#SUCCESS")
-            {
-
-                console.log(response)
-                this.setState({
-                    statutMsgMaj: '1'
-                })
-
-            }
-            else if(response === "#MAJENT#FAILED")
-            {
-
-                console.log(response)
-                this.setState({
-                    statutMsgMaj: '2'
-                })
-
-            }
-            else if(response === "#ENT#NOEXIST")
-            {
-
-                console.log(response)
-                this.setState({
-                    statutMsgMaj: '3'
-                })
-
-            }
-
-
-        })
-        .catch(err => console.error(err))
+            var separeInfos = this.state.selectedOption.label.split("/")
+            var codepostal = separeInfos[0];
+            var ville = separeInfos[1];
+    
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=majEntreprise&ident=' + this.props.idUserRecup
+            + '&nom=' + this.state.nom
+            + '&prenom=' + this.state.prenom
+            + '&email=' + this.state.email
+            + '&adresse=' + this.state.adresse
+            + '&telephone=' + this.state.telephone
+            + '&societe=' + this.state.nomSociete
+            + '&codepostal=' + codepostal
+            + '&ville=' + ville
+            + '&apikey=' + this.props.apikey)
+            .then((response) => response.json())
+            .then((response) => {
+    
+                if(response === "#MAJENT#SUCCESS")
+                {
+    
+                    console.log(response)
+                    this.setState({
+                        statutMsgMaj: '1'
+                    })
+    
+                }
+                else if(response === "#MAJENT#FAILED")
+                {
+    
+                    console.log(response)
+                    this.setState({
+                        statutMsgMaj: '2'
+                    })
+    
+                }
+                else if(response === "#ENT#NOEXIST")
+                {
+    
+                    console.log(response)
+                    this.setState({
+                        statutMsgMaj: '3'
+                    })
+    
+                }
+    
+    
+            })
+            .catch(err => console.error(err))
 
     }
 
-    changeMDP()
+    changeMDP(event)
     {
+
+        event.preventDefault()
 
         if(this.state.nouveauMdp === this.state.retapeMdp)
         {
@@ -271,13 +276,23 @@ class Modifprofil extends Component {
             </div>
 
         }
+        else if (this.state.statutMsgMaj === '7') 
+        {
+            
 
+            return <div className="alert alert-danger">
+        
+                Impossible de modifier votre profil car il y a des champs vides...
+        
+            </div>
+
+        }
 
 
     }
 
     handleChangeSelect = (selectedOption) => {
-        this.setState({ selectedOption });
+        this.setState({ selectedOption, checkSelectedOption: '1' });
         console.log(`Option selected:`, selectedOption);
       }
 
@@ -285,9 +300,23 @@ class Modifprofil extends Component {
     let loadingdata;
     const { selectedOption } = this.state;
 
+    const isEnabled = !validator.isEmpty(this.state.nom) 
+    && !validator.isEmpty(this.state.prenom)
+    && validator.isEmail(this.state.email)  
+    && !validator.isEmpty(this.state.adresse) 
+    && !validator.isEmpty(this.state.nomSociete) 
+    && !validator.isEmpty(this.state.telephone) 
+    && !validator.isEmpty(this.state.checkSelectedOption)
+
+    const isEnabledTwo = !validator.isEmpty(this.state.actuelMdp)
+    && !validator.isEmpty(this.state.nouveauMdp)
+    && !validator.isEmpty(this.state.retapeMdp)
+
     let options = this.state.options.map(function (valux) {
             return { value: valux.codepostal, label: valux.codepostal + ' / ' + valux.ville }
     })
+
+
 
     if(this.state.loading)
     {
@@ -299,7 +328,7 @@ class Modifprofil extends Component {
                     <div className="container-fluid">
 
                     <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 className="h3 mb-0 text-gray-800">Modification de votre profil entreprise</h1>
+                        
                     </div>
 
                     <h2>{this.state.nom}</h2>
@@ -307,17 +336,18 @@ class Modifprofil extends Component {
 
                     <hr/>
 
-                    <div class="card shadow mb-4">
+                    <div className="card shadow mb-4">
                                 <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 className="m-0 font-weight-bold text-primary">Informations sur votre profil</h6>
+                                    <h6 className="m-0 font-weight-bold text-primary"></h6>
                                     
                                 </div>
-                                <div class="card-body">
-
-                                    <table class="table">
+                                <div className="card-body">
+                                    
+                                    <form onSubmit={this.majEntreprise.bind(this)}>
+                                    <table className="table">
                                         <thead>
                                             <tr>
-                                            
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -418,14 +448,16 @@ class Modifprofil extends Component {
                                             </tr>
                                             <tr>
                                             <th scope="row"></th>
-                                            <td><button type="button" onClick={this.majEntreprise.bind(this)} class="btn btn-success btn-block">Sauvegarder les modifications</button></td>
+                                            <td><button type="submit" disabled={!isEnabled} className="btn btn-success btn-block">Sauvegarder les modifications</button></td>
                                             </tr>
                                         </tbody>
                                         </table>
+                                        </form>
 
                                         <br/>
 
-                                        <table class="table table-striped">
+                                        <form onSubmit={this.changeMDP.bind(this)}>
+                                        <table className="table table-striped">
                                             <thead>
                                             <tr>
                                                 
@@ -460,10 +492,11 @@ class Modifprofil extends Component {
                                             </tr>
                                             <tr>
                                                 <td></td>
-                                                <td><button class="btn btn-success btn-block" onClick={this.changeMDP.bind(this)} type="submit">Sauvegarder les modifications</button></td>
+                                                <td><button className="btn btn-success btn-block" disabled={!isEnabledTwo} type="submit">Sauvegarder les modifications</button></td>
                                             </tr>
                                             </tbody>
                                         </table> 
+                                        </form>
 
                                 </div>
                     </div>
@@ -498,7 +531,7 @@ class Modifprofil extends Component {
 
                 <div id="content">
 
-                    <Menu />
+                    <Menu title="Modification de votre profil entreprise" />
 
                     {loadingdata}
 

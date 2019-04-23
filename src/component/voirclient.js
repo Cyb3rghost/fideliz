@@ -52,11 +52,6 @@ class Voirclient extends Component {
 
             var idClient = this.props.match.params.id
 
-            var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirCarteClient&id=' + idClient
-            + '&apikey=' + this.props.apikey).then(function(response){ 
-                return response.json()
-            });
-
             var apiRequest2 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=gainsClient&ident=' + this.props.idUserRecup
             + '&idclt=' + idClient
             + '&apikey=' + this.props.apikey).then(function(response){ 
@@ -64,11 +59,13 @@ class Voirclient extends Component {
             });
 
             var apiRequest3 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=prestationsCadeauxClientsTotal&idclt=' + idClient
+            + '&identreprise=' + this.props.idUserRecup
             + '&apikey=' + this.props.apikey).then(function(response){ 
                 return response.json()
             });
 
             var apiRequest4 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + idClient
+            + '&identreprise=' + this.props.idUserRecup
             + '&apikey=' + this.props.apikey).then(function(response){ 
                 return response.json()
             });
@@ -84,180 +81,88 @@ class Voirclient extends Component {
                 return response.json()
             });
 
-            var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{},"apiRequest4":{},"apiRequest5":{},"apiRequest6":{}};
+            var combinedData = {"apiRequest2":{},"apiRequest3":{},"apiRequest4":{},"apiRequest5":{},"apiRequest6":{}};
 
-            Promise.all([apiRequest1,apiRequest2,apiRequest3,apiRequest4,apiRequest5, apiRequest6])
+            Promise.all([apiRequest2,apiRequest3,apiRequest4,apiRequest5, apiRequest6])
             .then(function(values){
-                combinedData["apiRequest1"] = values[0];
-                combinedData["apiRequest2"] = values[1];
-                combinedData["apiRequest3"] = values[2];
-                combinedData["apiRequest4"] = values[3];
-                combinedData["apiRequest5"] = values[4];
-                combinedData["apiRequest6"] = values[5];
+                combinedData["apiRequest2"] = values[0];
+                combinedData["apiRequest3"] = values[1];
+                combinedData["apiRequest4"] = values[2];
+                combinedData["apiRequest5"] = values[3];
+                combinedData["apiRequest6"] = values[4];
 
-                if(combinedData["apiRequest1"] === "#VOIRCARTE#NOEXIST")
-                {
-
-                    this.setState({
-                        carteStatutMsg: '1',
-                        gainsClient: combinedData["apiRequest2"]                                  
-                    })
-
-                    if(combinedData["apiRequest3"] === "#GTTPRSTATION#FAILED")
-                    {
-
-                        console.log(combinedData["apiRequest3"])
-
-                    }
-                    else
-                    {
-
+                  combinedData["apiRequest4"].map((value, index) => 
+                    (
                         this.setState({
-                            prestationsClients: combinedData["apiRequest3"]                
+                            dataInscription: value.dinscription,
+                            nomClient: value.nom,
+                            prenomClient: value.prenom,
+                            adresseClient: value.adresse,
+                            emailClient: value.email,
+                            telephoneClient: value.telephone,
+                            carteTotal: value.nbcarteterminer,
+                            pointageTotal: value.nbpointagetotal                     
                         })
+                    )
+                  ) 
+                  
+                  if(combinedData["apiRequest5"] === "#SLCTLISTECADEAUX#ECHEC")
+                  {
+      
+                      this.setState({
+                          carteStatutMsg: '10'
+                      })
+      
+                  }
+                  else
+                  {
+      
+                      this.setState({
+                          afflisteCadeaux: combinedData["apiRequest5"]
+                      })
+      
+                  }                      
 
-                        combinedData["apiRequest4"].map((value) => 
-                            (
-                                this.setState({
-                                    dataInscription: value.dinscription,
-                                    nomClient: value.nom,
-                                    prenomClient: value.prenom,
-                                    adresseClient: value.adresse,
-                                    emailClient: value.email,
-                                    telephoneClient: value.telephone,
-                                    carteTotal: value.nbcarteterminer,
-                                    pointageTotal: value.nbpointagetotal                     
-                                })
-                            )
-                          )
-
-                          if(combinedData["apiRequest5"] === "#SLCTLISTECADEAUX#ECHEC")
-                          {
-              
-                              this.setState({
-                                  carteStatutMsg: '10'
-                              })
-              
-                          }
-                          else
-                          {
-              
-                              this.setState({
-                                  afflisteCadeaux: combinedData["apiRequest5"],
-                                  loading: true 
-                              })
-              
-                          }
-
-
-                    }
-
-
-                }
-                else
-                {
+                  if(combinedData["apiRequest2"] === '#GTOTALCLT#VIDE')
+                  {
 
                     this.setState({
-                        carteStatutMsg: '2'
-                    })
-    
-                    combinedData["apiRequest1"].map((valuedeux, index) => 
-                        (
-                            this.setState({
-                                carteId: valuedeux.id,
-                                carteDateCreation: valuedeux.datecreation,
-                                carteNom: valuedeux.nom,
-                                cartePrenom: valuedeux.prenom,
-                                carteNbPointage: valuedeux.nbpointage,
-                                carteLimitPointage: valuedeux.limitpointage,
-                                carteStatut: valuedeux.statut,
-                                carteCadeaux: valuedeux.cadeaux,
-                                carteImgBackground: valuedeux.imgbackground,
-                                carteImgIcon: valuedeux.imgicon,
-                                carteQrCode: valuedeux.qrcode                                            
-                            })
-                        )
-                      )
+                        gainsClient: '0'               
+                      })
 
-                      combinedData["apiRequest4"].map((value, index) => 
-                        (
-                            this.setState({
-                                dataInscription: value.dinscription,
-                                nomClient: value.nom,
-                                prenomClient: value.prenom,
-                                adresseClient: value.adresse,
-                                emailClient: value.email,
-                                telephoneClient: value.telephone,
-                                carteTotal: value.nbcarteterminer,
-                                pointageTotal: value.nbpointagetotal                     
-                            })
-                        )
-                      ) 
-                      
-                      if(combinedData["apiRequest5"] === "#SLCTLISTECADEAUX#ECHEC")
-                      {
-          
-                          this.setState({
-                              carteStatutMsg: '10'
-                          })
-          
-                      }
-                      else
-                      {
-          
-                          this.setState({
-                              afflisteCadeaux: combinedData["apiRequest5"]
-                          })
-          
-                      }                      
+                  }
+                  else
+                  {
+
+                    this.setState({
+                        gainsClient: combinedData["apiRequest2"]                   
+                    })
+
+                  }
+
+
+
+                  if(combinedData["apiRequest6"] === "#GTTPRSTATION#VIDE")
+                  {
+
+                    this.setState({
+                        prestationsClients: '0',
+                        loading: true              
+                      })
+
+
+                  }
+                  else
+                  {
 
                       this.setState({
-                        gainsClient: combinedData["apiRequest2"]                   
+                          prestationsClients: combinedData["apiRequest6"],
+                          loading: true                 
                       })
 
-                      if(combinedData["apiRequest6"] === "#GTTPRSTATION#FAILED")
-                      {
-
-                          console.log(combinedData["apiRequest6"])
-
-
-                      }
-                      else
-                      {
-
-                          this.setState({
-                              prestationsClients: combinedData["apiRequest6"],
-                              loading: true                 
-                          })
-
-                      }
-
-                      /* Refaire le check du pointage en attente (stateMessage = 5) */
-
-                      fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=verificationPointage&id=' + idClient
-                      + '&apikey=' + this.props.apikey)
-                      .then((response) => response.json())
-                      .then((response) => {
-              
-                          if(response === "#VERIFPOINTAGE#EXISTE")
-                          {
-
-                                this.setState({
-                                    cartePointageMsg: '5'
-                                })
-
-
-                          }
-                  
-              
-                      })
-                      .catch(err => console.error(err))
-
-
-                }
-
+                  }
     
-            }.bind(this));
+            }.bind(this))
 
     }
 
@@ -534,16 +439,6 @@ class Voirclient extends Component {
 
                         <div className="container-fluid">
 
-
-                                
-                            <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                <h1 className="h3 mb-0 text-gray-800">Fiche client</h1>
-                            </div>
-
-
-
-
-
                         <hr/>
 
                         {/* DEBUT CODE */}
@@ -673,7 +568,7 @@ class Voirclient extends Component {
 
                 <div id="content">
 
-                    <Menu />
+                    <Menu title="Fiche client" />
 
                     {loadingdata}
 

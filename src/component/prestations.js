@@ -631,6 +631,8 @@ class Prestations extends Component {
                     console.log(response)
     
                 }
+
+                setTimeout(() => window.location.href = "/prestations",1500)
     
             })
             .catch(err => console.error(err)) 
@@ -705,7 +707,7 @@ class Prestations extends Component {
 
                 <div id="content">
 
-                    <Menu />
+                    <Menu title="Gestion des prestations" />
 
                     <div className="container-fluid">
 
@@ -720,7 +722,7 @@ class Prestations extends Component {
                         <div className="col-md-6">
                         
                             <div className="d-sm-flex align-items-center justify-content-between mb-4">
-                                <h1 className="h3 mb-0 text-gray-800">Gestion des prestations</h1>
+                                
                             </div>
                             <br/>
                         
@@ -736,18 +738,19 @@ class Prestations extends Component {
                     
                     </div>
 
-                    <ul className="nav nav-tabs" id="myTab" role="tablist">
-                        <li className="nav-item">
-                            <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Prestations actives</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Prestations inactives</a>
-                        </li>
-                        </ul>
-
                     </div>
 
                         <br/>
+
+                        <ul className="nav nav-tabs" id="myTab" role="tablist">
+                            <li className="nav-item">
+                                <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Prestations actives</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Prestations inactives</a>
+                            </li>
+                        </ul>
+
                         {this.afficheStatutCadeaux()} 
 
                         <div className="tab-content" id="myTabContent">
@@ -911,6 +914,7 @@ class Prestations extends Component {
                     <Modal open={open} onClose={this.onCloseModal} center>
                         <h2>Prestation simple</h2>
                         <hr/>
+                        <form onSubmit={this.ajoutPrestation.bind(this)}>
                         <div className="form-inline">
                         <div className="form-group mb-2">
                             <label className="sr-only">Email</label>
@@ -932,8 +936,9 @@ class Prestations extends Component {
                                 onChange={e => this.setState({prix: e.target.value})}
                             
                             />                        </div>
-                            <button type="submit" onClick={this.ajoutPrestation.bind(this)} className="btn btn-primary">Ajouter</button>
+                            <button type="submit" className="btn btn-primary">Ajouter</button>
                         </div>
+                        </form>
                     </Modal>
 
                     <Modal open={openDeux} onClose={this.onCloseModalDeux} center>
@@ -975,12 +980,6 @@ class Prestations extends Component {
                                     />                        
                                 </div>
                              </div>
-
-                            {/*<Select
-                                value={selectedOptionDeux}
-                                onChange={this.handleChangeDeux}
-                                options={options}
-                            /> */}
                             
                             </div>
                             <div className="col-md-1">

@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import cookie from 'react-cookies'
 import Select from 'react-select';
 import { Offline, Online } from "react-detect-offline";
+import validator from 'validator';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import Configuration from './component/fidconfig'
 import './App.css';
+
+import offline from './images/offline.png'
 
 /* INTERFACE ENTREPRISE */
 import Dashboard from './component/dashboard'
@@ -69,7 +72,8 @@ class App extends Component {
             options: [],
             dataMaintenance: '',
             dataVersion: '',
-            objetMaintenance: ''
+            objetMaintenance: '',
+            checkMsg: ''
 
 
         }
@@ -150,55 +154,76 @@ class App extends Component {
       .then((response) => {
           console.log(response)
 
-          fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=configurationPremiereConnexion&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
-          .then((response) => response.json())
-          .then((response) => {
-              console.log(response)
+          if(response === "#ENT#NOEXIST")
+          {
 
-                fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=connexion&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
-                .then((response) => response.json())
-                .then((response) => {
-                    console.log(response)
-                    this.setState({ isLogged, idUser })
-                    if(response === "#CO#ECHEC")
-                    {
-                      
-                      this.setState({
-                        connexionEmail: '',
-                        connexionPassword: ''
-                      })
-            
-                    }
-                    else {
-            
-                      response.map((value, index) => 
-                        (
-                            this.setState({
-                              connexionEmail: '',
-                              connexionPassword: '',
-                              isLogged: cookie.save('#FID#CO#SUCCESS', true, { path: '/' }),
-                              idUser: cookie.save('#FID#CO#IDUSER', value.id, { path: '/' }),
-                              infCarteBackground: cookie.save('#FID#CO#CARTEBG', value.imgfond, { path: '/' }),
-                              infCarteIcon: cookie.save('#FID#CO#CARTEICON', value.imgicon, { path: '/' }),
-                              infTypeCompte: cookie.save('#FID#CO#TYPECPT', value.typecompte, { path: '/'}),
-                              infAPIKEY: cookie.save('#FID#CO#APIKEY', this.state.apikeyz, { path: '/'})
-                            })
+            this.setState({
+                checkMsg: '1',
+                connexionEmail: '',
+                connexionPassword: ''
+            })
+
+            setTimeout(() => window.location.href = "/",2500)
+
+          }
+          else
+          {
+
+            fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=configurationPremiereConnexion&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
+            .then((response) => response.json())
+            .then((response) => {
+                console.log(response)
+  
+                  fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=connexion&cntemail=' + connexionEmail + '&cntpassword=' + connexionPassword)
+                  .then((response) => response.json())
+                  .then((response) => {
+                      console.log(response)
+                      this.setState({ isLogged, idUser })
+                      if(response === "#CO#ECHEC")
+                      {
+                        
+                        this.setState({
+                          checkMsg: '2',
+                          connexionEmail: '',
+                          connexionPassword: ''
+                        })
+              
+                      }
+                      else {
+              
+                        response.map((value, index) => 
+                          (
+                              this.setState({
+                                connexionEmail: '',
+                                connexionPassword: '',
+                                isLogged: cookie.save('#FID#CO#SUCCESS', true, { path: '/' }),
+                                idUser: cookie.save('#FID#CO#IDUSER', value.id, { path: '/' }),
+                                infCarteBackground: cookie.save('#FID#CO#CARTEBG', value.imgfond, { path: '/' }),
+                                infCarteIcon: cookie.save('#FID#CO#CARTEICON', value.imgicon, { path: '/' }),
+                                infTypeCompte: cookie.save('#FID#CO#TYPECPT', value.typecompte, { path: '/'}),
+                                infAPIKEY: cookie.save('#FID#CO#APIKEY', this.state.apikeyz, { path: '/'})
+                              })
+                          )
                         )
-                      )
+              
+                        //alert(this.state.isLogged)
+                        //window.location.href = '/dashboard';
+                        //return <Dashboard loggedIn={this.state.isLogged} />
+                        //window.history.pushState(null, null, '/dashboard');
+                        window.location.pathname = '/dashboard'
+              
+                      }
+              
+                  })
+                  .catch(err => console.error(err))
+        
+            })
+            .catch(err => console.error(err))
+
             
-                      //alert(this.state.isLogged)
-                      //window.location.href = '/dashboard';
-                      //return <Dashboard loggedIn={this.state.isLogged} />
-                      //window.history.pushState(null, null, '/dashboard');
-                      window.location.pathname = '/dashboard'
-            
-                    }
-            
-                })
-                .catch(err => console.error(err))
-      
-          })
-          .catch(err => console.error(err))
+          }
+
+
   
       })
       .catch(err => console.error(err))
@@ -224,9 +249,12 @@ class App extends Component {
           {
             
             this.setState({
+              checkMsg: '3',
               connexionEmailClient: '',
               connexionPasswordClient: ''
             })
+
+            setTimeout(() => window.location.href = "/connexionclient",2500)
   
           }
           else {
@@ -258,6 +286,44 @@ class App extends Component {
   
   
     }
+
+    checkMsg()
+    {
+
+      if(this.state.checkMsg === '1')
+      {
+
+        return <div className="alert alert-danger">
+        
+            <center>Connexion impossible à cette entreprise car elle n'existe pas, vérifiez vos informations...</center>
+        
+        </div>
+
+      }
+      else if(this.state.checkMsg === '2')
+      {
+
+        return <div className="alert alert-danger">
+        
+            <center>Connexion impossible, vérifiez vos informations...</center>
+        
+        </div>
+
+      }
+      else if(this.state.checkMsg === '3')
+      {
+
+        return <div className="alert alert-danger">
+        
+            <center>Connexion impossible, vérifiez vos informations...</center>
+        
+        </div>
+
+      }
+
+
+
+    }
   
     handleChange = (selectedOption) => {
       this.setState({ selectedOption });
@@ -266,7 +332,10 @@ class App extends Component {
 
   render() {
     const { vrfLogged, vrfLoggedClient, dataMaintenance } = this.state
-    const { selectedOption } = this.state;
+    const { selectedOption, connexionEmail, connexionPassword, connexionEmailClient, connexionPasswordClient } = this.state;
+
+    const isEnabled = validator.isEmail(connexionEmail) && !validator.isEmpty(connexionPassword);
+    const isEnabledTwo = validator.isEmail(connexionEmailClient) && !validator.isEmpty(selectedOption.label) && !validator.isEmpty(connexionPasswordClient)
 
     let options = this.state.options.map(function (valux) {
             return { value: valux.id, label: valux.nomsociete }
@@ -294,6 +363,7 @@ class App extends Component {
                                 <div className="text-center form-control-user">
                                     <h1 className="h4 text-gray-900 mb-4">FIDLIZ <br/> <small>Espace entreprise</small></h1>
                                 </div>
+                                {this.checkMsg()}
                                 <form onSubmit={this.Connexion.bind(this)} className="user">
                                     <div className="form-group">
                                     <input 
@@ -315,7 +385,7 @@ class App extends Component {
                                     
                                     />
                                     </div>
-                                    <button type="submit" className="btn btn-primary btn-block">Connexion</button>
+                                    <button type="submit" disabled={!isEnabled} className="btn btn-primary btn-block">Connexion</button>
                                     <hr/>
                                     <a href="/connexionclient" className="btn btn-google btn-block">
                                     Accès compte client
@@ -355,6 +425,7 @@ class App extends Component {
                             <div className="text-center">
                                 <h1 className="h4 text-gray-900 mb-4">FIDLIZ <br/> <small>Espace client</small></h1>
                             </div>
+                            {this.checkMsg()}
                             <form onSubmit={this.connexionClient.bind(this)} className="user">
                                 <div className="form-group">
                                     <Select
@@ -381,7 +452,7 @@ class App extends Component {
                                     placeholder="Password" 
                                 />
                                 </div>
-                                <button type="submit" className="btn btn-primary btn-block">Connexion</button>
+                                <button type="submit" disabled={!isEnabledTwo} className="btn btn-primary btn-block">Connexion</button>
                                 <hr/>
                                 <a href="/" className="btn btn-google btn-block">
                                 Accès compte entreprise
@@ -406,7 +477,7 @@ class App extends Component {
                 <Route path="/nouveauclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
                 <Route path="/inscriptionclient/:identreprise/:emailclt" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <Inscriptionclient {...props} />} />
                 <Route path="/voirclient/:id" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Voirclient {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
-                <Route path="/gestioncompte/:eventpaiement?/:identreprise?/:mode?/:abonnement?/:prix?" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+                <Route path="/gestioncompte/:eventpaiement?/:identreprise?/:mode?/:abonnement?/:prix?/:limitationclient?/:secure?" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
                 <Route path="/log" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Log loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
                 <Route path="/prestations" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Prestations loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
                 <Route path="/productivite" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Productivite loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
@@ -421,7 +492,18 @@ class App extends Component {
             </Switch>
       </Router>
       </Online>
-      <Offline>Déconnecté du web !</Offline>
+      <Offline><div className="container">
+            <br/>
+            <div className="text-center">
+                <p><img src={offline} className="img-fluid" alt="Connexion internet perdu..." /><br/></p>
+                <div className="alert alert-danger">
+                  <center><p>Vous devez être connecté à internet.<br/>
+                  Veuillez vérifier votre connexion internet. (<b>3G / 4G / Wi-FI</b>)</p></center>
+                </div>
+                <br/>
+                
+            </div>
+        </div></Offline>
       </div>
     );
   }

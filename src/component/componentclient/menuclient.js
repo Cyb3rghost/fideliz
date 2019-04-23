@@ -19,7 +19,7 @@ class Menuclient extends Component {
 
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a className="navbar-brand" href="/fichecoclient">FIDELIZ</a>
+                <a className="navbar-brand" href="/fichecoclient">FIDLIZ</a>
                 
             </nav>
             <nav className="navbar navbar-expand-lg navbar-white bg-white">
@@ -33,13 +33,13 @@ class Menuclient extends Component {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item active">
-                    <a className="nav-link" href="/fichecoclient"><i classNameName="fas fa-fw fa-tachometer-alt"></i> Profil <span className="sr-only">(current)</span></a>
+                    <a className="nav-link" href="/fichecoclient"><i className="fas fa-user"></i> Profil <span className="sr-only">(current)</span></a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="/mescadeaux"><i className="fas  fa-fw fa-gifts"></i> Mes cadeaux fidélités</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" onClick={this.deconnexion.bind(this)} href="/connexionclient"><i classNameName="fas fa-fw fa-sign-out-alt"></i> Déconnexion</a>
+                        <a className="nav-link" onClick={this.deconnexion.bind(this)} href="/connexionclient"><i className="fas fa-sign-out-alt"></i> Déconnexion</a>
                     </li>
                 </ul>
                 </div>

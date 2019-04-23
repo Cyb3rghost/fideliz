@@ -151,7 +151,7 @@ class Fichecoclient extends Component {
 
     };
 
-    confirmation()
+    /*confirmation() A GARDER SI ON REMET LA VALIDATION MANUELLE.
     {
 
         var audio = new Audio();
@@ -208,7 +208,7 @@ class Fichecoclient extends Component {
         .catch(err => console.error(err))  
 
 
-    }
+    }*/
 
     verifieEtatPointage()
     {
@@ -278,16 +278,8 @@ class Fichecoclient extends Component {
                 </div>
 
               } else {
+
                 console.log('Sorry, browser does not support camera access');
-
-                return <div className="row">
-
-                    <div className="col-md-12">
-                    
-                        <button type="button" onClick={this.confirmation.bind(this)} className="btn btn-dark"><i className="fas fa-handshake"></i> Validation manuelle</button>
-
-                    </div>                           
-                </div>
 
               }
 

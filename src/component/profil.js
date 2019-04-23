@@ -515,11 +515,13 @@ class Profil extends Component {
                         <tbody>
                             <tr>
                             <th scope="row">Type de compte</th>
-                            <td align="center">{this.state.typeCompte}</td>
-                            </tr>
-                            <tr>
-                            <th scope="row">Client total</th>
-                            <td  align="center">{this.state.nbClient}</td>
+                            <td align="center">
+                            {this.state.typeCompte === '0' && 'Normal'}
+                            {this.state.typeCompte === '1' && 'Essaie'}
+                            {this.state.typeCompte === '2' && 'Bronze'}
+                            {this.state.typeCompte === '3' && 'Argent'}
+                            {this.state.typeCompte === '4' && 'Or'}
+                            </td>
                             </tr>
                             <tr>
                             <th scope="row">Pointage total</th>

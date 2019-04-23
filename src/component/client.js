@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
+import validator from 'validator';
 import Modal from 'react-responsive-modal';
-import { color } from 'd3-color';
-import { interpolateRgb } from 'd3-interpolate';
-import LiquidFillGauge from 'react-liquid-gauge';
+
+import MaterialTable from 'material-table'
 
 import Footer from './footer'
 import Menu from './menu'
@@ -144,6 +143,16 @@ class Client extends Component {
                 setTimeout(() => window.location.href = "/client", 2500)
                 
             }
+            else if(response === "#LIMITCLIENT#ATTEIND")
+            {
+            
+                this.setState({
+                    statutMsg: '8'
+                })
+
+                setTimeout(() => window.location.href = "/client", 2500)
+            
+            }
 
 
 
@@ -265,6 +274,16 @@ class Client extends Component {
             </div>
             
         }
+        else if (this.state.statutMsg === '8') 
+        {
+            
+            return <div className="alert alert-danger">
+        
+                Votre compte ne vous permet pas d'associer un client supplémentaire. Pensez à upgrader votre compte.
+
+            </div>
+
+        }
 
 
     }
@@ -274,30 +293,8 @@ class Client extends Component {
 
     render() {
         const { dataClient, open, openDeux } = this.state;
-        const radius = 100;
-        const interpolate = interpolateRgb(this.startColor, this.endColor);
-        const fillColor = interpolate(this.state.value / 100);
-        const gradientStops = [
-            {
-                key: '0%',
-                stopColor: color(fillColor).darker(0.5).toString(),
-                stopOpacity: 1,
-                offset: '0%'
-            },
-            {
-                key: '50%',
-                stopColor: fillColor,
-                stopOpacity: 0.75,
-                offset: '50%'
-            },
-            {
-                key: '100%',
-                stopColor: color(fillColor).brighter(0.5).toString(),
-                stopOpacity: 0.5,
-                offset: '100%'
-            }
-        ];
 
+        const isEnabled = !validator.isEmpty(this.state.identifiantCompte) && validator.isNumeric(this.state.identifiantCompte)
 
         let loadingdata;
         if(this.state.loading)
@@ -314,54 +311,23 @@ class Client extends Component {
     
                             <div className="col-md-8">
                             
-                            <LiquidFillGauge
-                                style={{ margin: '0 auto' }}
-                                width={radius * 2}
-                                height={radius * 2}
-                                value={this.state.value}
-                                percent="CLIENTS"
-                                textSize={0.5}
-                                textOffsetX={0}
-                                textOffsetY={0}
-                                textRenderer={(props) => {
-                                    const value = Math.round(props.value);
-                                    const radius = Math.min(props.height / 2, props.width / 2);
-                                    const textPixels = (props.textSize * radius / 2);
-                                    const valueStyle = {
-                                        fontSize: textPixels
-                                    };
-                                    const percentStyle = {
-                                        fontSize: textPixels * 0.6
-                                    };
-            
-                                    return (
-                                        <tspan>
-                                            <tspan className="value" style={valueStyle}>{value}</tspan>
-                                            <tspan style={percentStyle}>{props.percent}</tspan>
-                                        </tspan>
-                                    );
-                                }}
-                                riseAnimation
-                                waveAnimation
-                                waveFrequency={2}
-                                waveAmplitude={1}
-                                gradient
-                                gradientStops={gradientStops}
-                                circleStyle={{
-                                    fill: fillColor
-                                }}
-                                waveStyle={{
-                                    fill: fillColor
-                                }}
-                                textStyle={{
-                                    fill: color('#444').toString(),
-                                    fontFamily: 'Arial'
-                                }}
-                                waveTextStyle={{
-                                    fill: color('#fff').toString(),
-                                    fontFamily: 'Arial'
-                                }}
-                            />
+                            <div className="col-md-6">
+                            <div className="card border-left-primary shadow h-100 py-2">
+                                <div className="card-body">
+                                <div className="row no-gutters align-items-center">
+                                    <div className="col mr-2">
+                                    <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">CLIENTS</div>
+                                    <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.value}</div>
+                                    </div>
+                                    <div className="col-auto">
+                                    <i className="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+
+                            
                             
     
                             </div>
@@ -414,19 +380,51 @@ class Client extends Component {
 
                         <br/>
 
-                        {dataClient.map((value, index) => 
-                            (<div key={index}><a href={'/voirclient/' + value.id}><div className="cardClient">
-                
-                            <p>{value.nom} {value.prenom} - {value.telephone}<br/>
-                            {value.adresse} <br/>
-                            {value.codepostal} {value.ville} <br/>
-                            {value.email} <br/></p>
+                        <MaterialTable
+                            columns={[
+                                { title: 'Identifiant', field: 'id' },
+                                { title: 'Nom', field: 'nom' },
+                                { title: 'Prenom', field: 'prenom' },
+                                { title: 'Email', field: 'email'},
+                                { title: 'Telephone', field: 'telephone' },
+                                { title: 'Adresse', field: 'adresse' },
+                                { title: 'Code postal', field: 'codepostal' },
+                                { title: 'Ville', field: 'ville' },
+                            ]}
+                            data={ dataClient.map( function(value) {
                             
-                            </div></a></div>
-                            )
-                        )}
-
-
+                                var addDataItems = { 
+                                id: value.id,
+                                nom: value.nom,
+                                prenom: value.prenom,
+                                email: value.email,
+                                telephone: value.telephone,
+                                adresse: value.adresse,
+                                codepostal: value.codepostal,
+                                ville: value.ville
+                                                    }
+                                return addDataItems;
+                            }) }
+                            title="Liste de clients"
+                            actions={[
+                                {
+                                    icon: 'remove_red_eye',
+                                    tooltip: 'Voir la fiche client',
+                                    onClick: (event, rowData) => {
+                                        window.location.href = '/voirclient/' + rowData.id
+                                    },
+                                    iconProps: {
+                                        style: {
+                                          fontSize: 30,
+                                          color: 'black',
+                                        },
+                                      },
+                                }
+                            ]}
+                            options={{
+                               actionsColumnIndex: -1,
+                            }}
+                        />
     
                         {/* FIN CODE */}
     
@@ -481,7 +479,7 @@ class Client extends Component {
                                 />
                                 <br/>
                                 <div className="input-group-append">
-                                    <button className="btn btn-dark btn-block" type="input">Association du compte</button>
+                                    <button className="btn btn-dark btn-block" disabled={!isEnabled} type="input">Association du compte</button>
                                 </div>
                             </form>
                             

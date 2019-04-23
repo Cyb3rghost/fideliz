@@ -21,7 +21,7 @@ class Menu extends Component {
       <div>
 
                     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                            <a className="navbar-brand" href="/dashboard">FIDELIZ</a>
+                            <a className="navbar-brand" href="/dashboard">FIDLIZ</a>
                             
                         </nav>
                         <nav className="navbar navbar-expand-lg navbar-white bg-white">

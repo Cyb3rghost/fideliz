@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Configuration from '../fidconfig'
 import Select from 'react-select';
+import validator from 'validator';
 
 import Menu from './menuclient'
 import Footer from '../footer'
@@ -22,6 +23,7 @@ class Editionclient extends Component {
             actuelMdp: '',
             nouveauMdp: '',
             retapeMdp: '',
+            checkChangeVille: '',
             selectedOption: null,
             options: [],
             statutMsgMaj: ''
@@ -101,6 +103,8 @@ class Editionclient extends Component {
                     statutMsgMaj: '1'
                 })
 
+                setTimeout(() => window.location.href = "/fichecoclient",2500)
+
             }
             else if(response === "#MAJCLIENT#FAILED")
             {
@@ -110,6 +114,8 @@ class Editionclient extends Component {
                     statutMsgMaj: '2'
                 })
 
+                setTimeout(() => window.location.href = "/editionclient",2500)
+
             }
             else if(response === "#MAJCLIENT#NOSOUCHE")
             {
@@ -118,6 +124,8 @@ class Editionclient extends Component {
                 this.setState({
                     statutMsgMaj: '6'
                 })
+
+                setTimeout(() => window.location.href = "/editionclient",2500)
 
             }
 
@@ -150,6 +158,8 @@ class Editionclient extends Component {
                         nouveauMdp: '',
                         retapeMdp: ''
                     })
+
+                    setTimeout(() => window.location.href = "/fichecoclient",2500)
     
                 }
                 else if(response === "#MDFMDP#FAILED")
@@ -162,6 +172,8 @@ class Editionclient extends Component {
                         nouveauMdp: '',
                         retapeMdp: ''
                     })
+
+                    setTimeout(() => window.location.href = "/editionclient",2500)
     
                 }
                 else if(response === "#MDFMDP#NOSOUCHE")
@@ -174,6 +186,8 @@ class Editionclient extends Component {
                         nouveauMdp: '',
                         retapeMdp: ''
                     })
+
+                    setTimeout(() => window.location.href = "/editionclient",2500)
     
                 }
     
@@ -192,6 +206,8 @@ class Editionclient extends Component {
                 retapeMdp: ''
             })
 
+            setTimeout(() => window.location.href = "/editionclient",2500)
+
         }
 
     }
@@ -203,7 +219,7 @@ class Editionclient extends Component {
         if(this.state.statutMsgMaj === '1')
         {
 
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
         
                 Votre profil a bien été mis à jour.
         
@@ -215,7 +231,7 @@ class Editionclient extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
                 Votre profil n'a pas été mis à jour.
         
@@ -226,7 +242,7 @@ class Editionclient extends Component {
         {
             
 
-            return <div className="msgSuccessPerso">
+            return <div className="alert alert-success">
         
                 Votre mot de passe a bien été modifier.
         
@@ -237,7 +253,7 @@ class Editionclient extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
                 Votre mot de passe n'a pas été modifier. (Ceci n'est pas votre compte principale.)
         
@@ -248,7 +264,7 @@ class Editionclient extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
                 Les mots de passe ne sont pas identique.
         
@@ -259,7 +275,7 @@ class Editionclient extends Component {
         {
             
 
-            return <div className="msgErrorPerso">
+            return <div className="alert alert-danger">
         
                 Votre profil n'a pas été mis à jour. (Ceci n'est pas votre compte principale.)
         
@@ -271,13 +287,20 @@ class Editionclient extends Component {
     }
 
     handleChange = (selectedOption) => {
-        this.setState({ selectedOption });
+        this.setState({ selectedOption, checkChangeVille: '1' });
         console.log(`Option selected:`, selectedOption);
       }
 
   render() {
 
-    const { selectedOption } = this.state;
+    const { selectedOption, nomClient, prenomClient, adresseClient, emailClient, telephoneClient, checkChangeVille } = this.state;
+
+    const isEnabled = !validator.isEmpty(nomClient)
+    && !validator.isEmpty(prenomClient)
+    && !validator.isEmpty(adresseClient)
+    && !validator.isEmpty(checkChangeVille)
+    && validator.isEmail(emailClient)
+    && validator.isNumeric(telephoneClient)
 
     let options = this.state.options.map(function (valux) {
             return { value: valux.codepostal, label: valux.codepostal + ' / ' + valux.ville }
@@ -303,7 +326,7 @@ class Editionclient extends Component {
                     {/* DEBUT CODE */}
 
                     <br/>
-                    <table class="table table-striped">
+                    <table className="table table-striped">
                         <thead>
                         <tr>
                             
@@ -379,14 +402,14 @@ class Editionclient extends Component {
                         </tr>
                         <tr>
                             <td></td>
-                            <td><button class="btn btn-success btn-block" onClick={this.majClient.bind(this)} type="submit">Sauvegarder les modifications</button></td>
+                            <td><button className="btn btn-success btn-block" disabled={!isEnabled} onClick={this.majClient.bind(this)} type="submit">Sauvegarder les modifications</button></td>
                         </tr>
                         </tbody>
                     </table> 
 
                     <br/>
 
-                    <table class="table table-striped">
+                    <table className="table table-striped">
                         <thead>
                         <tr>
                             
@@ -421,7 +444,7 @@ class Editionclient extends Component {
                         </tr>
                         <tr>
                             <td></td>
-                            <td><button class="btn btn-success btn-block" onClick={this.changeMDP.bind(this)} type="submit">Sauvegarder les modifications</button></td>
+                            <td><button className="btn btn-success btn-block" onClick={this.changeMDP.bind(this)} type="submit">Sauvegarder les modifications</button></td>
                         </tr>
                         </tbody>
                     </table> 

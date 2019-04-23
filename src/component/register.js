@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Configuration from './fidconfig'
 import Select from 'react-select';
+import validator from 'validator';
 
 class Register extends Component {
 
@@ -22,7 +23,8 @@ class Register extends Component {
             statueIns: '0',
             selectedOption: null,
             options: [],
-            getApiKey: ''
+            getApiKey: '',
+
         }
 
     }
@@ -59,49 +61,83 @@ class Register extends Component {
             if(passwordEntreprise === retape)
             {
     
-                var separeInfos = this.state.selectedOption.label.split("/")
-                var codepostal = separeInfos[0];
-                var ville = separeInfos[1];
 
-                fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=inscription&nEntreprise=' + nomEntreprise 
-                + '&mailEntreprise=' + emailEntreprise 
-                + '&nom=' + nom 
-                + '&prenom=' + prenom
-                + '&adresse=' + adresse 
-                + '&telephone=' + telephone
-                + '&secteur=' + sector
-                + '&password=' + passwordEntreprise
-                + '&codepostal=' + codepostal
-                + '&ville=' + ville
-                + '&apikey=' + this.props.apikey)
-                .then((response) => response.json())
-                .then((response) => {
-                    console.log(response)
-                    if(response === "#INS#SUCCESS")
-                    {
+
+                if(!validator.isEmpty(nomEntreprise) 
+                && validator.isEmail(emailEntreprise) 
+                && !validator.isEmpty(nom)
+                && !validator.isEmpty(prenom)
+                && !validator.isEmpty(adresse)
+                && !validator.isEmpty(sector)
+                && !validator.isEmpty(telephone)
+                && !validator.isEmpty(this.state.selectedOption.label)
+                && !validator.isEmpty(passwordEntreprise)
+                && !validator.isEmpty(retape))
+                {
+
+                    var separeInfos = this.state.selectedOption.label.split("/")
+                    var codepostal = separeInfos[0];
+                    var ville = separeInfos[1];
+
+                    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=inscription&nEntreprise=' + nomEntreprise 
+                    + '&mailEntreprise=' + emailEntreprise 
+                    + '&nom=' + nom 
+                    + '&prenom=' + prenom
+                    + '&adresse=' + adresse 
+                    + '&telephone=' + telephone
+                    + '&secteur=' + sector
+                    + '&password=' + passwordEntreprise
+                    + '&codepostal=' + codepostal
+                    + '&ville=' + ville
+                    + '&apikey=' + this.props.apikey)
+                    .then((response) => response.json())
+                    .then((response) => {
+                        console.log(response)
+                        if(response === "#INS#SUCCESS")
+                        {
+        
+                            this.setState({
+                                statueIns: '2'
+                            })
     
-                        this.setState({
-                            statueIns: '2'
-                        })
+                            setTimeout(() => window.location.href = "/",2500)
+        
+                        }
+                        else if (response === "#INS#ERROR") {
+        
+                            this.setState({
+                                statueIns: '3'
+                            })
     
-                    }
-                    else if (response === "#INS#ERROR") {
+                            setTimeout(() => window.location.href = "/register",2500)
+                            
+                        }
+                        else if (response === "#INS#EXISTE") {
+                            
+                            this.setState({
+                                statueIns: '4'
+                            })
     
-                        this.setState({
-                            statueIns: '3'
-                        })
-                        
-                    }
-                    else if (response === "#INS#EXISTE") {
-                        
-                        this.setState({
-                            statueIns: '4'
-                        })
-                        
-                    }
-    
-                })
-                .catch(err => console.error(err))
+                            setTimeout(() => window.location.href = "/register",2500)
+                            
+                        }
+        
+                    })
+                    .catch(err => console.error(err))
+
+
+                }
+                else
+                {
+
+                    this.setState({
+                        statueIns: '6'
+                    })
+
+                }
+
+
+
     
             }
             else
@@ -138,7 +174,7 @@ class Register extends Component {
                 </div>
             case '2':
                 return <div className="alert alert-success">
-                    <strong>Inscription réussi !</strong>
+                    <center>Inscription réussi ! Patientez...</center>
                 </div>
             case '3':
                 return <div className="alert alert-danger">
@@ -151,6 +187,10 @@ class Register extends Component {
             case '5':
                 return <div className="alert alert-danger">
                     Vous devez accepter les conditions d'utilisations pour pouvoir vous inscrire.
+                </div>
+            case '6':
+                return <div className="alert alert-danger">
+                    Vous devez remplir l'ensemble des formulaires pour valider votre inscription.
                 </div>
             default:
                 break;
@@ -195,6 +235,7 @@ class Register extends Component {
                 <div className="text-center">
                     <h1 className="h4 text-gray-900 mb-4">FIDLIZ <br/><small>Création d'un compte entreprise</small></h1>
                 </div>
+
                 {this.checkmsg()}
                 <form onSubmit={this.addInscription.bind(this)} className="user">
                     <div className="form-group row">
@@ -205,7 +246,6 @@ class Register extends Component {
                         onChange={e => this.setState({nomEntreprise: e.target.value})}
                         className="form-control" 
                         placeholder="Nom de l'entreprise" 
-                        
                         />
                     </div>
                     <div className="col-sm-6">
@@ -215,7 +255,6 @@ class Register extends Component {
                         onChange={e => this.setState({emailEntreprise: e.target.value})}
                         className="form-control" 
                         placeholder="Email" 
-                        
                         />
                     </div>
                     </div>
@@ -227,7 +266,6 @@ class Register extends Component {
                         onChange={e => this.setState({nom: e.target.value})}
                         className="form-control" 
                         placeholder="Votre nom" 
-                        
                         />
                     </div>
                     <div className="col-sm-6">
@@ -237,7 +275,6 @@ class Register extends Component {
                         onChange={e => this.setState({prenom: e.target.value})}
                         className="form-control" 
                         placeholder="Votre prénom" 
-                        
                         />
                     </div>
                     </div>
@@ -255,7 +292,6 @@ class Register extends Component {
                             onChange={e => this.setState({adresse: e.target.value})}
                             className="form-control" 
                             placeholder="Votre adresse" 
-                        
                         />
                     </div>
                     <div className="form-group">

@@ -66,10 +66,22 @@ class Productivite extends Component {
         .then((response) => response.json())
         .then((response) => {
 
-            console.log(response)
-            this.setState({
-                afficheDernierPointage: response
-            })
+            if(response === "#LASTPOINTAGE#VIDE")
+            {
+
+                console.log(response)
+
+            }
+            else
+            {
+
+                this.setState({
+                    afficheDernierPointage: response
+                })
+    
+
+            }
+
 
         })
         .catch(err => console.error(err))
@@ -282,7 +294,7 @@ class Productivite extends Component {
   
                       <div id="content">
   
-                           <Menu title="Mode productivité" />
+                           <Menu title="Mode fidélité" />
 
                             <div className="container">
                             

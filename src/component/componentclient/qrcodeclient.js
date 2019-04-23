@@ -48,6 +48,7 @@ class Qrcodeclient extends Component {
                     break; 
                 case '#CARTEFIDENT#DESACTIVE':
                     console.log(response)
+                    alert("Impossible d'effectuer un pointage car la carte de l'entreprise est désactivé.")
                     break; 
                 case '#LIMITPOINTAGE#ATTEIND':
                     console.log(response)

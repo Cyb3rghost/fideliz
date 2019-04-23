@@ -64,6 +64,8 @@ class Dashboard extends Component {
                 combinedData["apiRequest2"] = values[1];
                 combinedData["apiRequest3"] = values[2];
                 combinedData["apiRequest4"] = values[3];
+
+                console.log(combinedData["apiRequest4"])
                 
                 combinedData["apiRequest1"].map((value) => 
                 (
@@ -81,10 +83,26 @@ class Dashboard extends Component {
                 )
                 )
 
-                this.setState({
-                    totalClient: combinedData["apiRequest2"],  
-                    totalGainsClient: combinedData["apiRequest3"]            
-                })
+                if(combinedData["apiRequest3"] === null)
+                {
+
+                    this.setState({
+                        totalClient: combinedData["apiRequest2"],  
+                        totalGainsClient: '0'            
+                    })
+
+                }
+                else
+                {
+
+                    this.setState({
+                        totalClient: combinedData["apiRequest2"],  
+                        totalGainsClient: combinedData["apiRequest3"]            
+                    })
+
+                }
+
+
 
                 combinedData["apiRequest4"].map((value) => 
                 (
@@ -105,8 +123,19 @@ class Dashboard extends Component {
     calculScoreClassement()
     {
 
-        var obtenirScore = this.state.scoreTotal / this.state.notationTotal * 10
-        return obtenirScore.toFixed(1) + ' / 10'
+        if(this.state.scoreTotal === null && this.state.notationTotal === null)
+        {
+
+            return '0 / 10'
+
+        }
+        else
+        {
+
+            var obtenirScore = this.state.scoreTotal / this.state.notationTotal * 10
+            return obtenirScore.toFixed(1) + ' / 10'
+
+        }
 
     }
 

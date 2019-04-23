@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Configuration from './fidconfig'
 import Select from 'react-select';
+import validator from 'validator';
 
 import Footer from './footer'
 import Menu from './menu'
@@ -20,6 +21,7 @@ class Nouveauclient extends Component {
             passwordClient: '',
             dateNaissance: '',
             statutMsg: '',
+            checkCPVille: '',
             selectedOption: null,
             options: []
         }
@@ -82,12 +84,16 @@ class Nouveauclient extends Component {
                     statutMsg: '1'
                 })
 
+                setTimeout(() => window.location.href = "/client",2500)
+
             }
             else if (response === "#AJTCLIENT#ERROR") {
 
                 this.setState({
                     statutMsg: '0'
                 })
+
+                setTimeout(() => window.location.href = "/nouveauclient",2500)
                 
             }
             else if (response === "#AJTCLIENT#EXISTE") {
@@ -95,6 +101,8 @@ class Nouveauclient extends Component {
                 this.setState({
                     statutMsg: '2'
                 })
+
+                setTimeout(() => window.location.href = "/nouveauclient",2500)
                 
             }
             else if(response === "#LIMITCLIENT#ATTEIND")
@@ -103,6 +111,8 @@ class Nouveauclient extends Component {
                 this.setState({
                     statutMsg: '3'
                 })
+
+                setTimeout(() => window.location.href = "/client",2500)
 
             }
 
@@ -142,7 +152,7 @@ class Nouveauclient extends Component {
 
             return <div className="alert alert-danger">
         
-                Un client avec ces informations existe déjà. Vérifiez l'adresse email ou le mot de passe s'il vous plait. 
+                Un client avec ces informations existe déjà. Vérifiez l'adresse email et les autres informations s'il vous plait. 
         
             </div>
 
@@ -162,12 +172,21 @@ class Nouveauclient extends Component {
     }
 
     handleChange = (selectedOption) => {
-        this.setState({ selectedOption });
+        this.setState({ selectedOption, checkCPVille: '1' });
         console.log(`Option selected:`, selectedOption);
       }
 
   render() {
-    const { selectedOption } = this.state;
+    const { selectedOption, dateNaissance, nomClient, prenomClient, adresseClient, checkCPVille, telephoneClient, emailClient, passwordClient } = this.state;
+
+    const isEnabled = !validator.isEmpty(dateNaissance)
+    && !validator.isEmpty(nomClient)
+    && !validator.isEmpty(prenomClient)
+    && !validator.isEmpty(adresseClient)
+    && !validator.isEmpty(checkCPVille)
+    && !validator.isEmpty(telephoneClient)
+    && validator.isEmail(emailClient)
+    && !validator.isEmpty(passwordClient)
 
     let options = this.state.options.map(function (valux) {
             return { value: valux.codepostal, label: valux.codepostal + ' / ' + valux.ville }
@@ -302,7 +321,7 @@ class Nouveauclient extends Component {
                     <div class="form-group row">
                         <div className="col-sm-8"></div>
                         <div class="col-sm-4">
-                        <button className="btn btn-success btn-block" type="submit" id="button-addon2">Ajouter</button>
+                        <button className="btn btn-success btn-block" disabled={!isEnabled} type="submit" id="button-addon2">Ajouter</button>
                         </div>
                     </div>
                     </form>
