@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Configuration from './fidconfig'
-
+import validator from 'validator';
 
 import Menu from './menu'
 import Footer from './footer'
@@ -8,6 +8,7 @@ import Footer from './footer'
 import MaterialTable from 'material-table'
 import Modal from 'react-responsive-modal';
 import Select from 'react-select';
+import ReactGA from 'react-ga';
 
 var ItemMultiple = [
 
@@ -178,8 +179,13 @@ class Prestations extends Component {
                 this.setState({
                     statutAjtCadeaux: '1'
                 })
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise (ID : " + this.props.idUserRecup + ") a ajouter une prestation (" + this.state.maprestation + " " + this.state.prix + " €)."
+                });
                 
-                setTimeout(() => window.location.href = "/prestations",1000)
+                setTimeout(() => window.location.href = "/prestations", 2000)
 
             }
             else if (response === "#AJTCADEAUX#ECHEC") {
@@ -189,6 +195,11 @@ class Prestations extends Component {
                     statutAjtCadeaux: '2'
                 })
 
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise (ID : " + this.props.idUserRecup + ") n'a pas réussi à ajouter la prestation (" + this.state.maprestation + " " + this.state.prix + " €)."
+                });
+
             }
             else if (response === "#AJTCADEAUX#EXISTE") {
             
@@ -197,9 +208,12 @@ class Prestations extends Component {
                     statutAjtCadeaux: '3'
                 })
 
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise (ID : " + this.props.idUserRecup + ") n'a pas réussi à ajouter la prestation (" + this.state.maprestation + " " + this.state.prix + " €) car elle existe."
+                });
+
             }
-
-
     
 
         })
@@ -354,6 +368,11 @@ class Prestations extends Component {
                     this.setState({
                         statutAjtCadeaux: '6'
                     })
+
+                    ReactGA.event({
+                        category: 'User',
+                        action: "L'entreprise (ID : " + this.props.idUserRecup + ") a activé une prestation."
+                    });
     
                     setTimeout(() => window.location.href = "/prestations",1000)
     
@@ -363,6 +382,12 @@ class Prestations extends Component {
                     this.setState({
                         statutAjtCadeaux: '7'
                     })
+
+                    
+                    ReactGA.event({
+                        category: 'User',
+                        action: "L'entreprise (ID : " + this.props.idUserRecup + ") n'a pas réussi à activé une prestation."
+                    });
     
                 }
     
@@ -408,6 +433,12 @@ class Prestations extends Component {
                     this.setState({
                         statutAjtCadeaux: '4'
                     })
+
+                    
+                    ReactGA.event({
+                        category: 'User',
+                        action: "L'entreprise (ID : " + this.props.idUserRecup + ") a desactivé une prestation."
+                    });
     
                     setTimeout(() => window.location.href = "/prestations",1000)
     
@@ -417,6 +448,11 @@ class Prestations extends Component {
                     this.setState({
                         statutAjtCadeaux: '5'
                     })
+
+                    ReactGA.event({
+                        category: 'User',
+                        action: "L'entreprise (ID : " + this.props.idUserRecup + ") n'a pas réussi à desactivé une prestation."
+                    });
     
                 }
     
@@ -461,6 +497,11 @@ class Prestations extends Component {
                     this.setState({
                         statutAjtCadeaux: '8'
                     })
+
+                    ReactGA.event({
+                        category: 'User',
+                        action: "L'entreprise (ID : " + this.props.idUserRecup + ") a supprimé une prestation."
+                    });
     
                     setTimeout(() => window.location.href = "/prestations",1000)
     
@@ -470,6 +511,11 @@ class Prestations extends Component {
                     this.setState({
                         statutAjtCadeaux: '9'
                     })
+
+                    ReactGA.event({
+                        category: 'User',
+                        action: "L'entreprise (ID : " + this.props.idUserRecup + ") n'a pas réussi à supprimé une prestation."
+                    });
     
                 }
     
@@ -540,6 +586,12 @@ class Prestations extends Component {
             {
 
                 console.log(response)
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise (ID : " + this.props.idUserRecup + ") vien de dissoudre le produit groupé (N° " + idproduitdegroupage + ")."
+                });
+
                 window.location.href ='/prestations'
 
             }
@@ -577,6 +629,12 @@ class Prestations extends Component {
             {
 
                 console.log(response)
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise (ID : " + this.props.idUserRecup + ") a modifier la prestation (" + nomPrestation + " " + this.state.cellulePrixTotal + " €)."
+                });
+
                 window.location.href ='/prestations'
 
             }
@@ -632,7 +690,7 @@ class Prestations extends Component {
     
                 }
 
-                setTimeout(() => window.location.href = "/prestations",1500)
+                
     
             })
             .catch(err => console.error(err)) 
@@ -651,6 +709,13 @@ class Prestations extends Component {
 
                 console.log(response)
                 this.onCloseModalDeux()
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise (ID : " + this.props.idUserRecup + ") a ajouter un produit groupé (Valeur total : " + this.state.totalMultiplePrix + " €)."
+                });
+
+                setTimeout(() => window.location.href = "/prestations",1500)
 
             }
             else if (response === "#MAJPRDTOTAL#FAILED") {
@@ -686,7 +751,10 @@ class Prestations extends Component {
 
   render() {
     const { open, openDeux, openTrois, openQuatre } = this.state;
-    const { selectedOption } = this.state;
+    const { selectedOption, maprestation, prix, maprestationGrp, prixGrp} = this.state;
+
+    const isEnabled = !validator.isEmpty(maprestation) && !validator.isEmpty(prix) && validator.isNumeric(prix)
+    const isEnabledTwo = !validator.isEmpty(maprestationGrp) && !validator.isEmpty(prixGrp) && validator.isNumeric(prixGrp)
 
     let options = this.state.options.map(function (valux) {
             return { value: valux.id, label: valux.prestation + ' - ' + valux.prix + ' € ' }
@@ -766,16 +834,18 @@ class Prestations extends Component {
                             ]}
                             data={ this.state.cadeaux.map( function(value) {
                         
+                                var afficheProduitGrouper = ""
+
                                 if(value.prdtgrp === "0")
                                 {
 
-                                    var afficheProduitGrouper = ""
+                                    afficheProduitGrouper = ""
 
                                 }
                                 else if(value.prdtgrp === "1")
                                 {
 
-                                    var afficheProduitGrouper = "Produit groupé"
+                                    afficheProduitGrouper = "Produit groupé"
 
                                 }
 
@@ -914,7 +984,7 @@ class Prestations extends Component {
                     <Modal open={open} onClose={this.onCloseModal} center>
                         <h2>Prestation simple</h2>
                         <hr/>
-                        <form onSubmit={this.ajoutPrestation.bind(this)}>
+                        <form>
                         <div className="form-inline">
                         <div className="form-group mb-2">
                             <label className="sr-only">Email</label>
@@ -936,7 +1006,7 @@ class Prestations extends Component {
                                 onChange={e => this.setState({prix: e.target.value})}
                             
                             />                        </div>
-                            <button type="submit" className="btn btn-primary">Ajouter</button>
+                            <button type="button" onClick={this.ajoutPrestation.bind(this)} disabled={!isEnabled} className="btn btn-primary">Ajouter</button>
                         </div>
                         </form>
                     </Modal>
@@ -959,7 +1029,6 @@ class Prestations extends Component {
 
                             <div className="form-inline">
                                 <div className="form-group mb-4">
-                                    <label className="sr-only">Email</label>
                                     <input 
                                         type="text" 
                                         className="form-control" 
@@ -970,7 +1039,6 @@ class Prestations extends Component {
                                     />                        
                                 </div>
                                 <div className="form-group mx-sm-3 mb-4">
-                                    <label className="sr-only">Password</label>
                                     <input 
                                         type="number" 
                                         className="form-control" 
@@ -984,7 +1052,7 @@ class Prestations extends Component {
                             </div>
                             <div className="col-md-1">
                             
-                                <button type="button" onClick={this.ajoutMultiple.bind(this)} className="btn btn-dark"><i className="fas fa-plus-circle"></i></button>
+                                <button type="button" disabled={!isEnabledTwo} onClick={this.ajoutMultiple.bind(this)} className="btn btn-dark"><i className="fas fa-plus-circle"></i></button>
                             
                             </div>
                         

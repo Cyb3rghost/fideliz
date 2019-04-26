@@ -6,7 +6,7 @@ import Select from 'react-select';
 
 import Footer from './footer'
 import Menu from './menu'
-
+import ReactGA from 'react-ga';
 
 class Profil extends Component {
 
@@ -135,6 +135,11 @@ class Profil extends Component {
                     statutUpload: '1'
                 })
 
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " vien de changer le design de la carte."
+                });
+
             }
             else if (res.data === "#MAJBKGCARTE#FAILED") {
 
@@ -142,12 +147,22 @@ class Profil extends Component {
                     statutUpload: '2'
                 })
 
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " n'a pas réussi à changer le design de la carte."
+                });
+
             }
             else if (res.data === "#UPLOADCARTE#FAILED") {
          
                 this.setState({
                     statutUpload: '3'
                 })
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " a rencontré un problème d'upload de fichier (background)."
+                });
                 
             }
             else if (res.data === "#UPLOADIMENSION#FAILED") {
@@ -155,6 +170,11 @@ class Profil extends Component {
                 this.setState({
                     statutUpload: '4'
                 })
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " a rencontré un problème d'upload de fichier (dimension)."
+                });
                 
             }   
 
@@ -184,6 +204,11 @@ class Profil extends Component {
                 this.setState({
                     statutUpload: '5'
                 })
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " a rencontré un problème d'upload de fichier."
+                });
                 
             }
             else if (res.data === "#MAJLOGOCARTE#SUCCESS") {
@@ -191,6 +216,11 @@ class Profil extends Component {
                 this.setState({
                     statutUpload: '6'
                 })
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " a mis à jour son logo."
+                });
                 
             }
             else if (res.data === "#MAJLOGOCARTE#FAILED") {
@@ -198,6 +228,11 @@ class Profil extends Component {
                 this.setState({
                     statutUpload: '7'
                 })
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " n'a pas réussi à mettre à jour son logo."
+                });
                 
             }
             else if (res.data === "#UPLOADLOGOCARTE#SUCCESS") {
@@ -205,6 +240,11 @@ class Profil extends Component {
                 this.setState({
                     statutUpload: '8'
                 })
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " a réussi à mettre à jour le logo de la carte."
+                });
                 
             }
             else if (res.data === "#UPLOADIMENSIONLOGO#FAILED") {
@@ -212,6 +252,11 @@ class Profil extends Component {
                 this.setState({
                     statutUpload: '9'
                 })
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " a rencontré un problème d'upload de fichier (dimension)."
+                });
                 
             }
 
@@ -246,6 +291,11 @@ class Profil extends Component {
                 console.log(response)
                 this.setState({ selectedOption, cadeaux: separePrestation[0], prixcadeaux: separePrestation[1].substring(0, separePrestation[1].length-1)});
 
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " a mis à jour son cadeaux de fidélité."
+                });
+
             }
             else if(response === "#UPENTGIFT#FAILED")
             {
@@ -253,6 +303,11 @@ class Profil extends Component {
                 console.log(response)
                 this.setState({ selectedOption });
                 console.log(`Option selected:`, selectedOption);
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " a rencontré un problème lors de la mise à jour du cadeaux de fidélité."
+                });
 
             }
 
@@ -284,6 +339,11 @@ class Profil extends Component {
                 console.log(response)
                 this.setState({ selectedOptionPrestation, limitPointage: selectedOptionPrestation.label});
 
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " vien de mettre à jour la limitation des prestations de sa carte."
+                });
+
             }
             else if(response === "#UPENTPNT#FAILED")
             {
@@ -292,12 +352,22 @@ class Profil extends Component {
                 this.setState({ selectedOptionPrestation });
                 console.log(`Option selected:`, selectedOptionPrestation);
 
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " n'a pas réussi à mettre à jour les limitations de sa carte."
+                });
+
             }
             else if(response === "#CHGPRESTATION#FAILED")
             {
 
                 console.log(response)
                 this.setState({selectedOptionPrestation, statutUpload: '10'})
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " n'a pas réussi à mettre à jour les limitations de sa carte car il y a des pointages en cours..."
+                });
 
             }
 

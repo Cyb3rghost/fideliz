@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import QrReader from "react-qr-reader";
 import Configuration from '../fidconfig'
-
+import ReactGA from 'react-ga';
 
 class Qrcodeclient extends Component {
 
@@ -41,17 +41,35 @@ class Qrcodeclient extends Component {
             switch (response) {
                 case '#PRODUCTPOINTAGE#SUCCESS':
                     console.log(response)
+
+                    ReactGA.event({
+                      category: 'User',
+                      action: "Le client (N° " + this.props.idUserRecupClient + ") a effectuer un pointage."
+                    });
+
                     setTimeout(() => window.location.href = "/fichecoclient",1500)
                     break;   
                 case '#PRODUCTPOINTAGE#FAILED':
                     console.log(response)
+                    ReactGA.event({
+                      category: 'User',
+                      action: "Le client (N° " + this.props.idUserRecupClient + ") n'a pas réussi à effectuer un pointage."
+                    });
                     break; 
                 case '#CARTEFIDENT#DESACTIVE':
                     console.log(response)
+                    ReactGA.event({
+                      category: 'User',
+                      action: "Le client (N° " + this.props.idUserRecupClient + ") n'a pas réussi à effectuer un pointage."
+                    });
                     alert("Impossible d'effectuer un pointage car la carte de l'entreprise est désactivé.")
                     break; 
                 case '#LIMITPOINTAGE#ATTEIND':
                     console.log(response)
+                    ReactGA.event({
+                      category: 'User',
+                      action: "Le client (N° " + this.props.idUserRecupClient + ") a atteind la limitation de la carte de fidélité."
+                    });
                     setTimeout(() => window.location.href = "/fichecoclient",1500)
                     break; 
                 default:

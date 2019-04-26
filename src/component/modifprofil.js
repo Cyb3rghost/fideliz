@@ -3,6 +3,7 @@ import Loader from 'react-loader-spinner'
 import Configuration from './fidconfig'
 import Select from 'react-select';
 import validator from 'validator';
+import ReactGA from 'react-ga';
 
 import Footer from './footer'
 import Menu from './menu'
@@ -108,6 +109,11 @@ class Modifprofil extends Component {
                     this.setState({
                         statutMsgMaj: '1'
                     })
+
+                    ReactGA.event({
+                        category: 'User',
+                        action: "L'entreprise " + this.state.nomSociete + " a mis à jour son profil."
+                    });
     
                 }
                 else if(response === "#MAJENT#FAILED")
@@ -117,6 +123,11 @@ class Modifprofil extends Component {
                     this.setState({
                         statutMsgMaj: '2'
                     })
+
+                    ReactGA.event({
+                        category: 'User',
+                        action: "L'entreprise " + this.state.nomSociete + " n'a pas réussi à mettre à jour son profil."
+                    });
     
                 }
                 else if(response === "#ENT#NOEXIST")
@@ -160,6 +171,11 @@ class Modifprofil extends Component {
                         nouveauMdp: '',
                         retapeMdp: ''
                     })
+
+                    ReactGA.event({
+                        category: 'User',
+                        action: "L'entreprise " + this.state.nomSociete + " vien de mettre à jour son mot de passe."
+                    });
     
                 }
                 else if(response === "#MDFMDP#FAILED")
@@ -172,6 +188,11 @@ class Modifprofil extends Component {
                         nouveauMdp: '',
                         retapeMdp: ''
                     })
+
+                    ReactGA.event({
+                        category: 'User',
+                        action: "L'entreprise " + this.state.nomSociete + " n'a pas réussi à mettre à jour son mot de passe."
+                    });
     
                 }
                 else if(response === "#MDFMDP#NOSOUCHE")
@@ -184,6 +205,11 @@ class Modifprofil extends Component {
                         nouveauMdp: '',
                         retapeMdp: ''
                     })
+
+                    ReactGA.event({
+                        category: 'User',
+                        action: "L'entreprise " + this.state.nomSociete + " n'a pas réussi à mettre à jour son mot de passe car ce n'est pas un compte souche."
+                    });
     
                 }
     

@@ -5,7 +5,7 @@ import validator from 'validator';
 
 import Menu from './menuclient'
 import Footer from '../footer'
-
+import ReactGA from 'react-ga';
 
 class Editionclient extends Component {
 
@@ -103,6 +103,11 @@ class Editionclient extends Component {
                     statutMsgMaj: '1'
                 })
 
+                ReactGA.event({
+                    category: 'User',
+                    action: "Le client " + this.state.nomClient + " " + this.state.prenomClient + " a mis à jour son profil."
+                });
+
                 setTimeout(() => window.location.href = "/fichecoclient",2500)
 
             }
@@ -114,6 +119,11 @@ class Editionclient extends Component {
                     statutMsgMaj: '2'
                 })
 
+                ReactGA.event({
+                    category: 'User',
+                    action: "Le client " + this.state.nomClient + " " + this.state.prenomClient + " n'a pas réussi à mettre à jour son profil."
+                });
+
                 setTimeout(() => window.location.href = "/editionclient",2500)
 
             }
@@ -124,6 +134,11 @@ class Editionclient extends Component {
                 this.setState({
                     statutMsgMaj: '6'
                 })
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "Le client " + this.state.nomClient + " " + this.state.prenomClient + " n'a pas réussi à mettre à jour son profil (Compte souche requis)."
+                });
 
                 setTimeout(() => window.location.href = "/editionclient",2500)
 
@@ -159,6 +174,11 @@ class Editionclient extends Component {
                         retapeMdp: ''
                     })
 
+                    ReactGA.event({
+                        category: 'User',
+                        action: "Le client " + this.state.nomClient + " " + this.state.prenomClient + " a mis à jour son mot de passe."
+                    });
+
                     setTimeout(() => window.location.href = "/fichecoclient",2500)
     
                 }
@@ -173,6 +193,11 @@ class Editionclient extends Component {
                         retapeMdp: ''
                     })
 
+                    ReactGA.event({
+                        category: 'User',
+                        action: "Le client " + this.state.nomClient + " " + this.state.prenomClient + " n'a pas réussi à mettre à jour son mot de passe."
+                    });
+
                     setTimeout(() => window.location.href = "/editionclient",2500)
     
                 }
@@ -186,6 +211,11 @@ class Editionclient extends Component {
                         nouveauMdp: '',
                         retapeMdp: ''
                     })
+
+                    ReactGA.event({
+                        category: 'User',
+                        action: "Le client " + this.state.nomClient + " " + this.state.prenomClient + " n'a pas réussi à mettre à jour son mot de passe (Compte souche requis)."
+                    });
 
                     setTimeout(() => window.location.href = "/editionclient",2500)
     

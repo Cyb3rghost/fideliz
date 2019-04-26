@@ -34,8 +34,21 @@ class Fichecoclient extends Component {
 
     }
 
+
+
     componentDidMount()
     {
+
+        const installGoogleAds = () => {
+            const elem = document.createElement("script");
+            elem.src =
+              "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+            elem.async = true;
+            elem.defer = true;
+            document.body.insertBefore(elem, document.body.firstChild);
+        };
+        installGoogleAds();
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
 
         fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=voirClient&id=' + this.props.idUserRecupClient
         + '&identreprise=' + this.props.idEntRecupClient
@@ -79,11 +92,13 @@ class Fichecoclient extends Component {
         .then((response) => response.json())
         .then((response) => {
 
-            if(response === "#GTTPRSTATION#FAILED")
+            if(response === "#GTTPRSTATION#VIDE")
             {
 
                 console.log(response)
-
+                this.setState({
+                    prestationsClients: '0'                   
+                })
 
             }
             else
@@ -124,10 +139,7 @@ class Fichecoclient extends Component {
 
         })
         .catch(err => console.error(err))
-
         
-
-
 
     }
 
@@ -249,39 +261,6 @@ class Fichecoclient extends Component {
 
         }  
 
-
-    }
-
-    scannerPointage()
-    {
-
-
-            if(navigator.getUserMedia){
-                navigator.getUserMedia(
-                {
-                  video: true
-                }, 
-                function(localMediaStream){}, 
-                function(err){
-                  console.log('The following error occurred when trying to access the camera: ' + err); 
-                }
-
-            
-              );
-                return <div className="row">
-
-                    <div className="col-md-12">
-
-                        <button type="button" onClick={() => window.location.href='/qrcodeclient'} className="btn btn-dark btn-block"><i className="fas fa-qrcode"></i> QRCODE</button>
-
-                    </div>                           
-                </div>
-
-              } else {
-
-                console.log('Sorry, browser does not support camera access');
-
-              }
 
     }
 
@@ -409,7 +388,7 @@ class Fichecoclient extends Component {
                         <div className="col-md-6">
 
                             <br/>
-                            <h2>BIENVENUE, {this.state.nomClient} {this.state.prenomClient}</h2>
+                            <h3>BIENVENUE, {this.state.nomClient} {this.state.prenomClient}</h3>
 
                         </div>
                         <div className="col-md-6">
@@ -417,6 +396,8 @@ class Fichecoclient extends Component {
                             <br/>
                             <div align="right">
                             <a className="btn btn-dark" href={'/archives'} role="button"><i title="Visualisation des archives de carte" className="fab fa-cc-discover fa-4x"></i></a>
+                            &nbsp;
+                            <a className="btn btn-dark" href={'/logpointages'} role="button"><i title="Visualisation des pointages" className="fas fa-clipboard-list fa-4x"></i></a>
                             &nbsp;
                             <a className="btn btn-dark" href={'/editionclient'} role="button"><i title="Modification du profil" className="fas fa-cogs fa-4x"></i></a>
                             </div>                        
@@ -427,13 +408,29 @@ class Fichecoclient extends Component {
                     
                     </div>
 
-
-
                     <hr/>
                     {this.verifieEtatPointage()}
-                    <br/>
 
-                    {this.scannerPointage()}<br/>
+                    <div className="row">
+
+                        <div className="col-md-12">
+
+                            <button type="button" onClick={() => window.location.href='/qrcodeclient'} className="btn btn-dark btn-block"><i className="fas fa-qrcode"></i> QRCODE</button>
+
+                            <br/>
+
+                            <ins className='adsbygoogle'
+                            style={{ display: 'block' }}
+                            data-ad-client='ca-pub-6868568671322455'
+                            data-ad-slot='7446486547'
+                            data-ad-format='auto'></ins>
+
+                            
+
+                        </div>                           
+                    </div>
+
+                    <br/>
 
                     <div className="row">
                     
@@ -448,7 +445,7 @@ class Fichecoclient extends Component {
                                             <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.prestationsClients} €</div>
                                             </div>
                                             <div className="col-auto">
-                                            <i class="fas fa-exchange-alt fa-2x"></i>
+                                            <i className="fas fa-exchange-alt fa-2x"></i>
                                             </div>
                                         </div>
                                         </div>
@@ -465,7 +462,7 @@ class Fichecoclient extends Component {
                                             <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.nbpointage}</div>
                                             </div>
                                             <div className="col-auto">
-                                            <i class="fas fa-exchange-alt fa-2x"></i>
+                                            <i className="fas fa-exchange-alt fa-2x"></i>
                                             </div>
                                         </div>
                                         </div>
@@ -484,7 +481,7 @@ class Fichecoclient extends Component {
                                             <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.carteTotal}</div>
                                             </div>
                                             <div className="col-auto">
-                                            <i class="fas fa-exchange-alt fa-2x"></i>
+                                            <i className="fas fa-exchange-alt fa-2x"></i>
                                             </div>
                                         </div>
                                         </div>
@@ -500,7 +497,7 @@ class Fichecoclient extends Component {
                                             <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.pointageTotal}</div>
                                             </div>
                                             <div className="col-auto">
-                                            <i class="fas fa-exchange-alt fa-2x"></i>
+                                            <i className="fas fa-exchange-alt fa-2x"></i>
                                             </div>
                                         </div>
                                         </div>
@@ -517,19 +514,8 @@ class Fichecoclient extends Component {
 
                     <br/>
 
-                    <ul className="nav nav-tabs" id="myTab" role="tablist">
-                        <li className="nav-item">
-                            <a className="nav-link active" id="home-tab" data-toggle="tab" href="#infos" role="tab" aria-controls="infos" aria-selected="true">Informations sur votre profil</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" id="profile-tab" data-toggle="tab" href="#listepointages" role="tab" aria-controls="profile" aria-selected="false">Historique des pointages</a>
-                        </li>
-                        </ul>
-                        <div className="tab-content" id="myTabContent">
-                        <div className="tab-pane fade show active" id="infos" role="tabpanel" aria-labelledby="home-tab">
-                        
-                                <br/>
-                                <table className="table table-striped bg-white">
+                    <div className="table-responsive">
+                            <table className="table table-striped bg-white">
                                     <thead>
                                     <tr>
                                         
@@ -537,11 +523,11 @@ class Fichecoclient extends Component {
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td><b>Identifiant client :</b> </td>
+                                        <td><b>ID Client :</b> </td>
                                         <td>{this.state.identifiantclient}</td>
                                     </tr>
                                     <tr>
-                                        <td><b>Date inscription :</b> </td>
+                                        <td><b>Inscription :</b> </td>
                                         <td>{this.state.dataInscription}</td>
                                     </tr>
                                     <tr>
@@ -573,29 +559,8 @@ class Fichecoclient extends Component {
                                         <td>{this.state.telephoneClient}</td>
                                     </tr>
                                     </tbody>
-                                </table>
-                        
+                            </table>     
                         </div>
-                        <div className="tab-pane fade" id="listepointages" role="tabpanel" aria-labelledby="profile-tab">
-
-                                <table className="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <td>Entreprise</td>
-                                        <td>Fin pointage</td>
-                                        <td>Prestation</td>
-                                        <td>Prix</td>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.afficheListePointage()}
-                                    </tbody>
-                                </table>
-                        
-                        </div>
-                    </div>
-                                    
-
 
                     {/* FIN CODE */}
 

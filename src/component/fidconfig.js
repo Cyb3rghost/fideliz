@@ -4,7 +4,7 @@ var host = slashes.concat(window.location.hostname);
 
 var Configuration = {    
     hostnameServer: host,
-    hostnameManuelServer: 'http://127.0.0.1/'
+    hostnameManuelServer: 'https://app.fidliz.com/'
 }
 
 export default Configuration

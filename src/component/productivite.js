@@ -4,6 +4,7 @@ import Configuration from './fidconfig'
 import Select from 'react-select';
 
 import Footer from './footer'
+import ReactGA from 'react-ga';
 
 class Productivite extends Component {
 
@@ -107,6 +108,11 @@ class Productivite extends Component {
                 this.setState({ selectedOption, prestation: separePrestation[0], prix: separePrestation[1].substring(0, separePrestation[1].length-1) });
                 console.log(`Option selected:`, selectedOption);
 
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise (ID : " + this.props.idUserRecup + ") a mis à jour sa prestation pour son pointage (" + separePrestation[0] + " " + separePrestation[1].substring(0, separePrestation[1].length-1) + " €)."
+                });
+
             }
             else if(response === "#UPENTPRESTA#FAILED")
             {
@@ -114,6 +120,11 @@ class Productivite extends Component {
                 console.log(response)
                 this.setState({ selectedOption, prestation: separePrestation[0], prix: separePrestation[1].substring(0, separePrestation[1].length-1) });
                 console.log(`Option selected:`, selectedOption);
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise (ID : " + this.props.idUserRecup + ") n'a pas réussi à mettre à jour sa prestation pour son pointage."
+                });
 
             }
 
@@ -139,12 +150,23 @@ class Productivite extends Component {
                 console.log(response)
                 this.setState({ selectedOption: null, prestation: 'Vide', prix: '0' });
 
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise (ID : " + this.props.idUserRecup + ") a réinitialisé son pointage à zéro."
+                });
+
             }
             else if(response === "#RESETPRESTA#FAILED")
             {
 
                 console.log(response)
                 this.setState({ selectedOption: null, prestation: 'Vide', prix: '0' });
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise (ID : " + this.props.idUserRecup + ") n'a pas réussi à réinitialisé son pointage à zéro."
+                });
+
 
             }
 
@@ -170,9 +192,20 @@ class Productivite extends Component {
                         statut: '1'
                     })
 
+                    ReactGA.event({
+                        category: 'User',
+                        action: "L'entreprise (ID : " + this.props.idUserRecup + ") n'a pas réussi à activé sa carte de fidélité (Upgrade nécessaire)."
+                    });
+    
+
             }
             else if(response === "#ENABLEDCARD#SUCCESS")
             {
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise (ID : " + this.props.idUserRecup + ") a activé sa carte de fidélité."
+                });
 
                 setTimeout(() => window.location.href = "/productivite",250)
 
@@ -196,6 +229,11 @@ class Productivite extends Component {
 
             console.log(response)
             setTimeout(() => window.location.href = "/productivite",250)
+
+            ReactGA.event({
+                category: 'User',
+                action: "L'entreprise (ID : " + this.props.idUserRecup + ") a désactivé sa carte de fidélité."
+            });
 
         })
         .catch(err => console.error(err))

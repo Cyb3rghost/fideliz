@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner'
-import Configuration from './fidconfig'
+import Configuration from '../fidconfig'
 
-import Menu from './menu'
-import Footer from './footer'
+import Menu from './menuclient'
+import Footer from '../footer'
 
 import MaterialTable from 'material-table'
-import ReactGA from 'react-ga';
 
 
-class Log extends Component {
+
+class Logpointages extends Component {
 
   constructor(props)
   {
@@ -24,40 +24,33 @@ class Log extends Component {
 
   componentDidMount()
   {
-  
-    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=logpointages&ident=' + this.props.idUserRecup
+
+    fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=listePointageClient'
+    + '&idclient=' + this.props.idUserRecupClient 
+    + '&ident=' + this.props.idEntRecupClient
     + '&apikey=' + this.props.apikey)
     .then((response) => response.json())
     .then((response) => {
 
-        
-        if(response === "#LOGPOINTAGE#VIDE")
-        {
-
-            console.log(response)
-            this.setState({
-                loading: true
-            })
-
+        switch (response) {
+            case '#POINTAGE#VIDE':
+                console.log(response)
+                this.setState({
+                    cartePointageMsg: '5'
+                })
+                break;            
+            default:
+                console.log(response)
+                this.setState({
+                    dataPointage: response,
+                    loading: true
+                })
+                break;
         }
-        else
-        {
-
-            this.setState({
-                dataPointage: response,
-                loading: true
-            })
-
-            ReactGA.event({
-                category: 'User',
-                action: "L'entreprise (ID : " + this.props.idUserRecup + ") consulte ses logs de pointages."
-            });
-
-        }
-
 
     })
     .catch(err => console.error(err))
+
 
   }
 
@@ -75,24 +68,18 @@ class Log extends Component {
         
             <MaterialTable
               columns={[
-                { title: 'Identifiant', field: 'id' },
-                { title: 'Idcarte', field: 'idcarte' },
-                { title: 'Client', field: 'client' },
-                { title: 'Pointage', field: 'finpointage' },
-                { title: 'Code', field: 'code' },
+                { title: 'Entreprise', field: 'entreprise' },
+                { title: 'Fin pointage', field: 'finpointage' },
                 { title: 'Prestation', field: 'prestation' },
-                { title: 'Prix', field: 'prix'},
+                { title: 'Prix', field: 'prix' },
               ]}
               data={ this.state.dataPointage.map( function(value) {
               
                   var addDataItems = { 
-                  id: value.id,
-                  idcarte: 'IDC' + value.idcarte,
-                  client: value.client,
+                  entreprise: value.entreprise,
                   finpointage: value.finpointage,
-                  code: value.code,
                   prestation: value.prestation,
-                  prix: value.prix + ' €'
+                  prix: value.prix
                                       }
                   return addDataItems;
               }) }
@@ -129,8 +116,11 @@ class Log extends Component {
 
                     <div id="content">
 
-                        <Menu title="Suivit du pointage" />
+                        <Menu title="Suivit des pointages" />
 
+                        <br/>
+                        <br/>
+                        
                         {loadingdata}
 
                     </div>
@@ -150,4 +140,4 @@ class Log extends Component {
   }
 }
 
-export default Log;
+export default Logpointages;

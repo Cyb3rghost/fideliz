@@ -8,6 +8,7 @@ import Configuration from './component/fidconfig'
 import './App.css';
 
 import offline from './images/offline.png'
+import ReactGA from 'react-ga';
 
 /* INTERFACE ENTREPRISE */
 import Dashboard from './component/dashboard'
@@ -17,7 +18,7 @@ import Client from './component/client'
 import Nouveauclient from './component/nouveauclient'
 import Inscriptionclient from './component/inscriptionclient'
 import Voirclient from './component/voirclient'
-import Gestioncompte from './component/gestioncompte'
+//import Gestioncompte from './component/gestioncompte'
 import Log from './component/log'
 import Prestations from './component/prestations'
 import Productivite from './component/productivite'
@@ -27,6 +28,7 @@ import Productivite from './component/productivite'
 import Fichecoclient from './component/componentclient/fichecoclient'
 import Editionclient from './component/componentclient/editionclient'
 import Mescadeaux from './component/componentclient/mescadeaux'
+import Logpointages from './component/componentclient/logpointage'
 import Qrcodeclient from './component/componentclient/qrcodeclient'
 import Archives from './component/componentclient/archivesclient'
 /* INTERFACE CLIENT */
@@ -35,6 +37,9 @@ import Archives from './component/componentclient/archivesclient'
 import Register from './component/register'
 import Error from './component/404'
 import Maintenance from './component/maintenance'
+
+ReactGA.initialize('UA-139038748-1');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 class App extends Component {
 
@@ -83,10 +88,8 @@ class App extends Component {
     componentDidMount()
     {
 
-
           var idapikey = Math.floor(Math.random() * 10) + 1;
 
-          console.log("APIKEY ID : " + idapikey)
           var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=getApiKey'
           + '&id=' + idapikey).then(function(response){ 
               return response.json()
@@ -105,10 +108,6 @@ class App extends Component {
               combinedData["apiRequest1"] = values[0];
               combinedData["apiRequest2"] = values[1];
               combinedData["apiRequest3"] = values[2];
-              
-              console.log(combinedData["apiRequest1"])
-              console.log(combinedData["apiRequest2"])
-              console.log(combinedData["apiRequest3"])
               
               combinedData["apiRequest1"].map((value) => 
               (
@@ -205,6 +204,11 @@ class App extends Component {
                               })
                           )
                         )
+
+                        ReactGA.event({
+                          category: 'User',
+                          action: 'Une entreprise se connecte.'
+                        });
               
                         //alert(this.state.isLogged)
                         //window.location.href = '/dashboard';
@@ -272,6 +276,11 @@ class App extends Component {
                   })
               )
             )
+
+            ReactGA.event({
+              category: 'User',
+              action: 'Un client se connecte.'
+            });
   
             //alert(this.state.isLogged)
             //window.location.href = '/dashboard';
@@ -341,6 +350,9 @@ class App extends Component {
             return { value: valux.id, label: valux.nomsociete }
     })
 
+    /* GERE L'ABONNEMENT 
+    <Route path="/gestioncompte/:eventpaiement?/:identreprise?/:mode?/:abonnement?/:prix?/:limitationclient?/:secure?" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+    */
 
     return (
       <div>
@@ -361,7 +373,7 @@ class App extends Component {
                             <div className="col-lg-6">
                                 <div className="p-5">
                                 <div className="text-center form-control-user">
-                                    <h1 className="h4 text-gray-900 mb-4">FIDLIZ <br/> <small>Espace entreprise</small></h1>
+                                    <h1 className="h4 text-gray-900 mb-4">FIDLIZ <span className="text-danger">[BETA]</span><br/> <small>Espace entreprise</small></h1>
                                 </div>
                                 {this.checkMsg()}
                                 <form onSubmit={this.Connexion.bind(this)} className="user">
@@ -393,7 +405,7 @@ class App extends Component {
                                 </form>
                                 <hr/>
                                 <div className="text-center">
-                                    <a className="small" href="forgot-password.html">Mot de passe oublié ?</a>
+                                    <a className="small" href="">Mot de passe oublié ?</a>
                                 </div>
                                 <div className="text-center">
                                     <a className="small" href="/register">Pas de compte entreprise ? Cliquez-ici !</a>
@@ -423,7 +435,7 @@ class App extends Component {
                         <div className="col-lg-6">
                             <div className="p-5">
                             <div className="text-center">
-                                <h1 className="h4 text-gray-900 mb-4">FIDLIZ <br/> <small>Espace client</small></h1>
+                                <h1 className="h4 text-gray-900 mb-4">FIDLIZ <span className="text-danger">[BETA]</span><br/> <small>Espace client</small></h1>
                             </div>
                             {this.checkMsg()}
                             <form onSubmit={this.connexionClient.bind(this)} className="user">
@@ -477,7 +489,6 @@ class App extends Component {
                 <Route path="/nouveauclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Nouveauclient loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
                 <Route path="/inscriptionclient/:identreprise/:emailclt" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <Inscriptionclient {...props} />} />
                 <Route path="/voirclient/:id" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Voirclient {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
-                <Route path="/gestioncompte/:eventpaiement?/:identreprise?/:mode?/:abonnement?/:prix?/:limitationclient?/:secure?" render={( props ) => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Gestioncompte {...props} loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
                 <Route path="/log" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Log loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
                 <Route path="/prestations" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Prestations loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
                 <Route path="/productivite" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Productivite loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} bkdgCarte={this.state.vrfInfosCarteBg} iconCarte={this.state.vrfInfosCarteIcon} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
@@ -486,6 +497,7 @@ class App extends Component {
                 <Route path="/fichecoclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Fichecoclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/connexionclient" />} />
                 <Route path="/editionclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Editionclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient}  apikey={this.state.vrfInfosAPIKEY}/> : <Redirect to="/connexionclient" />} />
                 <Route path="/mescadeaux" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Mescadeaux loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/connexionclient" />} />
+                <Route path="/logpointages" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Logpointages loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/connexionclient" />} />
                 <Route path="/qrcodeclient" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Qrcodeclient loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/connexionclient" />} />
                 <Route path="/archives" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLoggedClient?<Archives loggedInClient={this.state.vrfLoggedClient} idUserRecupClient={this.state.vrfIdUserClient} idEntRecupClient={this.state.vrfIdEntrepriseClient} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/connexionclient" />} />
                 <Route render={() => <Error />}/>

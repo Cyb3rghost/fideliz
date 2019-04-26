@@ -34,10 +34,6 @@ class Dashboard extends Component {
     componentDidMount()
     {
 
-
-
-            console.log('AdresseTest : ' + Configuration.hostnameManuelServer)
-
             var apiRequest1 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=datadashboard&id=' + this.props.idUserRecup
             + '&apikey=' + this.props.apikey).then(function(response){ 
                 return response.json()
@@ -64,8 +60,6 @@ class Dashboard extends Component {
                 combinedData["apiRequest2"] = values[1];
                 combinedData["apiRequest3"] = values[2];
                 combinedData["apiRequest4"] = values[3];
-
-                console.log(combinedData["apiRequest4"])
                 
                 combinedData["apiRequest1"].map((value) => 
                 (
@@ -267,11 +261,11 @@ class Dashboard extends Component {
                     
                         <div className="container-fluid">
                         <div className="row">
-                            <div className="col-md-11">
+                            <div className="col-md-8">
                             
                             
                             </div>
-                            <div className="col-md-1">
+                            <div className="col-md-4">
                             
                                 <a href="/productivite" className="btn btn-sm btn-primary btn-block"><i className="fas fa-briefcase"></i> Mode fidélité</a>
                             
@@ -291,7 +285,7 @@ class Dashboard extends Component {
                                     <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.totalClient}</div>
                                     </div>
                                     <div className="col-auto">
-                                    <i className="fas fa-calendar fa-2x text-gray-300"></i>
+                                    <i className="fas fa-user fa-2x text-black-300"></i>
                                     </div>
                                 </div>
                                 </div>
@@ -307,7 +301,7 @@ class Dashboard extends Component {
                                     <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.limitClient}</div>
                                     </div>
                                     <div className="col-auto">
-                                    <i className="fas fa-hand-holding-usd fa-2x"></i>
+                                    <i className="fas fa-users fa-2x text-black"></i>
                                     </div>
                                 </div>
                                 </div>
@@ -323,7 +317,7 @@ class Dashboard extends Component {
                                     <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.nbPointage}</div>
                                     </div>
                                     <div className="col-auto">
-                                    <i className="fas fa-hand-holding-usd fa-2x"></i>
+                                    <i className="fas fa-hand-pointer fa-2x"></i>
                                     </div>
                                 </div>
                                 </div>
@@ -339,7 +333,7 @@ class Dashboard extends Component {
                                     <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">{this.state.limitPointage}</div>
                                     </div>
                                     <div className="col-auto">
-                                    <i className="fas fa-calendar fa-2x text-gray-300"></i>
+                                    <i className="fas fa-hand-pointer fa-2x text-black-300"></i>
                                     </div>
                                 </div>
                                 </div>
@@ -361,7 +355,7 @@ class Dashboard extends Component {
                                     <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.debutAbo}</div>
                                     </div>
                                     <div className="col-auto">
-                                    <i className="fas fa-calendar fa-2x text-gray-300"></i>
+                                    <i className="fas fa-calendar fa-2x text-black-300"></i>
                                     </div>
                                 </div>
                                 </div>
@@ -377,7 +371,7 @@ class Dashboard extends Component {
                                     <div className="h5 mb-0 font-weight-bold text-gray-800">{this.state.finAbo}</div>
                                     </div>
                                     <div className="col-auto">
-                                    <i className="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    <i className="fas fa-calendar fa-2x text-black-300"></i>
                                     </div>
                                 </div>
                                 </div>
@@ -399,7 +393,7 @@ class Dashboard extends Component {
                                     </div>
                                     </div>
                                     <div className="col-auto">
-                                    <i className="fas fa-comments fa-2x text-gray-300"></i>
+                                    <i className="fab fa-typo3 fa-2x text-black-300"></i>
                                     </div>
                                 </div>
                                 </div>
@@ -415,7 +409,7 @@ class Dashboard extends Component {
                                     <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">{this.state.jRestants}</div>
                                     </div>
                                     <div className="col-auto">
-                                    <i className="fas fa-calendar fa-2x text-gray-300"></i>
+                                    <i className="fas fa-calendar fa-2x text-black-300"></i>
                                     </div>
                                 </div>
                                 </div>
@@ -454,7 +448,7 @@ class Dashboard extends Component {
                                     <div className="h5 mb-0 font-weight-bold text-gray-800">{this.calculScoreClassement()}</div>
                                     </div>
                                     <div className="col-auto">
-                                    <i className="fas fa-hand-holding-usd fa-2x"></i>
+                                    <i className="fas fa-star fa-2x"></i>
                                     </div>
                                 </div>
                                 </div>

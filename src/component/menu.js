@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import cookie from 'react-cookies'
+import ReactGA from 'react-ga';
 
 class Menu extends Component {
 
     deconnexion()
     {
+
+        ReactGA.event({
+            category: 'User',
+            action: "L'entreprise s'est déconnecté."
+        });
 
         cookie.remove("#FID#CO#SUCCESS")
         cookie.remove('#FID#CO#IDUSER')
@@ -45,9 +51,6 @@ class Menu extends Component {
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" href="/prestations"><i className="fas fa-fw fa-users"></i> Gestion de prestation</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/gestionCompte"><i className="fas fa-fw fa-cog"></i> Gestion de l'abonnement</a>
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" href="/log"><i className="fas fa-fw fa-file-alt"></i> Gestion des logs</a>

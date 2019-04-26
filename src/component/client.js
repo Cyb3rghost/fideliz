@@ -177,7 +177,8 @@ class Client extends Component {
             {
 
                 this.setState({
-                    statutMsg: '6'
+                    statutMsg: '6',
+                    openDeux: false 
                 })
 
                 
@@ -187,7 +188,8 @@ class Client extends Component {
             {
 
                 this.setState({
-                    statutMsg: '7'
+                    statutMsg: '7',
+                    openDeux: false 
                 })
 
                 
@@ -295,6 +297,7 @@ class Client extends Component {
         const { dataClient, open, openDeux } = this.state;
 
         const isEnabled = !validator.isEmpty(this.state.identifiantCompte) && validator.isNumeric(this.state.identifiantCompte)
+        const isEnabledMail = validator.isEmail(this.state.emailClient) && !validator.isEmpty(this.state.emailClient)
 
         let loadingdata;
         if(this.state.loading)
@@ -335,31 +338,10 @@ class Client extends Component {
                             
                                 <center>
                                     <div className="btn-group cadreBoutonGrouper" role="group" aria-label="Basic example">
-                                        <button type="button" className="btn btn-secondary" title="Ajouter un nouveau client"><a href="/nouveauclient"><i className="fas fa-user-plus fa-3x"></i></a></button>
                                         <button type="button" className="btn btn-secondary" onClick={this.onOpenModal} title="Associé un compte client existant"><i className="fas fa-project-diagram fa-3x"></i></button>
                                         <button type="button" className="btn btn-secondary" onClick={this.onOpenModalDeux} title="Envoyer une invitation d'inscription"><i className="fas fa-envelope-open-text fa-3x"></i></button>
                                     </div>
                                 </center>
-
-                            {/*this.props.infoTypeCompte !== "0" &&
-    
-                                    <div><div class="input-group mb-3">
-                                    <input 
-                                        type="text" 
-                                        className="form-control" 
-                                        placeholder="Identifiant utilisateur..." 
-                                        value={this.state.identifiantCompte}
-                                        onChange={(e) => this.setState({identifiantCompte: e.target.value})}
-                                    
-                                    />
-                                    <div className="input-group-append">
-                                        <button className="btn btn-dark" onClick={this.assocCompte.bind(this)} type="button" id="button-addon2">Association du compte</button>
-                                    </div>
-                                </div>
-                                <a href="/nouveauclient"><button className="btn btn-dark btn-block" type="button" id="button-addon2">Nouveau client</button></a>  
-                                </div>                
-    
-                            */}
     
                             {this.props.infoTypeCompte === "0" && 
     
@@ -502,7 +484,7 @@ class Client extends Component {
                                 />
                                 <br/>
                                 <div className="input-group-append">
-                                    <button className="btn btn-dark btn-block" type="input">Envoyer une invitation</button>
+                                    <button className="btn btn-dark btn-block" disabled={!isEnabledMail} type="input">Envoyer une invitation</button>
                                 </div>
                             </form>
                             

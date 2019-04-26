@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Configuration from './fidconfig'
 import Select from 'react-select';
 import validator from 'validator';
+import ReactGA from 'react-ga';
 
 class Register extends Component {
 
@@ -99,6 +100,11 @@ class Register extends Component {
                             this.setState({
                                 statueIns: '2'
                             })
+
+                            ReactGA.event({
+                                category: 'User',
+                                action: "L'entreprise " + nomEntreprise + " vien de s'inscrire sur la plateforme."
+                            });
     
                             setTimeout(() => window.location.href = "/",2500)
         
@@ -108,6 +114,11 @@ class Register extends Component {
                             this.setState({
                                 statueIns: '3'
                             })
+
+                            ReactGA.event({
+                                category: 'User',
+                                action: "L'entreprise " + nomEntreprise + " a échouée son inscription."
+                            });
     
                             setTimeout(() => window.location.href = "/register",2500)
                             
@@ -117,6 +128,11 @@ class Register extends Component {
                             this.setState({
                                 statueIns: '4'
                             })
+
+                            ReactGA.event({
+                                category: 'User',
+                                action: "L'entreprise " + nomEntreprise + " a échouée son inscription."
+                            });
     
                             setTimeout(() => window.location.href = "/register",2500)
                             
@@ -233,7 +249,7 @@ class Register extends Component {
             <div className="col-lg-12">
                 <div className="p-5">
                 <div className="text-center">
-                    <h1 className="h4 text-gray-900 mb-4">FIDLIZ <br/><small>Création d'un compte entreprise</small></h1>
+                    <h1 className="h4 text-gray-900 mb-4">FIDLIZ <span className="text-danger">[BETA]</span><br/><small>Création d'un compte entreprise</small></h1>
                 </div>
 
                 {this.checkmsg()}
