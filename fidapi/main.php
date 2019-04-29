@@ -4629,7 +4629,7 @@ if(isset($_GET['action']))
                     <h1><b> /!\ NE PAS REPONDRE ! /!\</b><h1><br/>
                     <br/>
                     <p>Bonjour, <br> Pour vous inscrire sur FidLiZ, <a href='https://app.fidliz.com/inscriptionclient/".$idEntreprise."/".$to."'>cliquez sur ce lien.</a> <br/>
-                    Ce lien expirera dans une semaine après l’envoi. Si le lien a expiré, l'entreprise devra renvoyer une invitation depuis l’appli FidLiZ.</p><bt/>
+                    Ce lien expirera dans une semaine après l’envoi. Si le lien a expiré, l'entreprise devra renvoyer une invitation depuis l’appli FidLiZ.</p><br/>
                     <br/>
                     <h1><b> /!\ NE PAS REPONDRE ! /!\</b><h1>
                     </body>
@@ -4765,6 +4765,62 @@ if(isset($_GET['action']))
             // Then, you can redirect the user to the payment page
             header("Location: $paymentUrl");
             exit();
+
+            break;
+        case 'suppressionCompteEntreprise':
+
+            $idEntreprise = $_GET['ident'];
+
+            // Suppression du compte entreprise
+            if(mysqli_query($connect, "DELETE FROM `accsociete` WHERE `id` = '".$idEntreprise."'"))
+            {
+
+                // Suppression de tous les comptes clients appartenant à l'entreprise
+                if(mysqli_query($connect, "DELETE FROM `acctclient` WHERE `identreprise` = '".$idEntreprise."'"))
+                {
+
+                    // Suppression de tous les cadeaux
+                    if(mysqli_query($connect, "DELETE FROM `cadeaux` WHERE `identreprise` = '".$idEntreprise."'"))
+                    {
+
+                        // Suppression de toutes les notations
+                        if(mysqli_query($connect, "DELETE FROM `notation` WHERE `identreprise` = '".$idEntreprise."'"))
+                        {
+
+                            // Suppression de tous les pointages
+                            if(mysqli_query($connect, "DELETE FROM `pointage` WHERE `identreprise` = '".$idEntreprise."'"))
+                            {
+
+                                $json = json_encode("#SUPPRESSIONENT#SUCCESS");
+
+                            }
+                            else
+                            {
+
+                                $json = json_encode("#SUPPRESSIONENT#FAILED");
+
+                            }
+
+
+                        }
+
+
+                    }
+
+
+                }
+
+            }
+            else
+            {
+
+                $json = json_encode("#SUPPRESSIONENT#FAILED");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connect);
 
             break;
         default:

@@ -4,6 +4,8 @@ import Configuration from './fidconfig'
 import Select from 'react-select';
 import validator from 'validator';
 import ReactGA from 'react-ga';
+import cookie from 'react-cookies'
+import Modal from 'react-responsive-modal';
 
 import Footer from './footer'
 import Menu from './menu'
@@ -30,6 +32,7 @@ class Modifprofil extends Component {
             selectedOption: null,
             checkSelectedOption: '',
             options: [],
+            open: false,
             loading: false
 
         }
@@ -313,9 +316,96 @@ class Modifprofil extends Component {
             </div>
 
         }
+        else if (this.state.statutMsgMaj === '8') 
+        {
+            
+
+            return <div className="alert alert-success">
+        
+                Votre compte a été supprimer avec succès. Patientez...
+        
+            </div>
+
+        }
+        else if (this.state.statutMsgMaj === '9') 
+        {
+            
+
+            return <div className="alert alert-danger">
+        
+                Votre compte n'a pas été supprimer. Veuillez recommencer ultérieurement...
+        
+            </div>
+
+        }
 
 
     }
+
+    suppressionDuCompte()
+    {
+
+        fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=suppressionCompteEntreprise'
+        + '&ident=' + this.props.idUserRecup
+        + '&apikey=' + this.props.apikey)
+        .then((response) => response.json())
+        .then((response) => {
+
+            
+            if(response === "#SUPPRESSIONENT#SUCCESS")
+            {
+
+                console.log(response)
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " vien de supprimer son compte."
+                });
+
+                this.setState({
+                    statutMsgMaj: '8'
+                })
+
+                cookie.remove("#FID#CO#SUCCESS")
+                cookie.remove('#FID#CO#IDUSER')
+                cookie.remove('#FID#CO#TYPECPT')
+                cookie.remove('#FID#CO#CARTEBG')
+                cookie.remove('#FID#CO#CARTEICON')
+                cookie.remove('#FID#CO#APIKEY')
+                setTimeout(() => window.location.href = "/",2500)
+
+            }
+            else if(response === "#SUPPRESSIONENT#FAILED")
+            {
+
+                console.log(response)
+
+                this.setState({
+                    statutMsgMaj: '9'
+                })
+
+                ReactGA.event({
+                    category: 'User',
+                    action: "L'entreprise " + this.state.nomSociete + " n'a pas réussi à supprimer son compte."
+                });
+
+
+            }
+
+
+        })
+        .catch(err => console.error(err))
+
+
+    }
+
+    onOpenModal = () => {
+        this.setState({ open: true });
+      };
+     
+    onCloseModal = () => {
+        this.setState({ open: false });
+      };
 
     handleChangeSelect = (selectedOption) => {
         this.setState({ selectedOption, checkSelectedOption: '1' });
@@ -370,158 +460,210 @@ class Modifprofil extends Component {
                                 <div className="card-body">
                                     
                                     <form onSubmit={this.majEntreprise.bind(this)}>
-                                    <table className="table">
-                                        <thead>
-                                            <tr>
+                                    <div className="row">
 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                            <th scope="row">Nom</th>
-                                            <td align="center">
+                                        <div className="col-md-6">
+                                        
+                                            Nom
+                                        
+                                        </div>
+                                        <div className="col-md-6">
+                                        
                                             <input 
                                                 type="text" 
                                                 value={this.state.nom}
                                                 onChange={e => this.setState({nom: e.target.value})}
                                                 className="form-control" 
                                             />
-                                            
-                                            </td>
-                                            </tr>
-                                            <tr>
-                                            <th scope="row">Prénom</th>
-                                            <td align="center">
+
+                                        </div><br/>
+                                        <br/>
+                                        <div className="col-md-6">
+                                        
+                                            Prénom
+                                        
+                                        </div>
+                                        <div className="col-md-6">
+                                        
                                             <input 
                                                 type="text" 
                                                 value={this.state.prenom}
                                                 onChange={e => this.setState({prenom: e.target.value})}
                                                 className="form-control" 
                                             />
-                                            
-                                            </td>
-                                            </tr>
-                                            <tr>
-                                            <th scope="row">Email</th>
-                                            <td align="center">
+
+                                        </div><br/>
+                                        <br/>
+                                        <div className="col-md-6">
+                                        
+                                            Email
+                                        
+                                        </div>
+                                        <div className="col-md-6">
+                                        
                                             <input 
                                                 type="text" 
                                                 value={this.state.email}
                                                 onChange={e => this.setState({email: e.target.value})}
                                                 className="form-control" 
                                             />
-                                            
-                                            </td>
-                                            </tr>
-                                            <tr>
-                                            <th scope="row">Adresse</th>
-                                            <td align="center">
+
+                                        </div><br/>
+                                        <br/>
+                                        <div className="col-md-6">
+                                        
+                                            Adresse
+                                        
+                                        </div>
+                                        <div className="col-md-6">
+                                        
                                             <input 
                                                 type="text" 
                                                 value={this.state.adresse}
                                                 onChange={e => this.setState({adresse: e.target.value})}
                                                 className="form-control" 
                                             />
-                                            
-                                            </td>
-                                            </tr>
-                                            <tr>
-                                            <th scope="row">Code postal</th>
-                                            <td align="center">
-                                                {this.state.codepostal}
-                                            </td>
-                                            </tr>
-                                            <tr>
-                                            <th scope="row">Ville</th>
-                                            <td align="center">
-                                                {this.state.ville}
-                                            </td>
-                                            </tr>
-                                            <tr>
-                                            <th scope="row">Nouvelle localisation</th>
-                                            <td align="center">
-                                                <Select
-                                                    value={selectedOption}
-                                                    onChange={this.handleChangeSelect}
-                                                    options={options}
-                                                    placeholder="Code postal"
-                                                /> 
-                                            </td>
-                                            </tr>
-                                            <tr>
-                                            <th scope="row">Nom de la société</th>
-                                            <td align="center">
+
+                                        </div><br/>
+                                        <br/>
+                                        <div className="col-6">
+                                        
+                                            Code postal
+                                        
+                                        </div>
+                                        <div className="col-6">
+                                        
+                                            {this.state.codepostal}
+
+                                        </div><br/>
+                                        <br/>
+                                        <div className="col-6">
+                                        
+                                            Ville
+                                        
+                                        </div>
+                                        <div className="col-6">
+                                        
+                                            {this.state.ville}
+
+                                        </div><br/>
+                                        <br/>
+                                        <div className="col-md-6">
+                                        
+                                            Nouvelle localisation
+                                        
+                                        </div>
+                                        <div className="col-md-6">
+                                        
+                                            <Select
+                                                value={selectedOption}
+                                                onChange={this.handleChangeSelect}
+                                                options={options}
+                                                placeholder="Code postal"
+                                            /> 
+
+                                        </div><br/>
+                                        <br/>
+                                        <div className="col-md-6">
+                                        
+                                            Nom de la société
+                                        
+                                        </div>
+                                        <div className="col-md-6">
+                                        
                                             <input 
                                                 type="text" 
                                                 value={this.state.nomSociete}
                                                 onChange={e => this.setState({nomSociete: e.target.value})}
                                                 className="form-control" 
                                             />
-                                            
-                                            </td>
-                                            </tr>
-                                            <tr>
-                                            <th scope="row">Numéro de téléphone</th>
-                                            <td align="center">
+
+                                        </div><br/>
+                                        <br/>
+                                        <div className="col-md-6">
+                                        
+                                            Numéro de téléphone
+                                        
+                                        </div>
+                                        <div className="col-md-6">
+                                        
                                             <input 
                                                 type="text" 
                                                 value={this.state.telephone}
                                                 onChange={e => this.setState({telephone: e.target.value})}
                                                 className="form-control" 
                                             />
-                                            
-                                            </td>
-                                            </tr>
-                                            <tr>
-                                            <th scope="row"></th>
-                                            <td><button type="submit" disabled={!isEnabled} className="btn btn-success btn-block">Sauvegarder les modifications</button></td>
-                                            </tr>
-                                        </tbody>
-                                        </table>
+                                            <br/>
+                                            <button type="submit" disabled={!isEnabled} className="btn btn-success btn-block">Sauvegarder les modifications</button>
+
+                                        </div>                                                                              
+
+                                        </div>
                                         </form>
 
                                         <br/>
 
                                         <form onSubmit={this.changeMDP.bind(this)}>
-                                        <table className="table table-striped">
-                                            <thead>
-                                            <tr>
-                                                
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>Mot de passe actuel : </td>
-                                                <td><input 
+                                        <div className="row">
+                                        
+                                        
+                                            <div className="col-md-6">
+                                            
+                                                Mot de passe actuel : 
+                                            
+                                            </div>
+                                            <div className="col-md-6">
+                                            
+                                                <input 
                                                 type="password" 
                                                 className="form-control" 
                                                 value={this.state.actuelMdp} 
                                                 onChange={(e) => this.setState({actuelMdp: e.target.value})}
-                                                required /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Nouveau mot de passe : </td>
-                                                <td><input type="password" 
-                                                className="form-control" 
-                                                value={this.state.nouveauMdp} 
-                                                onChange={(e) => this.setState({nouveauMdp: e.target.value})}
-                                                required /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Retapez le mot de passe : </td>
-                                                <td><input 
-                                                type="password" 
-                                                className="form-control" 
-                                                value={this.state.retapeMdp} 
-                                                onChange={(e) => this.setState({retapeMdp: e.target.value})}
-                                                required /></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td><button className="btn btn-success btn-block" disabled={!isEnabledTwo} type="submit">Sauvegarder les modifications</button></td>
-                                            </tr>
-                                            </tbody>
-                                        </table> 
+                                                required />
+                                            
+                                            </div><br/>
+                                            <br/>
+                                            <div className="col-md-6">
+                                            
+                                                Nouveau mot de passe : 
+                                            
+                                            </div>
+                                            <div className="col-md-6">
+                                            
+                                                <input 
+                                                    type="password" 
+                                                    className="form-control" 
+                                                    value={this.state.actuelMdp} 
+                                                    onChange={(e) => this.setState({actuelMdp: e.target.value})}
+                                                    required 
+                                                />
+                                            
+                                            </div><br/>
+                                            <br/>
+                                            <div className="col-md-6">
+                                            
+                                                Retapez le mot de passe : 
+                                            
+                                            </div>
+                                            <div className="col-md-6">
+                                            
+                                                <input 
+                                                    type="password" 
+                                                    className="form-control" 
+                                                    value={this.state.retapeMdp} 
+                                                    onChange={(e) => this.setState({retapeMdp: e.target.value})}
+                                                    required 
+                                                />
+                                                <br/>
+                                                <button className="btn btn-success btn-block" disabled={!isEnabledTwo} type="submit">Sauvegarder les modifications</button>
+                                                <br/>
+                                                <button type="button" onClick={this.onOpenModal} className="btn btn-danger btn-block">Suppression du compte</button>
+                                            
+                                            </div>
+                                            
+                                        
+                                        
+                                        </div>
                                         </form>
 
                                 </div>
@@ -557,13 +699,31 @@ class Modifprofil extends Component {
 
                 <div id="content">
 
-                    <Menu title="Modification de votre profil entreprise" />
+                    <Menu title="Editez votre profil" />
 
                     {loadingdata}
 
                 </div>
 
                 <Footer />
+
+                <Modal open={this.state.open} onClose={this.onCloseModal} center>
+                        <h2>Suppression du compte</h2>
+                        <hr/>
+                        <p className="text-justify">Attention, vous êtes sur le point de supprimer votre compte de manière définitive, cette action entrainera 
+                        la perte définitive de toutes vos données sur la plateforme mais également les données de vos clients lié 
+                        à votre compte entreprise. Ils ne pourront plus se connecter, ni pointer et ni consulter leurs données de 
+                        carte de fidélité. <br/>
+                        Cette action demande une réflexion, vous pouvez nous contacter en cas de questions supplémentaire.
+
+                        Souhaitez-vous quand même supprimer votre compte ? <br/>
+                        <br/>
+                        <button type="button" onClick={this.suppressionDuCompte.bind(this)} className="btn btn-success">Oui</button>&nbsp;
+                        <button type="button" onClick={this.onCloseModal} className="btn btn-danger ">Non</button>
+                        </p>
+
+
+                    </Modal>
 
                 </div>
 

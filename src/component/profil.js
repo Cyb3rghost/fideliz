@@ -742,7 +742,6 @@ class Profil extends Component {
 
                                         <button type="button" onClick={this.enregistrePrestation.bind(this)} className="btn btn-success">Enregistrez</button>
 
-
                                         </div>
 
                                 </div>
