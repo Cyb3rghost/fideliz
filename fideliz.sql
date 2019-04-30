@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  ven. 26 avr. 2019 à 12:20
+-- Généré le :  mar. 30 avr. 2019 à 10:02
 -- Version du serveur :  5.7.17
 -- Version de PHP :  5.6.30
 
@@ -2092,15 +2092,16 @@ CREATE TABLE `parametres` (
   `maintenance` int(11) NOT NULL,
   `version` varchar(10) NOT NULL,
   `oldversion` varchar(7) NOT NULL,
-  `objet` text NOT NULL
+  `objet` text NOT NULL,
+  `url` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `parametres`
 --
 
-INSERT INTO `parametres` (`id`, `maintenance`, `version`, `oldversion`, `objet`) VALUES
-(1, 0, '1.0.1.7', '1.0.1.8', 'Maintenance terminÃ©');
+INSERT INTO `parametres` (`id`, `maintenance`, `version`, `oldversion`, `objet`, `url`) VALUES
+(1, 0, '1.0.1.7', '1.0.1.8', 'Maintenance terminÃ©', '');
 
 -- --------------------------------------------------------
 

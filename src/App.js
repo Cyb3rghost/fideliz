@@ -77,6 +77,7 @@ class App extends Component {
             options: [],
             dataMaintenance: '',
             dataVersion: '',
+            dataUrlMaj: '',
             objetMaintenance: '',
             checkMsg: ''
 
@@ -124,6 +125,7 @@ class App extends Component {
                   this.setState({
                     dataMaintenance: value.maintenance,
                     dataVersion: value.version,
+                    dataUrlMaj: value.url,
                     objetMaintenance: value.objet
                   })
   
@@ -482,7 +484,7 @@ class App extends Component {
                 </div>} />
 
                 <Route path="/register" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : <Register apikey={this.state.vrfInfosAPIKEY} /> } />
-                <Route path="/dashboard" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
+                <Route path="/dashboard" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Dashboard loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} version={this.state.dataVersion} urlmaj={this.state.dataUrlMaj} /> : <Redirect to="/" />} />
                 <Route path="/profil" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Profil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
                 <Route path="/modifprofil" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Modifprofil loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />
                 <Route path="/client" render={() => dataMaintenance === "1" ? <Redirect to="/maintenance" /> : vrfLogged?<Client loggedIn={this.state.vrfLogged} idUserRecup={this.state.vrfIdUser} infoTypeCompte={this.state.vrfInfosTypeCompte} apikey={this.state.vrfInfosAPIKEY} /> : <Redirect to="/" />} />

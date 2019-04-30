@@ -4823,6 +4823,33 @@ if(isset($_GET['action']))
             mysqli_close($connect);
 
             break;
+        case 'checkMaj':
+
+            $date = date("Y-m-d");
+
+            $connectdeux = mysqli_connect('world-368.fr.planethoster.net', 'fidlqmyj_fidliz', 'Lino$$974', 'fidlqmyj_sitefidliz');
+
+            $sql = "SELECT * FROM `wp_posts` WHERE `post_date` LIKE '%".$date."%'";
+            $result = mysqli_query($connectdeux, $sql);
+
+            if(mysqli_num_rows($result))
+            {
+
+                $json = json_encode("#CHECKMAJ#SUCCESS");
+
+            }
+            else
+            {
+
+                $json = json_encode("#CHECKMAJ#VIDE");
+
+            }
+
+            echo $json;
+
+            mysqli_close($connectdeux);
+
+            break;
         default:
             # code...
             break;

@@ -357,7 +357,7 @@ class Register extends Component {
                             onChange={this.toggleChange.bind(this)}
                         />
                         <label className="form-check-label">
-                            J'accepte les <a href="/conditions-utilisations">conditions d'utilisations</a>
+                            J'accepte les <a href="https://fidliz.com/conditions-dutilisations/" target="_blank">conditions d'utilisations</a>
                         </label>
                     </div>
                     <br/>

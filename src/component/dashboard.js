@@ -26,6 +26,7 @@ class Dashboard extends Component {
             scoreTotal: '',
             notationTotal: '',
             configuration: '',
+            checkMaj: '0'
 
         }
 
@@ -52,15 +53,21 @@ class Dashboard extends Component {
                 return response.json()
             });
 
-            var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{},"apiRequest4":{}};
+            var apiRequest5 = fetch(Configuration.hostnameManuelServer + 'fidapi/main.php?action=checkMaj&apikey=' + this.props.apikey).then(function(response){
+                return response.json()
+            });
 
-            Promise.all([apiRequest1,apiRequest2, apiRequest3, apiRequest4])
+
+            var combinedData = {"apiRequest1":{},"apiRequest2":{},"apiRequest3":{},"apiRequest4":{},"apiRequest5":{}};
+
+            Promise.all([apiRequest1,apiRequest2, apiRequest3, apiRequest4, apiRequest5])
             .then(function(values){
                 combinedData["apiRequest1"] = values[0];
                 combinedData["apiRequest2"] = values[1];
                 combinedData["apiRequest3"] = values[2];
                 combinedData["apiRequest4"] = values[3];
-                
+                combinedData["apiRequest5"] = values[4];
+
                 combinedData["apiRequest1"].map((value) => 
                 (
                     this.setState({
@@ -107,6 +114,15 @@ class Dashboard extends Component {
                     })
                 )
                 )
+
+                if(combinedData["apiRequest5"] === "#CHECKMAJ#SUCCESS")
+                {
+
+                    this.setState({
+                        checkMaj: '1'
+                    })
+
+                }
 
             }.bind(this));
 
@@ -453,75 +469,30 @@ class Dashboard extends Component {
                                 </div>
                                 </div>
                             </div>
-                        </div>  
+                        </div> 
 
-                        </div>
-
-                        {/*<div className="row">
-
-                            <div className="col-xl-8 col-lg-7">
-                            <div className="card shadow mb-4">
-                                <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 className="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-                                <div className="dropdown no-arrow">
-                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i className="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        <div className="col-xl-3 col-md-6 mb-4">
+                            <div className="card border-left-warning shadow h-100 py-2">
+                                <div className="card-body">
+                                <div className="row no-gutters align-items-center">
+                                    <div className="col mr-2">
+                                    <a href={this.props.urlmaj} target="_blank">
+                                    <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">Centre de mise à jour</div>
+                                    <div className="mb-0 font-weight-bold text-gray-800"><small>{this.state.checkMaj === "1" && <span className="badge badge-danger">Nouveau</span> } Version : {this.props.version} </small></div>
                                     </a>
-                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                                    <div className="dropdown-header">Dropdown Header:</div>
-                                    <a className="dropdown-item" href="#">Action</a>
-                                    <a className="dropdown-item" href="#">Another action</a>
-                                    <div className="dropdown-divider"></div>
-                                    <a className="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                    <div className="col-auto">
+                                    <i className="fas fa-cloud-upload-alt fa-2x"></i>
                                     </div>
                                 </div>
                                 </div>
-                                <div className="card-body">
-                                <div className="chart-container">
-                                    <LineChart data={chartData} options={chartOptions}/>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-
-                            <div className="col-xl-4 col-lg-5">
-                            <div className="card shadow mb-4">
-                                <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 className="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                                <div className="dropdown no-arrow">
-                                    <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i className="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                    </a>
-                                    <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                                    <div className="dropdown-header">Dropdown Header:</div>
-                                    <a className="dropdown-item" href="#">Action</a>
-                                    <a className="dropdown-item" href="#">Another action</a>
-                                    <div className="dropdown-divider"></div>
-                                    <a className="dropdown-item" href="#">Something else here</a>
-                                    </div>
-                                </div>
-                                </div>
-                                <div className="card-body">
-                                <div className="chart-container pt-4 pb-2">
-                                    <DoughnutChart data={chartDataDougnhut} options={chartOptionsDougnhut}/>
-                                </div>
-                                <div className="mt-4 text-center small">
-                                    <span className="mr-2">
-                                    <i className="fas fa-circle text-primary"></i> Direct
-                                    </span>
-                                    <span className="mr-2">
-                                    <i className="fas fa-circle text-success"></i> Social
-                                    </span>
-                                    <span className="mr-2">
-                                    <i className="fas fa-circle text-info"></i> Referral
-                                    </span>
-                                </div>
-                                </div>
-                            </div>
                             </div>
                         </div>
+                        
 
-                    </div>*/}
+
+                        </div>
+
                     </div>
                     </div>
     }
